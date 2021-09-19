@@ -8,10 +8,15 @@ import {
   Tab,
   Card,
   Button,
+  Autocomplete,
+  TextInput,
   TextInputField,
 } from "evergreen-ui";
-import { Live2DContext } from "./context";
+import { Live2DContext } from "../context";
 import { useWindowWidth } from "@react-hook/window-size";
+import { modelData } from "../modelData";
+import { TabModel } from "./tabModel";
+import { TabBackground } from "./tabBackground";
 
 type props = {
   isShown: boolean;
@@ -19,21 +24,11 @@ type props = {
 };
 
 function Content({ selectedIndex }: { selectedIndex: number }) {
-  const { background } = useContext(Live2DContext);
   switch (selectedIndex) {
     case 0:
-      return <Heading>Some content</Heading>;
+      return <TabModel />;
     case 1:
-      return (
-        <TextInputField
-          isInvalid={false}
-          required
-          value={background}
-          label="Background Image"
-          // description="This is a description."
-          validationMessage="This field is required"
-        />
-      );
+      return <TabBackground />;
     default:
       return <></>;
   }
