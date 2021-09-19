@@ -10,7 +10,7 @@ export default function Live2D() {
   return (
     <>
       <Head>
-        <title>D4DJ.info</title>
+        <title>D4DJ.info Live2D</title>
       </Head>
       <Script src="https://cdn.jsdelivr.net/gh/dylanNew/live2d/webgl/Live2D/lib/live2d.min.js" />
       <Script src="https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js" />

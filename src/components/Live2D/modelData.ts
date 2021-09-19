@@ -31,6 +31,9 @@ export const modelData: string[] = [
   "Miiko Takeshita",
 ];
 
-export function calcModelID(index: number) {
-  return `0${Math.floor(index / 4) + 1}${(index % 4) + 1}`;
+export function modelDataWithID() {
+  return modelData.map((name, index) => ({
+    id: `0${Math.floor(index / 4) + 1}${(index % 4) + 1}`,
+    name,
+  }));
 }

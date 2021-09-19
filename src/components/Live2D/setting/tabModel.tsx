@@ -1,85 +1,55 @@
-import React, { useContext, useMemo } from "react";
-import {
-  Pane,
-  Heading,
-  Button,
-  Autocomplete,
-  TextInput,
-  TextInputField,
-} from "evergreen-ui";
+import { useContext, useCallback, useState } from "react";
 
+import { Button, Combobox } from "evergreen-ui";
 import { Live2DContext } from "../context";
-import { useWindowWidth } from "@react-hook/window-size";
-import { modelData } from "../modelData";
-import { Controller, useForm } from "react-hook-form";
+import { useEffect } from "react";
 
-export function TabModel() {
-  const {} = useContext(Live2DContext);
-  const { control, handleSubmit } = useForm();
-  const onSubmit = (data: any) => {};
+export function TabModel({ index }: { index: number }) {
+  const { models, setModels, app, setConfigIndex } = useContext(Live2DContext);
+  const [selectedMotion, setSelectedMotion] = useState<string>("");
+
+  const motions = useCallback((): any[] => {
+    return models[index].data.internalModel.motionManager.settings.motions[
+      ""
+    ].map((item: any) =>
+      item.File.replace(".motion3.json", "").replace("motions/", "")
+    );
+  }, [models, index]);
+
+  const doMotion = (selected: string) => {
+    console.log(models[index]);
+    models[index].data.internalModel.motionManager.startMotion(
+      "",
+      motions().indexOf(selected)
+    );
+  };
+
+  // useEffect(() => {
+  //   if (selectedMotion === "") return;
+  //   console.log("do motion");
+
+  //   );
+  // }, [selectedMotion, index, models]);
+
+  const deleteSelf = () => {
+    setConfigIndex(0);
+    app?.stage.removeChild(models[index].data);
+    setModels((models) => {
+      models.splice(index, 1);
+      return models;
+    });
+  };
 
   return (
     <>
-      <Heading>Add Model</Heading>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Controller
-          name="model"
-          control={control}
-          defaultValue=""
-          render={({ field }) => (
-            <Autocomplete
-              title="Character List"
-              onChange={field.onChange}
-              items={modelData}
-            >
-              {(props) => {
-                const { getInputProps, getRef, inputValue, openMenu } = props;
-                return (
-                  <TextInputField
-                    label="Character"
-                    placeholder="Open on focus"
-                    //@ts-ignore
-                    value={inputValue}
-                    ref={getRef}
-                    {...getInputProps({
-                      onFocus: () => {
-                        openMenu();
-                      },
-                    })}
-                  />
-                );
-              }}
-            </Autocomplete>
-          )}
-        />
-        {/* <Controller
-          name="iceCreamType"
-          control={control}
-          render={({ field }) => (
-            <Select
-              {...field}
-              options={[
-                { value: "chocolate", label: "Chocolate" },
-                { value: "strawberry", label: "Strawberry" },
-                { value: "vanilla", label: "Vanilla" },
-              ]}
-            />
-          )}
-        /> */}
-        <Pane display="flex" justifyContent="end" width="100%">
-          <Button marginRight={16} intent="success" type="submit">
-            Add Model
-          </Button>
-        </Pane>
-      </form>
-      {/* <TextInputField
-            isInvalid={true}
-            required
-            value={background}
-            label="Background Image"
-            // description="This is a description."
-            validationMessage="This field is required"
-          /> */}
+      <Combobox
+        items={motions()}
+        onChange={(selected) => doMotion(selected)}
+        placeholder="Select Motion"
+      />
+      <Button marginRight={16} intent="danger" onClick={deleteSelf}>
+        Delete
+      </Button>
     </>
   );
 }

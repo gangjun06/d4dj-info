@@ -16,7 +16,7 @@ function Live2DViewContent() {
   // const [background, setBackground] = useState<string>(
   //   "https://api.d4dj.info/api/file/download?path=ondemand/background/bg_member_detail.jpg"
   // );
-  const { background } = useContext(Live2DContext);
+  const { background, setApp } = useContext(Live2DContext);
   const [isShown, setIsShown] = useState<boolean>(false);
 
   useEffect(() => {
@@ -32,28 +32,8 @@ function Live2DViewContent() {
       `${app.view.getAttribute("style")}position: absolute;`
     );
     canvasWrapper.current?.appendChild(app.view);
-    (async () => {
-      const model: any = await Live2DModel.from(
-        "https://api.d4dj.info/file/root/AssetBundles/Extracted/live2d_card_chara_040340005/live2d_card_chara_040340005.model3.json",
-        { motionPreload: MotionPreloadStrategy.NONE }
-      );
+    setApp(app);
 
-      model.x = 0.5 * app.renderer.width;
-      model.y = 0.4 * app.renderer.height;
-      model.rotation = Math.PI;
-      model.skew.x = Math.PI;
-      model.scale.set(0.3, 0.3);
-      model.anchor.set(0.5, 0.5);
-
-      // model.internalModel.motionManager.startRandomMotion("");
-      // model.on("hit", (hitAreas: any) => {
-      //   console.log(hitAreas);
-      //   if (hitAreas.includes("body")) {
-      //     model.internalModel.motionManager.startRandomMotion();
-      //   }
-      // });
-      app.stage.addChild(model);
-    })();
     return () => {
       if (canvasWrapper.current?.firstChild) {
         canvasWrapper.current?.removeChild(canvasWrapper.current.firstChild);
