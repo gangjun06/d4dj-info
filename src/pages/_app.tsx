@@ -3,13 +3,6 @@ import Head from "next/head";
 import "@/assets/styles.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return (
-    <>
-      <Head>
-        <title>D4DJ.info</title>
-      </Head>
-      <Component {...pageProps} />
-    </>
-  );
+  return <Component {...pageProps} />;
 }
 export default MyApp;

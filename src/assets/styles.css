@@ -4,3 +4,10 @@ body,
   margin: 0;
   padding: 0;
 }
+
+.live2d-button {
+  background-color: rgba(0, 0, 0, 0) !important;
+}
+.live2d-button:hover {
+  background-color: rgba(0, 0, 0, 0) !important;
+}
