@@ -1,0 +1,8 @@
+node_modules
+.next
+.vscode
+.eslintrc
+*.log
+README.md
+.gitignore
+scripts
