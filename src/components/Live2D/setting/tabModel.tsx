@@ -16,7 +16,6 @@ export function TabModel({ index }: { index: number }) {
   const [scale, setScale] = useState<number>(40);
 
   const motions = useCallback((): any[] => {
-    console.log("motion list changed");
     return models[index].data.internalModel.motionManager.settings.motions[
       ""
     ].map((item: any) =>
@@ -34,13 +33,6 @@ export function TabModel({ index }: { index: number }) {
       motions().indexOf(selected)
     );
   };
-
-  // useEffect(() => {
-  //   if (selectedMotion === "") return;
-  //   console.log("do motion");
-
-  //   );
-  // }, [selectedMotion, index, models]);
 
   const deleteSelf = () => {
     setConfigIndex(0);

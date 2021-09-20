@@ -72,17 +72,18 @@ export function Setting({ isShown, onClose }: props) {
           </Pane>
           <Pane display="flex" padding={8}>
             <Tablist>
-              {["Config", ...models.map((item) => item.name)].map(
-                (tab, index) => (
-                  <Tab
-                    key={tab}
-                    isSelected={configIndex === index}
-                    onSelect={() => setConfigIndex(index)}
-                  >
-                    {tab}
-                  </Tab>
-                )
-              )}
+              {[
+                "Config",
+                ...(models ? models.map((item) => item.name) : []),
+              ].map((tab, index) => (
+                <Tab
+                  key={tab}
+                  isSelected={configIndex === index}
+                  onSelect={() => setConfigIndex(index)}
+                >
+                  {tab}
+                </Tab>
+              ))}
             </Tablist>
           </Pane>
         </Pane>

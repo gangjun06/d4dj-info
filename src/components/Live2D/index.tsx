@@ -5,18 +5,25 @@ import { Live2DModel, MotionPreloadStrategy } from "pixi-live2d-display";
 import { useRef } from "react";
 import { useState } from "react";
 
-import { Button, CogIcon, Pane, Position } from "evergreen-ui";
+import { Button, CogIcon, Pane, Position, toaster } from "evergreen-ui";
 import { Setting } from "./setting";
 import Live2DProvider, { Live2DContext } from "./context";
 import { useContext } from "react";
-import { modelData } from "./modelData";
+import { dragable } from "./utils";
 
-function Live2DViewContent() {
+type props = {
+  urlData: string | string[] | undefined;
+};
+
+function Live2DViewContent({ urlData }: props) {
   const canvasWrapper = useRef<HTMLDivElement>(null);
-  // const [background, setBackground] = useState<string>(
-  //   "https://api.d4dj.info/api/file/download?path=ondemand/background/bg_member_detail.jpg"
-  // );
-  const { background, setApp } = useContext(Live2DContext);
+  const {
+    app,
+    background,
+    setApp,
+    dragable: dragableState,
+    setModels,
+  } = useContext(Live2DContext);
   const [isShown, setIsShown] = useState<boolean>(false);
 
   useEffect(() => {
@@ -40,6 +47,51 @@ function Live2DViewContent() {
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (urlData && app) {
+      (async () => {
+        try {
+          const dataStr = Buffer.from(urlData as string, "base64");
+          const data: {
+            name: string;
+            model: string;
+            scale: number;
+            x: number;
+            y: number;
+          }[] = JSON.parse(dataStr.toString());
+
+          let models: any[] = [];
+          for (let item of data) {
+            const url = `https://api.d4dj.info/file/root/AssetBundles/Extracted/${item.model}/${item.model}.model3.json`;
+            const model: any = await Live2DModel.from(url, {});
+            models.push(model);
+            model.x = item.x * app.renderer.width;
+            model.y = item.y * app.renderer.height;
+            model.rotation = Math.PI;
+            model.skew.x = Math.PI;
+            model.scale.set(item.scale, item.scale);
+            model.anchor.set(0.5, 0.5);
+
+            model.dragable = dragableState;
+
+            dragable(model);
+            app.stage.addChild(model);
+          }
+
+          setModels((prevData) => {
+            return data.map((item, index) => ({
+              name: item.name,
+              data: models[index],
+            }));
+          });
+          toaster.success(`Successfully imported models`);
+        } catch (e) {
+          console.error(e);
+        }
+      })();
+    }
+  }, [urlData, app]);
 
   return (
     <>
@@ -81,10 +133,10 @@ function Live2DViewContent() {
   );
 }
 
-export default function Live2DView() {
+export default function Live2DView(props: props) {
   return (
     <Live2DProvider>
-      <Live2DViewContent />
+      <Live2DViewContent {...props} />
     </Live2DProvider>
   );
 }

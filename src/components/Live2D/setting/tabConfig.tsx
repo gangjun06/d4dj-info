@@ -15,11 +15,11 @@ import {
 } from "evergreen-ui";
 
 import { Live2DContext } from "../context";
-import { useWindowWidth } from "@react-hook/window-size";
-import { Live2DModel, MotionPreloadStrategy } from "pixi-live2d-display";
+import { useWindowSize } from "@react-hook/window-size";
+import { Live2DModel } from "pixi-live2d-display";
 import { modelDataWithID } from "../modelData";
 import { Controller, useForm } from "react-hook-form";
-import * as PIXI from "pixi.js";
+import { dragable } from "../utils";
 
 import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
@@ -29,39 +29,6 @@ type FormData = {
   type: string;
   id: string;
 };
-
-function dragable(model: any) {
-  model.buttonMode = true;
-  model.on("pointerdown", (e: any) => {
-    if (model.dragable) {
-      model.dragging = true;
-      model._pointerX = e.data.global.x - model.x;
-      model._pointerY = e.data.global.y - model.y;
-    } else {
-      model.internalModel.motionManager.startRandomMotion("");
-    }
-  });
-  model.on("pointermove", (e: any) => {
-    if (model.dragging) {
-      model.position.x = e.data.global.x - model._pointerX;
-      model.position.y = e.data.global.y - model._pointerY;
-    }
-  });
-  model.on("pointerupoutside", () => (model.dragging = false));
-  model.on("pointerup", () => (model.dragging = false));
-}
-
-function addFrame(model: any) {
-  const foreground = PIXI.Sprite.from(PIXI.Texture.WHITE);
-  foreground.width = model.internalModel.width;
-  foreground.height = model.internalModel.height;
-  foreground.alpha = 0.2;
-
-  model.addChild(foreground);
-  foreground.visible = true;
-
-  // checkbox("Model Frames", (checked) => (foreground.visible = checked));
-}
 
 export function TabConfig() {
   return (
@@ -73,20 +40,17 @@ export function TabConfig() {
 }
 
 export function AddModel() {
-  const {
-    app,
-    setModels,
-    dragable: dragableState,
-    models,
-  } = useContext(Live2DContext);
+  const { app, setModels, dragable: dragableState } = useContext(Live2DContext);
   const [modelName, setModelName] = useState<string>("Rinku Aimoto");
   const { control, handleSubmit } = useForm<FormData>();
+
   const idSelect = useCallback(() => {
     let result = [];
     for (let i = 1; i <= 15; i++)
       result.push({ id: String(i).padStart(4, "0"), name: i });
     return result;
   }, []);
+
   const modelSelect = useCallback(() => modelDataWithID(), []);
 
   const onSubmit = async ({ model, type, id }: FormData) => {
@@ -94,7 +58,6 @@ export function AddModel() {
     const url = `https://api.d4dj.info/file/root/AssetBundles/Extracted/${type}${model}${id}/${type}${model}${id}.model3.json`;
     try {
       const model: any = await Live2DModel.from(url, {});
-      // console.log(model.internalModel.motionManager.settings.motions[""]);
 
       model.x = 0.5 * app.renderer.width;
       model.y = 0.4 * app.renderer.height;
@@ -102,25 +65,23 @@ export function AddModel() {
       model.skew.x = Math.PI;
       model.scale.set(0.3, 0.3);
       model.anchor.set(0.5, 0.5);
-      // model.internalModel.width.set(model.internalModel.width - 100);
 
       model.dragable = dragableState;
 
       dragable(model);
-      // addFrame(model);
       app.stage.addChild(model);
+      console.log(type);
+      let typeShort = "";
+      if (type === "live2d_chara_") typeShort = "Character";
+      else if (type === "live2d_card_chara_03") typeShort = "Card3";
+      else if (type === "live2d_card_chara_04") typeShort = "Card4";
       setModels((data) =>
-        data.concat({ name: `${modelName}-${id}`, data: model })
+        data.concat({
+          name: `${modelName}-${typeShort}-${id}`,
+          data: model,
+        })
       );
-      // console.log(model.tag);
-      // const findResult = app.stage.children.find(
-      //   (item: any) => item.tag === model.tag
-      // );
-      // if (!findResult) {
-      //   app.stage.addChild(model);
-      // }
     } catch (error) {
-      console.error(error);
       toaster.warning(`This model does not exist `);
     }
   };
@@ -188,14 +149,6 @@ export function AddModel() {
           </Button>
         </Pane>
       </form>
-      {/* <TextInputField
-            isInvalid={true}
-            required
-            value={background}
-            label="Background Image"
-            // description="This is a description."
-            validationMessage="This field is required"
-          /> */}
     </>
   );
 }
@@ -208,7 +161,8 @@ const schemaBackground = Joi.object().keys({
 });
 
 export function EtcConfig() {
-  const { background, setBackground, dragable, setDragable } =
+  const [width, height] = useWindowSize();
+  const { background, setBackground, dragable, setDragable, models } =
     useContext(Live2DContext);
   const { handleSubmit, control, reset } = useForm<FormDataBackground>({
     resolver: joiResolver(schemaBackground),
@@ -216,6 +170,33 @@ export function EtcConfig() {
   const onSubmit = (data: FormDataBackground) => {
     setBackground(data.background);
   };
+
+  const share = useCallback(() => {
+    const result = models.map((model) => ({
+      model: (model.data.tag as string)
+        .replace("Live2DModel(", "")
+        .replace(")", ""),
+      scale: model.data.scale._x,
+      x: (model.data.x / width).toFixed(4),
+      y: (model.data.y / height).toFixed(4),
+      name: model.name,
+    }));
+
+    const url = `https://d4dj.info/live2d?data=${Buffer.from(
+      JSON.stringify(result)
+    ).toString("base64")}`;
+    try {
+      const shareData = {
+        title: "D4DJ.Info Live2D Share",
+        text: "",
+        url,
+      };
+      navigator.share(shareData);
+    } catch (e) {
+      navigator.clipboard.writeText(url);
+      toaster.success(`Share URL copied`);
+    }
+  }, [models]);
 
   return (
     <>
@@ -249,6 +230,17 @@ export function EtcConfig() {
           onChange={(e) => setDragable(e.target.checked)}
         />
       </FormField>
+      <Pane
+        display="flex"
+        justifyContent="start"
+        gap={5}
+        width="100%"
+        marginTop={20}
+      >
+        <Button intent="info" type="submit" onClick={share}>
+          Share
+        </Button>
+      </Pane>
     </>
   );
 }
