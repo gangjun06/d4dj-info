@@ -10,6 +10,8 @@ import { Setting } from "./setting";
 import Live2DProvider, { Live2DContext } from "./context";
 import { useContext } from "react";
 import { dragable } from "./utils";
+import { useWindowSize } from "@react-hook/window-size";
+import Script from "next/script";
 
 type props = {
   urlData: string | string[] | undefined;
@@ -24,14 +26,15 @@ function Live2DViewContent({ urlData }: props) {
     dragable: dragableState,
     setModels,
   } = useContext(Live2DContext);
+  const [width, height] = useWindowSize();
   const [isShown, setIsShown] = useState<boolean>(false);
 
   useEffect(() => {
     const app = new PIXI.Application({
       backgroundAlpha: 0,
       autoStart: true,
-      width: canvasWrapper.current?.getBoundingClientRect().width,
-      height: canvasWrapper.current?.getBoundingClientRect().height,
+      width,
+      height,
     });
     Live2DModel.registerTicker(PIXI.Ticker);
     app.view.setAttribute(
@@ -46,7 +49,7 @@ function Live2DViewContent({ urlData }: props) {
         canvasWrapper.current?.removeChild(canvasWrapper.current.firstChild);
       }
     };
-  }, []);
+  }, [width, height]);
 
   useEffect(() => {
     if (urlData && app) {
