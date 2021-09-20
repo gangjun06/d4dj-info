@@ -37,6 +37,8 @@ function dragable(model: any) {
       model.dragging = true;
       model._pointerX = e.data.global.x - model.x;
       model._pointerY = e.data.global.y - model.y;
+    } else {
+      model.internalModel.motionManager.startRandomMotion("");
     }
   });
   model.on("pointermove", (e: any) => {
@@ -91,9 +93,7 @@ export function AddModel() {
     if (!app) return;
     const url = `https://api.d4dj.info/file/root/AssetBundles/Extracted/${type}${model}${id}/${type}${model}${id}.model3.json`;
     try {
-      const model: any = await Live2DModel.from(url, {
-        // motionPreload: MotionPreloadStrategy.NONE,
-      });
+      const model: any = await Live2DModel.from(url, {});
       // console.log(model.internalModel.motionManager.settings.motions[""]);
 
       model.x = 0.5 * app.renderer.width;
@@ -103,8 +103,6 @@ export function AddModel() {
       model.scale.set(0.3, 0.3);
       model.anchor.set(0.5, 0.5);
       // model.internalModel.width.set(model.internalModel.width - 100);
-
-      model.internalModel.motionManager.startRandomMotion("");
 
       model.dragable = dragableState;
 
@@ -185,7 +183,7 @@ export function AddModel() {
         </Pane>
 
         <Pane display="flex" justifyContent="end" width="100%">
-          <Button marginRight={16} intent="success" type="submit">
+          <Button intent="success" type="submit">
             Add Model
           </Button>
         </Pane>
@@ -240,7 +238,7 @@ export function EtcConfig() {
           )}
         />
         <Pane display="flex" justifyContent="end" width="100%">
-          <Button marginRight={16} intent="success" type="submit">
+          <Button intent="success" type="submit">
             Update Background
           </Button>
         </Pane>
