@@ -10,13 +10,25 @@ import {
   Button,
   Autocomplete,
   TextInput,
+  ThemeProvider,
   TextInputField,
+  defaultTheme,
+  Theme,
 } from "evergreen-ui";
 import { Live2DContext } from "../context";
 import { useWindowWidth } from "@react-hook/window-size";
 import { modelData } from "../modelData";
 import { TabConfig } from "./tabConfig";
 import { TabModel } from "./tabModel";
+
+const theme = {
+  ...defaultTheme,
+  colors: {
+    //@ts-ignore
+    ...defaultTheme.colors,
+    overlay: "rgba(0,0,0,0)",
+  },
+};
 
 type props = {
   isShown: boolean;
@@ -51,7 +63,7 @@ export function Setting({ isShown, onClose }: props) {
     });
   }, [dragable]);
   return (
-    <React.Fragment>
+    <ThemeProvider value={theme}>
       <SideSheet
         isShown={isShown}
         onCloseComplete={onClose}
@@ -91,6 +103,6 @@ export function Setting({ isShown, onClose }: props) {
           <Content selectedIndex={configIndex} />
         </Pane>
       </SideSheet>
-    </React.Fragment>
+    </ThemeProvider>
   );
 }
