@@ -66,7 +66,7 @@ function Live2DViewContent({ urlData }: props) {
 
           let models: any[] = [];
           for (let item of data) {
-            const url = `https://api.d4dj.info/file/root/AssetBundles/Extracted/${item.model}/${item.model}.model3.json`;
+            const url = `https://d4dj.info/file/AssetBundles/Extracted/${item.model}/${item.model}.model3.json`;
             const model: any = await Live2DModel.from(url, {});
             models.push(model);
             model.x = item.x * app.renderer.width;
@@ -115,7 +115,7 @@ function Live2DViewContent({ urlData }: props) {
           marginY={8}
           marginRight={12}
           iconAfter={CogIcon}
-          intent={"success"}
+          intent={"info"}
           className="live2d-button"
           appearance="minimal"
           onClick={() => setIsShown(true)}

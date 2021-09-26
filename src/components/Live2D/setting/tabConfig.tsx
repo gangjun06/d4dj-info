@@ -55,7 +55,7 @@ export function AddModel() {
 
   const onSubmit = async ({ model, type, id }: FormData) => {
     if (!app) return;
-    const url = `https://api.d4dj.info/file/root/AssetBundles/Extracted/${type}${model}${id}/${type}${model}${id}.model3.json`;
+    const url = `https://d4dj.info/file/AssetBundles/Extracted/${type}${model}${id}/${type}${model}${id}.model3.json`;
     try {
       const model: any = await Live2DModel.from(url, {});
 
@@ -118,7 +118,7 @@ export function AddModel() {
           <Controller
             name="type"
             control={control}
-            defaultValue={"live2d_card_chara_04"}
+            defaultValue={"live2d_chara_"}
             render={({ field }) => (
               <SelectField {...field} label="Type" flex="1" ref={null}>
                 <option value="live2d_card_chara_04">Character Card 4</option>
