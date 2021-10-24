@@ -7,7 +7,6 @@ export default function Home() {
       {/* <div className="text-4xl text-center font-bold">
         <Link href="/live2d">Live2D</Link>
       </div> */}
-      <button className="btn btn-primary">daisyUI Button</button>
     </MainLayout>
   );
 }

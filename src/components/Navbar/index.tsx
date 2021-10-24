@@ -83,7 +83,7 @@ export default function Navbar({ children }: props) {
   }, [width]);
 
   return (
-    <>
+    <div>
       <nav className="lg:hidden py-6 px-6 bg-gray-800">
         <div className="flex items-center justify-between">
           <Link href="/" passHref>
@@ -163,9 +163,12 @@ export default function Navbar({ children }: props) {
           </div>
         </nav>
       </div>
-      <div className="mx-auto lg:ml-80 ">
-        <div className="mx-auto w-full px-4 py-10">{children}</div>
+      <div className="mx-auto lg:ml-80">
+        <div className="mx-auto w-full px-8 py-10">
+          <div className="mb-5 font-bold text-3xl">Dashboard</div>
+          {children}
+        </div>
       </div>
-    </>
+    </div>
   );
 }
