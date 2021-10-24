@@ -55,7 +55,7 @@ export function AddModel() {
 
   const onSubmit = async ({ model, type, id }: FormData) => {
     if (!app) return;
-    const url = `https://d4dj.info/file/AssetBundles/Extracted/${type}${model}${id}/${type}${model}${id}.model3.json`;
+    const url = `https://asset.d4dj.info/AssetBundles/Live2D/${type}${model}${id}/${type}${model}${id}.model3.json`;
     try {
       const model: any = await Live2DModel.from(url, {});
 
@@ -70,7 +70,6 @@ export function AddModel() {
 
       dragable(model);
       app.stage.addChild(model);
-      console.log(type);
       let typeShort = "";
       if (type === "live2d_chara_") typeShort = "Character";
       else if (type === "live2d_card_chara_03") typeShort = "Card3";

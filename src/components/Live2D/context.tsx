@@ -20,7 +20,8 @@ type ContextType = {
 };
 
 const defaultState: ContextType = {
-  background: "https://d4dj.info/file/adv/ondemand/background/bg_adv_10012.jpg",
+  background:
+    "https://asset.d4dj.info/adv/ondemand/background/bg_adv_10012.jpg",
   setBackground: () => {},
   setApp: () => {},
   models: [],

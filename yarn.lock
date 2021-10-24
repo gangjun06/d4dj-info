@@ -1629,6 +1629,11 @@ currently-unhandled@^0.4.1:
   dependencies:
     array-find-index "^1.0.1"
 
+daisyui@^1.16.0:
+  version "1.16.0"
+  resolved "https://registry.yarnpkg.com/daisyui/-/daisyui-1.16.0.tgz#514a1ebbf48f89c473fefe5a78771e179e989c7d"
+  integrity sha512-/nVVnYqX7oxsIP68q2kOnOb48rbZLX2/smSrwzdSxF6olj8FCQ/90TU5J0gKvnWXOR6gyW8KuV8MQjwXE/oLYQ==
+
 damerau-levenshtein@^1.0.6:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/damerau-levenshtein/-/damerau-levenshtein-1.0.7.tgz#64368003512a1a6992593741a09a9d31a836f55d"
@@ -4578,6 +4583,11 @@ react-hook-form@^7.15.3:
   version "7.15.3"
   resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.15.3.tgz#7d222dcfd43137be127dca2843149f09bd25d4b1"
   integrity sha512-z30aZoEHkWE8oZvad4OcYSBI0kQua/T5sFGH9tB2HfeykFnP/pGXNap8lDio4/U1yPj2ffpbvRIvqKd/6jjBVA==
+
+react-icons@^4.3.1:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/react-icons/-/react-icons-4.3.1.tgz#2fa92aebbbc71f43d2db2ed1aed07361124e91ca"
+  integrity sha512-cB10MXLTs3gVuXimblAdI71jrJx8njrJZmNMEMC+sQu5B/BIOmlsAjskdqpn81y8UBVEGuHODd7/ci5DvoSzTQ==
 
 react-is@17.0.2:
   version "17.0.2"

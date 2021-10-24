@@ -49,7 +49,7 @@ function Live2DViewContent({ urlData }: props) {
         canvasWrapper.current?.removeChild(canvasWrapper.current.firstChild);
       }
     };
-  }, [width, height]);
+  }, []);
 
   useEffect(() => {
     if (urlData && app) {
@@ -66,7 +66,7 @@ function Live2DViewContent({ urlData }: props) {
 
           let models: any[] = [];
           for (let item of data) {
-            const url = `https://d4dj.info/file/AssetBundles/Extracted/${item.model}/${item.model}.model3.json`;
+            const url = `https://asset.d4dj.info/AssetBundles/Live2D/${item.model}/${item.model}.model3.json`;
             const model: any = await Live2DModel.from(url, {});
             models.push(model);
             model.x = item.x * app.renderer.width;

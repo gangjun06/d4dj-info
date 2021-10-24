@@ -16,11 +16,17 @@ export function TabModel({ index }: { index: number }) {
   const [scale, setScale] = useState<number>(40);
 
   const motions = useCallback((): any[] => {
-    return models[index].data.internalModel.motionManager.settings.motions[
-      ""
-    ].map((item: any) =>
-      item.File.replace(".motion3.json", "").replace("motions/", "")
-    );
+    return models[index].data.internalModel.motionManager.settings.motions[""]
+      .map((item: any) =>
+        item.File.replace(".motion3.json", "").replace("motions/", "")
+      )
+      .sort();
+  }, [models[index].data.tag]);
+
+  const expressions = useCallback((): any[] => {
+    return models[index].data.internalModel.settings.expressions
+      .map((item: any) => item.Name)
+      .sort();
   }, [models[index].data.tag]);
 
   useEffect(() => {
@@ -32,6 +38,10 @@ export function TabModel({ index }: { index: number }) {
       "",
       motions().indexOf(selected)
     );
+  };
+
+  const doExpression = (selected: string) => {
+    models[index].data.expression(selected);
   };
 
   const deleteSelf = () => {
@@ -50,6 +60,14 @@ export function TabModel({ index }: { index: number }) {
           items={motions()}
           onChange={(selected) => doMotion(selected)}
           placeholder="Select Motion"
+        />
+      </FormField>
+      <FormField label="Expression" marginTop={12}>
+        <Combobox
+          width="100%"
+          items={expressions()}
+          onChange={(selected) => doExpression(selected)}
+          placeholder="Select Expression"
         />
       </FormField>
       <FormField label="Scale" marginTop={12}>
