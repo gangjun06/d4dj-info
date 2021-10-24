@@ -1,5 +1,8 @@
+import { useWindowWidth } from "@react-hook/window-size";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { useState } from "react";
 import { ReactNode } from "react";
 import { IconType } from "react-icons";
 import {
@@ -11,6 +14,7 @@ import {
   HiOutlineCube,
   HiOutlineChartPie,
   HiOutlineBookOpen,
+  HiOutlineMenu,
 } from "react-icons/hi";
 
 const NavbarGroup = ({
@@ -35,6 +39,8 @@ type props = {
 };
 export default function Navbar({ children }: props) {
   const router = useRouter();
+  const width = useWindowWidth();
+  const [drawer, setDrawer] = useState<boolean>(width > 1024 ? true : false);
 
   const NavItem = ({
     label,
@@ -52,7 +58,9 @@ export default function Navbar({ children }: props) {
         <Link href={link} passHref>
           <div
             className={`flex items-center pl-3 py-3 pr-4 text-gray-50 cursor-pointer ${
-              isFocus ? "bg-indigo-500" : "hover:bg-gray-900"
+              isFocus
+                ? "bg-primary hover:bg-primary-focus"
+                : "hover:bg-gray-900"
             } rounded`}
           >
             <span className="inline-block mr-3">
@@ -69,36 +77,48 @@ export default function Navbar({ children }: props) {
     );
   };
 
+  useEffect(() => {
+    if (width > 1024) setDrawer(true);
+    else setDrawer(false);
+  }, [width]);
+
   return (
-    <div>
+    <>
       <nav className="lg:hidden py-6 px-6 bg-gray-800">
         <div className="flex items-center justify-between">
           <Link href="/" passHref>
             <div className="text-2xl text-white font-semibold">D4DJ.Info</div>
           </Link>
-          <button className="navbar-burger flex items-center rounded focus:outline-none">
-            <svg
-              className="text-white bg-indigo-500 hover:bg-indigo-600 block h-8 w-8 p-2 rounded"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-            >
-              <title>Mobile menu</title>
-              <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
-            </svg>
+          <button
+            className="navbar-burger flex items-center rounded focus:outline-none"
+            onClick={() => setDrawer(!drawer)}
+          >
+            <HiOutlineMenu className="text-white bg-primary hover:bg-primary-focus block h-8 w-8 p-2 rounded" />
           </button>
         </div>
       </nav>
-      <div className="hidden lg:block navbar-menu relative z-50">
-        <div className="navbar-backdrop fixed lg:hidden inset-0 bg-gray-800 opacity-10"></div>
-        <nav className="fixed top-0 left-0 bottom-0 flex flex-col w-3/4 lg:w-80 sm:max-w-xs pt-6 pb-8 bg-gray-800 overflow-y-auto">
-          <div className="flex w-full items-center px-6 pb-6 mb-6 lg:border-b border-gray-700">
-            <Link href="/" passHref>
-              <div className="cursor-pointer text-xl text-white font-semibold">
-                D4DJ.Info
-              </div>
-            </Link>
-          </div>
+
+      <div className="navbar-menu relative">
+        {width <= 1024 && drawer && (
+          <div
+            className="fixed top-0 left-0 bottom-0 flex flex-col bg-black bg-opacity-30 w-full h-full z-10 cursor-pointer"
+            onClick={() => setDrawer(false)}
+          />
+        )}
+        <nav
+          className={`fixed top-0 left-0 bottom-0 flex flex-col w-3/4 lg:w-80 sm:max-w-xs pt-6 pb-8 bg-gray-800 overflow-y-auto z-50 transition-transform transform ${
+            !drawer ? "-translate-x-full" : ""
+          }`}
+        >
+          {width > 1024 && (
+            <div className="flex w-full items-center px-6 pb-6 mb-6 lg:border-b border-gray-700">
+              <Link href="/" passHref>
+                <div className="cursor-pointer text-xl text-white font-semibold">
+                  D4DJ.Info
+                </div>
+              </Link>
+            </div>
+          )}
           <div className="px-4 pb-6">
             <NavbarGroup label="Main">
               <NavItem label="Dashboard" Icon={HiOutlineViewGrid} link="/" />
@@ -143,9 +163,9 @@ export default function Navbar({ children }: props) {
           </div>
         </nav>
       </div>
-      <div className="mx-auto lg:ml-80">
+      <div className="mx-auto lg:ml-80 ">
         <div className="mx-auto w-full px-4 py-10">{children}</div>
       </div>
-    </div>
+    </>
   );
 }
