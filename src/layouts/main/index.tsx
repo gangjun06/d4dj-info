@@ -174,7 +174,7 @@ export default function MainLayout({ breadThumbs, children, title }: props) {
   const { t } = useTransition("");
 
   return (
-    <div>
+    <>
       <nav className="lg:hidden py-6 px-6 bg-gray-800">
         <div className="flex items-center justify-between">
           <Link href="/" passHref>
@@ -201,7 +201,7 @@ export default function MainLayout({ breadThumbs, children, title }: props) {
           showTitle={false}
         />
       </div>
-      <div className="mx-auto lg:ml-80">
+      <div className="mx-auto lg:ml-80 h-full overflow-y-scroll">
         <div className="mx-auto w-full px-8 py-10">
           <div className="text-sm breadcrumbs">
             <ul>
@@ -221,6 +221,6 @@ export default function MainLayout({ breadThumbs, children, title }: props) {
           {children}
         </div>
       </div>
-    </div>
+    </>
   );
 }

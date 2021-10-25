@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function Card() {
   return (
     <MainLayout breadThumbs={[]} title="Card">
-      card
+      <div></div>
     </MainLayout>
   );
 }

@@ -1,5 +1,7 @@
 import { GetUnitRes, GET_UNIT } from "@/apollo/gql";
+import Image, { ImageLoaderProps } from "next/image";
 import { Card } from "@/components/Basic";
+import WaitQuery from "@/components/Util/WaitQuery";
 import { gql, useQuery } from "@apollo/client";
 import MainLayout from "layouts/main";
 import useTransition from "next-translate/useTranslation";
@@ -10,6 +12,15 @@ import {
   HiOutlineCube,
   HiOutlineCalendar,
 } from "react-icons/hi";
+
+const myLoader = ({ src, width, quality }: ImageLoaderProps) => {
+  return `https://asset.d4dj.info/${src}`;
+};
+function pad(num: number, size: number) {
+  let str = num.toString();
+  while (str.length < size) str = "0" + num;
+  return str;
+}
 
 export default function Character() {
   const { t } = useTransition("");
@@ -22,17 +33,34 @@ export default function Character() {
         { name: t("nav:game.character"), link: "/game/character" },
       ]}
     >
-      <>
-        {loading ? (
-          <div></div>
-        ) : (
-          <div>
-            {data?.unit.map((item) => (
-              <div key={item.id}>{item.name}</div>
-            ))}
-          </div>
-        )}
-      </>
+      <WaitQuery loading={loading} error={error}>
+        <div>
+          {data?.unit.map((item) => (
+            <Card className="mb-3" title={item.name} key={item.id}>
+              <div className="flex justify-around">
+                {item.characters.map((item) => (
+                  <div
+                    key={item.id}
+                    className="flex flex-col justify-center items-center"
+                  >
+                    <Image
+                      loader={myLoader}
+                      src={`adv/ondemand/chara_icon/adv_icon_${pad(
+                        item.id,
+                        3
+                      )}.png`}
+                      width="128"
+                      alt={item.fullNameEnglish}
+                      height="128"
+                    />
+                    {item.fullNameEnglish || item.firstNameEnglish}
+                  </div>
+                ))}
+              </div>
+            </Card>
+          ))}
+        </div>
+      </WaitQuery>
     </MainLayout>
   );
 }
