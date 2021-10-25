@@ -1,7 +1,6 @@
-import { useWindowWidth } from "@react-hook/window-size";
 import Link from "next/link";
+import useTransition from "next-translate/useTranslation";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 import { useState } from "react";
 import { ReactNode } from "react";
 import { IconType } from "react-icons";
@@ -49,6 +48,8 @@ const SideNav = ({
   onClose: () => void;
 }) => {
   const router = useRouter();
+  const { t } = useTransition("");
+
   const NavItem = ({
     label,
     link,
@@ -101,48 +102,52 @@ const SideNav = ({
           <div className="flex w-full items-center px-6 pb-6 mb-6 lg:border-b border-gray-700">
             <Link href="/" passHref>
               <a className="cursor-pointer text-xl text-white font-semibold">
-                D4DJ.Info
+                {t("common:title")}
               </a>
             </Link>
           </div>
         )}
         <div className="px-4 pb-6">
-          <NavbarGroup label="Main">
-            <NavItem label="Dashboard" Icon={HiOutlineViewGrid} link="/" />
+          <NavbarGroup label={t("nav:main.name")}>
             <NavItem
-              label="Calendar"
+              label={t("nav:main.dashboard")}
+              Icon={HiOutlineViewGrid}
+              link="/"
+            />
+            <NavItem
+              label={t("nav:main.calendar")}
               Icon={HiOutlineCalendar}
               link="/calendar"
             />
           </NavbarGroup>
-          <NavbarGroup label="Game">
+          <NavbarGroup label={t("nav:game.name")}>
             <NavItem
-              label="Card"
+              label={t("nav:game.card")}
               Icon={HiOutlineCollection}
               link="/game/card"
             />
             <NavItem
-              label="Music"
+              label={t("nav:game.music")}
               Icon={HiOutlineMusicNote}
               link="/game/music"
             />
             <NavItem
-              label="Event"
+              label={t("nav:game.event")}
               Icon={HiOutlineBookOpen}
               link="/game/event"
             />
             <NavItem
-              label="Gatcha"
+              label={t("nav:game.gatcha")}
               Icon={HiOutlineChartPie}
               link="/game/gatcha"
             />
             <NavItem
-              label="Gallery"
+              label={t("nav:game.gallery")}
               Icon={HiOutlinePhotograph}
               link="/game/gallery"
             />
             <NavItem
-              label="Live2D Viewer"
+              label={t("nav:game.live2d")}
               Icon={HiOutlineCube}
               link="/live2d"
             />
@@ -160,13 +165,16 @@ type props = {
 };
 export default function MainLayout({ breadThumbs, children, title }: props) {
   const [drawer, setDrawer] = useState<boolean>(false);
+  const { t } = useTransition("");
 
   return (
     <div>
       <nav className="lg:hidden py-6 px-6 bg-gray-800">
         <div className="flex items-center justify-between">
           <Link href="/" passHref>
-            <div className="text-2xl text-white font-semibold">D4DJ.Info</div>
+            <div className="text-2xl text-white font-semibold">
+              {t("common:title")}
+            </div>
           </Link>
           <button
             className="navbar-burger flex items-center rounded focus:outline-none"

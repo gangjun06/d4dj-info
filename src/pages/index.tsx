@@ -1,5 +1,6 @@
 import { Card } from "@/components/Basic";
 import MainLayout from "layouts/main";
+import useTransition from "next-translate/useTranslation";
 import Link from "next/link";
 import {
   HiOutlineMusicNote,
@@ -9,12 +10,13 @@ import {
 } from "react-icons/hi";
 
 export default function Home() {
+  const { t } = useTransition("");
   return (
     <MainLayout
-      title="Dashboard"
+      title={t("nav:main.dashboard")}
       breadThumbs={[
-        { name: "Main", link: "" },
-        { name: "Dashboard", link: "/" },
+        { name: t("nav:main.name"), link: "" },
+        { name: t("nav:main.dashboard"), link: "/" },
       ]}
     >
       <>

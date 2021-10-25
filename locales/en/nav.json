@@ -1,0 +1,16 @@
+{
+  "main": {
+    "name": "Main",
+    "dashboard": "Dashboard",
+    "calendar": "Calendar"
+  },
+  "game": {
+    "name": "game",
+    "card": "Card",
+    "music": "Music",
+    "event": "Event",
+    "gatcha": "Gatcha",
+    "gallery": "Gallery",
+    "live2d": "Live2D Viewer"
+  }
+}
