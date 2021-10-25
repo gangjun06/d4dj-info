@@ -6,6 +6,7 @@
   },
   "game": {
     "name": "게임",
+    "characater": "캐릭터",
     "card": "카드",
     "music": "노래",
     "event": "이벤트",

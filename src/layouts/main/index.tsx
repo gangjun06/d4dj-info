@@ -14,6 +14,7 @@ import {
   HiOutlineChartPie,
   HiOutlineBookOpen,
   HiOutlineMenu,
+  HiOutlineArchive,
 } from "react-icons/hi";
 
 const NavbarGroup = ({
@@ -121,6 +122,11 @@ const SideNav = ({
             />
           </NavbarGroup>
           <NavbarGroup label={t("nav:game.name")}>
+            <NavItem
+              label={t("nav:game.character")}
+              Icon={HiOutlineArchive}
+              link="/game/character"
+            />
             <NavItem
               label={t("nav:game.card")}
               Icon={HiOutlineCollection}

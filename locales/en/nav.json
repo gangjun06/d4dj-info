@@ -6,6 +6,7 @@
   },
   "game": {
     "name": "game",
+    "character": "Characater",
     "card": "Card",
     "music": "Music",
     "event": "Event",
