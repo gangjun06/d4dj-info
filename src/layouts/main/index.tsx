@@ -39,15 +39,16 @@ type BreadThumbs = {
   link: string;
 };
 
-type props = {
-  children: ReactNode;
-  breadThumbs: BreadThumbs[];
-};
-export default function MainLayout({ breadThumbs, children }: props) {
+const SideNav = ({
+  isOpen,
+  showTitle,
+  onClose,
+}: {
+  isOpen: boolean;
+  showTitle: boolean;
+  onClose: () => void;
+}) => {
   const router = useRouter();
-  const width = useWindowWidth();
-  const [drawer, setDrawer] = useState<boolean>(false);
-
   const NavItem = ({
     label,
     link,
@@ -83,10 +84,82 @@ export default function MainLayout({ breadThumbs, children }: props) {
     );
   };
 
-  useEffect(() => {
-    if (width > 1024) setDrawer(true);
-    else setDrawer(false);
-  }, [width]);
+  return (
+    <div className="navbar-menu relative">
+      {isOpen && (
+        <div
+          className="fixed top-0 left-0 bottom-0 flex flex-col bg-black bg-opacity-30 w-full h-full z-10 cursor-pointer lg:hidden"
+          onClick={() => onClose()}
+        />
+      )}
+      <nav
+        className={`fixed top-0 left-0 bottom-0 flex flex-col w-3/4 lg:w-80 sm:max-w-xs pt-6 pb-8 bg-gray-800 overflow-y-auto z-50 transition-transform lg:transition-none transform ${
+          !isOpen ? "-translate-x-full lg:translate-x-0z" : ""
+        }`}
+      >
+        {showTitle && isOpen && (
+          <div className="flex w-full items-center px-6 pb-6 mb-6 lg:border-b border-gray-700">
+            <Link href="/" passHref>
+              <a className="cursor-pointer text-xl text-white font-semibold">
+                D4DJ.Info
+              </a>
+            </Link>
+          </div>
+        )}
+        <div className="px-4 pb-6">
+          <NavbarGroup label="Main">
+            <NavItem label="Dashboard" Icon={HiOutlineViewGrid} link="/" />
+            <NavItem
+              label="Calendar"
+              Icon={HiOutlineCalendar}
+              link="/calendar"
+            />
+          </NavbarGroup>
+          <NavbarGroup label="Game">
+            <NavItem
+              label="Card"
+              Icon={HiOutlineCollection}
+              link="/game/card"
+            />
+            <NavItem
+              label="Music"
+              Icon={HiOutlineMusicNote}
+              link="/game/music"
+            />
+            <NavItem
+              label="Event"
+              Icon={HiOutlineBookOpen}
+              link="/game/event"
+            />
+            <NavItem
+              label="Gatcha"
+              Icon={HiOutlineChartPie}
+              link="/game/gatcha"
+            />
+            <NavItem
+              label="Gallery"
+              Icon={HiOutlinePhotograph}
+              link="/game/gallery"
+            />
+            <NavItem
+              label="Live2D Viewer"
+              Icon={HiOutlineCube}
+              link="/live2d"
+            />
+          </NavbarGroup>
+        </div>
+      </nav>
+    </div>
+  );
+};
+
+type props = {
+  children: ReactNode;
+  breadThumbs: BreadThumbs[];
+  title: string;
+};
+export default function MainLayout({ breadThumbs, children, title }: props) {
+  const [drawer, setDrawer] = useState<boolean>(false);
 
   return (
     <div>
@@ -104,70 +177,15 @@ export default function MainLayout({ breadThumbs, children }: props) {
         </div>
       </nav>
 
-      <div className="navbar-menu relative">
-        {drawer && (
-          <div
-            className="fixed top-0 left-0 bottom-0 flex flex-col bg-black bg-opacity-30 w-full h-full z-10 cursor-pointer lg:hidden"
-            onClick={() => setDrawer(false)}
-          />
-        )}
-        <nav
-          className={`fixed top-0 left-0 bottom-0 flex flex-col w-3/4 lg:w-80 sm:max-w-xs pt-6 pb-8 bg-gray-800 overflow-y-auto z-50 transition-transform lg:transition-none transform ${
-            !drawer ? "-translate-x-full lg:translate-x-0z" : ""
-          }`}
-        >
-          {width > 1024 && (
-            <div className="flex w-full items-center px-6 pb-6 mb-6 lg:border-b border-gray-700">
-              <Link href="/" passHref>
-                <div className="cursor-pointer text-xl text-white font-semibold">
-                  D4DJ.Info
-                </div>
-              </Link>
-            </div>
-          )}
-          <div className="px-4 pb-6">
-            <NavbarGroup label="Main">
-              <NavItem label="Dashboard" Icon={HiOutlineViewGrid} link="/" />
-              <NavItem
-                label="Calendar"
-                Icon={HiOutlineCalendar}
-                link="/calendar"
-              />
-            </NavbarGroup>
-            <NavbarGroup label="Game">
-              <NavItem
-                label="Card"
-                Icon={HiOutlineCollection}
-                link="/game/card"
-              />
-              <NavItem
-                label="Music"
-                Icon={HiOutlineMusicNote}
-                link="/game/music"
-              />
-              <NavItem
-                label="Event"
-                Icon={HiOutlineBookOpen}
-                link="/game/event"
-              />
-              <NavItem
-                label="Gatcha"
-                Icon={HiOutlineChartPie}
-                link="/game/gatcha"
-              />
-              <NavItem
-                label="Gallery"
-                Icon={HiOutlinePhotograph}
-                link="/game/gallery"
-              />
-              <NavItem
-                label="Live2D Viewer"
-                Icon={HiOutlineCube}
-                link="/live2d"
-              />
-            </NavbarGroup>
-          </div>
-        </nav>
+      <div className="hidden lg:block">
+        <SideNav onClose={() => {}} isOpen={true} showTitle={true} />
+      </div>
+      <div className="block lg:hidden">
+        <SideNav
+          onClose={() => setDrawer(false)}
+          isOpen={drawer}
+          showTitle={false}
+        />
       </div>
       <div className="mx-auto lg:ml-80">
         <div className="mx-auto w-full px-8 py-10">
@@ -185,7 +203,7 @@ export default function MainLayout({ breadThumbs, children }: props) {
             </ul>
           </div>
 
-          <div className="mb-5 font-bold text-3xl">Dashboard</div>
+          <div className="mb-5 font-bold text-3xl">{title}</div>
           {children}
         </div>
       </div>

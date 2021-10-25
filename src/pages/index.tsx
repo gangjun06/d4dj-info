@@ -11,6 +11,7 @@ import {
 export default function Home() {
   return (
     <MainLayout
+      title="Dashboard"
       breadThumbs={[
         { name: "Main", link: "" },
         { name: "Dashboard", link: "/" },
