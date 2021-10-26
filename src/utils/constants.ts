@@ -14,7 +14,7 @@ export const CardRearityCheckbox = (t: Translate) => [
   { label: t("common:card_rearity.4"), value: "4" },
   {
     label: t("common:card_rearity.sp"),
-    value: "5",
+    value: "7",
   },
 ];
 

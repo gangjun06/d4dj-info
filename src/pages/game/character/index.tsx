@@ -1,7 +1,7 @@
 import { GetUnitRes, GET_UNIT } from "@/apollo/gql";
 import Image, { ImageLoaderProps } from "next/image";
 import { Card } from "@/components/Basic";
-import WaitQuery from "@/components/Util/WaitQuery";
+import { WaitQuery } from "@/components/Util";
 import { gql, useQuery } from "@apollo/client";
 import MainLayout from "layouts/main";
 import useTransition from "next-translate/useTranslation";
@@ -12,15 +12,7 @@ import {
   HiOutlineCube,
   HiOutlineCalendar,
 } from "react-icons/hi";
-
-const myLoader = ({ src, width, quality }: ImageLoaderProps) => {
-  return `https://asset.d4dj.info/${src}`;
-};
-function pad(num: number, size: number) {
-  let str = num.toString();
-  while (str.length < size) str = "0" + num;
-  return str;
-}
+import { myLoader, pad } from "utils";
 
 export default function Character() {
   const { t } = useTransition("");

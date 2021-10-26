@@ -25,3 +25,14 @@ export type Character = {
   fullNameEnglish: string;
   colorCode: string;
 };
+
+export type Card = {
+  id: string;
+  rarity: number;
+  cardName: string;
+  attribute: Attribute;
+  skillName: string;
+  maxParameters: number[];
+  gachaMessage: string;
+  debutOrder: number;
+};

@@ -1,16 +1,25 @@
 import MainLayout from "layouts/main";
 import useTransition from "next-translate/useTranslation";
 import { Card } from "@/components/Basic";
-import Link from "next/link";
+import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { Checkbox, FormBlock } from "@/components/Form";
-import { cleanArray } from "utils/array";
+import { cleanArray, cleanArrayWithInt } from "utils/array";
 import { Attribute } from "models";
+import { gql, useQuery } from "@apollo/client";
+import { WaitQuery } from "@/components/Util";
+import {
+  GET_CARD_LIST,
+  CardSort,
+  GetCardListReq,
+  GetCardListRes,
+} from "@/apollo/gql";
 import {
   AttributeCheckbox,
   CardRearityCheckbox,
   UnitCheckbox,
 } from "utils/constants";
+import { myLoader, pad } from "utils";
 
 type FilterData = {
   attribute: Attribute[];
@@ -27,7 +36,31 @@ export default function CardList() {
     formState: { errors },
   } = useForm<FilterData>();
   const onSubmit = handleSubmit((data) => {
+    console.log(data.attribute);
     console.log(cleanArray(data.attribute));
+    refetch({
+      filter: {
+        attribute: cleanArray(data.attribute),
+        rairity: cleanArrayWithInt(data.cardRearity),
+        unit: cleanArrayWithInt(data.unit),
+      },
+    });
+  });
+  const { data, loading, error, refetch } = useQuery<
+    GetCardListRes,
+    GetCardListReq
+  >(GET_CARD_LIST, {
+    variables: {
+      sort: {
+        name: CardSort.id,
+        order: "asc",
+      },
+      page: {
+        take: 30,
+        skip: 0,
+      },
+      filter: {},
+    },
   });
   const { t } = useTransition("");
   return (
@@ -67,6 +100,28 @@ export default function CardList() {
           </form>
         </Card>
       </div>
+      <WaitQuery loading={loading} error={error}>
+        <div>
+          {data?.card.map((item, index) => {
+            return (
+              <div key={index}>
+                <Card bodyClassName="flex justify-center items-center">
+                  <Image
+                    loader={myLoader}
+                    src={`ondemand/card_icon/card_icon_${pad(
+                      parseInt(item.id),
+                      9
+                    )}_0.jpg`}
+                    width="128"
+                    alt={item.id}
+                    height="128"
+                  />
+                </Card>
+              </div>
+            );
+          })}
+        </div>
+      </WaitQuery>
     </MainLayout>
   );
 }

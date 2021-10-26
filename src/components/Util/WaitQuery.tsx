@@ -8,7 +8,7 @@ type props = {
   loadingComponent?: ReactNode;
 };
 
-export default function WaitQuery({
+export function WaitQuery({
   loading,
   error,
   children,
@@ -18,7 +18,7 @@ export default function WaitQuery({
     return <>{loadingComponent}</>;
   }
   if (error) {
-    return <div>{error}</div>;
+    return <div>error...</div>;
   }
   return <div className="">{children}</div>;
 }
