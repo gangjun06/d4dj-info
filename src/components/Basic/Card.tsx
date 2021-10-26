@@ -13,7 +13,7 @@ export function Card({
     <div className={`card shadow ${className}`}>
       <div className="card-body bg-base-100">
         <h2 className="card-title">{title}</h2>
-        <p>{children}</p>
+        {children}
       </div>
     </div>
   );

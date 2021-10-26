@@ -1,3 +1,11 @@
+export enum Attribute {
+  STREET = "STREET",
+  PARTY = "PARTY",
+  CUTE = "CUTE",
+  COOL = "COOL",
+  ELEGANT = "ELEGANT",
+}
+
 export type Unit = {
   id: number;
   name: string;

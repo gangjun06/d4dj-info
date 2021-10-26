@@ -1,3 +1,31 @@
 {
-  "title": "D4DJ.Info"
+  "title": "D4DJ.Info",
+  "filter": "Filter",
+  "search": "Search",
+  "attribute": {
+    "name": "Attribute",
+    "STREET": "street",
+    "PARTY": "party",
+    "CUTE": "cute",
+    "COOL": "cool",
+    "ELEGANT": "elegant"
+  },
+  "card_rearity": {
+    "name": "Rearity",
+    "1": "⭐",
+    "2": "⭐⭐",
+    "3": "⭐⭐⭐",
+    "4": "⭐⭐⭐⭐",
+    "sp": "🌟🌟🌟🌟"
+  },
+  "unit": {
+    "name": "Unit",
+    "ha": "Happy Around!",
+    "pp": "Peaky P-key",
+    "pm": "Photon Maiden",
+    "m4": "Merm4id",
+    "ro": "燐舞曲",
+    "li": "Lyrical Lily",
+    "etc": "その他"
+  }
 }
