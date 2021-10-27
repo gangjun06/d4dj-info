@@ -15,6 +15,7 @@
     "@zeit/next-sass": "^1.0.1",
     "add": "^2.0.6",
     "availity-reactstrap-validation": "^2.7.1",
+    "axios": "^0.24.0",
     "bootstrap": "^5.0.2",
     "classnames": "^2.3.1",
     "cross-env": "^7.0.3",
