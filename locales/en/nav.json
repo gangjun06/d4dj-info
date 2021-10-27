@@ -8,6 +8,7 @@
     "name": "game",
     "character": "Characater",
     "card": "Card",
+    "card_detail": "Card Detail",
     "music": "Music",
     "event": "Event",
     "gatcha": "Gatcha",

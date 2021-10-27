@@ -6,12 +6,6 @@ import { gql, useQuery } from "@apollo/client";
 import MainLayout from "layouts/main";
 import useTransition from "next-translate/useTranslation";
 import Link from "next/link";
-import {
-  HiOutlineMusicNote,
-  HiOutlineCollection,
-  HiOutlineCube,
-  HiOutlineCalendar,
-} from "react-icons/hi";
 import { myLoader, pad } from "utils";
 
 export default function Character() {

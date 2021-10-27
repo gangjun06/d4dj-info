@@ -31,8 +31,9 @@ export type Card = {
   rarity: number;
   cardName: string;
   attribute: Attribute;
-  skillName: string;
-  maxParameters: number[];
-  gachaMessage: string;
+  skillName?: string;
+  maxParameters?: number[];
+  gachaMessage?: string;
   debutOrder: number;
+  character?: Character;
 };

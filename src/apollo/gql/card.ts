@@ -34,3 +34,33 @@ export const GET_CARD_LIST = gql`
     }
   }
 `;
+
+export interface GetCardRes {
+  card: models.Card[];
+}
+export interface GetCardReq {
+  filter: {
+    id: string;
+  };
+}
+export const GET_CARD_DETAIL = gql`
+  query Query($filter: CardFilterInput) {
+    card(filter: $filter) {
+      id
+      rarity
+      cardName
+      attribute
+      character {
+        id
+        fullNameEnglish
+        firstNameEnglish
+      }
+      startDate
+      endDate
+      gachaMessage
+      maxParameters
+      skillName
+      debutOrder
+    }
+  }
+`;

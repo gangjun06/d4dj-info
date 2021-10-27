@@ -20,5 +20,5 @@ export function WaitQuery({
   if (error) {
     return <div>error...</div>;
   }
-  return <div className="">{children}</div>;
+  return <>{children}</>;
 }

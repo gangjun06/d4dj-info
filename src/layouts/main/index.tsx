@@ -65,7 +65,7 @@ const SideNav = ({
     return (
       <li>
         <Link href={link} passHref>
-          <div
+          <a
             className={`flex items-center pl-3 py-3 pr-4 text-gray-50 cursor-pointer ${
               isFocus
                 ? "bg-primary hover:bg-primary-focus"
@@ -80,7 +80,7 @@ const SideNav = ({
               />
             </span>
             <span>{label}</span>
-          </div>
+          </a>
         </Link>
       </li>
     );

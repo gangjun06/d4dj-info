@@ -8,7 +8,7 @@ type props = {
 
 export function Checkbox({ name, control, list }: props) {
   return (
-    <div className="flex flex-row gap-x-4">
+    <div className="flex flex-row gap-x-4 flex-wrap">
       {list.map((item, index) => (
         <Controller
           key={index}
