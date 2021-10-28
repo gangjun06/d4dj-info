@@ -1,0 +1,10 @@
+{
+  "category": {
+    "name": "Category",
+    "instrumental": "Instrumental",
+    "original": "Original",
+    "cover": "Cover",
+    "game": "Game",
+    "collabo": "Collabo"
+  }
+}

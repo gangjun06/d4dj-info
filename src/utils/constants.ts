@@ -1,7 +1,12 @@
-import { Attribute } from "models";
+import { Attribute, MusicCategory } from "models";
 import { Translate } from "next-translate";
 
-export const CardRearityCheckbox = (t: Translate) => [
+export type CheckboxListType = (t: Translate) => {
+  label: string;
+  value: string;
+}[];
+
+export const CardRearityCheckbox: CheckboxListType = (t: Translate) => [
   {
     label: t("common:card_rearity.1"),
     value: "1",
@@ -18,7 +23,7 @@ export const CardRearityCheckbox = (t: Translate) => [
   },
 ];
 
-export const AttributeCheckbox = (t: Translate) => [
+export const AttributeCheckbox: CheckboxListType = (t: Translate) => [
   {
     label: t("common:attribute.STREET"),
     value: Attribute.STREET,
@@ -35,7 +40,7 @@ export const AttributeCheckbox = (t: Translate) => [
   },
 ];
 
-export const UnitCheckbox = (t: Translate) => [
+export const UnitCheckbox: CheckboxListType = (t: Translate) => [
   {
     label: t("common:unit.ha"),
     value: "1",
@@ -57,5 +62,28 @@ export const UnitCheckbox = (t: Translate) => [
   {
     label: t("common:unit.etc"),
     value: "50",
+  },
+];
+
+export const MusicCategoryCheckbox: CheckboxListType = (t: Translate) => [
+  {
+    label: t("music:category.instrumental"),
+    value: MusicCategory.Instrumental,
+  },
+  {
+    label: t("music:category.original"),
+    value: MusicCategory.Original,
+  },
+  {
+    label: t("music:category.cover"),
+    value: MusicCategory.Cover,
+  },
+  {
+    label: t("music:category.game"),
+    value: MusicCategory.Game,
+  },
+  {
+    label: t("music:category.collabo"),
+    value: MusicCategory.Collabo,
   },
 ];

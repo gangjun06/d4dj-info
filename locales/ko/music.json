@@ -1,0 +1,10 @@
+{
+  "music_category": {
+    "name": "카테고리",
+    "instrumental": "반주",
+    "original": "오리지널",
+    "cover": "커버",
+    "game": "게임",
+    "collabo": "콜라보"
+  }
+}

@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { Checkbox, FormBlock } from "@/components/Form";
 import { cleanArray, cleanArrayWithInt } from "utils/array";
-import { Attribute } from "models";
+import { Attribute, Card as CardModel } from "models";
 import { Grid } from "@/components/Layout";
 import { useQuery } from "@apollo/client";
 import InfinityScroll from "react-infinite-scroll-component";
@@ -34,6 +34,7 @@ export default function CardList() {
   const { t } = useTransition("");
   const { handleSubmit, control } = useForm<FilterData>();
   const [reqData, setReqData] = useState<GetCardListReq | null>(null);
+  const [hasMore, setHasMore] = useState<boolean>(true);
   const { data, loading, error, refetch, fetchMore } = useQuery<
     GetCardListRes,
     GetCardListReq
@@ -63,22 +64,19 @@ export default function CardList() {
   });
 
   const fetchData = async () => {
-    await fetchMore({
+    const res = await fetchMore({
       variables: {
         ...reqData,
         page: {
-          skip: 0,
+          skip: data!.card.length > 0 ? 1 : 0,
           take: 30,
           after: data?.card[data?.card.length - 1].id,
         },
       },
-      updateQuery: (previousResult: GetCardListRes, { fetchMoreResult }) => {
-        const newEntries = fetchMoreResult!.card;
-        return {
-          card: [...previousResult?.card, ...newEntries],
-        };
-      },
     });
+    if (((res.data as any).card as CardModel[]).length < 30) {
+      setHasMore(false);
+    }
   };
   return (
     <MainLayout
@@ -116,13 +114,9 @@ export default function CardList() {
         <InfinityScroll
           dataLength={data?.card.length || 0}
           next={fetchData}
-          hasMore={true}
+          hasMore={hasMore}
           scrollableTarget="mainContent"
-          endMessage={
-            <p style={{ textAlign: "center" }}>
-              <b>Yay! You have seen it all</b>
-            </p>
-          }
+          endMessage={<div className="my-2"></div>}
           loader={<div>Loading..</div>}
         >
           <Grid>
@@ -134,12 +128,9 @@ export default function CardList() {
               >
                 <Image
                   loader={myLoader}
-                  src={`ondemand/card_icon/card_icon_${pad(
-                    parseInt(item.id),
-                    9
-                  )}_0.jpg`}
+                  src={`ondemand/card_icon/card_icon_${pad(item.id, 9)}_0.jpg`}
                   width="128"
-                  alt={item.id}
+                  alt={item.id.toString()}
                   height="128"
                 />
                 <div>

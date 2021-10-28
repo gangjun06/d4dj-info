@@ -27,7 +27,7 @@ export type Character = {
 };
 
 export type Card = {
-  id: string;
+  id: number;
   rarity: number;
   cardName: string;
   attribute: Attribute;
