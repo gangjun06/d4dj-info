@@ -5,7 +5,7 @@
     "calendar": "Calendar"
   },
   "game": {
-    "name": "game",
+    "name": "Game",
     "character": "Characater",
     "card": "Card",
     "card_detail": "Card Detail",

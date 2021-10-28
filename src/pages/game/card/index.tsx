@@ -7,7 +7,8 @@ import { Checkbox, FormBlock } from "@/components/Form";
 import { cleanArray, cleanArrayWithInt } from "utils/array";
 import { Attribute } from "models";
 import { Grid } from "@/components/Layout";
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
+import InfinityScroll from "react-infinite-scroll-component";
 import { WaitQuery } from "@/components/Util";
 import {
   GET_CARD_LIST,
@@ -21,6 +22,7 @@ import {
   UnitCheckbox,
 } from "utils/constants";
 import { myLoader, pad } from "utils";
+import { useState } from "react";
 
 type FilterData = {
   attribute: Attribute[];
@@ -29,25 +31,10 @@ type FilterData = {
 };
 
 export default function CardList() {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    control,
-    formState: { errors },
-  } = useForm<FilterData>();
-  const onSubmit = handleSubmit((data) => {
-    console.log(data.attribute);
-    console.log(cleanArray(data.attribute));
-    refetch({
-      filter: {
-        attribute: cleanArray(data.attribute),
-        rairity: cleanArrayWithInt(data.cardRearity),
-        unit: cleanArrayWithInt(data.unit),
-      },
-    });
-  });
-  const { data, loading, error, refetch } = useQuery<
+  const { t } = useTransition("");
+  const { handleSubmit, control } = useForm<FilterData>();
+  const [reqData, setReqData] = useState<GetCardListReq | null>(null);
+  const { data, loading, error, refetch, fetchMore } = useQuery<
     GetCardListRes,
     GetCardListReq
   >(GET_CARD_LIST, {
@@ -63,7 +50,36 @@ export default function CardList() {
       filter: {},
     },
   });
-  const { t } = useTransition("");
+  const onSubmit = handleSubmit((data) => {
+    const reqData: GetCardListReq = {
+      filter: {
+        attribute: cleanArray(data.attribute),
+        rairity: cleanArrayWithInt(data.cardRearity),
+        unit: cleanArrayWithInt(data.unit),
+      },
+    };
+    setReqData(reqData);
+    refetch(reqData);
+  });
+
+  const fetchData = async () => {
+    await fetchMore({
+      variables: {
+        ...reqData,
+        page: {
+          skip: 0,
+          take: 30,
+          after: data?.card[data?.card.length - 1].id,
+        },
+      },
+      updateQuery: (previousResult: GetCardListRes, { fetchMoreResult }) => {
+        const newEntries = fetchMoreResult!.card;
+        return {
+          card: [...previousResult?.card, ...newEntries],
+        };
+      },
+    });
+  };
   return (
     <MainLayout
       breadThumbs={[
@@ -97,9 +113,20 @@ export default function CardList() {
         </form>
       </Card>
       <WaitQuery loading={loading} error={error}>
-        <Grid>
-          {data?.card.map((item, index) => {
-            return (
+        <InfinityScroll
+          dataLength={data?.card.length || 0}
+          next={fetchData}
+          hasMore={true}
+          scrollableTarget="mainContent"
+          endMessage={
+            <p style={{ textAlign: "center" }}>
+              <b>Yay! You have seen it all</b>
+            </p>
+          }
+          loader={<div>Loading..</div>}
+        >
+          <Grid>
+            {data?.card.map((item, index) => (
               <Card
                 key={index}
                 bodyClassName="flex justify-center items-center flex-col gap-2"
@@ -119,9 +146,9 @@ export default function CardList() {
                   ({item.attribute}) {item.cardName}
                 </div>
               </Card>
-            );
-          })}
-        </Grid>
+            ))}
+          </Grid>
+        </InfinityScroll>
       </WaitQuery>
     </MainLayout>
   );

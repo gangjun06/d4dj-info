@@ -17,8 +17,8 @@ export interface GetCardListReq {
     rairity?: number[];
     unit?: number[];
   };
-  sort: SortInput<CardSort>;
-  page: PaginationInput;
+  sort?: SortInput<CardSort>;
+  page?: PaginationInput;
 }
 export const GET_CARD_LIST = gql`
   query Query(

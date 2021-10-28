@@ -201,7 +201,10 @@ export default function MainLayout({ breadThumbs, children, title }: props) {
           showTitle={false}
         />
       </div>
-      <div className="mx-auto lg:ml-80 h-full overflow-y-scroll">
+      <div
+        id="mainContent"
+        className="mx-auto lg:ml-80 h-full overflow-y-scroll"
+      >
         <div className="mx-auto w-full px-8 py-10">
           <div className="text-sm breadcrumbs">
             <ul>
