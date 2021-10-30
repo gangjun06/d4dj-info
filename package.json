@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.4.16",
+    "@headlessui/react": "^1.4.1",
     "@hookform/resolvers": "^2.8.1",
     "@react-hook/window-size": "^3.0.7",
     "@zeit/next-sass": "^1.0.1",

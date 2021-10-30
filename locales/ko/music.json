@@ -1,5 +1,5 @@
 {
-  "music_category": {
+  "category": {
     "name": "카테고리",
     "instrumental": "반주",
     "original": "오리지널",
@@ -9,5 +9,6 @@
   },
   "info": "음악 정보",
   "chart_info": "채보 정보",
-  "chart_preview": "채보 미리보기"
+  "chart_preview": "채보 미리보기",
+  "trends": "채보 레이터"
 }

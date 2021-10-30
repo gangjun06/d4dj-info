@@ -8,6 +8,7 @@ body,
   margin: 0;
   padding: 0;
   height: 100%;
+  overflow: hiddenf;
 }
 
 body {
@@ -22,8 +23,14 @@ body {
   background-color: rgba(0, 0, 0, 0) !important;
 }
 
-.slider {
+.grid-1 {
+  @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4;
 }
 
-.btn {
+.grid-2 {
+  @apply grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4;
+}
+
+.disclosure-btn {
+  @apply mb-2 flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-indigo-900 bg-indigo-100 rounded-lg hover:bg-indigo-200 focus:outline-none focus-visible:ring focus-visible:ring-indigo-500 focus-visible:ring-opacity-75;
 }

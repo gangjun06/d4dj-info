@@ -104,10 +104,10 @@ export default function Music() {
           loader={<div>Loading..</div>}
         >
           <Grid>
-            {data?.music.map((item, index) => (
+            {data?.music.map((item) => (
               <Card
                 key={item.id}
-                bodyClassName="flex justify-center items-center flex-col gap-2"
+                bodyClassName="flex justify-center items-center flex-col"
                 link={`/game/music/${item.id}`}
               >
                 <Image
@@ -117,14 +117,18 @@ export default function Music() {
                   alt={`image jacket`}
                   height="128"
                 />
-                <div className="flex flex-row gap-x-2">
-                  {item.chart?.map((item) => (
-                    <div className="badge badge-outline badge-md" key={item.id}>
+                <div className="flex flex-row gap-x-2 mt-2">
+                  {item.chart?.map((item, index) => (
+                    <div className="badge badge-outline badge-md" key={index}>
                       {item.level}
                     </div>
                   ))}
                 </div>
-                <div>{item.name}</div>
+                <div className="mt-2">{item.name}</div>
+                <div className="text-gray-600">
+                  {item.unit?.name} -{" "}
+                  {t(`music:category.${item.category.toLowerCase()}`)}
+                </div>
               </Card>
             ))}
           </Grid>

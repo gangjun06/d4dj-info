@@ -9,5 +9,16 @@
   },
   "info": "Music Info",
   "chart_info": "Chart Info",
-  "chart_preview": "Chart Preview"
+  "chart_preview": "Chart Preview",
+  "trends": "Chart Radar",
+  "id": "ID",
+  "composer": "Composer",
+  "lyrist": "Lyrist",
+  "arranger": "Arranger",
+  "bpm": "BPM",
+  "startdate": "Start Date",
+  "enddate": "End Date",
+  "unit": "Unit",
+  "note_count": "Note Count",
+  "chart_designer": "Chart Designer"
 }

@@ -22,6 +22,9 @@ export const GET_MUSIC_LIST = gql`
         difficulty
         level
       }
+      unit {
+        name
+      }
     }
   }
 `;
@@ -41,11 +44,36 @@ export const GET_MUSIC_DETAIL = gql`
       name
       category
       chart {
-        id
         difficulty
         level
+        id
         trends
+        achieveId
+        overrideLevel
+        designerPrimaryKey
+        noteCount
+        chartDesigner {
+          id
+          name
+        }
       }
+      musicBpm
+      startDate
+      endDate
+      hasMovie
+      isHidden
+      isTutorial
+      canFairUse
+      unit {
+        name
+        id
+      }
+      composer
+      lyrist
+      readName
+      arranger
+      specialUnitName
+      defaultOrder
     }
   }
 `;
