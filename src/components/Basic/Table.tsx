@@ -1,7 +1,9 @@
 import { ReactNode } from "react";
 
 export const Table = ({ children }: { children: ReactNode }) => (
-  <table className="table w-full mt-3 table-compact">{children}</table>
+  <table className="table w-full mt-3 table-compact overflow-x-scroll">
+    {children}
+  </table>
 );
 
 export const TableBody = ({

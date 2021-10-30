@@ -95,7 +95,7 @@ export default function CardList() {
               list={AttributeCheckbox(t)}
             />
           </FormBlock>
-          <FormBlock label={t("common:card_rearity.name")}>
+          <FormBlock label={t("card:rarity.name")}>
             <Checkbox
               name="cardRearity"
               control={control}
@@ -117,13 +117,13 @@ export default function CardList() {
           hasMore={hasMore}
           scrollableTarget="mainContent"
           endMessage={<div className="my-2"></div>}
-          loader={<div>Loading..</div>}
+          loader={<div>Loaaing..</div>}
         >
           <Grid>
             {data?.card.map((item, index) => (
               <Card
                 key={index}
-                bodyClassName="flex justify-center items-center flex-col gap-2"
+                bodyClassName="flex justify-center items-center flex-col"
                 link={`/game/card/${item.id}`}
               >
                 <Image
@@ -133,9 +133,15 @@ export default function CardList() {
                   alt={item.id.toString()}
                   height="128"
                 />
-                <div>
-                  ({item.attribute}) {item.cardName}
+                <div className="flex flex-row gap-x-2 my-2">
+                  <div className="badge badge-outline badge-md">
+                    {t(`card:rarity.${item.rarity}`)}
+                  </div>
+                  <div className="badge badge-outline badge-md">
+                    {item.attribute}
+                  </div>
                 </div>
+                {item.cardName}
               </Card>
             ))}
           </Grid>

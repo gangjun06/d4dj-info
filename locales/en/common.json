@@ -10,14 +10,6 @@
     "COOL": "cool",
     "ELEGANT": "elegant"
   },
-  "card_rearity": {
-    "name": "Rearity",
-    "1": "⭐",
-    "2": "⭐⭐",
-    "3": "⭐⭐⭐",
-    "4": "⭐⭐⭐⭐",
-    "sp": "🌟🌟🌟🌟"
-  },
   "unit": {
     "name": "Unit",
     "ha": "Happy Around!",

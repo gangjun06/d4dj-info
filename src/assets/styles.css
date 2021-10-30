@@ -34,3 +34,7 @@ body {
 .disclosure-btn {
   @apply mb-2 flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-indigo-900 bg-indigo-100 rounded-lg hover:bg-indigo-200 focus:outline-none focus-visible:ring focus-visible:ring-indigo-500 focus-visible:ring-opacity-75;
 }
+
+.flex-center {
+  @apply flex items-center justify-center flex-wrap;
+}

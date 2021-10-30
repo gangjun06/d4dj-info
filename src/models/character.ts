@@ -37,4 +37,6 @@ export type Card = {
   gachaMessage?: string;
   debutOrder: number;
   character?: Character;
+  startDate?: Date;
+  endDate?: Date;
 };

@@ -1,4 +1,31 @@
 {
   "info": "Card Info",
-  "id": "Card ID"
+  "id": "Card ID",
+  "skill_name": "Skill Name",
+  "parameter": {
+    "heart": "Heart",
+    "technique": "Technique",
+    "physical": "Physical",
+    "total": "Total Strength"
+  },
+  "startdate": "Start Date",
+  "enddate": "End Date",
+  "rarity": {
+    "name": "Rarity",
+    "1": "⭐",
+    "2": "⭐⭐",
+    "3": "⭐⭐⭐",
+    "4": "⭐⭐⭐⭐",
+    "sp": "🌟🌟🌟🌟"
+  },
+  "illustrations": {
+    "name": "Illustrations",
+    "illustration": "Illustration",
+    "illustration1": "Illustration - 1",
+    "icon": "Icon",
+    "big_icon": "Big Icon",
+    "sd": "SD",
+    "transparent": "Transparent",
+    "transparent1": "Transparent - 1"
+  }
 }

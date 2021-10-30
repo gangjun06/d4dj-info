@@ -1,6 +1,6 @@
 import MainLayout from "layouts/main";
 import useTransition from "next-translate/useTranslation";
-import { Card } from "@/components/Basic";
+import { Card, Disclosure } from "@/components/Basic";
 import Image from "next/image";
 import { Grid, GridCol } from "@/components/Layout";
 import { useQuery } from "@apollo/client";
@@ -8,6 +8,7 @@ import { WaitQuery } from "@/components/Util";
 import { GetCardReq, GetCardRes, GET_CARD_DETAIL } from "@/apollo/gql";
 import { myLoader, pad } from "utils";
 import { useRouter } from "next/router";
+import { Table, TableBody } from "@/components/Basic";
 import { Card as CardModel } from "models";
 import { client } from "apollo";
 import {
@@ -45,29 +46,168 @@ export default function CardDetail({
               alt={"card image"}
               height="128"
             />
-            {/* <div className="flex flex-row gap-x-2 mt-2">
-              {card.character.}
-              </div> */}
+            <div className="flex flex-row gap-x-2 mt-2">
+              <div className="badge badge-outline badge-md">
+                {t(`card:rarity.${card.rarity}`)}
+              </div>
+              <div className="badge badge-outline badge-md">
+                {card.attribute}
+              </div>
+            </div>
             <div className="mt-2">{card.cardName}</div>
             <div className="text-gray-600">
               {card.character?.fullNameEnglish ||
                 card.character?.firstNameEnglish}{" "}
               - {card.character?.unit?.name}
             </div>
-            {/* <Table>
+            <Table>
               <TableBody
                 data={[
-                  [t("music:id"), music.id],
-                  [t("music:composer"), music.composer],
-                  [t("music:lyrist"), music.lyrist],
-                  [t("music:arranger"), music.arranger],
-                  [t("music:bpm"), music.musicBpm],
-                  [t("music:startdate"), music.startDate],
-                  [t("music:enddate"), music.endDate],
-                  [t("music:unit"), music.unit?.name],
+                  [t("card:id"), card.id],
+                  [t("card:skill_name"), card.skillName],
+                  [t("card:parameter.heart"), card.maxParameters![0]],
+                  [t("card:parameter.technique"), card.maxParameters![1]],
+                  [t("card:parameter.physical"), card.maxParameters![2]],
+                  [
+                    t("card:parameter.total"),
+                    card.maxParameters!.reduce((a, b) => a + b, 0),
+                  ],
+                  [t("card:startdate"), card.startDate],
+                  [t("card:enddate"), card.endDate],
                 ]}
               />
-            </Table> */}
+            </Table>
+          </Card>
+        </div>
+        <div className="col-span-1 md:col-span-2">
+          <Card title={t("card:illustrations.name")}>
+            <Disclosure title={t("card:illustrations.sd")}>
+              <div className="flex items-center justify-center flex-wrap">
+                {["00", "01", "02", "10", "11", "12"].map((item) => (
+                  <div className="h-72 w-48 relative" key={item}>
+                    <Image
+                      loader={myLoader}
+                      src={`ondemand/sd_card_chara/sd_card_chara_${pad(
+                        card.id,
+                        9
+                      )}_${item}.png`}
+                      layout="fill"
+                      objectFit="contain"
+                      alt={`card sd image`}
+                    />
+                  </div>
+                ))}
+              </div>
+            </Disclosure>
+            <Disclosure title={t("card:illustrations.transparent")}>
+              <div className="flex-center">
+                <Image
+                  loader={myLoader}
+                  src={`AssetBundles/images/card_chara_transparent_${pad(
+                    card.id,
+                    9
+                  )}_0.png`}
+                  width={920}
+                  height={770}
+                  alt={`transparent image`}
+                />
+              </div>
+            </Disclosure>
+            {card.rarity > 2 && (
+              <Disclosure title={t("card:illustrations.transparent1")}>
+                <div className="flex-center">
+                  <Image
+                    loader={myLoader}
+                    src={`AssetBundles/images/card_chara_transparent_${pad(
+                      card.id,
+                      9
+                    )}_1.png`}
+                    width={920}
+                    height={770}
+                    alt={`transparent image`}
+                  />
+                </div>
+              </Disclosure>
+            )}
+            <Disclosure title={t("card:illustrations.illustration")}>
+              <div className="flex-center">
+                <Image
+                  loader={myLoader}
+                  src={`ondemand/card_chara/card_chara_${pad(
+                    card.id,
+                    9
+                  )}_0.jpg`}
+                  width={764}
+                  height={508}
+                  alt={`card image`}
+                />
+              </div>
+            </Disclosure>
+            {card.rarity > 2 && (
+              <Disclosure title={t("card:illustrations.illustration1")}>
+                <div className="flex-center">
+                  <Image
+                    loader={myLoader}
+                    src={`ondemand/card_chara/card_chara_${pad(
+                      card.id,
+                      9
+                    )}_1.jpg`}
+                    width={764}
+                    height={508}
+                    alt={`card image`}
+                  />
+                </div>
+              </Disclosure>
+            )}
+            <Disclosure title={t("card:illustrations.icon")}>
+              <div className="flex-center gap-x-1">
+                <Image
+                  loader={myLoader}
+                  src={`ondemand/card_icon/card_icon_${pad(card.id, 9)}_0.jpg`}
+                  width={258}
+                  height={258}
+                  alt={`card image`}
+                />
+                {card.rarity > 2 && (
+                  <Image
+                    loader={myLoader}
+                    src={`ondemand/card_icon/card_icon_${pad(
+                      card.id,
+                      9
+                    )}_1.jpg`}
+                    width={258}
+                    height={258}
+                    alt={`card image`}
+                  />
+                )}
+              </div>
+            </Disclosure>
+            <Disclosure title={t("card:illustrations.big_icon")}>
+              <div className="flex-center gap-x-1">
+                <Image
+                  loader={myLoader}
+                  src={`ondemand/card_bigIcon/card_bigIcon_${pad(
+                    card.id,
+                    9
+                  )}_0.jpg`}
+                  width={344}
+                  height={426}
+                  alt={`card image`}
+                />
+                {card.rarity > 2 && (
+                  <Image
+                    loader={myLoader}
+                    src={`ondemand/card_bigIcon/card_bigIcon_${pad(
+                      card.id,
+                      9
+                    )}_1.jpg`}
+                    width={344}
+                    height={426}
+                    alt={`card image`}
+                  />
+                )}
+              </div>
+            </Disclosure>
           </Card>
         </div>
       </div>
