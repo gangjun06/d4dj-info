@@ -48,7 +48,11 @@ export function ChartRadar(props: {
     <Radar
       options={{
         scales: {
-          r: {},
+          r: {
+            ticks: {
+              stepSize: 0.1,
+            },
+          },
         },
       }}
       data={{

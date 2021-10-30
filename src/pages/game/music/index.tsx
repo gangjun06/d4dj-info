@@ -106,7 +106,7 @@ export default function Music() {
           <Grid>
             {data?.music.map((item, index) => (
               <Card
-                key={index}
+                key={item.id}
                 bodyClassName="flex justify-center items-center flex-col gap-2"
                 link={`/game/music/${item.id}`}
               >

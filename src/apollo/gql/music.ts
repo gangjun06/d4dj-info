@@ -41,6 +41,7 @@ export const GET_MUSIC_DETAIL = gql`
       name
       category
       chart {
+        id
         difficulty
         level
         trends

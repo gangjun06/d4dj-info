@@ -40,7 +40,7 @@ export interface GetCardRes {
 }
 export interface GetCardReq {
   filter: {
-    id: string;
+    id: number;
   };
 }
 export const GET_CARD_DETAIL = gql`
