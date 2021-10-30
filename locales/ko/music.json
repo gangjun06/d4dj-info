@@ -6,5 +6,8 @@
     "cover": "커버",
     "game": "게임",
     "collabo": "콜라보"
-  }
+  },
+  "info": "음악 정보",
+  "chart_info": "채보 정보",
+  "chart_preview": "채보 미리보기"
 }

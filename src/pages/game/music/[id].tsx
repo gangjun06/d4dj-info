@@ -25,10 +25,11 @@ import {
   UnitCheckbox,
 } from "utils/constants";
 import { myLoader, pad } from "utils";
-import { ChartViewer } from "@/components/ChartViewer";
+import { ChartViewer } from "@/components/Chart/ChartViewer";
 import { useRouter } from "next/router";
 import { Radar } from "react-chartjs-2";
 import axios from "axios";
+import { ChartRadar } from "@/components/Chart";
 
 export default function CardDetail() {
   const { t } = useTransition("");
@@ -56,6 +57,7 @@ export default function CardDetail() {
       },
     }
   );
+  console.log(data);
   return (
     <MainLayout
       breadThumbs={[
@@ -81,38 +83,30 @@ export default function CardDetail() {
             </Card>
           </GridCol>
           <GridCol row={3}>
-            <Card>
-              <div>
-                <Radar
-                  data={{
-                    labels: [
-                      "Eating",
-                      "Drinking",
-                      "Sleeping",
-                      "Designing",
-                      "Running",
-                    ],
-                    datasets: [
-                      {
-                        label: "Chart",
-                        data: data?.music[0].chart![3].trends,
-                        fill: true,
-                        backgroundColor: "rgba(255, 99, 132, 0.2)",
-                        borderColor: "rgb(255, 99, 132)",
-                        pointBackgroundColor: "rgb(255, 99, 132)",
-                        pointBorderColor: "#fff",
-                        pointHoverBackgroundColor: "#fff",
-                        pointHoverBorderColor: "rgb(255, 99, 132)",
-                      },
-                    ],
-                  }}
-                />
-              </div>
+            <Card title={t("music:chart_info")}>
+              <ChartRadar
+                labels={["NTS", "DMG", "SCR", "EFT", "TEC"]}
+                data={
+                  data?.music[0].chart?.map((item) => ({
+                    data: item.trends,
+                    label: item.difficulty,
+                  })) || []
+                }
+              />
             </Card>
           </GridCol>
           <GridCol row={3}>
-            <Card>
-              <div></div>
+            <Card title={t("music:chart_preview")}>
+              <div className="tabs">
+                <div>
+                  {data?.music[0].chart!.map((item) => (
+                    <a className="tab tab-bordered" key={item.id}>
+                      {item.difficulty}
+                    </a>
+                  ))}
+                </div>
+                {/* <a className="tab tab-bordered tab-active">Tab 2</a> */}
+              </div>
             </Card>
           </GridCol>
         </Grid>

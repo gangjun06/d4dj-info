@@ -6,5 +6,8 @@
     "cover": "Cover",
     "game": "Game",
     "collabo": "Collabo"
-  }
+  },
+  "info": "Music Info",
+  "chart_info": "Chart Info",
+  "chart_preview": "Chart Preview"
 }
