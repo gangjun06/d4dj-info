@@ -10,5 +10,15 @@
   "info": "음악 정보",
   "chart_info": "채보 정보",
   "chart_preview": "채보 미리보기",
-  "trends": "채보 레이터"
+  "trends": "채보 레이터",
+  "id": "ID",
+  "composer": "작곡가",
+  "lyrist": "작사가",
+  "arranger": "편곡자",
+  "bpm": "BPM",
+  "startdate": "시작일",
+  "enddate": "끝나는일",
+  "unit": "유닛",
+  "note_count": "노트 갯수",
+  "chart_designer": "채보 제작자"
 }

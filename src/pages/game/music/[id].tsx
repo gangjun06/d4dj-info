@@ -69,7 +69,7 @@ export default function MusicDetail({
             </Table>
           </Card>
         </div>
-        <div className="col-span-2">
+        <div className="col-span-1 md:col-span-2">
           <Card title={t("music:chart_info")}>
             <div className="tabs">
               <div className="mb-2">
