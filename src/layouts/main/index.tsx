@@ -6,7 +6,6 @@ import { ReactNode } from "react";
 import { IconType } from "react-icons";
 import {
   HiOutlineViewGrid,
-  HiOutlineCalendar,
   HiOutlineCollection,
   HiOutlineMusicNote,
   HiOutlinePhotograph,
@@ -15,6 +14,7 @@ import {
   HiOutlineBookOpen,
   HiOutlineMenu,
   HiOutlineArchive,
+  HiOutlineInformationCircle,
 } from "react-icons/hi";
 
 const NavbarGroup = ({
@@ -115,10 +115,15 @@ const SideNav = ({
               Icon={HiOutlineViewGrid}
               link="/"
             />
-            <NavItem
+            {/* <NavItem
               label={t("nav:main.calendar")}
               Icon={HiOutlineCalendar}
               link="/calendar"
+            /> */}
+            <NavItem
+              label={t("nav:about")}
+              Icon={HiOutlineInformationCircle}
+              link="/about"
             />
           </NavbarGroup>
           <NavbarGroup label={t("nav:game.name")}>

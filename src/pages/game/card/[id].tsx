@@ -32,26 +32,45 @@ export default function CardDetail({
         card.character?.fullNameEnglish || card.character?.firstNameEnglish
       })`}
     >
-      <Grid cols={{ base: 1, sm: 2, md: 3, lg: 3, xl: 3 }}>
-        <GridCol row={3}>
-          <Card title={t("card:info")}>
-            <div className="grid grid-cols-2">
-              <div>{t("card:id")}</div>
-              <div>{card.id}</div>
+      <div className="grid-2">
+        <div className="col-span-1">
+          <Card
+            title={t("card:info")}
+            bodyClassName="flex justify-center flex-col items-center"
+          >
+            <Image
+              loader={myLoader}
+              src={`ondemand/card_icon/card_icon_${pad(card.id, 9)}_0.jpg`}
+              width="128"
+              alt={"card image"}
+              height="128"
+            />
+            {/* <div className="flex flex-row gap-x-2 mt-2">
+              {card.character.}
+              </div> */}
+            <div className="mt-2">{card.cardName}</div>
+            <div className="text-gray-600">
+              {card.character?.fullNameEnglish ||
+                card.character?.firstNameEnglish}{" "}
+              - {card.character?.unit?.name}
             </div>
+            {/* <Table>
+              <TableBody
+                data={[
+                  [t("music:id"), music.id],
+                  [t("music:composer"), music.composer],
+                  [t("music:lyrist"), music.lyrist],
+                  [t("music:arranger"), music.arranger],
+                  [t("music:bpm"), music.musicBpm],
+                  [t("music:startdate"), music.startDate],
+                  [t("music:enddate"), music.endDate],
+                  [t("music:unit"), music.unit?.name],
+                ]}
+              />
+            </Table> */}
           </Card>
-        </GridCol>
-        <GridCol row={3}>
-          <Card>
-            <div></div>
-          </Card>
-        </GridCol>
-        <GridCol row={3}>
-          <Card>
-            <div></div>
-          </Card>
-        </GridCol>
-      </Grid>
+        </div>
+      </div>
     </MainLayout>
   );
 }

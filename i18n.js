@@ -6,5 +6,6 @@ module.exports = {
     "/game/card/[id]": ["card"],
     "/game/music": ["music"],
     "/game/music/[id]": ["music"],
+    "/about": ["about"],
   },
 };

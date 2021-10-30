@@ -54,6 +54,10 @@ export const GET_CARD_DETAIL = gql`
         id
         fullNameEnglish
         firstNameEnglish
+        unit {
+          id
+          name
+        }
       }
       startDate
       endDate
