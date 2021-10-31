@@ -13,6 +13,7 @@
     "@headlessui/react": "^1.4.1",
     "@hookform/resolvers": "^2.8.1",
     "@react-hook/window-size": "^3.0.7",
+    "@types/react-modal": "^3.13.1",
     "@zeit/next-sass": "^1.0.1",
     "add": "^2.0.6",
     "availity-reactstrap-validation": "^2.7.1",
@@ -38,6 +39,7 @@
     "react-hook-form": "^7.17.5",
     "react-icons": "^4.3.1",
     "react-infinite-scroll-component": "^6.1.0",
+    "react-modal": "^3.14.3",
     "reactstrap": "^8.9.0",
     "simplebar-react": "^2.3.4",
     "yarn": "^1.22.11"

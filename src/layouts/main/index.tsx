@@ -15,7 +15,12 @@ import {
   HiOutlineMenu,
   HiOutlineArchive,
   HiOutlineInformationCircle,
+  HiOutlineCog,
 } from "react-icons/hi";
+import i18nConfig from "../../../i18n";
+import { SettingProvider } from "@/components/Setting";
+import { useContext } from "react";
+import { SettingContext } from "@/components/Setting";
 
 const NavbarGroup = ({
   label,
@@ -50,6 +55,7 @@ const SideNav = ({
 }) => {
   const router = useRouter();
   const { t } = useTransition("");
+  const [show, setShow] = useContext(SettingContext)!;
 
   const NavItem = ({
     label,
@@ -95,7 +101,7 @@ const SideNav = ({
         />
       )}
       <nav
-        className={`fixed top-0 left-0 bottom-0 flex flex-col w-3/4 lg:w-80 sm:max-w-xs pt-6 pb-8 bg-gray-800 overflow-y-auto z-50 transition-transform lg:transition-none transform ${
+        className={`fixed top-0 left-0 bottom-0 flex flex-col w-3/4 lg:w-80 sm:max-w-xs pt-6 pb-4 bg-gray-800 overflow-y-auto z-20 transition-transform lg:transition-none transform ${
           !isOpen ? "-translate-x-full lg:translate-x-0z" : ""
         }`}
       >
@@ -108,61 +114,70 @@ const SideNav = ({
             </Link>
           </div>
         )}
-        <div className="px-4 pb-6">
-          <NavbarGroup label={t("nav:main.name")}>
-            <NavItem
-              label={t("nav:main.dashboard")}
-              Icon={HiOutlineViewGrid}
-              link="/"
-            />
-            {/* <NavItem
+        <div className="flex flex-col justify-between h-full px-4">
+          <div>
+            <NavbarGroup label={t("nav:main.name")}>
+              <NavItem
+                label={t("nav:main.dashboard")}
+                Icon={HiOutlineViewGrid}
+                link="/"
+              />
+              {/* <NavItem
               label={t("nav:main.calendar")}
               Icon={HiOutlineCalendar}
               link="/calendar"
             /> */}
-            <NavItem
-              label={t("nav:about")}
-              Icon={HiOutlineInformationCircle}
-              link="/about"
-            />
-          </NavbarGroup>
-          <NavbarGroup label={t("nav:game.name")}>
-            <NavItem
-              label={t("nav:game.character")}
-              Icon={HiOutlineArchive}
-              link="/game/character"
-            />
-            <NavItem
-              label={t("nav:game.card")}
-              Icon={HiOutlineCollection}
-              link="/game/card"
-            />
-            <NavItem
-              label={t("nav:game.music")}
-              Icon={HiOutlineMusicNote}
-              link="/game/music"
-            />
-            <NavItem
-              label={t("nav:game.event")}
-              Icon={HiOutlineBookOpen}
-              link="/game/event"
-            />
-            <NavItem
-              label={t("nav:game.gatcha")}
-              Icon={HiOutlineChartPie}
-              link="/game/gatcha"
-            />
-            <NavItem
-              label={t("nav:game.gallery")}
-              Icon={HiOutlinePhotograph}
-              link="/game/gallery"
-            />
-            <NavItem
-              label={t("nav:game.live2d")}
-              Icon={HiOutlineCube}
-              link="/live2d"
-            />
-          </NavbarGroup>
+              <NavItem
+                label={t("nav:about")}
+                Icon={HiOutlineInformationCircle}
+                link="/about"
+              />
+            </NavbarGroup>
+            <NavbarGroup label={t("nav:game.name")}>
+              <NavItem
+                label={t("nav:game.character")}
+                Icon={HiOutlineArchive}
+                link="/game/character"
+              />
+              <NavItem
+                label={t("nav:game.card")}
+                Icon={HiOutlineCollection}
+                link="/game/card"
+              />
+              <NavItem
+                label={t("nav:game.music")}
+                Icon={HiOutlineMusicNote}
+                link="/game/music"
+              />
+              <NavItem
+                label={t("nav:game.event")}
+                Icon={HiOutlineBookOpen}
+                link="/game/event"
+              />
+              <NavItem
+                label={t("nav:game.gatcha")}
+                Icon={HiOutlineChartPie}
+                link="/game/gatcha"
+              />
+              <NavItem
+                label={t("nav:game.gallery")}
+                Icon={HiOutlinePhotograph}
+                link="/game/gallery"
+              />
+              <NavItem
+                label={t("nav:game.live2d")}
+                Icon={HiOutlineCube}
+                link="/live2d"
+              />
+            </NavbarGroup>
+          </div>
+          <div
+            className="text-gray-200 flex items-center gap-x-2 cursor-pointer modal-button"
+            onClick={() => setShow(true)}
+          >
+            <HiOutlineCog className="w-5 h-5" />
+            Setting
+          </div>
         </div>
       </nav>
     </div>
@@ -179,7 +194,7 @@ export default function MainLayout({ breadThumbs, children, title }: props) {
   const { t } = useTransition("");
 
   return (
-    <>
+    <SettingProvider>
       <nav className="lg:hidden py-6 px-6 bg-gray-800">
         <div className="flex items-center justify-between">
           <Link href="/" passHref>
@@ -229,6 +244,6 @@ export default function MainLayout({ breadThumbs, children, title }: props) {
           {children}
         </div>
       </div>
-    </>
+    </SettingProvider>
   );
 }

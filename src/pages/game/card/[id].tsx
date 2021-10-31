@@ -16,7 +16,6 @@ import {
   InferGetServerSidePropsType,
   NextPage,
 } from "next";
-
 export default function CardDetail({
   card,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {

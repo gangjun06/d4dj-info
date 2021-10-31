@@ -10,7 +10,7 @@ import { myLoader, pad } from "utils";
 import { ChartViewer } from "@/components/Chart/ChartViewer";
 import { ChartRadar } from "@/components/Chart";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { Disclosure, Transition } from "@headlessui/react";
 import { HiChevronDown, HiChevronUp } from "react-icons/hi";
 
@@ -19,6 +19,9 @@ export default function MusicDetail({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { t } = useTransition("");
   const [tab, setTab] = useState<number>(0);
+
+  const updateTab = useCallback((index) => setTab(index), []);
+
   return (
     <MainLayout
       breadThumbs={[
@@ -79,7 +82,7 @@ export default function MusicDetail({
                     className={`tab tab-bordered ${
                       index === tab ? "tab-active" : ""
                     }`}
-                    onClick={() => setTab(index)}
+                    onClick={() => updateTab(index)}
                   >
                     {item.difficulty}
                   </div>

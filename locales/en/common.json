@@ -19,5 +19,8 @@
     "ro": "燐舞曲",
     "li": "Lyrical Lily",
     "etc": "その他"
-  }
+  },
+  "language": "Language",
+  "save": "Save",
+  "cancel": "Cancel"
 }
