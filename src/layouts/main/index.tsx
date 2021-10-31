@@ -194,56 +194,58 @@ export default function MainLayout({ breadThumbs, children, title }: props) {
   const { t } = useTransition("");
 
   return (
-    <SettingProvider>
-      <nav className="lg:hidden py-6 px-6 bg-gray-800">
-        <div className="flex items-center justify-between">
-          <Link href="/" passHref>
-            <div className="text-2xl text-white font-semibold">
-              {t("common:title")}
-            </div>
-          </Link>
-          <button
-            className="navbar-burger flex items-center rounded focus:outline-none"
-            onClick={() => setDrawer(!drawer)}
-          >
-            <HiOutlineMenu className="text-white bg-primary hover:bg-primary-focus block h-8 w-8 p-2 rounded" />
-          </button>
-        </div>
-      </nav>
-
-      <div className="hidden lg:block">
-        <SideNav onClose={() => {}} isOpen={true} showTitle={true} />
-      </div>
-      <div className="block lg:hidden">
-        <SideNav
-          onClose={() => setDrawer(false)}
-          isOpen={drawer}
-          showTitle={false}
-        />
-      </div>
-      <div
-        id="mainContent"
-        className="mx-auto lg:ml-80 h-full overflow-y-scroll bg-base-200 overflow-x-hidden"
-      >
-        <div className="mx-auto w-full px-8 py-10">
-          <div className="text-sm breadcrumbs">
-            <ul>
-              {breadThumbs.map((item, index) => (
-                <li key={index}>
-                  {item.link === "" ? (
-                    <p>{item.name}</p>
-                  ) : (
-                    <Link href={item.link}>{item.name}</Link>
-                  )}
-                </li>
-              ))}
-            </ul>
+    <>
+      <SettingProvider>
+        <nav className="lg:hidden py-6 px-6 bg-gray-800">
+          <div className="flex items-center justify-between">
+            <Link href="/" passHref>
+              <div className="text-2xl text-white font-semibold cursor-pointer">
+                {t("common:title")}
+              </div>
+            </Link>
+            <button
+              className="navbar-burger flex items-center rounded focus:outline-none"
+              onClick={() => setDrawer(!drawer)}
+            >
+              <HiOutlineMenu className="text-white bg-primary hover:bg-primary-focus block h-8 w-8 p-2 rounded" />
+            </button>
           </div>
+        </nav>
 
-          <div className="mb-5 font-bold text-3xl">{title}</div>
-          {children}
+        <div className="hidden lg:block">
+          <SideNav onClose={() => {}} isOpen={true} showTitle={true} />
         </div>
-      </div>
-    </SettingProvider>
+        <div className="block lg:hidden">
+          <SideNav
+            onClose={() => setDrawer(false)}
+            isOpen={drawer}
+            showTitle={false}
+          />
+        </div>
+        <div
+          id="mainContent"
+          className="mx-auto lg:ml-80 h-full overflow-y-scroll bg-base-200 overflow-x-hidden"
+        >
+          <div className="mx-auto w-full px-8 py-10">
+            <div className="text-sm breadcrumbs">
+              <ul>
+                {breadThumbs.map((item, index) => (
+                  <li key={index}>
+                    {item.link === "" ? (
+                      <p>{item.name}</p>
+                    ) : (
+                      <Link href={item.link}>{item.name}</Link>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="mb-5 font-bold text-3xl">{title}</div>
+            {children}
+          </div>
+        </div>
+      </SettingProvider>
+    </>
   );
 }

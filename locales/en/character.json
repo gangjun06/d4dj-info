@@ -1,0 +1,17 @@
+{
+  "id": "ID",
+  "info": "Character Info",
+  "color_code": "Color Code",
+  "firstname": "First Name",
+  "firstname_eng": "First Name English",
+  "fullname": "Full Name",
+  "fullname_eng": "Full Name English",
+  "illustrations": {
+    "name": "Illustrations",
+    "livestart": "Live Start",
+    "profile": "Profile",
+    "standup": "Stand up",
+    "rankheader": "Rank header",
+    "gacha_silhouette": "Gacha Iilhouette"
+  }
+}

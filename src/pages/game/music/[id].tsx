@@ -141,6 +141,13 @@ export default function MusicDetail({
                   </Disclosure.Button>
                   <Disclosure.Panel className="text-gray-500">
                     <ChartViewer chartID={music.chart![tab].id} />
+                    <a
+                      href="https://girlbands.party/d4dj/chart-previewer/"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      https://girlbands.party/d4dj/chart-previewer/
+                    </a>
                   </Disclosure.Panel>
                 </>
               )}

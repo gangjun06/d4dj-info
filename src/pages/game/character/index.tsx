@@ -23,24 +23,27 @@ export default function Character() {
         <div>
           {data?.unit.map((item) => (
             <Card className="mb-3" title={item.name} key={item.id}>
-              <div className="flex justify-around">
+              <div className="flex justify-around flex-wrap">
                 {item.characters.map((item) => (
-                  <div
+                  <Link
+                    href={`/game/character/${item.id}`}
+                    passHref
                     key={item.id}
-                    className="flex flex-col justify-center items-center"
                   >
-                    <Image
-                      loader={myLoader}
-                      src={`adv/ondemand/chara_icon/adv_icon_${pad(
-                        item.id,
-                        3
-                      )}.png`}
-                      width="128"
-                      alt={item.fullNameEnglish}
-                      height="128"
-                    />
-                    {item.fullNameEnglish || item.firstNameEnglish}
-                  </div>
+                    <a className="flex flex-col justify-center items-center">
+                      <Image
+                        loader={myLoader}
+                        src={`adv/ondemand/chara_icon/adv_icon_${pad(
+                          item.id,
+                          3
+                        )}.png`}
+                        width="128"
+                        alt={item.fullNameEnglish}
+                        height="128"
+                      />
+                      {item.fullNameEnglish || item.firstNameEnglish}
+                    </a>
+                  </Link>
                 ))}
               </div>
             </Card>

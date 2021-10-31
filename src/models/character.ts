@@ -25,6 +25,7 @@ export type Character = {
   fullNameEnglish: string;
   colorCode: string;
   unit?: Unit;
+  card?: Card[];
 };
 
 export type Card = {

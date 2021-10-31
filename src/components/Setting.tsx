@@ -29,9 +29,8 @@ export const SettingProvider = ({ children }: { children: ReactNode }) => {
     state[1](false);
   });
 
-  const Content = useCallback(() => <>{children}</>, [children]);
-  const Setting = useCallback(
-    () => (
+  return (
+    <SettingContext.Provider value={state}>
       <div className={`modal z-50 ${state[0] ? "modal-open" : ""}`}>
         <form className="modal-box">
           <FormBlock label={t("common:language")}>
@@ -54,14 +53,7 @@ export const SettingProvider = ({ children }: { children: ReactNode }) => {
           </div>
         </form>
       </div>
-    ),
-    [state, onSubmit, control]
-  );
-
-  return (
-    <SettingContext.Provider value={state}>
-      <Setting />
-      <Content />
+      {children}
     </SettingContext.Provider>
   );
 };

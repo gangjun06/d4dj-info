@@ -119,7 +119,7 @@ export default function CardList() {
           endMessage={<div className="my-2"></div>}
           loader={<div>Loaaing..</div>}
         >
-          <Grid>
+          <div className="grid-1">
             {data?.card.map((item, index) => (
               <Card
                 key={index}
@@ -144,7 +144,7 @@ export default function CardList() {
                 {item.cardName}
               </Card>
             ))}
-          </Grid>
+          </div>
         </InfinityScroll>
       </WaitQuery>
     </MainLayout>

@@ -3,6 +3,7 @@ module.exports = {
   defaultLocale: "en",
   pages: {
     "*": ["common", "nav"],
+    "/game/character/[id]": ["character", "card"],
     "/game/card": ["card"],
     "/game/card/[id]": ["card"],
     "/game/music": ["music"],
