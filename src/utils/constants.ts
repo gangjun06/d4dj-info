@@ -18,7 +18,7 @@ export const CardRearityCheckbox: CheckboxListType = (t: Translate) => [
   { label: t("card:rarity.3"), value: "3" },
   { label: t("card:rarity.4"), value: "4" },
   {
-    label: t("card:rarity.sp"),
+    label: t("card:rarity.7"),
     value: "7",
   },
 ];

@@ -127,7 +127,9 @@ export default function CardList() {
               >
                 <Image
                   loader={myLoader}
-                  src={`ondemand/card_icon/card_icon_${pad(item.id, 9)}_0.jpg`}
+                  src={`ondemand/card_icon/card_icon_${pad(item.id, 9)}_${
+                    item.rarity > 2 ? "1" : "0"
+                  }.jpg`}
                   width="128"
                   alt={item.id.toString()}
                   height="128"

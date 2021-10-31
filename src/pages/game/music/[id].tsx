@@ -1,6 +1,6 @@
 import MainLayout from "layouts/main";
 import useTransition from "next-translate/useTranslation";
-import { Card, Table, TableBody } from "@/components/Basic";
+import { Card, Table, TableBody, Disclosure } from "@/components/Basic";
 import Image from "next/image";
 import { Music } from "models";
 import { Grid, GridCol } from "@/components/Layout";
@@ -11,8 +11,7 @@ import { ChartViewer } from "@/components/Chart/ChartViewer";
 import { ChartRadar } from "@/components/Chart";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import React, { useState, useCallback } from "react";
-import { Disclosure, Transition } from "@headlessui/react";
-import { HiChevronDown, HiChevronUp } from "react-icons/hi";
+import { HiChevronUp } from "react-icons/hi";
 
 export default function MusicDetail({
   music,
@@ -101,56 +100,28 @@ export default function MusicDetail({
               />
             </Table>
 
-            <Disclosure>
-              {({ open }) => (
-                <>
-                  <Disclosure.Button className="disclosure-btn">
-                    {t("music:trends")}
-                    <HiChevronUp
-                      className={`${
-                        open ? "transform rotate-180" : ""
-                      } w-5 h-5 text-purple-500`}
-                    />
-                  </Disclosure.Button>
-                  <Disclosure.Panel className="text-gray-500">
-                    <div className="max-w-sm">
-                      <ChartRadar
-                        labels={["NTS", "DMG", "SCR", "EFT", "TEC"]}
-                        data={[
-                          {
-                            data: music.chart![tab].trends,
-                            label: music.chart![tab].difficulty,
-                          },
-                        ]}
-                      />
-                    </div>
-                  </Disclosure.Panel>
-                </>
-              )}
+            <Disclosure title={t("music:trends")}>
+              <div className="max-w-sm">
+                <ChartRadar
+                  labels={["NTS", "DMG", "SCR", "EFT", "TEC"]}
+                  data={[
+                    {
+                      data: music.chart![tab].trends,
+                      label: music.chart![tab].difficulty,
+                    },
+                  ]}
+                />
+              </div>
             </Disclosure>
-            <Disclosure>
-              {({ open }) => (
-                <>
-                  <Disclosure.Button className="disclosure-btn">
-                    {t("music:chart_preview")}
-                    <HiChevronUp
-                      className={`${
-                        open ? "transform rotate-180" : ""
-                      } w-5 h-5 text-purple-500`}
-                    />
-                  </Disclosure.Button>
-                  <Disclosure.Panel className="text-gray-500">
-                    <ChartViewer chartID={music.chart![tab].id} />
-                    <a
-                      href="https://girlbands.party/d4dj/chart-previewer/"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      https://girlbands.party/d4dj/chart-previewer/
-                    </a>
-                  </Disclosure.Panel>
-                </>
-              )}
+            <Disclosure title={t("music:chart_preview")}>
+              <ChartViewer chartID={music.chart![tab].id} />
+              <a
+                href="https://girlbands.party/d4dj/chart-previewer/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                https://girlbands.party/d4dj/chart-previewer/
+              </a>
             </Disclosure>
           </Card>
         </div>

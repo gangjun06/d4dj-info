@@ -6,10 +6,13 @@ import { useQuery } from "@apollo/client";
 import { WaitQuery } from "@/components/Util";
 import { useState } from "react";
 import { Card } from "@/components/Basic";
-import { myLoader, pad } from "utils";
+import { myLoader, pad, formatTime } from "utils";
 import Image from "next/image";
-import { format } from "date-fns";
 import { Gacha, GachaCategory } from "models";
+
+const canUseBanner = (item: Gacha) =>
+  item.category !== GachaCategory.Tutorial &&
+  item.category !== GachaCategory.Birthday;
 
 export default function Event() {
   const { t } = useTransition("");
@@ -42,10 +45,6 @@ export default function Event() {
       setHasMore(false);
     }
   };
-
-  const canUseBanner = (item: Gacha) =>
-    item.category !== GachaCategory.Tutorial &&
-    item.category !== GachaCategory.Birthday;
 
   return (
     <MainLayout
@@ -89,9 +88,8 @@ export default function Event() {
                   />
                   {item.name}
                   <div className="text-gray-600">
-                    {`${format(item.startDate, "yy.MM.dd.")} ~ ${format(
-                      item.endDate,
-                      "yy.MM.dd."
+                    {`${formatTime(item.startDate)} ~ ${formatTime(
+                      item.endDate
                     )}`}
                   </div>
                 </Card>

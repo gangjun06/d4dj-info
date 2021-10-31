@@ -32,7 +32,7 @@ export default function CardDetail({
     <MainLayout
       breadThumbs={[
         { name: t("nav:game.name"), link: "" },
-        { name: t("nav:game.character"), link: "/game/charactera" },
+        { name: t("nav:game.character"), link: "/game/character" },
         {
           name: t("nav:game.character_detail"),
           link: `/game/character/${character.id}`,
@@ -161,7 +161,9 @@ export default function CardDetail({
               >
                 <Image
                   loader={myLoader}
-                  src={`ondemand/card_icon/card_icon_${pad(item.id, 9)}_0.jpg`}
+                  src={`ondemand/card_icon/card_icon_${pad(item.id, 9)}_${
+                    item.rarity > 2 ? "1" : "0"
+                  }.jpg`}
                   width="128"
                   alt={item.id.toString()}
                   height="128"

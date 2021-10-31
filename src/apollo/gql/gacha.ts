@@ -21,36 +21,28 @@ export const GET_GACHA_LIST = gql`
   }
 `;
 
-// export interface GetCardRes {
-//   event: models.Card[];
-// }
-// export interface GetCardReq {
-//   filter: {
-//     id: number;
-//   };
-// }
-// export const GET_CARD_DETAIL = gql`
-//   query Query($filter: CardFilterInput) {
-//     event(filter: $filter) {
-//       id
-//       rarity
-//       eventName
-//       attribute
-//       character {
-//         id
-//         fullNameEnglish
-//         firstNameEnglish
-//         unit {
-//           id
-//           name
-//         }
-//       }
-//       startDate
-//       endDate
-//       gachaMessage
-//       maxParameters
-//       skillName
-//       debutOrder
-//     }
-//   }
-// `;
+export interface GetGachaRes {
+  gacha: models.Gacha[];
+}
+export interface GetGachaReq {
+  filter: {
+    id: number;
+  };
+}
+export const GET_GACHA_DETAIL = gql`
+  query Query($page: PaginationInput) {
+    gacha(page: $page) {
+      id
+      name
+      startDate
+      category
+      endDate
+      pickUpCards {
+        id
+        rarity
+        cardName
+        attribute
+      }
+    }
+  }
+`;

@@ -6,7 +6,7 @@ import { Grid, GridCol } from "@/components/Layout";
 import { useQuery } from "@apollo/client";
 import { WaitQuery } from "@/components/Util";
 import { GetCardReq, GetCardRes, GET_CARD_DETAIL } from "@/apollo/gql";
-import { myLoader, pad } from "utils";
+import { formatTimeDetail, myLoader, pad } from "utils";
 import { useRouter } from "next/router";
 import { Table, TableBody } from "@/components/Basic";
 import { Card as CardModel } from "models";
@@ -40,7 +40,9 @@ export default function CardDetail({
           >
             <Image
               loader={myLoader}
-              src={`ondemand/card_icon/card_icon_${pad(card.id, 9)}_0.jpg`}
+              src={`ondemand/card_icon/card_icon_${pad(card.id, 9)}_${
+                card.rarity > 2 ? "1" : "0"
+              }.jpg`}
               width="128"
               alt={"card image"}
               height="128"
@@ -71,8 +73,8 @@ export default function CardDetail({
                     t("card:parameter.total"),
                     card.maxParameters!.reduce((a, b) => a + b, 0),
                   ],
-                  [t("card:startdate"), card.startDate],
-                  [t("card:enddate"), card.endDate],
+                  [t("card:startdate"), formatTimeDetail(card.startDate!)],
+                  [t("card:enddate"), formatTimeDetail(card.endDate!)],
                 ]}
               />
             </Table>

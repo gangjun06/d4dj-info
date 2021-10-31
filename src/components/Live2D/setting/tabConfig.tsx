@@ -120,6 +120,7 @@ export function AddModel() {
             defaultValue={"live2d_chara_"}
             render={({ field }) => (
               <SelectField {...field} label="Type" flex="1" ref={null}>
+                <option value="live2d_card_chara_07">Special</option>
                 <option value="live2d_card_chara_04">Character Card 4</option>
                 <option value="live2d_card_chara_03">Character Card 3</option>
                 <option value="live2d_chara_">Character</option>
