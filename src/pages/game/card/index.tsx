@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import { Checkbox, FormBlock } from "@/components/Form";
 import { cleanArray, cleanArrayWithInt } from "utils/array";
 import { Attribute, Card as CardModel } from "models";
-import { Grid } from "@/components/Layout";
 import { useQuery } from "@apollo/client";
 import InfinityScroll from "react-infinite-scroll-component";
 import { WaitQuery } from "@/components/Util";

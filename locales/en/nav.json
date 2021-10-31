@@ -13,7 +13,9 @@
     "music": "Music",
     "music_detail": "Music Detail",
     "event": "Event",
-    "gatcha": "Gatcha",
+    "event_detail": "Event Detail",
+    "gacha": "gacha",
+    "gacha_detail": "Gacha Detail",
     "gallery": "Gallery",
     "live2d": "Live2D Viewer"
   },

@@ -117,7 +117,7 @@ export default function CardDetail({
                   )}.png`}
                   layout="fill"
                   objectFit="contain"
-                  alt={`gatcha silhouette image`}
+                  alt={`gacha silhouette image`}
                 />
               </div>
             </Disclosure>

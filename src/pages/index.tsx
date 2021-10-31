@@ -19,7 +19,7 @@ export default function Home() {
         { name: t("nav:main.dashboard"), link: "/" },
       ]}
     >
-      <div className="w-full shadow stats">
+      {/* <div className="w-full shadow stats">
         <div className="stat">
           <div className="stat-figure text-primary">
             <HiOutlineMusicNote className="inline-block w-8 h-8 stroke-current" />
@@ -48,7 +48,7 @@ export default function Home() {
       <div className="mt-3 grid grid-cols-3 gap-4 w-full">
         <Card title="진행중인 이벤트">.</Card>
         <Card title="진행중인 가챠">.</Card>
-      </div>
+      </div> */}
     </MainLayout>
   );
 }

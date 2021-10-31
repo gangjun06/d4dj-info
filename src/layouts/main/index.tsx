@@ -155,15 +155,15 @@ const SideNav = ({
                 link="/game/event"
               />
               <NavItem
-                label={t("nav:game.gatcha")}
+                label={t("nav:game.gacha")}
                 Icon={HiOutlineChartPie}
-                link="/game/gatcha"
+                link="/game/gacha"
               />
-              <NavItem
+              {/* <NavItem
                 label={t("nav:game.gallery")}
                 Icon={HiOutlinePhotograph}
                 link="/game/gallery"
-              />
+              /> */}
               <NavItem
                 label={t("nav:game.live2d")}
                 Icon={HiOutlineCube}

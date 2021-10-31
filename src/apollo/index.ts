@@ -14,6 +14,8 @@ export const client = new ApolloClient({
         fields: {
           card: concatPagination(),
           music: concatPagination(),
+          gacha: concatPagination(),
+          event: concatPagination(),
         },
       },
     },
