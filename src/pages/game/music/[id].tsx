@@ -6,7 +6,7 @@ import { Music } from "models";
 import { Grid, GridCol } from "@/components/Layout";
 import { GET_MUSIC_DETAIL, GetMusicReq, GetMusicRes } from "@/apollo/gql";
 import { client } from "apollo";
-import { myLoader, pad } from "utils";
+import { formatTimeDetail, myLoader, pad } from "utils";
 import { ChartViewer } from "@/components/Chart/ChartViewer";
 import { ChartRadar } from "@/components/Chart";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
@@ -63,8 +63,8 @@ export default function MusicDetail({
                   [t("music:lyrist"), music.lyrist],
                   [t("music:arranger"), music.arranger],
                   [t("music:bpm"), music.musicBpm],
-                  [t("music:startdate"), music.startDate],
-                  [t("music:enddate"), music.endDate],
+                  [t("music:startdate"), formatTimeDetail(music.startDate)],
+                  [t("music:enddate"), formatTimeDetail(music.endDate)],
                   [t("music:unit"), music.unit?.name],
                 ]}
               />
@@ -147,6 +147,7 @@ export const getServerSideProps: GetServerSideProps<{ music: Music }> = async (
         id: parseInt(id as string),
       },
     },
+    fetchPolicy: "no-cache",
   });
 
   if (!data) {

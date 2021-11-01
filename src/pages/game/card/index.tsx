@@ -82,7 +82,7 @@ export default function CardList() {
         setHasMore(false);
       }
     }
-  }, [data]);
+  }, [data, loading]);
 
   return (
     <MainLayout

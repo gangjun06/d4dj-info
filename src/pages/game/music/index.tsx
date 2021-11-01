@@ -17,7 +17,7 @@ import {
 } from "@/apollo/gql";
 import { MusicCategoryCheckbox, UnitCheckbox } from "utils/constants";
 import { myLoader, pad } from "utils";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 type FilterData = {
   category: string[];
@@ -64,10 +64,15 @@ export default function Music() {
         },
       },
     });
-    if (((res.data as any).music as any[]).length < 30) {
-      setHasMore(false);
-    }
   };
+
+  useEffect(() => {
+    if (!loading) {
+      if (((data as any).music as any[]).length < 30) {
+        setHasMore(false);
+      }
+    }
+  }, [data, loading]);
 
   return (
     <MainLayout

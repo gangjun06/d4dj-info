@@ -17,10 +17,10 @@ import {
   HiOutlineInformationCircle,
   HiOutlineCog,
 } from "react-icons/hi";
-import i18nConfig from "../../../i18n";
 import { SettingProvider } from "@/components/Setting";
 import { useContext } from "react";
 import { SettingContext } from "@/components/Setting";
+import Head from "next/head";
 
 const NavbarGroup = ({
   label,
@@ -195,6 +195,9 @@ export default function MainLayout({ breadThumbs, children, title }: props) {
 
   return (
     <>
+      <Head>
+        <title>{title}</title>
+      </Head>
       <SettingProvider>
         <nav className="lg:hidden py-6 px-6 bg-gray-800">
           <div className="flex items-center justify-between">

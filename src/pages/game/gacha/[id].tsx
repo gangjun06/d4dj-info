@@ -6,7 +6,7 @@ import { Grid, GridCol } from "@/components/Layout";
 import { useQuery } from "@apollo/client";
 import { WaitQuery } from "@/components/Util";
 import { GetGachaReq, GetGachaRes, GET_GACHA_DETAIL } from "@/apollo/gql";
-import { myLoader, pad } from "utils";
+import { formatTimeDetail, myLoader, pad } from "utils";
 import { useRouter } from "next/router";
 import { Table, TableBody } from "@/components/Basic";
 import { Gacha, Gacha as GachaModel, GachaCategory } from "models";
@@ -34,12 +34,12 @@ export default function GachaDetail({
           link: `/game/character/${gacha.id}`,
         },
       ]}
-      title={`${t("nav:game.character_detail")} - ${gacha.name}`}
+      title={`${t("nav:game.gacha_detail")} - ${gacha.name}`}
     >
       <div className="grid-2">
         <div className="col-span-1">
           <Card
-            title={t("character:info")}
+            title={t("gacha:info")}
             bodyClassName="flex justify-center flex-col items-center"
           >
             <Image
@@ -57,27 +57,33 @@ export default function GachaDetail({
               height={useBanner ? 200 : 172}
             />
             <div className="mt-2">{gacha.name}</div>
+            <div className="text-gray-600">{gacha.summary}</div>
 
-            {/*<Table>
+            <Table>
               <TableBody
                 data={[
-                  [t("character:id"), character.id],
-                  [t("character:color_code"), character.colorCode],
-                  [t("character:firstname"), character.firstName],
-                  [t("character:firstname_eng"), character.firstNameEnglish],
-                  [t("character:fullname"), character.fullName],
-                  [t("character:fullname_eng"), character.fullNameEnglish],
+                  [t("gacha:id"), gacha.id],
+                  [t("gacha:startdate"), formatTimeDetail(gacha.startDate)],
+                  [t("gacha:enddate"), formatTimeDetail(gacha.endDate)],
+                  [t("gacha:type"), gacha.type],
+                  [t("gacha:category"), gacha.category],
                 ]}
               />
-            </Table> */}
+            </Table>
           </Card>
         </div>
         <div className="col-span-1 md:col-span-2">
-          <Card title={t("character:illustrations.name")}>
-            <></>
+          <Card>
+            <h2 className="card-title">Descriptions</h2>
+            <Disclosure title={t("gacha:note")}>
+              <div>{gacha.note}</div>
+            </Disclosure>
+            <Disclosure title={t("gacha:detail")}>
+              <div>{gacha.detail}</div>
+            </Disclosure>
           </Card>
         </div>
-        <div className="subtitle">Pickup Cards</div>
+        <div className="subtitle">{t("gacha:pickup_cards")}</div>
         <div className="col-span-1 md:col-span-3">
           <div className="grid-1">
             {gacha.pickUpCards!.map((item, index) => (

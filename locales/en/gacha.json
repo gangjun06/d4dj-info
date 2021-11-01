@@ -1,1 +1,15 @@
-{}
+{
+  "info": "Gacha Info",
+  "id": "Gacha ID",
+  "pickup_cards": "Pickup Cards",
+  "descriptions": "Descriptions",
+  "note": "Note",
+  "detail": "Detail",
+  "illustrations": {
+    "name": "Illustrations"
+  },
+  "startdate": "Start Date",
+  "enddate": "End Date",
+  "type": "Type",
+  "category": "Category"
+}
