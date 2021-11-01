@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import * as ga from "lib/ga";
 import setLanguage from "next-translate/setLanguage";
+import NextNProgress from "nextjs-progressbar";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -30,6 +31,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <ApolloProvider client={client}>
+      <NextNProgress color={"#6366f1"} />
       <Component {...pageProps} />
     </ApolloProvider>
   );
