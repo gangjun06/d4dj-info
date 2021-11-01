@@ -28,8 +28,12 @@ function Live2DViewContent({ urlData }: props) {
   } = useContext(Live2DContext);
   const [width, height] = useWindowSize();
   const [isShown, setIsShown] = useState<boolean>(false);
+  const [displayText, setDisplayText] = useState<boolean>(false);
 
   useEffect(() => {
+    const timeout = setTimeout(() => {
+      setDisplayText(true);
+    }, 3000);
     const app = new PIXI.Application({
       backgroundAlpha: 0,
       autoStart: true,
@@ -48,6 +52,7 @@ function Live2DViewContent({ urlData }: props) {
       if (canvasWrapper.current?.firstChild) {
         canvasWrapper.current?.removeChild(canvasWrapper.current.firstChild);
       }
+      clearTimeout(timeout);
     };
   }, []);
 
@@ -90,7 +95,7 @@ function Live2DViewContent({ urlData }: props) {
           });
           toaster.success(`Successfully imported models`);
         } catch (e) {
-          console.error(e);
+          toaster.warning(`This model does not exist `);
         }
       })();
     }
@@ -99,6 +104,11 @@ function Live2DViewContent({ urlData }: props) {
   return (
     <>
       <Setting isShown={isShown} onClose={() => setIsShown(false)} />
+      {displayText && (
+        <div className="absolute mt-5 ml-5 text-2xl font-bold">
+          Please Turn off the Adblock
+        </div>
+      )}
       <div
         style={{
           position: "absolute",

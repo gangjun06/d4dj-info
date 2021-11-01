@@ -68,7 +68,8 @@ export default function Music() {
 
   useEffect(() => {
     if (!loading) {
-      if (((data as any).music as any[]).length < 30) {
+      console.log(data);
+      if (((data as any).music as any[]).length % 30 !== 0) {
         setHasMore(false);
       }
     }

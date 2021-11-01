@@ -2,6 +2,7 @@ import MainLayout from "layouts/main";
 import useTransition from "next-translate/useTranslation";
 import { Card, Disclosure } from "@/components/Basic";
 import Image from "next/image";
+import Link from "next/link";
 import {
   GetCharacterReq,
   GetCharacterRes,
@@ -13,6 +14,8 @@ import { Character as CharacterModel } from "models";
 import { CardItem } from "@/components/elements";
 import { client } from "apollo";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import React from "react";
+import { createLive2DShare } from "utils/live2d";
 export default function CardDetail({
   character,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
@@ -48,6 +51,7 @@ export default function CardDetail({
               alt={character.fullNameEnglish}
               height="128"
             />
+
             <div className="mt-2">
               {character.fullNameEnglish || character.firstNameEnglish}
             </div>
@@ -62,6 +66,20 @@ export default function CardDetail({
                   [t("character:firstname_eng"), character.firstNameEnglish],
                   [t("character:fullname"), character.fullName],
                   [t("character:fullname_eng"), character.fullNameEnglish],
+                  [
+                    t("nav:live2d"),
+                    {
+                      link: createLive2DShare([
+                        {
+                          name:
+                            character.fullNameEnglish ||
+                            character.firstNameEnglish,
+                          model: `live2d_chara_${pad(character.id, 3)}0001`,
+                        },
+                      ]),
+                      name: t("nav:live2d"),
+                    },
+                  ],
                 ]}
               />
             </Table>

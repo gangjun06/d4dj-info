@@ -23,6 +23,7 @@ import { dragable } from "../utils";
 
 import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
+import { createLive2DShare, Live2DShare } from "utils/live2d";
 
 type FormData = {
   model: string;
@@ -172,7 +173,7 @@ export function EtcConfig() {
   };
 
   const share = useCallback(() => {
-    const result = models.map((model) => ({
+    const result: Live2DShare[] = models.map((model) => ({
       model: (model.data.tag as string)
         .replace("Live2DModel(", "")
         .replace(")", ""),
@@ -182,9 +183,7 @@ export function EtcConfig() {
       name: model.name,
     }));
 
-    const url = `https://d4dj.info/live2d?data=${Buffer.from(
-      JSON.stringify(result)
-    ).toString("base64")}`;
+    const url = `https://d4dj.info/live2d?data=${createLive2DShare(result)}`;
     try {
       const shareData = {
         title: "D4DJ.Info Live2D Share",

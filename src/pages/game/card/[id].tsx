@@ -16,6 +16,7 @@ import {
   InferGetServerSidePropsType,
   NextPage,
 } from "next";
+import { createLive2DShare } from "utils/live2d";
 export default function CardDetail({
   card,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
@@ -75,6 +76,20 @@ export default function CardDetail({
                   ],
                   [t("card:startdate"), formatTimeDetail(card.startDate!)],
                   [t("card:enddate"), formatTimeDetail(card.endDate!)],
+                  card.rarity > 2
+                    ? [
+                        t("nav:live2d"),
+                        {
+                          link: createLive2DShare([
+                            {
+                              name: card.cardName,
+                              model: `live2d_card_chara_${pad(card.id, 9)}`,
+                            },
+                          ]),
+                          name: t("nav:live2d"),
+                        },
+                      ]
+                    : [],
                 ]}
               />
             </Table>
@@ -184,7 +199,7 @@ export default function CardDetail({
               </div>
             </Disclosure>
             <Disclosure title={t("card:illustrations.big_icon")}>
-              <div className="flex-center gap-x-1">
+              <div className="flex-center w-full gap-x-1">
                 <Image
                   loader={myLoader}
                   src={`ondemand/card_bigIcon/card_bigIcon_${pad(

@@ -63,7 +63,7 @@ export default function Home({ data }: { data: GetIndexRes }) {
                   <div key={index}>
                     <a
                       href={item[0]}
-                      className="link"
+                      className="link link-primary"
                       target="_blank"
                       rel="noreferrer"
                     >

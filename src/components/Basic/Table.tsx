@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import Link from "next/link";
 
 export const Table = ({ children }: { children: ReactNode }) => (
   <table className="table w-full mt-3 table-compact overflow-x-scroll">
@@ -6,12 +7,17 @@ export const Table = ({ children }: { children: ReactNode }) => (
   </table>
 );
 
+export type TableBodyInput = {
+  name: string;
+  link: string;
+};
+
 export const TableBody = ({
   children,
   data,
 }: {
   children?: ReactNode;
-  data?: any[][];
+  data?: (TableBodyInput | string | number | undefined)[][];
 }) => {
   if (children) {
     return <tbody>{children}</tbody>;
@@ -21,7 +27,15 @@ export const TableBody = ({
       {data?.map((item, i) => (
         <tr key={i}>
           {item.map((str, j) => (
-            <td key={j}>{str}</td>
+            <td key={j}>
+              {typeof str === "object" ? (
+                <Link href={str.link} passHref>
+                  <a className="link link-primary">{str.name}</a>
+                </Link>
+              ) : (
+                <>{str}</>
+              )}
+            </td>
           ))}
         </tr>
       ))}

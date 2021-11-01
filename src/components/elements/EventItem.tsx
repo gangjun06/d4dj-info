@@ -3,7 +3,7 @@ import Image from "next/image";
 import { formatTime, myLoader } from "utils";
 
 export const EventItemContent = ({ data }: { data: Event }) => (
-  <div className="flex-center">
+  <div className="flex-center flex-col">
     <Image
       loader={myLoader}
       src={`ondemand/event/event_${data.id}/title_logo.png`}
