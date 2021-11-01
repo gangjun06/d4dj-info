@@ -1,7 +1,7 @@
+import { useEffect } from "react";
 import MainLayout from "layouts/main";
 import useTransition from "next-translate/useTranslation";
 import { Card } from "@/components/Basic";
-import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { Checkbox, FormBlock } from "@/components/Form";
 import { cleanArray, cleanArrayWithInt } from "utils/array";
@@ -20,8 +20,8 @@ import {
   CardRearityCheckbox,
   UnitCheckbox,
 } from "utils/constants";
-import { myLoader, pad } from "utils";
 import { useState } from "react";
+import { CardItem } from "@/components/elements";
 
 type FilterData = {
   attribute: Attribute[];
@@ -50,6 +50,7 @@ export default function CardList() {
       filter: {},
     },
   });
+
   const onSubmit = handleSubmit((data) => {
     const reqData: GetCardListReq = {
       filter: {
@@ -73,10 +74,16 @@ export default function CardList() {
         },
       },
     });
-    if (((res.data as any).card as CardModel[]).length < 30) {
-      setHasMore(false);
-    }
   };
+
+  useEffect(() => {
+    if (!loading) {
+      if (((data as any).card as CardModel[]).length < 30) {
+        setHasMore(false);
+      }
+    }
+  }, [data]);
+
   return (
     <MainLayout
       breadThumbs={[
@@ -120,30 +127,7 @@ export default function CardList() {
         >
           <div className="grid-1">
             {data?.card.map((item, index) => (
-              <Card
-                key={index}
-                bodyClassName="flex justify-center items-center flex-col"
-                link={`/game/card/${item.id}`}
-              >
-                <Image
-                  loader={myLoader}
-                  src={`ondemand/card_icon/card_icon_${pad(item.id, 9)}_${
-                    item.rarity > 2 ? "1" : "0"
-                  }.jpg`}
-                  width="128"
-                  alt={item.id.toString()}
-                  height="128"
-                />
-                <div className="flex flex-row gap-x-2 my-2">
-                  <div className="badge badge-outline badge-md">
-                    {t(`card:rarity.${item.rarity}`)}
-                  </div>
-                  <div className="badge badge-outline badge-md">
-                    {item.attribute}
-                  </div>
-                </div>
-                {item.cardName}
-              </Card>
+              <CardItem key={index} data={item} />
             ))}
           </div>
         </InfinityScroll>

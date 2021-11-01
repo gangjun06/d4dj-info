@@ -1,4 +1,3 @@
-import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import useTransition from "next-translate/useTranslation";
 import setLanguage from "next-translate/setLanguage";
@@ -9,6 +8,7 @@ import {
   ReactNode,
   SetStateAction,
   Dispatch,
+  useCallback,
 } from "react";
 
 export const SettingContext = createContext<
@@ -20,12 +20,17 @@ type FormData = {
 };
 
 export const SettingProvider = ({ children }: { children: ReactNode }) => {
-  const { handleSubmit, control } = useForm<FormData>();
   const state = useState<boolean>(false);
-  const { t } = useTransition();
+  const { t, lang } = useTransition();
+  const { handleSubmit, control } = useForm<FormData>({
+    defaultValues: {
+      lang,
+    },
+  });
 
   const onSubmit = handleSubmit((data) => {
     setLanguage(data.lang);
+    localStorage.setItem("lang", data.lang);
     state[1](false);
   });
 
@@ -46,9 +51,6 @@ export const SettingProvider = ({ children }: { children: ReactNode }) => {
           <div className="modal-action">
             <button className="btn btn-primary" onClick={onSubmit}>
               {t("common:save")}
-            </button>
-            <button className="btn" onClick={() => state[1](false)}>
-              {t("common:cancel")}
             </button>
           </div>
         </form>

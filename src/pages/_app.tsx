@@ -5,6 +5,7 @@ import { client } from "apollo";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import * as ga from "lib/ga";
+import setLanguage from "next-translate/setLanguage";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -19,6 +20,13 @@ function MyApp({ Component, pageProps }: AppProps) {
       router.events.off("routeChangeComplete", handleRouteChange);
     };
   }, [router.events]);
+
+  useEffect(() => {
+    const lang = localStorage.getItem("lang");
+    if (lang) {
+      setLanguage(lang);
+    }
+  }, []);
 
   return (
     <ApolloProvider client={client}>

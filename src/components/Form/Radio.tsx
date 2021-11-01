@@ -22,7 +22,7 @@ export function Radio({ name, control, list }: props) {
                   type="radio"
                   className="radio"
                   // value={}
-                  // checked={field.value === item.value}
+                  checked={field.value === item.value}
                   onChange={(event) => {
                     field.onChange(
                       event.target.checked ? item.value : undefined

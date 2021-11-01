@@ -4,6 +4,7 @@ module.exports = {
   pages: {
     "*": ["common", "nav"],
     "/game/character/[id]": ["character", "card"],
+    "/game/gacha/[id]": ["gacha", "card"],
     "/game/card": ["card"],
     "/game/card/[id]": ["card"],
     "/game/music": ["music"],
