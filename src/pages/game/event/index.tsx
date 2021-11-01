@@ -8,7 +8,7 @@ import { useState } from "react";
 import { Card } from "@/components/Basic";
 import { formatTime, myLoader, pad } from "utils";
 import Image from "next/image";
-import { format } from "date-fns";
+import { EventItemContent } from "@/components/elements";
 
 export default function Event() {
   const { t } = useTransition("");
@@ -23,7 +23,6 @@ export default function Event() {
         take: 20,
         skip: 0,
       },
-      // filter: {},
     },
   });
 
@@ -61,29 +60,8 @@ export default function Event() {
         >
           <div className="grid-1">
             {data?.event.map((item, index) => (
-              <Card
-                key={index}
-                bodyClassName="flex justify-center items-center flex-col"
-                link={`/game/event/${item.id}`}
-              >
-                <Image
-                  loader={myLoader}
-                  src={`ondemand/event/event_${item.id}/title_logo.png`}
-                  width="700"
-                  alt={item.id.toString()}
-                  height="400"
-                />
-                <div className="flex flex-row gap-x-2 my-2">
-                  <div className="badge badge-outline badge-md">
-                    {item.type}
-                  </div>
-                </div>
-                {item.name}
-                <div className="text-gray-600">
-                  {`${formatTime(item.startDate)} ~ ${formatTime(
-                    item.endDate
-                  )}`}
-                </div>
+              <Card key={index} link={`/game/event/${item.id}`}>
+                <EventItemContent data={item} />
               </Card>
             ))}
           </div>

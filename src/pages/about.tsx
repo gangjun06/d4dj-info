@@ -1,13 +1,6 @@
 import { Card } from "@/components/Basic";
 import MainLayout from "layouts/main";
 import useTransition from "next-translate/useTranslation";
-import Link from "next/link";
-import {
-  HiOutlineMusicNote,
-  HiOutlineCollection,
-  HiOutlineCube,
-  HiOutlineCalendar,
-} from "react-icons/hi";
 import Trans from "next-translate/Trans";
 
 export default function About() {

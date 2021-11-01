@@ -18,7 +18,7 @@ export function Card({
   const InnerContent = () => (
     <div className="card-body bg-base-100">
       {title && <h2 className="card-title">{title}</h2>}
-      <div className={`${bodyClassName}`}>{children}</div>
+      <div className={`h-full ${bodyClassName}`}>{children}</div>
     </div>
   );
 

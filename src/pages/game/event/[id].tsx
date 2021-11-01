@@ -27,6 +27,7 @@ export default function GachaDetail({
   event,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { t } = useTransition("");
+  const baseUrl = `ondemand/event/event_${event.id}/`;
 
   return (
     <MainLayout
@@ -43,12 +44,12 @@ export default function GachaDetail({
       <div className="grid-2">
         <div className="col-span-1">
           <Card
-            title={t("gacha:info")}
+            title={t("event:info")}
             bodyClassName="flex justify-center flex-col items-center"
           >
             <Image
               loader={myLoader}
-              src={`ondemand/event/event_${event.id}/title_logo.png`}
+              src={`${baseUrl}title_logo.png`}
               width="350"
               alt={event.id.toString()}
               height="200"
@@ -68,6 +69,10 @@ export default function GachaDetail({
                 data={[
                   [t("event:id"), event.id],
                   [
+                    t("event:reception_close_date"),
+                    formatTimeDetail(event.receptionCloseDate),
+                  ],
+                  [
                     t("event:result_announcement_date"),
                     formatTimeDetail(event.resultAnnouncementDate),
                   ],
@@ -76,31 +81,74 @@ export default function GachaDetail({
                     formatTimeDetail(event.rankFixStartDate),
                   ],
                   [
-                    t("event:reception_close_date"),
-                    formatTimeDetail(event.receptionCloseDate),
-                  ],
-                  [
                     t("event:story_unlock_date"),
                     formatTimeDetail(event.storyUnlockDate),
                   ],
-                  // [t("gacha:startdate"), formatTimeDetail(gacha.startDate)],
-                  // [t("gacha:enddate"), formatTimeDetail(gacha.endDate)],
-                  // [t("gacha:type"), gacha.type],
-                  // [t("gacha:category"), gacha.category],
                 ]}
               />
             </Table>
           </Card>
         </div>
         <div className="col-span-1 md:col-span-2">
-          <Card title="">
-            <></>
+          <Card title={t("event:illustrations.name")}>
+            <Disclosure title={t("event:illustrations.background")}>
+              <Image
+                loader={myLoader}
+                src={`${baseUrl}background.jpg`}
+                width="2380"
+                alt={`background`}
+                height="1440"
+              />
+            </Disclosure>
+            <Disclosure title={t("event:illustrations.banner_event")}>
+              <Image
+                loader={myLoader}
+                src={`${baseUrl}banner_event.png`}
+                width="612"
+                alt={`background`}
+                height="200"
+              />
+            </Disclosure>
+            <Disclosure title={t("event:illustrations.banner_event_notice")}>
+              <Image
+                loader={myLoader}
+                src={`${baseUrl}banner_event_notice.png`}
+                width="612"
+                alt={`background`}
+                height="200"
+              />
+            </Disclosure>
           </Card>
         </div>
-        <div className="subtitle">{t("event:episode_characters")}</div>
-        <div className="col-span-1 md:col-span-3">
-          <div className="grid-1"></div>
-        </div>
+
+        {event.episodeCharactersData!.length > 0 && (
+          <>
+            <div className="subtitle">{t("event:episode_characters")}</div>
+            <div className="col-span-1 md:col-span-3">
+              <div className="grid-1">
+                {event.episodeCharactersData!.map((item) => (
+                  <Card
+                    link={`/game/character/${item.id}`}
+                    key={item.id}
+                    bodyClassName="flex flex-col justify-center items-center"
+                  >
+                    <Image
+                      loader={myLoader}
+                      src={`adv/ondemand/chara_icon/adv_icon_${pad(
+                        item.id,
+                        3
+                      )}.png`}
+                      width="128"
+                      alt={"card icon"}
+                      height="128"
+                    />
+                    {item.fullNameEnglish || item.firstNameEnglish}
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </MainLayout>
   );

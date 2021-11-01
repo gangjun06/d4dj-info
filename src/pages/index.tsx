@@ -1,15 +1,28 @@
 import { Card } from "@/components/Basic";
 import MainLayout from "layouts/main";
 import useTransition from "next-translate/useTranslation";
+import Trans from "next-translate/Trans";
 import Link from "next/link";
-import {
-  HiOutlineMusicNote,
-  HiOutlineCollection,
-  HiOutlineCube,
-  HiOutlineCalendar,
-} from "react-icons/hi";
+import { GetServerSideProps } from "next";
+import { GetIndexRes, GET_INDEX_DATA, GetIndexReq } from "@/apollo/gql";
+import { client } from "../apollo";
+import { EventItemContent } from "@/components/elements";
+import { GachaItemContent } from "@/components/elements/GachaItem";
 
-export default function Home() {
+const links = [
+  ["https://d4dj-pj.com", "official_website"],
+  [],
+  ["https://www.youtube.com/channel/UCNWWdKniJyzQA3RiJ5LMoVw ", "youtube"],
+  ["https://instagram.com/d4dj_official/", "instagram"],
+  ["https://twitter.com/D4DJ_gm", "twitter_d4dj_gm"],
+  ["https://twitter.com/D4DJ_pj", "twitter_d4dj_pj"],
+  ["https://twitter.com/D4DJ_pj_EN", "twitter_d4dj_pj_EN"],
+  [],
+  ["https://gall.dcinside.com/mgallery/board/lists?id=d4dj", "community_gall"],
+  ["https://discord.gg/d4dj", "community_discord"],
+];
+
+export default function Home({ data }: { data: GetIndexRes }) {
   const { t } = useTransition("");
   return (
     <MainLayout
@@ -19,36 +32,145 @@ export default function Home() {
         { name: t("nav:main.dashboard"), link: "/" },
       ]}
     >
-      {/* <div className="w-full shadow stats">
-        <div className="stat">
-          <div className="stat-figure text-primary">
-            <HiOutlineMusicNote className="inline-block w-8 h-8 stroke-current" />
-          </div>
-          <div className="stat-title">총 악곡수</div>
-          <div className="stat-value text-primary">378</div>
-          <div className="stat-desc">최근 추가된곡: Start!! True Dreams!</div>
+      <div className="grid-2">
+        <div className="col-span-1">
+          <Card
+            title={t("index:recent_event")}
+            link={`/game/event/${data.event[0].id}`}
+            className="h-full"
+          >
+            {data.event.map((item) => (
+              <EventItemContent data={item} key={item.id} />
+            ))}
+          </Card>
         </div>
-        <div className="stat">
-          <div className="stat-figure text-info">
-            <HiOutlineCollection className="inline-block w-8 h-8 stroke-current" />
-          </div>
-          <div className="stat-title">총 카드수</div>
-          <div className="stat-value text-info">1000</div>
-          <div className="stat-desc"></div>
+        <div className="col-span-1">
+          <Card
+            className="h-full"
+            title={t("index:recent_gacha")}
+            link={`/game/gacha/${data.gacha[0].id}`}
+          >
+            {data.gacha.map((item) => (
+              <GachaItemContent data={item} key={item.id} />
+            ))}
+          </Card>
         </div>
-        <div className="stat">
-          <div className="stat-figure text-info">
-            <HiOutlineCalendar className="inline-block w-8 h-8 stroke-current" />
-          </div>
-          <div className="stat-title">다음 이벤트</div>
-          <div className="stat-value text-info">D-30</div>
-          <div className="stat-desc">라이브 이름</div>
+        <div className="col-span-1">
+          <Card title={t("index:related_links")} className="h-full">
+            {links.map((item, index) => (
+              <>
+                {item.length ? (
+                  <div key={index}>
+                    <a
+                      href={item[0]}
+                      className="link"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {t(`index:links.${item[1]}`)}
+                    </a>
+                  </div>
+                ) : (
+                  <br />
+                )}
+              </>
+            ))}
+          </Card>
+        </div>
+        <div className="col-span-1">
+          <Card title={t("about:info.name")} className="h-full">
+            <Trans
+              i18nKey="about:info.content"
+              defaultTrans=""
+              components={{
+                div: <div />,
+                br: <br />,
+                b: <b />,
+                mailto: (
+                  <a
+                    href="mailto:me@gangjun.dev"
+                    className="link link-primary"
+                    target="_blank"
+                    rel="noreferrer"
+                  />
+                ),
+              }}
+            />
+          </Card>
+        </div>
+        <div className="col-span-1">
+          <Card title={t("about:contribute.name")} className="h-full">
+            <div className="mb-2">{t("about:contribute.content")}</div>
+            <div className="flex flex-col gap-y-1">
+              <Trans
+                i18nKey="about:contribute.links"
+                defaultTrans=""
+                components={{
+                  a1: (
+                    <a
+                      href="https://github.com/gangjun06/d4dj-info"
+                      className="link"
+                      target="_blank"
+                      rel="noreferrer"
+                    />
+                  ),
+                  a2: (
+                    <a
+                      href="https://github.com/gangjun06/d4dj-info-backend"
+                      className="link"
+                      target="_blank"
+                      rel="noreferrer"
+                    />
+                  ),
+                  a3: (
+                    <a
+                      href="https://github.com/gangjun06/d4dj-crawler"
+                      className="link"
+                      target="_blank"
+                      rel="noreferrer"
+                    />
+                  ),
+                }}
+              />
+            </div>
+          </Card>
+        </div>
+        <div className="col-span-1">
+          <Card title={t("about:donate.name")} className="h-full">
+            <div>{t("about:donate.content")}</div>
+            <div className="flex gap-x-2">
+              <a href="https://toss.me/gangjun" className="link link-primary">
+                Toss
+              </a>
+              <a href="https://paypal.me/gangjun" className="link link-primary">
+                Paypal
+              </a>
+            </div>
+          </Card>
         </div>
       </div>
-      <div className="mt-3 grid grid-cols-3 gap-4 w-full">
-        <Card title="진행중인 이벤트">.</Card>
-        <Card title="진행중인 가챠">.</Card>
-      </div> */}
     </MainLayout>
   );
 }
+
+export const getServerSideProps: GetServerSideProps<{ data: GetIndexRes }> =
+  async (context) => {
+    const { data } = await client.query<GetIndexRes, GetIndexReq>({
+      query: GET_INDEX_DATA,
+      variables: {
+        eventPage: { take: 1 },
+        gachaPage: { take: 1 },
+      },
+      fetchPolicy: "no-cache",
+    });
+
+    if (!data) {
+      return { notFound: true };
+    }
+
+    return {
+      props: {
+        data,
+      },
+    };
+  };

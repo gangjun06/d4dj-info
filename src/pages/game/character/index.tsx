@@ -1,8 +1,8 @@
 import { GetUnitRes, GET_UNIT } from "@/apollo/gql";
-import Image, { ImageLoaderProps } from "next/image";
+import Image from "next/image";
 import { Card } from "@/components/Basic";
 import { WaitQuery } from "@/components/Util";
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import MainLayout from "layouts/main";
 import useTransition from "next-translate/useTranslation";
 import Link from "next/link";

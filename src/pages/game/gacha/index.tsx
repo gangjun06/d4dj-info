@@ -6,13 +6,7 @@ import { useQuery } from "@apollo/client";
 import { WaitQuery } from "@/components/Util";
 import { useState } from "react";
 import { Card } from "@/components/Basic";
-import { myLoader, pad, formatTime } from "utils";
-import Image from "next/image";
-import { Gacha, GachaCategory } from "models";
-
-const canUseBanner = (item: Gacha) =>
-  item.category !== GachaCategory.Tutorial &&
-  item.category !== GachaCategory.Birthday;
+import { GachaItemContent } from "@/components/elements/GachaItem";
 
 export default function Event() {
   const { t } = useTransition("");
@@ -65,33 +59,9 @@ export default function Event() {
         >
           <div className="grid-1">
             {data?.gacha.map((item, index) => {
-              const useBanner = canUseBanner(item);
               return (
-                <Card
-                  key={index}
-                  bodyClassName="flex justify-center items-center flex-col"
-                  link={`/game/gacha/${item.id}`}
-                >
-                  <Image
-                    loader={myLoader}
-                    src={
-                      useBanner
-                        ? `ondemand/banner/banner_gacha_${pad(
-                            item.id,
-                            item.id < 10 ? 4 : 5
-                          )}.png`
-                        : `ondemand/gacha/top/banner/${item.id}.png`
-                    }
-                    width={useBanner ? 612 : 324}
-                    alt={item.id.toString()}
-                    height={useBanner ? 200 : 172}
-                  />
-                  {item.name}
-                  <div className="text-gray-600">
-                    {`${formatTime(item.startDate)} ~ ${formatTime(
-                      item.endDate
-                    )}`}
-                  </div>
+                <Card key={index} link={`/game/gacha/${item.id}`}>
+                  <GachaItemContent data={item} />
                 </Card>
               );
             })}

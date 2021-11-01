@@ -3,6 +3,34 @@ import { Attribute } from "@pixi/core";
 import * as models from "models";
 import { PaginationInput, SortInput } from "./base";
 
+export interface GetIndexRes {
+  event: models.Event[];
+  gacha: models.Gacha[];
+}
+export interface GetIndexReq {
+  eventPage: PaginationInput;
+  gachaPage: PaginationInput;
+}
+export const GET_INDEX_DATA = gql`
+  query Query($eventPage: PaginationInput, $gachaPage: PaginationInput) {
+    event(page: $eventPage) {
+      id
+      name
+      type
+      startDate
+      endDate
+    }
+
+    gacha(page: $gachaPage) {
+      id
+      name
+      startDate
+      category
+      endDate
+    }
+  }
+`;
+
 export interface GetEventListRes {
   event: models.Event[];
 }

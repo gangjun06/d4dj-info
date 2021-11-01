@@ -1,6 +1,6 @@
 export type PaginationInput = {
-  skip: number;
-  take: number;
+  skip?: number;
+  take?: number;
   after?: number;
 };
 

@@ -3,12 +3,14 @@ module.exports = {
   defaultLocale: "en",
   pages: {
     "*": ["common", "nav"],
+    "/": ["about", "index"],
     "/game/character/[id]": ["character", "card"],
     "/game/gacha/[id]": ["gacha", "card"],
     "/game/card": ["card"],
     "/game/card/[id]": ["card"],
     "/game/music": ["music"],
     "/game/music/[id]": ["music"],
+    "/game/event/[id]": ["event"],
     "/about": ["about"],
   },
 };

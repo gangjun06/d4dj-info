@@ -127,11 +127,11 @@ const SideNav = ({
               Icon={HiOutlineCalendar}
               link="/calendar"
             /> */}
-              <NavItem
+              {/* <NavItem
                 label={t("nav:about")}
                 Icon={HiOutlineInformationCircle}
                 link="/about"
-              />
+              /> */}
             </NavbarGroup>
             <NavbarGroup label={t("nav:game.name")}>
               <NavItem
