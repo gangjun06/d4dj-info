@@ -31,7 +31,7 @@ export default function GachaDetail({
         { name: t("nav:game.gacha"), link: "/game/gacha" },
         {
           name: t("nav:game.gacha_detail"),
-          link: `/game/character/${gacha.id}`,
+          link: `/game/event/${gacha.id}`,
         },
       ]}
       title={`${t("nav:game.gacha_detail")} - ${gacha.name}`}

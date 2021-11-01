@@ -1,1 +1,12 @@
-{}
+{
+  "info": "가챠 정보",
+  "id": "가챠 ID",
+  "pickup_cards": "픽업 카드",
+  "descriptions": "설명들",
+  "note": "노트",
+  "detail": "내용",
+  "startdate": "시작일",
+  "enddate": "종료일",
+  "type": "타입",
+  "category": "카테고리"
+}

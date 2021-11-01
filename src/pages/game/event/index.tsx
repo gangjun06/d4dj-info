@@ -6,7 +6,7 @@ import { useQuery } from "@apollo/client";
 import { WaitQuery } from "@/components/Util";
 import { useState } from "react";
 import { Card } from "@/components/Basic";
-import { myLoader, pad } from "utils";
+import { formatTime, myLoader, pad } from "utils";
 import Image from "next/image";
 import { format } from "date-fns";
 
@@ -80,9 +80,8 @@ export default function Event() {
                 </div>
                 {item.name}
                 <div className="text-gray-600">
-                  {`${format(item.startDate, "yy.MM.dd.")} ~ ${format(
-                    item.endDate,
-                    "yy.MM.dd."
+                  {`${formatTime(item.startDate)} ~ ${formatTime(
+                    item.endDate
                   )}`}
                 </div>
               </Card>

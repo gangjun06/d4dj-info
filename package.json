@@ -26,6 +26,7 @@
     "cross-env": "^7.0.3",
     "daisyui": "^1.16.0",
     "date-fns": "^2.25.0",
+    "date-fns-timezone": "^0.1.4",
     "evergreen-ui": "^6.4.0",
     "graphql": "^15.6.1",
     "joi": "^17.4.2",

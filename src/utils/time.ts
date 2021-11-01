@@ -1,7 +1,16 @@
 import { format } from "date-fns";
+import { formatToTimeZone } from "date-fns-timezone";
 
 export const formatTime = (time: number | Date) =>
-  time > 4000000000000 ? "X" : format(time, "yy.MM.dd.");
+  time > 4000000000000
+    ? "X"
+    : formatToTimeZone(time, "YY.MM.DD. hh:mm", {
+        timeZone: "Etc/GMT+0",
+      });
 
 export const formatTimeDetail = (time: number | Date) =>
-  time > 4000000000000 ? "X" : format(time, "yy.MM.dd. hh:mm");
+  time > 4000000000000
+    ? "X"
+    : formatToTimeZone(time, "YY.MM.DD. hh:mm", {
+        timeZone: "Etc/GMT+0",
+      });

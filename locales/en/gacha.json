@@ -5,9 +5,6 @@
   "descriptions": "Descriptions",
   "note": "Note",
   "detail": "Detail",
-  "illustrations": {
-    "name": "Illustrations"
-  },
   "startdate": "Start Date",
   "enddate": "End Date",
   "type": "Type",
