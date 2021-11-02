@@ -33,7 +33,7 @@ export default function CardList() {
   const { t } = useTransition("");
   const { handleSubmit, control } = useForm<FilterData>();
   const [reqData, setReqData] = useState<GetCardListReq | null>(null);
-  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [hasMore, setHasMore] = useState<boolean>(false);
   const { data, loading, error, refetch, fetchMore } = useQuery<
     GetCardListRes,
     GetCardListReq
@@ -51,17 +51,23 @@ export default function CardList() {
     },
   });
 
-  const onSubmit = handleSubmit((data) => {
+  const onSubmit = handleSubmit(async (data) => {
     const reqData: GetCardListReq = {
       filter: {
-        attribute: cleanArray(data.attribute),
+        attribute: cleanArray(data.attribute)?.map((item) =>
+          item.toUpperCase()
+        ),
         rairity: cleanArrayWithInt(data.cardRearity),
         unit: cleanArrayWithInt(data.unit),
       },
     };
-    setHasMore(true);
     setReqData(reqData);
-    refetch(reqData);
+    const res = await refetch(reqData);
+    if (((res.data as any).card as any[]).length < 30) {
+      setHasMore(false);
+    } else {
+      setHasMore(true);
+    }
   });
 
   const fetchData = async () => {
@@ -119,7 +125,7 @@ export default function CardList() {
           hasMore={hasMore}
           scrollableTarget="mainContent"
           endMessage={<div className="my-2"></div>}
-          loader={<div>Loaaing..</div>}
+          loader={<div>Loading..</div>}
         >
           <div className="grid-1">
             {data?.card.map((item, index) => (

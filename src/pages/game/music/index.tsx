@@ -42,16 +42,20 @@ export default function Music() {
     },
   });
 
-  const onSubmit = handleSubmit((data) => {
+  const onSubmit = handleSubmit(async (data) => {
     const reqData: GetMusicListReq = {
       filter: {
         category: cleanArray(data.category),
         unit: cleanArrayWithInt(data.unit),
       },
     };
-    setHasMore(true);
     setReqData(reqData);
-    refetch(reqData);
+    const res = await refetch(reqData);
+    if (((res.data as any).music as any[]).length < 30) {
+      setHasMore(false);
+    } else {
+      setHasMore(true);
+    }
   });
 
   const fetchData = async () => {

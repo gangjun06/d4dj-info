@@ -54,7 +54,7 @@ export default function Event() {
           hasMore={hasMore}
           scrollableTarget="mainContent"
           endMessage={<div className="my-2"></div>}
-          loader={<div>Loaaing..</div>}
+          loader={<div>Loading..</div>}
         >
           <div className="grid-1">
             {data?.gacha.map((item, index) => {
