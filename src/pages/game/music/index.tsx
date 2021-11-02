@@ -49,6 +49,7 @@ export default function Music() {
         unit: cleanArrayWithInt(data.unit),
       },
     };
+    setHasMore(true);
     setReqData(reqData);
     refetch(reqData);
   });
@@ -64,17 +65,10 @@ export default function Music() {
         },
       },
     });
-  };
-
-  useEffect(() => {
-    if (!loading) {
-      console.log(data);
-      if (((data as any).music as any[]).length % 30 !== 0) {
-        setHasMore(false);
-      }
+    if (((res.data as any).music as any[]).length < 30) {
+      setHasMore(false);
     }
-  }, [data, loading]);
-
+  };
   return (
     <MainLayout
       breadThumbs={[

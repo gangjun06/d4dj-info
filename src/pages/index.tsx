@@ -8,6 +8,8 @@ import { GetIndexRes, GET_INDEX_DATA, GetIndexReq } from "@/apollo/gql";
 import { client } from "../apollo";
 import { EventItemContent } from "@/components/elements";
 import { GachaItemContent } from "@/components/elements/GachaItem";
+import React from "react";
+import { NextSeo } from "next-seo";
 
 const links = [
   ["https://d4dj-pj.com", "official_website"],

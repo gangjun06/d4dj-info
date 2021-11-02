@@ -59,6 +59,7 @@ export default function CardList() {
         unit: cleanArrayWithInt(data.unit),
       },
     };
+    setHasMore(true);
     setReqData(reqData);
     refetch(reqData);
   });
@@ -74,15 +75,10 @@ export default function CardList() {
         },
       },
     });
-  };
-
-  useEffect(() => {
-    if (!loading) {
-      if (((data as any).card as CardModel[]).length < 30) {
-        setHasMore(false);
-      }
+    if (((res.data as any).card as any[]).length < 30) {
+      setHasMore(false);
     }
-  }, [data, loading]);
+  };
 
   return (
     <MainLayout

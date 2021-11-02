@@ -12,7 +12,7 @@ export default function Event() {
   const { t } = useTransition("");
   const [hasMore, setHasMore] = useState<boolean>(true);
 
-  const { data, loading, error, refetch, fetchMore } = useQuery<
+  const { data, loading, error, fetchMore } = useQuery<
     GetGachaListRas,
     GetGachaListRaq
   >(GET_GACHA_LIST, {
@@ -21,7 +21,6 @@ export default function Event() {
         take: 30,
         skip: 0,
       },
-      // filter: {},
     },
   });
 

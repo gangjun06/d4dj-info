@@ -9,7 +9,7 @@ const canUseBanner = (item: Gacha) =>
 export const GachaItemContent = ({ data }: { data: Gacha }) => {
   const useBanner = canUseBanner(data);
   return (
-    <div className="flex-center flex-col4">
+    <div className="flex-center flex-col">
       <Image
         loader={myLoader}
         src={

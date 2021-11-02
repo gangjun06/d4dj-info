@@ -6,15 +6,13 @@ import { useQuery } from "@apollo/client";
 import { WaitQuery } from "@/components/Util";
 import { useState } from "react";
 import { Card } from "@/components/Basic";
-import { formatTime, myLoader, pad } from "utils";
-import Image from "next/image";
 import { EventItemContent } from "@/components/elements";
 
 export default function Event() {
   const { t } = useTransition("");
   const [hasMore, setHasMore] = useState<boolean>(true);
 
-  const { data, loading, error, refetch, fetchMore } = useQuery<
+  const { data, loading, error, fetchMore } = useQuery<
     GetEventListRes,
     GetEventListReq
   >(GET_EVENT_LIST, {

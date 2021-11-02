@@ -12,6 +12,7 @@ import { useContext } from "react";
 import { dragable } from "./utils";
 import { useWindowSize } from "@react-hook/window-size";
 import Script from "next/script";
+import useTranslation from "next-translate/useTranslation";
 
 type props = {
   urlData: string | string[] | undefined;
@@ -19,6 +20,7 @@ type props = {
 
 function Live2DViewContent({ urlData }: props) {
   const canvasWrapper = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation();
   const {
     app,
     background,
@@ -106,7 +108,7 @@ function Live2DViewContent({ urlData }: props) {
       <Setting isShown={isShown} onClose={() => setIsShown(false)} />
       {displayText && (
         <div className="absolute mt-5 ml-5 text-2xl font-bold">
-          Please Turn off the Adblock
+          {t("common:adblock")}
         </div>
       )}
       <div

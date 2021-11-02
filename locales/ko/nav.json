@@ -1,7 +1,7 @@
 {
   "main": {
     "name": "메인",
-    "dashboard": "대쉬보드",
+    "dashboard": "대시보드",
     "calendar": "캘린더"
   },
   "game": {

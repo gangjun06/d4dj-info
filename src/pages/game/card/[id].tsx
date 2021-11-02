@@ -145,20 +145,22 @@ export default function CardDetail({
                 </div>
               </Disclosure>
             )}
-            <Disclosure title={t("card:illustrations.illustration")}>
-              <div className="flex-center">
-                <Image
-                  loader={myLoader}
-                  src={`ondemand/card_chara/card_chara_${pad(
-                    card.id,
-                    9
-                  )}_0.jpg`}
-                  width={764}
-                  height={508}
-                  alt={`card image`}
-                />
-              </div>
-            </Disclosure>
+            {card.rarity !== 7 && (
+              <Disclosure title={t("card:illustrations.illustration")}>
+                <div className="flex-center">
+                  <Image
+                    loader={myLoader}
+                    src={`ondemand/card_chara/card_chara_${pad(
+                      card.id,
+                      9
+                    )}_0.jpg`}
+                    width={764}
+                    height={508}
+                    alt={`card image`}
+                  />
+                </div>
+              </Disclosure>
+            )}
             {card.rarity > 2 && (
               <Disclosure title={t("card:illustrations.illustration1")}>
                 <div className="flex-center">
@@ -177,13 +179,18 @@ export default function CardDetail({
             )}
             <Disclosure title={t("card:illustrations.icon")}>
               <div className="flex-center gap-x-1">
-                <Image
-                  loader={myLoader}
-                  src={`ondemand/card_icon/card_icon_${pad(card.id, 9)}_0.jpg`}
-                  width={258}
-                  height={258}
-                  alt={`card image`}
-                />
+                {card.rarity !== 7 && (
+                  <Image
+                    loader={myLoader}
+                    src={`ondemand/card_icon/card_icon_${pad(
+                      card.id,
+                      9
+                    )}_0.jpg`}
+                    width={258}
+                    height={258}
+                    alt={`card image`}
+                  />
+                )}
                 {card.rarity > 2 && (
                   <Image
                     loader={myLoader}
@@ -200,16 +207,18 @@ export default function CardDetail({
             </Disclosure>
             <Disclosure title={t("card:illustrations.big_icon")}>
               <div className="flex-center w-full gap-x-1">
-                <Image
-                  loader={myLoader}
-                  src={`ondemand/card_bigIcon/card_bigIcon_${pad(
-                    card.id,
-                    9
-                  )}_0.jpg`}
-                  width={344}
-                  height={426}
-                  alt={`card image`}
-                />
+                {card.rarity !== 7 && (
+                  <Image
+                    loader={myLoader}
+                    src={`ondemand/card_bigIcon/card_bigIcon_${pad(
+                      card.id,
+                      9
+                    )}_0.jpg`}
+                    width={344}
+                    height={426}
+                    alt={`card image`}
+                  />
+                )}
                 {card.rarity > 2 && (
                   <Image
                     loader={myLoader}

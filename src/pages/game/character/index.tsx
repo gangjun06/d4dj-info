@@ -7,6 +7,8 @@ import MainLayout from "layouts/main";
 import useTransition from "next-translate/useTranslation";
 import Link from "next/link";
 import { myLoader, pad } from "utils";
+import { useState } from "react";
+import { CharacterIcon } from "@/components/Image";
 
 export default function Character() {
   const { t } = useTransition("");
@@ -21,33 +23,30 @@ export default function Character() {
     >
       <WaitQuery loading={loading} error={error}>
         <div>
-          {data?.unit.map((item) => (
-            <Card className="mb-3" title={item.name} key={item.id}>
-              <div className="flex justify-around flex-wrap">
-                {item.characters.map((item) => (
-                  <Link
-                    href={`/game/character/${item.id}`}
-                    passHref
-                    key={item.id}
-                  >
-                    <a className="flex flex-col justify-center items-center">
-                      <Image
-                        loader={myLoader}
-                        src={`adv/ondemand/chara_icon/adv_icon_${pad(
-                          item.id,
-                          3
-                        )}.png`}
-                        width="128"
-                        alt={item.fullNameEnglish}
-                        height="128"
-                      />
-                      {item.fullNameEnglish || item.firstNameEnglish}
-                    </a>
-                  </Link>
-                ))}
-              </div>
-            </Card>
-          ))}
+          {data?.unit.map((item) => {
+            if (!item.characters.length) return <></>;
+            return (
+              <Card className="mb-3" title={item.name} key={item.id}>
+                <div className="flex justify-around flex-wrap">
+                  {item.characters.map((item) => (
+                    <Link
+                      href={`/game/character/${item.id}`}
+                      passHref
+                      key={item.id}
+                    >
+                      <a className="flex flex-col justify-center items-center">
+                        <CharacterIcon
+                          id={item.id}
+                          alt={item.fullNameEnglish}
+                        />
+                        {item.fullNameEnglish || item.firstNameEnglish}
+                      </a>
+                    </Link>
+                  ))}
+                </div>
+              </Card>
+            );
+          })}
         </div>
       </WaitQuery>
     </MainLayout>

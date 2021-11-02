@@ -24,21 +24,24 @@ export const TableBody = ({
   }
   return (
     <tbody>
-      {data?.map((item, i) => (
-        <tr key={i}>
-          {item.map((str, j) => (
-            <td key={j}>
-              {typeof str === "object" ? (
-                <Link href={str.link} passHref>
-                  <a className="link link-primary">{str.name}</a>
-                </Link>
-              ) : (
-                <>{str}</>
-              )}
-            </td>
-          ))}
-        </tr>
-      ))}
+      {data?.map((item, i) => {
+        if (!item[1]) return <></>;
+        return (
+          <tr key={i}>
+            {item.map((str, j) => (
+              <td key={j}>
+                {typeof str === "object" ? (
+                  <Link href={str.link} passHref>
+                    <a className="link link-primary">{str.name}</a>
+                  </Link>
+                ) : (
+                  <>{str}</>
+                )}
+              </td>
+            ))}
+          </tr>
+        );
+      })}
     </tbody>
   );
 };

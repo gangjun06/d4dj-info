@@ -21,6 +21,7 @@ import { SettingProvider } from "@/components/Setting";
 import { useContext } from "react";
 import { SettingContext } from "@/components/Setting";
 import Head from "next/head";
+import { NextSeo } from "next-seo";
 
 const NavbarGroup = ({
   label,
@@ -195,9 +196,13 @@ export default function MainLayout({ breadThumbs, children, title }: props) {
 
   return (
     <>
-      <Head>
-        <title>{title}</title>
-      </Head>
+      <NextSeo
+        title={`D4DJ.Info | ${title}`}
+        openGraph={{
+          title: `D4DJ.Info | ${title}`,
+          description: "D4DJ Information Website",
+        }}
+      />
       <SettingProvider>
         <nav className="lg:hidden py-6 px-6 bg-gray-800">
           <div className="flex items-center justify-between">
