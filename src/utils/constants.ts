@@ -1,3 +1,4 @@
+import { CardSort, MusicSort } from "@/apollo/gql";
 import { Attribute, MusicCategory } from "models";
 import { Translate } from "next-translate";
 
@@ -85,5 +86,35 @@ export const MusicCategoryCheckbox: CheckboxListType = (t: Translate) => [
   {
     label: t("music:category.collabo"),
     value: MusicCategory.Collabo,
+  },
+];
+
+export const MusicOrderRadio: CheckboxListType = (t: Translate) => [
+  {
+    label: t("common:sort.id"),
+    value: MusicSort.ID,
+  },
+  {
+    label: t("common:sort.name"),
+    value: MusicSort.Name,
+  },
+  {
+    label: t("common:sort.default_order"),
+    value: MusicSort.DefaultOrder,
+  },
+];
+
+export const CardOrderRadio: CheckboxListType = (t: Translate) => [
+  {
+    label: t("common:sort.id"),
+    value: CardSort.ID,
+  },
+  {
+    label: t("common:sort.name"),
+    value: CardSort.Name,
+  },
+  {
+    label: t("common:sort.debut_order"),
+    value: CardSort.DebutOrder,
   },
 ];

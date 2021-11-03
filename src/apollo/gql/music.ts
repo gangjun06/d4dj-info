@@ -1,6 +1,13 @@
 import gql from "graphql-tag";
 import * as models from "models";
+import { SortInput } from ".";
 import { PaginationInput } from "./base";
+
+export enum MusicSort {
+  ID = "id",
+  Name = "name",
+  DefaultOrder = "defaultOrder",
+}
 
 export interface GetMusicListRes {
   music: models.Music[];
@@ -11,10 +18,15 @@ export interface GetMusicListReq {
     category?: models.MusicCategory[];
   };
   page?: PaginationInput;
+  sort?: SortInput<MusicSort>;
 }
 export const GET_MUSIC_LIST = gql`
-  query Query($filter: MusicFilterInput, $page: PaginationInput) {
-    music(filter: $filter, page: $page) {
+  query Query(
+    $filter: MusicFilterInput
+    $page: PaginationInput
+    $sort: MusicSortInput
+  ) {
+    music(filter: $filter, page: $page, sort: $sort) {
       id
       name
       category

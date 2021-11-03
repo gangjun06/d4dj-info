@@ -3,7 +3,7 @@ import useTransition from "next-translate/useTranslation";
 import { Card } from "@/components/Basic";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
-import { Checkbox, FormBlock } from "@/components/Form";
+import { Checkbox, FormBlock, Radio } from "@/components/Form";
 import { cleanArray, cleanArrayWithInt } from "utils/array";
 import { Grid } from "@/components/Layout";
 import { useQuery } from "@apollo/client";
@@ -15,19 +15,28 @@ import {
   GET_MUSIC_LIST,
   GetMusicListRes,
 } from "@/apollo/gql";
-import { MusicCategoryCheckbox, UnitCheckbox } from "utils/constants";
+import {
+  MusicCategoryCheckbox,
+  MusicOrderRadio,
+  UnitCheckbox,
+} from "utils/constants";
 import { myLoader, pad } from "utils";
 import { useState, useEffect } from "react";
+import { OrderType, MusicSort } from "@/apollo/gql";
 
 type FilterData = {
   category: string[];
   unit: string[];
+  order: OrderType;
+  orderBy: MusicSort;
 };
 
 export default function Music() {
   const { t } = useTransition("");
-  const { handleSubmit, control } = useForm<FilterData>();
-  const [reqData, setReqData] = useState<GetCardListReq | null>(null);
+  const { handleSubmit, control, setValue } = useForm<FilterData>({
+    defaultValues: { orderBy: MusicSort.ID, order: "asc" },
+  });
+  const [reqData, setReqData] = useState<GetMusicListReq | null>(null);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const { data, loading, error, refetch, fetchMore } = useQuery<
     GetMusicListRes,
@@ -43,10 +52,15 @@ export default function Music() {
   });
 
   const onSubmit = handleSubmit(async (data) => {
+    console.log(data);
     const reqData: GetMusicListReq = {
       filter: {
         category: cleanArray(data.category),
         unit: cleanArrayWithInt(data.unit),
+      },
+      sort: {
+        name: data.orderBy,
+        order: data.order,
       },
     };
     setReqData(reqData);
@@ -93,8 +107,22 @@ export default function Music() {
           <FormBlock label={t("common:unit.name")}>
             <Checkbox name="unit" control={control} list={UnitCheckbox(t)} />
           </FormBlock>
-          <button className="btn btn-sm btn-primary btn-outline" type="submit">
+          <FormBlock label={t("common:sort_name")}>
+            <Radio name="orderBy" control={control} list={MusicOrderRadio(t)} />
+          </FormBlock>
+          <button
+            className="btn btn-sm btn-primary btn-outline"
+            type="submit"
+            onClick={() => setValue("order", "asc")}
+          >
             {t("common:search")}
+          </button>
+          <button
+            className="ml-2 btn btn-sm btn-outline"
+            onClick={() => setValue("order", "desc")}
+            type="submit"
+          >
+            {t("common:search_desc")}
           </button>
         </form>
       </Card>

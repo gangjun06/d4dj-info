@@ -2,6 +2,7 @@
   "title": "D4DJ.Info",
   "filter": "필터",
   "search": "검색",
+  "search_desc": "역순 검색",
   "attribute": {
     "name": "속성",
     "STREET": "스트릿",
@@ -23,5 +24,12 @@
   "language": "언어",
   "save": "저장",
   "cancel": "취소",
-  "adblock": "광고차단 플러그인을 꺼 주세요."
+  "adblock": "광고차단 플러그인을 꺼 주세요.",
+  "sort_name": "정렬",
+  "sort": {
+    "id": "ID",
+    "name": "이름",
+    "default_order": "기본순서",
+    "debut_order": "데뷔순서"
+  }
 }

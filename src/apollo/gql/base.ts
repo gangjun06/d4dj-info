@@ -4,7 +4,9 @@ export type PaginationInput = {
   after?: number;
 };
 
+export type OrderType = "asc" | "desc";
+
 export type SortInput<T> = {
   name: T;
-  order: "asc" | "desc";
+  order: OrderType;
 };

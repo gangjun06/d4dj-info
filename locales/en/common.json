@@ -2,6 +2,7 @@
   "title": "D4DJ.Info",
   "filter": "Filter",
   "search": "Search",
+  "search_desc": "Search Reverse",
   "attribute": {
     "name": "Attribute",
     "STREET": "street",

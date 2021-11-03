@@ -1,9 +1,8 @@
-import { useEffect } from "react";
 import MainLayout from "layouts/main";
 import useTransition from "next-translate/useTranslation";
 import { Card } from "@/components/Basic";
 import { useForm } from "react-hook-form";
-import { Checkbox, FormBlock } from "@/components/Form";
+import { Checkbox, FormBlock, Radio } from "@/components/Form";
 import { cleanArray, cleanArrayWithInt } from "utils/array";
 import { Attribute, Card as CardModel } from "models";
 import { useQuery } from "@apollo/client";
@@ -19,6 +18,7 @@ import {
   AttributeCheckbox,
   CardRearityCheckbox,
   UnitCheckbox,
+  CardOrderRadio,
 } from "utils/constants";
 import { useState } from "react";
 import { CardItem } from "@/components/elements";
@@ -27,11 +27,15 @@ type FilterData = {
   attribute: Attribute[];
   cardRearity: string[];
   unit: string[];
+  order: "asc" | "desc";
+  orderBy: CardSort;
 };
 
 export default function CardList() {
   const { t } = useTransition("");
-  const { handleSubmit, control } = useForm<FilterData>();
+  const { handleSubmit, control, setValue } = useForm<FilterData>({
+    defaultValues: { order: "asc", orderBy: CardSort.ID },
+  });
   const [reqData, setReqData] = useState<GetCardListReq | null>(null);
   const [hasMore, setHasMore] = useState<boolean>(false);
   const { data, loading, error, refetch, fetchMore } = useQuery<
@@ -40,7 +44,7 @@ export default function CardList() {
   >(GET_CARD_LIST, {
     variables: {
       sort: {
-        name: CardSort.id,
+        name: CardSort.ID,
         order: "asc",
       },
       page: {
@@ -59,6 +63,10 @@ export default function CardList() {
         ),
         rairity: cleanArrayWithInt(data.cardRearity),
         unit: cleanArrayWithInt(data.unit),
+      },
+      sort: {
+        name: data.orderBy,
+        order: data.order,
       },
     };
     setReqData(reqData);
@@ -113,8 +121,22 @@ export default function CardList() {
           <FormBlock label={t("common:unit.name")}>
             <Checkbox name="unit" control={control} list={UnitCheckbox(t)} />
           </FormBlock>
-          <button className="btn btn-sm btn-primary btn-outline" type="submit">
+          <FormBlock label={t("common:sort_name")}>
+            <Radio name="orderBy" control={control} list={CardOrderRadio(t)} />
+          </FormBlock>
+          <button
+            className="btn btn-sm btn-primary btn-outline"
+            type="submit"
+            onClick={() => setValue("order", "asc")}
+          >
             {t("common:search")}
+          </button>
+          <button
+            className="ml-2 btn btn-sm btn-outline"
+            onClick={() => setValue("order", "desc")}
+            type="submit"
+          >
+            {t("common:search_desc")}
           </button>
         </form>
       </Card>

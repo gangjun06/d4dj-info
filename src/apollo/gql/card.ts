@@ -4,8 +4,9 @@ import * as models from "models";
 import { PaginationInput, SortInput } from "./base";
 
 export enum CardSort {
-  id = "id",
-  name = "name",
+  ID = "id",
+  Name = "name",
+  DebutOrder = "debutOrder",
 }
 
 export interface GetCardListRes {
