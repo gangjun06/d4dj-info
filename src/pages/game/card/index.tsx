@@ -37,7 +37,7 @@ export default function CardList() {
     defaultValues: { order: "asc", orderBy: CardSort.ID },
   });
   const [reqData, setReqData] = useState<GetCardListReq | null>(null);
-  const [hasMore, setHasMore] = useState<boolean>(false);
+  const [hasMore, setHasMore] = useState<boolean>(true);
   const { data, loading, error, refetch, fetchMore } = useQuery<
     GetCardListRes,
     GetCardListReq

@@ -319,6 +319,14 @@ D4DJChartRenderer.prototype.renderChart = function (chart) {
       this.targetCanvas.height
     );
   }
+  this.targetCtx.globalCompositeOperation = "destination-over";
+  this.targetCtx.fillStyle = "rgba(31, 41, 55, 1)";
+  this.targetCtx.fillRect(
+    0,
+    0,
+    this.targetCanvas.width,
+    this.targetCanvas.height
+  );
 };
 D4DJChartRenderer.TOTAL_WIDTH = 200;
 D4DJChartRenderer.LANE_WIDTH = 0.7;

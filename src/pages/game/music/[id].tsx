@@ -114,14 +114,7 @@ export default function MusicDetail({
               </div>
             </Disclosure>
             <Disclosure title={t("music:chart_preview")}>
-              <ChartViewer chartID={music.chart![tab].id} />
-              <a
-                href="https://girlbands.party/d4dj/chart-previewer/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                https://girlbands.party/d4dj/chart-previewer/
-              </a>
+              <ChartViewer name={music.name} chartID={music.chart![tab].id} />
             </Disclosure>
           </Card>
         </div>

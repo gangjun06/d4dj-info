@@ -23,5 +23,13 @@
   },
   "language": "Language",
   "save": "Save",
-  "adblock": "Please Turn off the Adblock"
+  "adblock": "Please Turn off the Adblock",
+  "sort_name": "Sort",
+  "sort": {
+    "id": "ID",
+    "name": "Name",
+    "default_order": "Default Order",
+    "debut_order": "Debut Order"
+  },
+  "download": "Download"
 }

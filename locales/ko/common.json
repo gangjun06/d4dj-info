@@ -31,5 +31,6 @@
     "name": "이름",
     "default_order": "기본순서",
     "debut_order": "데뷔순서"
-  }
+  },
+  "download": "다운로드"
 }
