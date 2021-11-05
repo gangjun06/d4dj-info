@@ -12,6 +12,7 @@ import { ChartRadar } from "@/components/Chart";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import React, { useState, useCallback } from "react";
 import { HiChevronUp } from "react-icons/hi";
+import { MusicIcon } from "@/components/Image";
 
 export default function MusicDetail({
   music,
@@ -24,7 +25,7 @@ export default function MusicDetail({
   return (
     <MainLayout
       breadThumbs={[
-        { name: t("nav:game.music"), link: "" },
+        { name: t("nav:game.name"), link: "" },
         { name: t("nav:game.music"), link: "/game/music" },
         { name: t("nav:game.music_detail"), link: `/game/music/${music.id}` },
       ]}
@@ -36,13 +37,7 @@ export default function MusicDetail({
             title={t("music:info")}
             bodyClassName="flex justify-center flex-col items-center"
           >
-            <Image
-              loader={myLoader}
-              src={`music_jacket/music_jacket_${pad(music.id, 7)}.jpg`}
-              width="128"
-              alt={`image jacket`}
-              height="128"
-            />
+            <MusicIcon id={music.id} />
             <div className="flex flex-row gap-x-2 mt-2">
               {music.chart?.map((item, index) => (
                 <div className="badge badge-outline badge-md" key={index}>

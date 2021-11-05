@@ -19,3 +19,21 @@ export const CharacterIcon = ({ id, alt }: { id: number; alt: string }) => {
     />
   );
 };
+
+export const MusicIcon = ({ id }: { id: number }) => {
+  const [src, setSrc] = useState<string>(
+    `music_jacket/music_jacket_${pad(id, 7)}.jpg`
+  );
+  return (
+    <Image
+      loader={myLoader}
+      src={src}
+      width="128"
+      alt={`image jacket`}
+      height="128"
+      onError={() => {
+        setSrc("fallback.png");
+      }}
+    />
+  );
+};

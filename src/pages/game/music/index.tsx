@@ -23,6 +23,7 @@ import {
 import { myLoader, pad } from "utils";
 import { useState, useEffect } from "react";
 import { OrderType, MusicSort } from "@/apollo/gql";
+import { MusicIcon } from "@/components/Image";
 
 type FilterData = {
   category: string[];
@@ -142,13 +143,7 @@ export default function Music() {
                 bodyClassName="flex justify-center items-center flex-col"
                 link={`/game/music/${item.id}`}
               >
-                <Image
-                  loader={myLoader}
-                  src={`music_jacket/music_jacket_${pad(item.id, 7)}.jpg`}
-                  width="128"
-                  alt={`image jacket`}
-                  height="128"
-                />
+                <MusicIcon id={item.id} />
                 <div className="flex flex-row gap-x-2 mt-2">
                   {item.chart?.map((item, index) => (
                     <div className="badge badge-outline badge-md" key={index}>
