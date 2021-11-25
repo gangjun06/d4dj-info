@@ -62,7 +62,7 @@ function Live2DViewContent({ urlData }: props) {
     if (urlData && app) {
       (async () => {
         try {
-          const dataStr = Buffer.from(urlData as string, "base64");
+          const dataStr = Buffer.from((urlData as string).replaceAll(" ", "+"), "base64");
           const data: {
             name: string;
             model: string;
@@ -97,6 +97,7 @@ function Live2DViewContent({ urlData }: props) {
           });
           toaster.success(`Successfully imported models`);
         } catch (e) {
+          console.error(e)
           toaster.warning(`This model does not exist `);
         }
       })();
