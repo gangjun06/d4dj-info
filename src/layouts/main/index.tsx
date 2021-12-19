@@ -14,7 +14,7 @@ import {
   HiOutlineBookOpen,
   HiOutlineMenu,
   HiOutlineArchive,
-  HiOutlineInformationCircle,
+  HiDotsCircleHorizontal,
   HiOutlineCog,
 } from "react-icons/hi";
 import { SettingProvider } from "@/components/Setting";
@@ -170,6 +170,11 @@ const SideNav = ({
                 Icon={HiOutlineCube}
                 link="/live2d"
               />
+              <NavItem
+                label={t("nav:game.etc.name")}
+                Icon={HiDotsCircleHorizontal}
+                link="/game/etc"
+              />
             </NavbarGroup>
           </div>
           <div
@@ -197,9 +202,9 @@ export default function MainLayout({ breadThumbs, children, title }: props) {
   return (
     <>
       <NextSeo
-        title={`D4DJ.Info | ${title}`}
+        title={`${title} | D4DJ.Info`}
         openGraph={{
-          title: `D4DJ.Info | ${title}`,
+          title: `${title} | D4DJ.Info`,
           description: "D4DJ Information Website",
         }}
       />

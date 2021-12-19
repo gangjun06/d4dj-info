@@ -17,7 +17,11 @@
     "gacha": "Gacha",
     "gacha_detail": "Gacha Detail",
     "gallery": "Gallery",
-    "live2d": "Live2D Viewer"
+    "live2d": "Live2D Viewer",
+    "etc": {
+      "name": "Etc",
+      "exp": "Exp Calculator"
+    }
   },
   "about": "About Website",
   "live2d": "Live2D"
