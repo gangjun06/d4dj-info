@@ -93,12 +93,13 @@ export const UserExpCard = () => {
             />
           </FormBlock>
         </div>
-
-        <div>{reqExp}</div>
-        <div>{reqGame}</div>
-        <button className="btn btn-sm btn-primary btn-outline" type="submit">
-          Calculate
-        </button>
+        <div className="flex justify-between items-center">
+          <div>Req Exp: {reqExp}</div>
+          <div>Req Game: {reqGame}</div>
+          <button className="btn btn-sm btn-primary btn-outline" type="submit">
+            Calculate
+          </button>
+        </div>
       </form>
     </Card>
   );
