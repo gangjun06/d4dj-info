@@ -6,6 +6,7 @@ type props = {
   onClose?: () => void;
   showCloseBtn?: boolean;
   children: React.ReactNode;
+  title?: string;
 };
 
 function useDelayUnmount(isMounted: boolean, delayTime: number) {
@@ -25,6 +26,7 @@ function useDelayUnmount(isMounted: boolean, delayTime: number) {
 export const Modal = ({
   show,
   children,
+  title,
   showCloseBtn = false,
   onClose,
 }: props) => {
@@ -34,6 +36,7 @@ export const Modal = ({
     return (
       <div className={`modal z-50 ${display ? "modal-open" : ""}`}>
         <div className="modal-box">
+          {title && <div className="mb-2 text-lg font-bold">{title}</div>}
           <div className="overflow-y-scroll max-h-96">{children}</div>
           {showCloseBtn && (
             <div className="modal-action">

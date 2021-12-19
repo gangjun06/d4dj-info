@@ -1,3 +1,3 @@
 export * from "./CardItem";
 export * from "./EventItem";
-export * from "./Exp";
+export * as Exp from "./Exp";

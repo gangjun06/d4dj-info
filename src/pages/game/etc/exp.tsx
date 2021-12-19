@@ -1,5 +1,5 @@
 import { Card } from "@/components/Basic";
-import { UserExpCard } from "@/components/elements";
+import { Exp } from "@/components/elements";
 import { FormBlock } from "@/components/Form";
 import axios from "axios";
 import MainLayout from "layouts/main";
@@ -19,16 +19,10 @@ export default function Etc() {
       ]}
     >
       <div className="grid-3">
-        <UserExpCard />
-        <Card title={t("exp:unitExp")}>
-          <div></div>
-        </Card>
-        <Card title={t("exp:cardExp")}>
-          <div></div>
-        </Card>
-        <Card title={t("exp:skillExp")}>
-          <div></div>
-        </Card>
+        <Exp.UserExpCard />
+        <Exp.UnitExpCard />
+        <Exp.CardExpCard />
+        <Exp.SkillExpCard />
       </div>
     </MainLayout>
   );
