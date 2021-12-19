@@ -20,13 +20,13 @@ export default function Etc() {
     >
       <div className="grid-3">
         <UserExpCard />
-        <Card title="Unit Exp">
+        <Card title={t("exp:unitExp")}>
           <div></div>
         </Card>
-        <Card title="Card Exp">
+        <Card title={t("exp:cardExp")}>
           <div></div>
         </Card>
-        <Card title="Skill Exp">
+        <Card title={t("exp:skillExp")}>
           <div></div>
         </Card>
       </div>

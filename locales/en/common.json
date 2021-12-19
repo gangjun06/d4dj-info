@@ -23,6 +23,8 @@
   },
   "language": "Language",
   "save": "Save",
+  "close": "Close",
+  "calculate": "Calculate",
   "adblock": "Please Turn off the Adblock",
   "sort_name": "Sort",
   "sort": {

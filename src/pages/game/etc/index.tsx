@@ -14,7 +14,7 @@ export default function Etc() {
       ]}
     >
       <div className="grid-2">
-        <Card link="/game/etc/level">
+        <Card link="/game/etc/exp">
           <div className="flex justify-between items-center">
             <div>{t("nav:game.etc.exp")}</div>
             <HiChevronRight size={22} />

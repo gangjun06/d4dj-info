@@ -56,7 +56,7 @@ const SideNav = ({
 }) => {
   const router = useRouter();
   const { t } = useTransition("");
-  const [show, setShow] = useContext(SettingContext)!;
+  const [_show, setShow] = useContext(SettingContext)!;
 
   const NavItem = ({
     label,
@@ -239,7 +239,7 @@ export default function MainLayout({ breadThumbs, children, title }: props) {
           id="mainContent"
           className="mx-auto lg:ml-80 h-full overflow-y-scroll bg-base-200 overflow-x-hidden"
         >
-          <div className="mx-auto w-full px-8 py-10">
+          <div className="mx-auto w-full px-8 pt-10 pb-24 md:pb-0">
             <div className="text-sm breadcrumbs">
               <ul>
                 {breadThumbs.map((item, index) => (

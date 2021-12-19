@@ -4,12 +4,14 @@ import { UrlObject } from "url";
 
 export function Card({
   children,
+  left,
   title,
   className = "",
   bodyClassName = "",
   link,
 }: {
   children: ReactNode;
+  left?: ReactNode;
   title?: string;
   className?: string;
   bodyClassName?: string;
@@ -17,7 +19,12 @@ export function Card({
 }) {
   const InnerContent = () => (
     <div className="card-body bg-base-100">
-      {title && <h2 className="card-title">{title}</h2>}
+      {title && (
+        <div className="flex items-center justify-between">
+          <h2 className="card-title">{title}</h2>
+          {left && left}
+        </div>
+      )}
       <div className={`h-full ${bodyClassName}`}>{children}</div>
     </div>
   );

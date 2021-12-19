@@ -1,7 +1,10 @@
+import useTranslation from "next-translate/useTranslation";
 import { useEffect, useState } from "react";
 
 type props = {
   show: boolean;
+  onClose?: () => void;
+  showCloseBtn?: boolean;
   children: React.ReactNode;
 };
 
@@ -19,12 +22,27 @@ function useDelayUnmount(isMounted: boolean, delayTime: number) {
   return showDiv;
 }
 
-export const Modal = ({ show, children }: props) => {
+export const Modal = ({
+  show,
+  children,
+  showCloseBtn = false,
+  onClose,
+}: props) => {
   const display = useDelayUnmount(show, 250);
+  const { t } = useTranslation();
   if (show)
     return (
       <div className={`modal z-50 ${display ? "modal-open" : ""}`}>
-        <div className="modal-box">{children}</div>
+        <div className="modal-box">
+          <div className="overflow-y-scroll max-h-96">{children}</div>
+          {showCloseBtn && (
+            <div className="modal-action">
+              <button className="btn btn-primary" onClick={onClose}>
+                {t("common:close")}
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     );
   return <></>;

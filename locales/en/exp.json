@@ -1,0 +1,15 @@
+{
+  "level": "Level",
+  "exp": "Exp",
+  "maxFriend": "Max-Friend",
+  "userExp": "User Exp",
+  "unitExp": "Unit Exp",
+  "cardExp": "Card Exp",
+  "skillExp": "Skill Exp",
+  "reqExp": "Req Exp",
+  "reqGame": "Req Game",
+  "curLevel": "Current Level",
+  "curLevelPercent": "Current Level Percent",
+  "expPerPlay": "Exp Per Play",
+  "targetLevel": "Target Level"
+}

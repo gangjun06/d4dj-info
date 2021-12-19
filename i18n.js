@@ -11,6 +11,7 @@ module.exports = {
     "/game/music": ["music"],
     "/game/music/[id]": ["music"],
     "/game/event/[id]": ["event"],
+    "/game/etc/exp": ["exp"],
     "/about": ["about"],
   },
 };
