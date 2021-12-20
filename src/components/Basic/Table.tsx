@@ -1,28 +1,27 @@
-import { ReactNode } from "react";
-import Link from "next/link";
+import Link from 'next/link'
+import { ReactNode } from 'react'
 
 export const Table = ({ children }: { children: ReactNode }) => (
   <table className="table w-full mt-3 table-compact overflow-x-scroll relative">
     {children}
   </table>
-);
+)
 
 export type TableBodyInput = {
-  name: string;
-  link: string;
-};
+  name: string
+  link: string
+}
 
 export const TableBody = ({
   children,
   data,
 }: {
-  children?: ReactNode;
-  data?: (TableBodyInput | string | number | undefined)[][];
+  children?: ReactNode
+  data?: (TableBodyInput | string | number | undefined)[][]
 }) => {
   if (children) {
-    return <tbody>{children}</tbody>;
+    return <tbody>{children}</tbody>
   }
-  console.log(data);
   return (
     <tbody>
       {data?.map((item, i) => {
@@ -31,7 +30,7 @@ export const TableBody = ({
           <tr key={i}>
             {item.map((str, j) => (
               <td key={j}>
-                {typeof str === "object" ? (
+                {typeof str === 'object' ? (
                   <Link href={str.link} passHref>
                     <a className="link link-primary">{str.name}</a>
                   </Link>
@@ -41,11 +40,11 @@ export const TableBody = ({
               </td>
             ))}
           </tr>
-        );
+        )
       })}
     </tbody>
-  );
-};
+  )
+}
 
 export const TableRow = ({ data }: { data: string[] }) => (
   <tr>
@@ -53,7 +52,7 @@ export const TableRow = ({ data }: { data: string[] }) => (
       <td key={index}>{item}</td>
     ))}
   </tr>
-);
+)
 
 export const TableHead = ({ data }: { data: string[] }) => (
   <thead className="sticky top-0">
@@ -63,4 +62,4 @@ export const TableHead = ({ data }: { data: string[] }) => (
       ))}
     </tr>
   </thead>
-);
+)

@@ -1,61 +1,59 @@
-import { useForm } from "react-hook-form";
-import useTransition from "next-translate/useTranslation";
-import setLanguage from "next-translate/setLanguage";
-import { FormBlock, Radio } from "./Form";
+import setLanguage from 'next-translate/setLanguage'
+import useTransition from 'next-translate/useTranslation'
 import {
-  useState,
   createContext,
+  Dispatch,
   ReactNode,
   SetStateAction,
-  Dispatch,
-  useCallback,
-  useEffect,
-} from "react";
-import { Modal } from "./Basic";
+  useState,
+} from 'react'
+import { useForm } from 'react-hook-form'
+import { Modal } from './Basic'
+import { FormBlock, Radio } from './Form'
 
 export const SettingContext = createContext<
   [boolean, Dispatch<SetStateAction<boolean>>] | null
->(null);
+>(null)
 
 type FormData = {
-  lang: string;
-};
+  lang: string
+}
 
 export const SettingProvider = ({ children }: { children: ReactNode }) => {
-  const [state, setState] = useState<boolean>(false);
-  const { t, lang } = useTransition();
+  const [state, setState] = useState<boolean>(false)
+  const { t, lang } = useTransition()
   const { handleSubmit, control } = useForm<FormData>({
     defaultValues: {
       lang,
     },
-  });
+  })
 
   const onSubmit = handleSubmit((data) => {
-    setLanguage(data.lang);
-    localStorage.setItem("lang", data.lang);
-    setState(false);
-  });
+    setLanguage(data.lang)
+    localStorage.setItem('lang', data.lang)
+    setState(false)
+  })
 
   return (
     <SettingContext.Provider value={[state, setState]}>
       <Modal show={state}>
-        <FormBlock label={t("common:language")}>
+        <FormBlock label={t('common:language')}>
           <Radio
             control={control}
             name="lang"
             list={[
-              { label: "Korean", value: "ko" },
-              { label: "English", value: "en" },
+              { label: 'Korean', value: 'ko' },
+              { label: 'English', value: 'en' },
             ]}
           />
         </FormBlock>
         <div className="modal-action">
           <button className="btn btn-primary" onClick={onSubmit}>
-            {t("common:save")}
+            {t('common:save')}
           </button>
         </div>
       </Modal>
       {children}
     </SettingContext.Provider>
-  );
-};
+  )
+}

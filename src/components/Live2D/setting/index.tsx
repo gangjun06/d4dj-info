@@ -1,67 +1,60 @@
-import React, { useContext, useEffect, useMemo } from "react";
+import { useWindowWidth } from '@react-hook/window-size'
 import {
-  SideSheet,
-  Pane,
-  Heading,
-  Paragraph,
-  Tablist,
-  Tab,
-  Card,
-  Button,
-  Autocomplete,
-  TextInput,
-  ThemeProvider,
-  TextInputField,
   defaultTheme,
-  Theme,
-} from "evergreen-ui";
-import { Live2DContext } from "../context";
-import { useWindowWidth } from "@react-hook/window-size";
-import { modelData } from "../modelData";
-import { TabConfig } from "./tabConfig";
-import { TabModel } from "./tabModel";
+  Heading,
+  Pane,
+  Paragraph,
+  SideSheet,
+  Tab,
+  Tablist,
+  ThemeProvider,
+} from 'evergreen-ui'
+import React, { useContext, useEffect, useMemo } from 'react'
+import { Live2DContext } from '../context'
+import { TabConfig } from './tabConfig'
+import { TabModel } from './tabModel'
 
 const theme = {
   ...defaultTheme,
   colors: {
     //@ts-ignore
     ...defaultTheme.colors,
-    overlay: "rgba(0,0,0,0)",
+    overlay: 'rgba(0,0,0,0)',
   },
-};
+}
 
 type props = {
-  isShown: boolean;
-  onClose: () => void;
-};
+  isShown: boolean
+  onClose: () => void
+}
 
 function Content({ selectedIndex }: { selectedIndex: number }) {
   switch (selectedIndex) {
     case 0:
-      return <TabConfig />;
+      return <TabConfig />
     default:
-      return <TabModel index={selectedIndex - 1} />;
+      return <TabModel index={selectedIndex - 1} />
   }
 }
 
 export function Setting({ isShown, onClose }: props) {
   // const [isShown, setIsShown] = React.useState(false);
   const { dragable, setModels, models, configIndex, setConfigIndex } =
-    useContext(Live2DContext);
-  const windowWidth = useWindowWidth();
+    useContext(Live2DContext)
+  const windowWidth = useWindowWidth()
   const sideSheetSize = useMemo(() => {
-    if (windowWidth > 800) return undefined;
-    if (windowWidth > 455) return 400;
-    return windowWidth - 55;
-  }, [windowWidth]);
+    if (windowWidth > 800) return undefined
+    if (windowWidth > 455) return 400
+    return windowWidth - 55
+  }, [windowWidth])
   useEffect(() => {
     setModels((item) => {
       item.forEach((model) => {
-        model.data.dragable = dragable;
-      });
-      return item;
-    });
-  }, [dragable]);
+        model.data.dragable = dragable
+      })
+      return item
+    })
+  }, [dragable])
   return (
     <ThemeProvider value={theme}>
       <SideSheet
@@ -70,9 +63,9 @@ export function Setting({ isShown, onClose }: props) {
         width={sideSheetSize}
         containerProps={{
           zIndex: 10,
-          display: "flex",
-          flex: "1",
-          flexDirection: "column",
+          display: 'flex',
+          flex: '1',
+          flexDirection: 'column',
         }}
       >
         <Pane zIndex={1} flexShrink={0} elevation={0} backgroundColor="white">
@@ -85,7 +78,7 @@ export function Setting({ isShown, onClose }: props) {
           <Pane display="flex" padding={8}>
             <Tablist>
               {[
-                "Config",
+                'Config',
                 ...(models ? models.map((item) => item.name) : []),
               ].map((tab, index) => (
                 <Tab
@@ -104,5 +97,5 @@ export function Setting({ isShown, onClose }: props) {
         </Pane>
       </SideSheet>
     </ThemeProvider>
-  );
+  )
 }

@@ -1,14 +1,13 @@
-import { gql } from "@apollo/client";
-import * as models from "models";
-import { PaginationInput, SortInput } from "./base";
+import { gql } from '@apollo/client'
+import * as models from 'models'
 
 export interface GetCharacterRes {
-  character: models.Character[];
+  character: models.Character[]
 }
 export interface GetCharacterReq {
   filter: {
-    id: number;
-  };
+    id: number
+  }
 }
 export const GET_CHARACTER_DETAIL = gql`
   query Query($filter: CharacterFilterInput) {
@@ -31,4 +30,4 @@ export const GET_CHARACTER_DETAIL = gql`
       }
     }
   }
-`;
+`

@@ -11,5 +11,18 @@
     "twitter_d4dj_pj_EN": "Twitter @D4DJ_pj_EN",
     "community_gall": "(KO) D4DJ Gallery",
     "community_discord": "D4DJ Discord"
+  },
+  "info": {
+    "name": "Website Info",
+    "content": "<div>This site was created to allow you to quickly view various information related to the D4DJ project.<br></br><br></br> <b>D4DJ.info is not an official site or related site. Official images/information provided on this site are owned by Bush Road and Donuts.</b> <br></br>Contact/Question: <mailto>me@gangjun.dev</mailto></div>"
+  },
+  "contribute": {
+    "name": "Contribute",
+    "content": "This website is open source and anyone can contribute through github.",
+    "links": "<a1>gangjun06/d4dj-info(Frontend)</a1> <a2>gangjun06/d4dj-info-backend(Backend)</a2> <a3>gangjun06/d4dj-crawler(Crawler)</a3>"
+  },
+  "donate": {
+    "name": "Donate",
+    "content": "This website is operated at the developer's own expense and does not generate any revenue. Please support the server fee so that the site can continue to be maintained."
   }
 }

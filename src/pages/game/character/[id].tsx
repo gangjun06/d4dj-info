@@ -1,45 +1,41 @@
-import MainLayout from "layouts/main";
-import useTransition from "next-translate/useTranslation";
-import { Card, Disclosure } from "@/components/Basic";
-import Image from "next/image";
-import Link from "next/link";
 import {
   GetCharacterReq,
   GetCharacterRes,
   GET_CHARACTER_DETAIL,
-} from "@/apollo/gql";
-import { myLoader, pad } from "utils";
-import { Table, TableBody } from "@/components/Basic";
-import { Character as CharacterModel } from "models";
-import { CardItem } from "@/components/elements";
-import { client } from "apollo";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import React from "react";
-import { createLive2DShare } from "utils/live2d";
-import { CharacterIcon } from "@/components/Image";
+} from '@/apollo/gql'
+import { Card, Disclosure, Table, TableBody } from '@/components/Basic'
+import { CardItem } from '@/components/elements'
+import { CharacterIcon } from '@/components/Image'
+import { client } from 'apollo'
+import MainLayout from 'layouts/main'
+import { Character as CharacterModel } from 'models'
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import useTransition from 'next-translate/useTranslation'
+import Image from 'next/image'
+import React from 'react'
+import { myLoader, pad } from 'utils'
+import { createLive2DShare } from 'utils/live2d'
 export default function CardDetail({
   character,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const { t } = useTransition("");
+  const { t } = useTransition('')
 
   return (
     <MainLayout
       breadThumbs={[
-        { name: t("nav:game.name"), link: "" },
-        { name: t("nav:game.character"), link: "/game/character" },
+        { name: t('nav:game.name'), link: '' },
+        { name: t('nav:game.character'), link: '/game/character' },
         {
-          name: t("nav:game.character_detail"),
+          name: t('nav:game.character_detail'),
           link: `/game/character/${character.id}`,
         },
       ]}
-      title={`${t("nav:game.character_detail")} - ${
-        character.fullNameEnglish || character?.firstNameEnglish
-      }`}
+      title={`${character.fullNameEnglish || character?.firstNameEnglish}`}
     >
       <div className="grid-2">
         <div className="col-span-1">
           <Card
-            title={t("character:info")}
+            title={t('character:info')}
             bodyClassName="flex justify-center flex-col items-center"
           >
             <CharacterIcon id={character.id} alt={character.fullNameEnglish} />
@@ -52,14 +48,14 @@ export default function CardDetail({
             <Table>
               <TableBody
                 data={[
-                  [t("character:id"), character.id],
-                  [t("character:color_code"), character.colorCode],
-                  [t("character:firstname"), character.firstName],
-                  [t("character:firstname_eng"), character.firstNameEnglish],
-                  [t("character:fullname"), character.fullName],
-                  [t("character:fullname_eng"), character.fullNameEnglish],
+                  [t('character:id'), character.id],
+                  [t('character:color_code'), character.colorCode],
+                  [t('character:firstname'), character.firstName],
+                  [t('character:firstname_eng'), character.firstNameEnglish],
+                  [t('character:fullname'), character.fullName],
+                  [t('character:fullname_eng'), character.fullNameEnglish],
                   [
-                    t("nav:live2d"),
+                    t('nav:live2d'),
                     {
                       link: createLive2DShare([
                         {
@@ -69,7 +65,7 @@ export default function CardDetail({
                           model: `live2d_chara_${pad(character.id, 3)}0001`,
                         },
                       ]),
-                      name: t("nav:live2d"),
+                      name: t('nav:live2d'),
                     },
                   ],
                 ]}
@@ -79,8 +75,8 @@ export default function CardDetail({
         </div>
         {character.id < 700 && (
           <div className="col-span-1 md:col-span-2">
-            <Card title={t("character:illustrations.name")}>
-              <Disclosure title={t("character:illustrations.livestart")}>
+            <Card title={t('character:illustrations.name')}>
+              <Disclosure title={t('character:illustrations.livestart')}>
                 <div className="flex-center">
                   <Image
                     loader={myLoader}
@@ -94,7 +90,7 @@ export default function CardDetail({
                   />
                 </div>
               </Disclosure>
-              <Disclosure title={t("character:illustrations.rankheader")}>
+              <Disclosure title={t('character:illustrations.rankheader')}>
                 <div className="flex-center">
                   <Image
                     loader={myLoader}
@@ -108,7 +104,7 @@ export default function CardDetail({
                   />
                 </div>
               </Disclosure>
-              <Disclosure title={t("character:illustrations.gacha_silhouette")}>
+              <Disclosure title={t('character:illustrations.gacha_silhouette')}>
                 <div className="flex-center bg-gray-500 relative h-48">
                   <Image
                     loader={myLoader}
@@ -122,7 +118,7 @@ export default function CardDetail({
                   />
                 </div>
               </Disclosure>
-              <Disclosure title={t("character:illustrations.profile")}>
+              <Disclosure title={t('character:illustrations.profile')}>
                 <div className="flex-center">
                   <Image
                     loader={myLoader}
@@ -136,7 +132,7 @@ export default function CardDetail({
                   />
                 </div>
               </Disclosure>
-              <Disclosure title={t("character:illustrations.standup")}>
+              <Disclosure title={t('character:illustrations.standup')}>
                 <div className="flex-center relative h-96">
                   <Image
                     loader={myLoader}
@@ -155,7 +151,7 @@ export default function CardDetail({
         )}
         {character.card!.length !== 0 && (
           <>
-            <div className="subtitle">{t("character:card_list")}</div>
+            <div className="subtitle">{t('character:card_list')}</div>
             <div className="col-span-1 md:col-span-3">
               <div className="grid-1">
                 {character.card!.map((item, index) => (
@@ -167,17 +163,17 @@ export default function CardDetail({
         )}
       </div>
     </MainLayout>
-  );
+  )
 }
 
 export const getServerSideProps: GetServerSideProps<{
-  character: CharacterModel;
+  character: CharacterModel
 }> = async (context) => {
-  const id = context.query.id;
-  if (typeof id !== "string") {
+  const id = context.query.id
+  if (typeof id !== 'string') {
     return {
       notFound: true,
-    };
+    }
   }
 
   const { data } = await client.query<GetCharacterRes, GetCharacterReq>({
@@ -187,16 +183,16 @@ export const getServerSideProps: GetServerSideProps<{
         id: parseInt(id as string),
       },
     },
-    fetchPolicy: "no-cache",
-  });
+    fetchPolicy: 'no-cache',
+  })
 
   if (!data.character.length) {
-    return { notFound: true };
+    return { notFound: true }
   }
 
   return {
     props: {
       character: data.character[0],
     },
-  };
-};
+  }
+}

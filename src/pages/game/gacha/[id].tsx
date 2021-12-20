@@ -1,45 +1,40 @@
-import MainLayout from "layouts/main";
-import useTransition from "next-translate/useTranslation";
-import { Card, Disclosure } from "@/components/Basic";
-import Image from "next/image";
-import { Grid, GridCol } from "@/components/Layout";
-import { useQuery } from "@apollo/client";
-import { WaitQuery } from "@/components/Util";
-import { GetGachaReq, GetGachaRes, GET_GACHA_DETAIL } from "@/apollo/gql";
-import { formatTimeDetail, myLoader, pad } from "utils";
-import { useRouter } from "next/router";
-import { Table, TableBody } from "@/components/Basic";
-import { Gacha, Gacha as GachaModel, GachaCategory } from "models";
-import { client } from "apollo";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import { CardItem } from "@/components/elements";
+import { GetGachaReq, GetGachaRes, GET_GACHA_DETAIL } from '@/apollo/gql'
+import { Card, Disclosure, Table, TableBody } from '@/components/Basic'
+import { CardItem } from '@/components/elements'
+import { client } from 'apollo'
+import MainLayout from 'layouts/main'
+import { Gacha, Gacha as GachaModel, GachaCategory } from 'models'
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import useTransition from 'next-translate/useTranslation'
+import Image from 'next/image'
+import { formatTimeDetail, myLoader, pad } from 'utils'
 
 const canUseBanner = (item: Gacha) =>
   item.category !== GachaCategory.Tutorial &&
-  item.category !== GachaCategory.Birthday;
+  item.category !== GachaCategory.Birthday
 
 export default function GachaDetail({
   gacha,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const { t } = useTransition("");
-  const useBanner = canUseBanner(gacha);
+  const { t } = useTransition('')
+  const useBanner = canUseBanner(gacha)
 
   return (
     <MainLayout
       breadThumbs={[
-        { name: t("nav:game.name"), link: "" },
-        { name: t("nav:game.gacha"), link: "/game/gacha" },
+        { name: t('nav:game.name'), link: '' },
+        { name: t('nav:game.gacha'), link: '/game/gacha' },
         {
-          name: t("nav:game.gacha_detail"),
+          name: t('nav:game.gacha_detail'),
           link: `/game/event/${gacha.id}`,
         },
       ]}
-      title={`${t("nav:game.gacha_detail")} - ${gacha.name}`}
+      title={`${gacha.name}`}
     >
       <div className="grid-2">
         <div className="col-span-1">
           <Card
-            title={t("gacha:info")}
+            title={t('gacha:info')}
             bodyClassName="flex justify-center flex-col items-center"
           >
             <Image
@@ -62,11 +57,11 @@ export default function GachaDetail({
             <Table>
               <TableBody
                 data={[
-                  [t("gacha:id"), gacha.id],
-                  [t("gacha:startdate"), formatTimeDetail(gacha.startDate)],
-                  [t("gacha:enddate"), formatTimeDetail(gacha.endDate)],
-                  [t("gacha:type"), gacha.type],
-                  [t("gacha:category"), gacha.category],
+                  [t('gacha:id'), gacha.id],
+                  [t('gacha:startdate'), formatTimeDetail(gacha.startDate)],
+                  [t('gacha:enddate'), formatTimeDetail(gacha.endDate)],
+                  [t('gacha:type'), gacha.type],
+                  [t('gacha:category'), gacha.category],
                 ]}
               />
             </Table>
@@ -75,15 +70,15 @@ export default function GachaDetail({
         <div className="col-span-1 md:col-span-2">
           <Card>
             <h2 className="card-title">Descriptions</h2>
-            <Disclosure title={t("gacha:note")}>
+            <Disclosure title={t('gacha:note')}>
               <div>{gacha.note}</div>
             </Disclosure>
-            <Disclosure title={t("gacha:detail")}>
+            <Disclosure title={t('gacha:detail')}>
               <div>{gacha.detail}</div>
             </Disclosure>
           </Card>
         </div>
-        <div className="subtitle">{t("gacha:pickup_cards")}</div>
+        <div className="subtitle">{t('gacha:pickup_cards')}</div>
         <div className="col-span-1 md:col-span-3">
           <div className="grid-1">
             {gacha.pickUpCards!.map((item, index) => (
@@ -93,17 +88,17 @@ export default function GachaDetail({
         </div>
       </div>
     </MainLayout>
-  );
+  )
 }
 
 export const getServerSideProps: GetServerSideProps<{
-  gacha: GachaModel;
+  gacha: GachaModel
 }> = async (context) => {
-  const id = context.query.id;
-  if (typeof id !== "string") {
+  const id = context.query.id
+  if (typeof id !== 'string') {
     return {
       notFound: true,
-    };
+    }
   }
 
   const { data } = await client.query<GetGachaRes, GetGachaReq>({
@@ -113,16 +108,16 @@ export const getServerSideProps: GetServerSideProps<{
         id: parseInt(id as string),
       },
     },
-    fetchPolicy: "no-cache",
-  });
+    fetchPolicy: 'no-cache',
+  })
 
   if (!data.gacha.length) {
-    return { notFound: true };
+    return { notFound: true }
   }
 
   return {
     props: {
       gacha: data.gacha[0],
     },
-  };
-};
+  }
+}

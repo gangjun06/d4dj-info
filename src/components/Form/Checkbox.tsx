@@ -1,10 +1,10 @@
-import { Control, Controller } from "react-hook-form";
+import { Control, Controller } from 'react-hook-form'
 
 type props = {
-  list: { label: string; value: string }[];
-  control: Control<any, object>;
-  name: string;
-};
+  list: { label: string; value: string }[]
+  control: Control<any, object>
+  name: string
+}
 
 export function Checkbox({ name, control, list }: props) {
   return (
@@ -24,7 +24,7 @@ export function Checkbox({ name, control, list }: props) {
                 value={undefined}
                 checked={field.value === item.value}
                 onChange={(event) => {
-                  field.onChange(event.target.checked ? item.value : undefined);
+                  field.onChange(event.target.checked ? item.value : undefined)
                 }}
               />
             </label>
@@ -32,5 +32,5 @@ export function Checkbox({ name, control, list }: props) {
         />
       ))}
     </div>
-  );
+  )
 }

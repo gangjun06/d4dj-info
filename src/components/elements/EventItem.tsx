@@ -1,6 +1,6 @@
-import { Event } from "models";
-import Image from "next/image";
-import { formatTime, myLoader } from "utils";
+import { Event } from 'models'
+import Image from 'next/image'
+import { formatTime, myLoader } from 'utils'
 
 export const EventItemContent = ({ data }: { data: Event }) => (
   <div className="flex-center flex-col">
@@ -19,4 +19,4 @@ export const EventItemContent = ({ data }: { data: Event }) => (
       {`${formatTime(data.startDate)} ~ ${formatTime(data.endDate)}`}
     </div>
   </div>
-);
+)

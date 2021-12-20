@@ -1,30 +1,30 @@
-import dynamic from "next/dynamic";
-import Head from "next/head";
-import { useRouter } from "next/router";
-import { Spinner, Text } from "evergreen-ui";
-import { useEffect, useState } from "react";
+import dynamic from 'next/dynamic'
+import Head from 'next/head'
+import { useRouter } from 'next/router'
+import { Spinner, Text } from 'evergreen-ui'
+import { useEffect, useState } from 'react'
 
-const Live2DView = dynamic(() => import("@/components/Live2D"), {
+const Live2DView = dynamic(() => import('@/components/Live2D'), {
   ssr: false,
 
   // eslint-disable-next-line react/display-name
   loading: () => <Loading />,
-});
+})
 
 function Loading() {
-  const [show, setShow] = useState<boolean>(false);
+  const [show, setShow] = useState<boolean>(false)
   useEffect(() => {
-    setTimeout(() => setShow(true), 5000);
-  }, []);
+    setTimeout(() => setShow(true), 5000)
+  }, [])
   return (
     <div
       style={{
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "column",
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
       }}
     >
       <Spinner />
@@ -34,11 +34,11 @@ function Loading() {
         </Text>
       )}
     </div>
-  );
+  )
 }
 
 export default function Live2D() {
-  const router = useRouter();
+  const router = useRouter()
   return (
     <>
       <Head>
@@ -50,13 +50,13 @@ export default function Live2D() {
       </Head>
       <div
         style={{
-          position: "relative",
-          height: "100vh",
-          width: "100vw",
+          position: 'relative',
+          height: '100vh',
+          width: '100vw',
         }}
       >
         <Live2DView urlData={router.query.data} />
       </div>
     </>
-  );
+  )
 }

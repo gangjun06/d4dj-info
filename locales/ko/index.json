@@ -11,5 +11,18 @@
     "twitter_d4dj_pj_EN": "트위터 @D4DJ_pj_EN",
     "community_gall": "Dcinside D4DJ 갤러리",
     "community_discord": "D4DJ 디스코드"
+  },
+  "info": {
+    "name": "사이트 정보",
+    "content": "<div> D4DJ프로젝트에 관련된 각종 정보를 빠르게 볼 수 있기위해 만들어진 사이트입니다.  <br></br><br></br> <b> D4DJ.info는 공식 사이트 또는 연관 사이트가 아닙니다. 이 사이트에서 제공하는 공식 이미지/정보들의 저작권은 bushiroad와 Donuts가 소유하고 있습니다.  </b> <br></br> 문의: <mailto>me@gangjun.dev</mailto> </div>"
+  },
+  "contribute": {
+    "name": "기여",
+    "content": "본 웹사이트는 오픈소스이며 누구나 Github를 통하여 이 웹사이트에 기여를 하실 수 있습니다.",
+    "links": "<a1>gangjun06/d4dj-info(프론트엔드)</a1> <a2>gangjun06/d4dj-info-backend(백엔드)</a2> <a3>gangjun06/d4dj-crawler(크롤러)</a3>"
+  },
+  "donate": {
+    "name": "후원",
+    "content": "본 웹사이트는 개발자의 자비로 운영되며, 수익을 창출하지 않습니다. 사이트가 계속 유지될 수 있도록 서버비를 지원하여 주세요."
   }
 }

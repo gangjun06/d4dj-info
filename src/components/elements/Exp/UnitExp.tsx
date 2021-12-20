@@ -1,50 +1,48 @@
-import axios from "axios";
-import useTransition from "next-translate/useTranslation";
-import { useEffect, useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
-import { Card, Modal, Table, TableBody, TableHead } from "../../Basic";
-import { FormBlock } from "../../Form";
-import { HiOutlineInformationCircle } from "react-icons/hi";
-import { formatNumber } from "utils";
+import axios from 'axios'
+import useTransition from 'next-translate/useTranslation'
+import { useEffect, useMemo, useState } from 'react'
+import { HiOutlineInformationCircle } from 'react-icons/hi'
+import { formatNumber } from 'utils'
+import { Card, Modal, Table, TableBody, TableHead } from '../../Basic'
 
 export const UnitExpCard = () => {
-  const { t } = useTransition("");
+  const { t } = useTransition('')
 
-  const [expData, setExpData] = useState<any | null>(null);
-  const [show, setShow] = useState<boolean>(false);
+  const [expData, setExpData] = useState<any | null>(null)
+  const [show, setShow] = useState<boolean>(false)
 
   const expTableData = useMemo(() => {
-    if (!expData) return [];
+    if (!expData) return []
     return Object.keys(expData).map((item: any) => [
       expData[item].Level,
       formatNumber(expData[item].TotalExp),
-    ]);
-  }, [expData]);
+    ])
+  }, [expData])
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       const res = await axios.get(
-        "https://asset.d4dj.info/Master/UnitExpMaster.json"
-      );
-      setExpData(res.data);
-    })();
-  }, []);
+        'https://asset.d4dj.info/Master/UnitExpMaster.json'
+      )
+      setExpData(res.data)
+    })()
+  }, [])
 
   return (
     <>
       <Modal
-        title={t("exp:unitExp")}
+        title={t('exp:unitExp')}
         show={show}
         onClose={() => setShow(false)}
         showCloseBtn
       >
         <Table>
-          <TableHead data={[t("exp:level"), t("exp:exp")]} />
+          <TableHead data={[t('exp:level'), t('exp:exp')]} />
           <TableBody data={expTableData} />
         </Table>
       </Modal>
       <Card
-        title={t("exp:unitExp")}
+        title={t('exp:unitExp')}
         left={
           <HiOutlineInformationCircle
             size={22}
@@ -53,8 +51,8 @@ export const UnitExpCard = () => {
           />
         }
       >
-        <div>{t("exp:clickGuide")}</div>
+        <div>{t('exp:clickGuide')}</div>
       </Card>
     </>
-  );
-};
+  )
+}

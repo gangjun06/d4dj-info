@@ -1,10 +1,10 @@
-import { Control, Controller } from "react-hook-form";
+import { Control, Controller } from 'react-hook-form'
 
 type props = {
-  list: { label: string; value: string }[];
-  control: Control<any, object>;
-  name: string;
-};
+  list: { label: string; value: string }[]
+  control: Control<any, object>
+  name: string
+}
 
 export function Radio({ name, control, list }: props) {
   return (
@@ -26,7 +26,7 @@ export function Radio({ name, control, list }: props) {
                   onChange={(event) => {
                     field.onChange(
                       event.target.checked ? item.value : undefined
-                    );
+                    )
                   }}
                 />
               </label>
@@ -35,5 +35,5 @@ export function Radio({ name, control, list }: props) {
         )}
       />
     </div>
-  );
+  )
 }

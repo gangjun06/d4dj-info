@@ -1,13 +1,13 @@
-import { Event, Gacha, GachaCategory } from "models";
-import Image from "next/image";
-import { formatTime, myLoader, pad } from "utils";
+import { Gacha, GachaCategory } from 'models'
+import Image from 'next/image'
+import { formatTime, myLoader, pad } from 'utils'
 
 const canUseBanner = (item: Gacha) =>
   item.category !== GachaCategory.Tutorial &&
-  item.category !== GachaCategory.Birthday;
+  item.category !== GachaCategory.Birthday
 
 export const GachaItemContent = ({ data }: { data: Gacha }) => {
-  const useBanner = canUseBanner(data);
+  const useBanner = canUseBanner(data)
   return (
     <div className="flex-center flex-col">
       <Image
@@ -29,5 +29,5 @@ export const GachaItemContent = ({ data }: { data: Gacha }) => {
         {`${formatTime(data.startDate)} ~ ${formatTime(data.endDate)}`}
       </div>
     </div>
-  );
-};
+  )
+}

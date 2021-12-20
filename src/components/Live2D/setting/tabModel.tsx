@@ -1,56 +1,47 @@
-import { useContext, useCallback, useState } from "react";
-
-import {
-  Button,
-  Combobox,
-  FormField,
-  Pane,
-  Tooltip,
-  Position,
-} from "evergreen-ui";
-import { Live2DContext } from "../context";
-import { useEffect } from "react";
+import { Button, Combobox, FormField, Pane } from 'evergreen-ui'
+import { useCallback, useContext, useEffect, useState } from 'react'
+import { Live2DContext } from '../context'
 
 export function TabModel({ index }: { index: number }) {
-  const { models, setModels, app, setConfigIndex } = useContext(Live2DContext);
-  const [scale, setScale] = useState<number>(40);
+  const { models, setModels, app, setConfigIndex } = useContext(Live2DContext)
+  const [scale, setScale] = useState<number>(40)
 
   const motions = useCallback((): any[] => {
-    return models[index].data.internalModel.motionManager.settings.motions[""]
+    return models[index].data.internalModel.motionManager.settings.motions['']
       .map((item: any) =>
-        item.File.replace(".motion3.json", "").replace("motions/", "")
+        item.File.replace('.motion3.json', '').replace('motions/', '')
       )
-      .sort();
-  }, [models[index].data.tag]);
+      .sort()
+  }, [models[index].data.tag])
 
   const expressions = useCallback((): any[] => {
     return models[index].data.internalModel.settings.expressions
       .map((item: any) => item.Name)
-      .sort();
-  }, [models[index].data.tag]);
+      .sort()
+  }, [models[index].data.tag])
 
   useEffect(() => {
-    setScale(models[index].data.scale._x * 100);
-  }, [models[index]]);
+    setScale(models[index].data.scale._x * 100)
+  }, [models[index]])
 
   const doMotion = (selected: string) => {
     models[index].data.internalModel.motionManager.startMotion(
-      "",
+      '',
       motions().indexOf(selected)
-    );
-  };
+    )
+  }
 
   const doExpression = (selected: string) => {
-    models[index].data.expression(selected);
-  };
+    models[index].data.expression(selected)
+  }
 
   const deleteSelf = () => {
-    setConfigIndex(0);
-    const modelList = models;
-    app?.stage.removeChild(models[index].data);
-    modelList.splice(index, 1);
-    setModels(modelList);
-  };
+    setConfigIndex(0)
+    const modelList = models
+    app?.stage.removeChild(models[index].data)
+    modelList.splice(index, 1)
+    setModels(modelList)
+  }
 
   return (
     <>
@@ -79,8 +70,8 @@ export function TabModel({ index }: { index: number }) {
           step={1}
           value={scale}
           onChange={(e) => {
-            models[index].data.scale.set(parseInt(e.target.value) / 100);
-            setScale(parseInt(e.target.value));
+            models[index].data.scale.set(parseInt(e.target.value) / 100)
+            setScale(parseInt(e.target.value))
           }}
         />
       </FormField>
@@ -91,5 +82,5 @@ export function TabModel({ index }: { index: number }) {
         </Button>
       </Pane>
     </>
-  );
+  )
 }

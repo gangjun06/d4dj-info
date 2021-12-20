@@ -1,12 +1,12 @@
-import { ApolloError } from "@apollo/client";
-import { ReactNode } from "react";
+import { ApolloError } from '@apollo/client'
+import { ReactNode } from 'react'
 
 type props = {
-  loading: boolean;
-  error: ApolloError | undefined;
-  children: ReactNode;
-  loadingComponent?: ReactNode;
-};
+  loading: boolean
+  error: ApolloError | undefined
+  children: ReactNode
+  loadingComponent?: ReactNode
+}
 
 export function WaitQuery({
   loading,
@@ -15,10 +15,10 @@ export function WaitQuery({
   loadingComponent = <></>,
 }: props) {
   if (loading) {
-    return <>{loadingComponent}</>;
+    return <>{loadingComponent}</>
   }
   if (error) {
-    return <div>error...</div>;
+    return <div>error...</div>
   }
-  return <>{children}</>;
+  return <>{children}</>
 }

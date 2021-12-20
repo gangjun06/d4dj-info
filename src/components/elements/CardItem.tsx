@@ -1,12 +1,12 @@
-import { Card as CardModel } from "models";
-import React from "react";
-import { myLoader, pad } from "utils";
-import Image from "next/image";
-import { Card } from "../Basic";
-import useTranslation from "next-translate/useTranslation";
+import { Card as CardModel } from 'models'
+import React from 'react'
+import { myLoader, pad } from 'utils'
+import Image from 'next/image'
+import { Card } from '../Basic'
+import useTranslation from 'next-translate/useTranslation'
 
 export const CardItem = ({ data }: { data: CardModel }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
   return (
     <Card
       bodyClassName="flex justify-center items-center flex-col"
@@ -15,7 +15,7 @@ export const CardItem = ({ data }: { data: CardModel }) => {
       <Image
         loader={myLoader}
         src={`ondemand/card_icon/card_icon_${pad(data.id, 9)}_${
-          data.rarity > 2 ? "1" : "0"
+          data.rarity > 2 ? '1' : '0'
         }.jpg`}
         width="128"
         alt={`card ${data.cardName}`}
@@ -29,5 +29,5 @@ export const CardItem = ({ data }: { data: CardModel }) => {
       </div>
       {data.cardName}
     </Card>
-  );
-};
+  )
+}

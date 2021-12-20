@@ -1,26 +1,26 @@
-import useTranslation from "next-translate/useTranslation";
-import { useEffect, useState } from "react";
+import useTranslation from 'next-translate/useTranslation'
+import { useEffect, useState } from 'react'
 
 type props = {
-  show: boolean;
-  onClose?: () => void;
-  showCloseBtn?: boolean;
-  children: React.ReactNode;
-  title?: string;
-};
+  show: boolean
+  onClose?: () => void
+  showCloseBtn?: boolean
+  children: React.ReactNode
+  title?: string
+}
 
 function useDelayUnmount(isMounted: boolean, delayTime: number) {
-  const [showDiv, setShowDiv] = useState(false);
+  const [showDiv, setShowDiv] = useState(false)
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
+    let timeoutId: NodeJS.Timeout
     if (isMounted && !showDiv) {
-      setShowDiv(true);
+      setShowDiv(true)
     } else if (!isMounted && showDiv) {
-      timeoutId = setTimeout(() => setShowDiv(false), delayTime); //delay our unmount
+      timeoutId = setTimeout(() => setShowDiv(false), delayTime) //delay our unmount
     }
-    return () => clearTimeout(timeoutId); // cleanup mechanism for effects , the use of setTimeout generate a sideEffect
-  }, [isMounted, delayTime, showDiv]);
-  return showDiv;
+    return () => clearTimeout(timeoutId) // cleanup mechanism for effects , the use of setTimeout generate a sideEffect
+  }, [isMounted, delayTime, showDiv])
+  return showDiv
 }
 
 export const Modal = ({
@@ -30,23 +30,23 @@ export const Modal = ({
   showCloseBtn = false,
   onClose,
 }: props) => {
-  const display = useDelayUnmount(show, 250);
-  const { t } = useTranslation();
+  const display = useDelayUnmount(show, 250)
+  const { t } = useTranslation()
   if (show)
     return (
-      <div className={`modal z-50 ${display ? "modal-open" : ""}`}>
+      <div className={`modal z-50 ${display ? 'modal-open' : ''}`}>
         <div className="modal-box">
           {title && <div className="mb-2 text-lg font-bold">{title}</div>}
           <div className="overflow-y-scroll max-h-96">{children}</div>
           {showCloseBtn && (
             <div className="modal-action">
               <button className="btn btn-primary" onClick={onClose}>
-                {t("common:close")}
+                {t('common:close')}
               </button>
             </div>
           )}
         </div>
       </div>
-    );
-  return <></>;
-};
+    )
+  return <></>
+}

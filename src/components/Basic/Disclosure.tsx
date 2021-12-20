@@ -1,14 +1,14 @@
-import { ReactNode } from "react";
-import { Disclosure as HeadlessDisclosure } from "@headlessui/react";
-import { HiOutlineChevronUp } from "react-icons/hi";
-const { Button, Panel } = HeadlessDisclosure;
+import { ReactNode } from 'react'
+import { Disclosure as HeadlessDisclosure } from '@headlessui/react'
+import { HiOutlineChevronUp } from 'react-icons/hi'
+const { Button, Panel } = HeadlessDisclosure
 
 export const Disclosure = ({
   title,
   children,
 }: {
-  title: string;
-  children: ReactNode;
+  title: string
+  children: ReactNode
 }) => (
   <HeadlessDisclosure>
     {({ open }) => (
@@ -17,7 +17,7 @@ export const Disclosure = ({
           {title}
           <HiOutlineChevronUp
             className={`${
-              open ? "transform rotate-180" : ""
+              open ? 'transform rotate-180' : ''
             } w-5 h-5 text-purple-500`}
           />
         </Button>
@@ -25,4 +25,4 @@ export const Disclosure = ({
       </>
     )}
   </HeadlessDisclosure>
-);
+)

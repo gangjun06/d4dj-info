@@ -1,30 +1,27 @@
-import { GetUnitRes, GET_UNIT } from "@/apollo/gql";
-import Image from "next/image";
-import { Card } from "@/components/Basic";
-import { WaitQuery } from "@/components/Util";
-import { useQuery } from "@apollo/client";
-import MainLayout from "layouts/main";
-import useTransition from "next-translate/useTranslation";
-import Link from "next/link";
-import { myLoader, pad } from "utils";
-import { useState } from "react";
-import { CharacterIcon } from "@/components/Image";
+import { GetUnitRes, GET_UNIT } from '@/apollo/gql'
+import { Card } from '@/components/Basic'
+import { CharacterIcon } from '@/components/Image'
+import { WaitQuery } from '@/components/Util'
+import { useQuery } from '@apollo/client'
+import MainLayout from 'layouts/main'
+import useTransition from 'next-translate/useTranslation'
+import Link from 'next/link'
 
 export default function Character() {
-  const { t } = useTransition("");
-  const { loading, error, data } = useQuery<GetUnitRes>(GET_UNIT);
+  const { t } = useTransition('')
+  const { loading, error, data } = useQuery<GetUnitRes>(GET_UNIT)
   return (
     <MainLayout
-      title={t("nav:game.character")}
+      title={t('nav:game.character')}
       breadThumbs={[
-        { name: t("nav:game.name"), link: "" },
-        { name: t("nav:game.character"), link: "/game/character" },
+        { name: t('nav:game.name'), link: '' },
+        { name: t('nav:game.character'), link: '/game/character' },
       ]}
     >
       <WaitQuery loading={loading} error={error}>
         <div>
           {data?.unit.map((item) => {
-            if (!item.characters.length) return <></>;
+            if (!item.characters.length) return <></>
             return (
               <Card className="mb-3" title={item.name} key={item.id}>
                 <div className="flex justify-around flex-wrap">
@@ -45,10 +42,10 @@ export default function Character() {
                   ))}
                 </div>
               </Card>
-            );
+            )
           })}
         </div>
       </WaitQuery>
     </MainLayout>
-  );
+  )
 }

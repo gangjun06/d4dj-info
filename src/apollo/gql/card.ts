@@ -1,25 +1,25 @@
-import { gql } from "@apollo/client";
-import { Attribute } from "@pixi/core";
-import * as models from "models";
-import { PaginationInput, SortInput } from "./base";
+import { gql } from '@apollo/client'
+import { Attribute } from '@pixi/core'
+import * as models from 'models'
+import { PaginationInput, SortInput } from './base'
 
 export enum CardSort {
-  ID = "id",
-  Name = "name",
-  DebutOrder = "debutOrder",
+  ID = 'id',
+  Name = 'name',
+  DebutOrder = 'debutOrder',
 }
 
 export interface GetCardListRes {
-  card: models.Card[];
+  card: models.Card[]
 }
 export interface GetCardListReq {
   filter: {
-    attribute?: Attribute[];
-    rairity?: number[];
-    unit?: number[];
-  };
-  sort?: SortInput<CardSort>;
-  page?: PaginationInput;
+    attribute?: Attribute[]
+    rairity?: number[]
+    unit?: number[]
+  }
+  sort?: SortInput<CardSort>
+  page?: PaginationInput
 }
 export const GET_CARD_LIST = gql`
   query Query(
@@ -34,15 +34,15 @@ export const GET_CARD_LIST = gql`
       attribute
     }
   }
-`;
+`
 
 export interface GetCardRes {
-  card: models.Card[];
+  card: models.Card[]
 }
 export interface GetCardReq {
   filter: {
-    id: number;
-  };
+    id: number
+  }
 }
 export const GET_CARD_DETAIL = gql`
   query Query($filter: CardFilterInput) {
@@ -68,4 +68,4 @@ export const GET_CARD_DETAIL = gql`
       debutOrder
     }
   }
-`;
+`

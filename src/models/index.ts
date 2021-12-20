@@ -1,3 +1,3 @@
-export * from "./character";
-export * from "./music";
-export * from "./event";
+export * from './character'
+export * from './event'
+export * from './music'

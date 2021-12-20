@@ -1,8 +1,8 @@
-import { gql } from "@apollo/client";
-import * as models from "models";
+import { gql } from '@apollo/client'
+import * as models from 'models'
 
 export interface GetUnitRes {
-  unit: models.Unit[];
+  unit: models.Unit[]
 }
 export const GET_UNIT = gql`
   query Query {
@@ -24,4 +24,4 @@ export const GET_UNIT = gql`
       }
     }
   }
-`;
+`

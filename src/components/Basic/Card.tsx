@@ -1,21 +1,21 @@
-import { ReactNode } from "react";
-import Link, { LinkProps } from "next/link";
-import { UrlObject } from "url";
+import Link from 'next/link'
+import { ReactNode } from 'react'
+import { UrlObject } from 'url'
 
 export function Card({
   children,
   left,
   title,
-  className = "",
-  bodyClassName = "",
+  className = '',
+  bodyClassName = '',
   link,
 }: {
-  children: ReactNode;
-  left?: ReactNode;
-  title?: string;
-  className?: string;
-  bodyClassName?: string;
-  link?: string | UrlObject;
+  children: ReactNode
+  left?: ReactNode
+  title?: string
+  className?: string
+  bodyClassName?: string
+  link?: string | UrlObject
 }) {
   const InnerContent = () => (
     <div className="card-body bg-base-100">
@@ -27,7 +27,7 @@ export function Card({
       )}
       <div className={`h-full ${bodyClassName}`}>{children}</div>
     </div>
-  );
+  )
 
   if (link) {
     return (
@@ -36,11 +36,11 @@ export function Card({
           <InnerContent />
         </a>
       </Link>
-    );
+    )
   }
   return (
     <div className={`card shadow ${className}`}>
       <InnerContent />
     </div>
-  );
+  )
 }

@@ -1,16 +1,16 @@
-import MainLayout from "layouts/main";
-import useTransition from "next-translate/useTranslation";
-import InfinityScroll from "react-infinite-scroll-component";
-import { GET_GACHA_LIST, GetGachaListRaq, GetGachaListRas } from "@/apollo/gql";
-import { useQuery } from "@apollo/client";
-import { WaitQuery } from "@/components/Util";
-import { useState } from "react";
-import { Card } from "@/components/Basic";
-import { GachaItemContent } from "@/components/elements/GachaItem";
+import MainLayout from 'layouts/main'
+import useTransition from 'next-translate/useTranslation'
+import InfinityScroll from 'react-infinite-scroll-component'
+import { GET_GACHA_LIST, GetGachaListRaq, GetGachaListRas } from '@/apollo/gql'
+import { useQuery } from '@apollo/client'
+import { WaitQuery } from '@/components/Util'
+import { useState } from 'react'
+import { Card } from '@/components/Basic'
+import { GachaItemContent } from '@/components/elements/GachaItem'
 
 export default function Event() {
-  const { t } = useTransition("");
-  const [hasMore, setHasMore] = useState<boolean>(true);
+  const { t } = useTransition('')
+  const [hasMore, setHasMore] = useState<boolean>(true)
 
   const { data, loading, error, fetchMore } = useQuery<
     GetGachaListRas,
@@ -22,7 +22,7 @@ export default function Event() {
         skip: 0,
       },
     },
-  });
+  })
 
   const fetchData = async () => {
     const res = await fetchMore({
@@ -33,19 +33,19 @@ export default function Event() {
           after: data?.gacha[data?.gacha.length - 1].id,
         },
       },
-    });
+    })
     if (((res.data as any).gacha as any[]).length < 30) {
-      setHasMore(false);
+      setHasMore(false)
     }
-  };
+  }
 
   return (
     <MainLayout
       breadThumbs={[
-        { name: t("nav:game.name"), link: "" },
-        { name: t("nav:game.gacha"), link: "/game/gacha" },
+        { name: t('nav:game.name'), link: '' },
+        { name: t('nav:game.gacha'), link: '/game/gacha' },
       ]}
-      title={t("nav:game.gacha")}
+      title={t('nav:game.gacha')}
     >
       <WaitQuery loading={loading} error={error}>
         <InfinityScroll
@@ -62,11 +62,11 @@ export default function Event() {
                 <Card key={index} link={`/game/gacha/${item.id}`}>
                   <GachaItemContent data={item} />
                 </Card>
-              );
+              )
             })}
           </div>
         </InfinityScroll>
       </WaitQuery>
     </MainLayout>
-  );
+  )
 }

@@ -1,40 +1,40 @@
-import axios from "axios";
-import useTranslation from "next-translate/useTranslation";
-import { useEffect, useRef } from "react";
-import { pad } from "utils";
-import { D4DJChartRenderer } from "utils/chartRenderer";
+import axios from 'axios'
+import useTranslation from 'next-translate/useTranslation'
+import { useEffect, useRef } from 'react'
+import { pad } from 'utils'
+import { D4DJChartRenderer } from 'utils/chartRenderer'
 
 export function ChartViewer({
   name,
   chartID,
 }: {
-  name: string;
-  chartID: number;
+  name: string
+  chartID: number
 }) {
-  const { t } = useTranslation();
-  const ref = useRef<HTMLCanvasElement>(null);
+  const { t } = useTranslation()
+  const ref = useRef<HTMLCanvasElement>(null)
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       if (ref.current) {
         const res = await axios.get(
           `https://asset.d4dj.info/ondemand/chart/chart_${pad(chartID, 8)}`
-        );
+        )
         //@ts-ignore
-        new D4DJChartRenderer(ref.current).renderChart(res.data);
+        new D4DJChartRenderer(ref.current).renderChart(res.data)
       }
-    })();
-  }, [chartID]);
+    })()
+  }, [chartID])
 
   const download = () => {
     if (ref.current) {
-      var link = document.createElement("a");
-      link.href = ref.current.toDataURL("image/png");
-      link.download = `${name}.png`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      var link = document.createElement('a')
+      link.href = ref.current.toDataURL('image/png')
+      link.download = `${name}.png`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
     }
-  };
+  }
 
   return (
     <>
@@ -43,7 +43,7 @@ export function ChartViewer({
       </div>
       <div className="flex flex-wrap gap-y-3 mt-2 items-center justify-between">
         <button className="btn btn-accent" onClick={download}>
-          {t("common:download")}
+          {t('common:download')}
         </button>
         <a
           href="https://girlbands.party/d4dj/chart-previewer/"
@@ -54,5 +54,5 @@ export function ChartViewer({
         </a>
       </div>
     </>
-  );
+  )
 }

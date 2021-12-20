@@ -1,12 +1,12 @@
 export type PaginationInput = {
-  skip?: number;
-  take?: number;
-  after?: number;
-};
+  skip?: number
+  take?: number
+  after?: number
+}
 
-export type OrderType = "asc" | "desc";
+export type OrderType = 'asc' | 'desc'
 
 export type SortInput<T> = {
-  name: T;
-  order: OrderType;
-};
+  name: T
+  order: OrderType
+}

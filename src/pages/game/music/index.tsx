@@ -1,44 +1,41 @@
-import MainLayout from "layouts/main";
-import useTransition from "next-translate/useTranslation";
-import { Card } from "@/components/Basic";
-import Image from "next/image";
-import { useForm } from "react-hook-form";
-import { Checkbox, FormBlock, Radio } from "@/components/Form";
-import { cleanArray, cleanArrayWithInt } from "utils/array";
-import { Grid } from "@/components/Layout";
-import { useQuery } from "@apollo/client";
-import InfinityScroll from "react-infinite-scroll-component";
-import { WaitQuery } from "@/components/Util";
 import {
-  GetCardListReq,
   GetMusicListReq,
-  GET_MUSIC_LIST,
   GetMusicListRes,
-} from "@/apollo/gql";
+  GET_MUSIC_LIST,
+  MusicSort,
+  OrderType,
+} from '@/apollo/gql'
+import { Card } from '@/components/Basic'
+import { Checkbox, FormBlock, Radio } from '@/components/Form'
+import { MusicIcon } from '@/components/Image'
+import { WaitQuery } from '@/components/Util'
+import { useQuery } from '@apollo/client'
+import MainLayout from 'layouts/main'
+import useTransition from 'next-translate/useTranslation'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import InfinityScroll from 'react-infinite-scroll-component'
+import { cleanArray, cleanArrayWithInt } from 'utils/array'
 import {
   MusicCategoryCheckbox,
   MusicOrderRadio,
   UnitCheckbox,
-} from "utils/constants";
-import { myLoader, pad } from "utils";
-import { useState, useEffect } from "react";
-import { OrderType, MusicSort } from "@/apollo/gql";
-import { MusicIcon } from "@/components/Image";
+} from 'utils/constants'
 
 type FilterData = {
-  category: string[];
-  unit: string[];
-  order: OrderType;
-  orderBy: MusicSort;
-};
+  category: string[]
+  unit: string[]
+  order: OrderType
+  orderBy: MusicSort
+}
 
 export default function Music() {
-  const { t } = useTransition("");
+  const { t } = useTransition('')
   const { handleSubmit, control, setValue } = useForm<FilterData>({
-    defaultValues: { orderBy: MusicSort.ID, order: "asc" },
-  });
-  const [reqData, setReqData] = useState<GetMusicListReq | null>(null);
-  const [hasMore, setHasMore] = useState<boolean>(true);
+    defaultValues: { orderBy: MusicSort.ID, order: 'asc' },
+  })
+  const [reqData, setReqData] = useState<GetMusicListReq | null>(null)
+  const [hasMore, setHasMore] = useState<boolean>(true)
   const { data, loading, error, refetch, fetchMore } = useQuery<
     GetMusicListRes,
     GetMusicListReq
@@ -50,10 +47,9 @@ export default function Music() {
       },
       filter: {},
     },
-  });
+  })
 
   const onSubmit = handleSubmit(async (data) => {
-    console.log(data);
     const reqData: GetMusicListReq = {
       filter: {
         category: cleanArray(data.category),
@@ -63,15 +59,15 @@ export default function Music() {
         name: data.orderBy,
         order: data.order,
       },
-    };
-    setReqData(reqData);
-    const res = await refetch(reqData);
-    if (((res.data as any).music as any[]).length < 30) {
-      setHasMore(false);
-    } else {
-      setHasMore(true);
     }
-  });
+    setReqData(reqData)
+    const res = await refetch(reqData)
+    if (((res.data as any).music as any[]).length < 30) {
+      setHasMore(false)
+    } else {
+      setHasMore(true)
+    }
+  })
 
   const fetchData = async () => {
     const res = await fetchMore({
@@ -83,47 +79,47 @@ export default function Music() {
           after: data?.music[data?.music.length - 1].id,
         },
       },
-    });
+    })
     if (((res.data as any).music as any[]).length < 30) {
-      setHasMore(false);
+      setHasMore(false)
     }
-  };
+  }
   return (
     <MainLayout
       breadThumbs={[
-        { name: t("nav:game.name"), link: "" },
-        { name: t("nav:game.music"), link: "/game/music" },
+        { name: t('nav:game.name'), link: '' },
+        { name: t('nav:game.music'), link: '/game/music' },
       ]}
-      title={t("nav:game.music")}
+      title={t('nav:game.music')}
     >
-      <Card title={t("common:filter")} className="mb-4">
+      <Card title={t('common:filter')} className="mb-4">
         <form onSubmit={onSubmit}>
-          <FormBlock label={t("music:category.name")}>
+          <FormBlock label={t('music:category.name')}>
             <Checkbox
               name="category"
               control={control}
               list={MusicCategoryCheckbox(t)}
             />
           </FormBlock>
-          <FormBlock label={t("common:unit.name")}>
+          <FormBlock label={t('common:unit.name')}>
             <Checkbox name="unit" control={control} list={UnitCheckbox(t)} />
           </FormBlock>
-          <FormBlock label={t("common:sort_name")}>
+          <FormBlock label={t('common:sort_name')}>
             <Radio name="orderBy" control={control} list={MusicOrderRadio(t)} />
           </FormBlock>
           <button
             className="btn btn-sm btn-primary btn-outline"
             type="submit"
-            onClick={() => setValue("order", "asc")}
+            onClick={() => setValue('order', 'asc')}
           >
-            {t("common:search")}
+            {t('common:search')}
           </button>
           <button
             className="ml-2 btn btn-sm btn-outline"
-            onClick={() => setValue("order", "desc")}
+            onClick={() => setValue('order', 'desc')}
             type="submit"
           >
-            {t("common:search_desc")}
+            {t('common:search_desc')}
           </button>
         </form>
       </Card>
@@ -136,7 +132,7 @@ export default function Music() {
           endMessage={<div className="my-2"></div>}
           loader={<div>Loading..</div>}
         >
-          <Grid>
+          <div className="grid-1">
             {data?.music.map((item) => (
               <Card
                 key={item.id}
@@ -153,14 +149,14 @@ export default function Music() {
                 </div>
                 <div className="mt-2">{item.name}</div>
                 <div className="text-gray-600">
-                  {item.unit?.name} -{" "}
+                  {item.unit?.name} -{' '}
                   {t(`music:category.${item.category.toLowerCase()}`)}
                 </div>
               </Card>
             ))}
-          </Grid>
+          </div>
         </InfinityScroll>
       </WaitQuery>
     </MainLayout>
-  );
+  )
 }

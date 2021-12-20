@@ -1,13 +1,12 @@
-import { gql } from "@apollo/client";
-import { Attribute } from "@pixi/core";
-import * as models from "models";
-import { PaginationInput, SortInput } from "./base";
+import { gql } from '@apollo/client'
+import * as models from 'models'
+import { PaginationInput } from './base'
 
 export interface GetGachaListRas {
-  gacha: models.Gacha[];
+  gacha: models.Gacha[]
 }
 export interface GetGachaListRaq {
-  page?: PaginationInput;
+  page?: PaginationInput
 }
 export const GET_GACHA_LIST = gql`
   query Query($page: PaginationInput) {
@@ -19,15 +18,15 @@ export const GET_GACHA_LIST = gql`
       endDate
     }
   }
-`;
+`
 
 export interface GetGachaRes {
-  gacha: models.Gacha[];
+  gacha: models.Gacha[]
 }
 export interface GetGachaReq {
   filter: {
-    id: number;
-  };
+    id: number
+  }
 }
 export const GET_GACHA_DETAIL = gql`
   query Query($filter: GachaFilterInput) {
@@ -50,4 +49,4 @@ export const GET_GACHA_DETAIL = gql`
       }
     }
   }
-`;
+`

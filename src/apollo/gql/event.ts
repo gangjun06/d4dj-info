@@ -1,15 +1,14 @@
-import { gql } from "@apollo/client";
-import { Attribute } from "@pixi/core";
-import * as models from "models";
-import { PaginationInput, SortInput } from "./base";
+import { gql } from '@apollo/client'
+import * as models from 'models'
+import { PaginationInput } from './base'
 
 export interface GetIndexRes {
-  event: models.Event[];
-  gacha: models.Gacha[];
+  event: models.Event[]
+  gacha: models.Gacha[]
 }
 export interface GetIndexReq {
-  eventPage: PaginationInput;
-  gachaPage: PaginationInput;
+  eventPage: PaginationInput
+  gachaPage: PaginationInput
 }
 export const GET_INDEX_DATA = gql`
   query Query($eventPage: PaginationInput, $gachaPage: PaginationInput) {
@@ -29,13 +28,13 @@ export const GET_INDEX_DATA = gql`
       endDate
     }
   }
-`;
+`
 
 export interface GetEventListRes {
-  event: models.Event[];
+  event: models.Event[]
 }
 export interface GetEventListReq {
-  page?: PaginationInput;
+  page?: PaginationInput
 }
 export const GET_EVENT_LIST = gql`
   query Query($page: PaginationInput) {
@@ -47,15 +46,15 @@ export const GET_EVENT_LIST = gql`
       endDate
     }
   }
-`;
+`
 
 export interface GetEventRes {
-  event: models.Event[];
+  event: models.Event[]
 }
 export interface GetEventReq {
   filter: {
-    id: number;
-  };
+    id: number
+  }
 }
 export const GET_EVENT_DETAIL = gql`
   query Query($filter: EventFilterInput) {
@@ -76,4 +75,4 @@ export const GET_EVENT_DETAIL = gql`
       storyUnlockDate
     }
   }
-`;
+`
