@@ -70,9 +70,3 @@ export const TableHead = ({ data }: { data: string[] }) => (
     </tr>
   </thead>
 )
-
-// (
-//                   <Link href={str.link} passHref>
-//                     <a className="link link-primary">{str.name}</a>
-//                   </Link>
-//                 )

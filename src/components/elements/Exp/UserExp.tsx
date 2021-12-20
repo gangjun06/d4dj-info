@@ -2,10 +2,10 @@ import axios from 'axios'
 import useTransition from 'next-translate/useTranslation'
 import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Card, Modal, Table, TableBody, TableHead } from '../../Basic'
-import { FormBlock } from '../../Form'
 import { HiOutlineInformationCircle } from 'react-icons/hi'
 import { formatNumber } from 'utils'
+import { Card, Modal, Table, TableBody, TableHead } from '../../Basic'
+import { FormBlock } from '../../Form'
 
 type UserExpData = {
   curLevel: string
@@ -42,17 +42,14 @@ export const UserExpCard = () => {
   }, [expData])
 
   useEffect(() => {
-    ;(async () => {
-      const res = await axios.get(
-        'https://asset.d4dj.info/Master/UserExpMaster.json'
-      )
-      setExpData(res.data)
-    })()
+    axios
+      .get('https://asset.d4dj.info/Master/UserExpMaster.json')
+      .then((res) => setExpData(res.data))
   }, [])
 
   const onSubmit = handleSubmit((data) => {
     try {
-      let { curLevel, curLevelPercent, expPerPlay, targetLevel } = data
+      const { curLevel, curLevelPercent, expPerPlay, targetLevel } = data
       const totalExp = expData[targetLevel.toString()].TotalExp
       const curLevelExp = expData[curLevel.toString()].TotalExp
       const curExp =

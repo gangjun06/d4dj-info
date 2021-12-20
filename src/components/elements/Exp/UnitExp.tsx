@@ -20,12 +20,9 @@ export const UnitExpCard = () => {
   }, [expData])
 
   useEffect(() => {
-    ;(async () => {
-      const res = await axios.get(
-        'https://asset.d4dj.info/Master/UnitExpMaster.json'
-      )
-      setExpData(res.data)
-    })()
+    axios
+      .get('https://asset.d4dj.info/Master/UnitExpMaster.json')
+      .then((res) => setExpData(res.data))
   }, [])
 
   return (

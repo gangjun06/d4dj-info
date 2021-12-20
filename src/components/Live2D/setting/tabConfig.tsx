@@ -40,7 +40,7 @@ export function AddModel() {
   const { control, handleSubmit } = useForm<FormData>()
 
   const idSelect = useCallback(() => {
-    let result = []
+    const result = []
     for (let i = 1; i <= 15; i++)
       result.push({ id: String(i).padStart(4, '0'), name: i })
     return result

@@ -20,12 +20,9 @@ export const CardExpCard = () => {
   }, [expData])
 
   useEffect(() => {
-    ;(async () => {
-      const res = await axios.get(
-        'https://asset.d4dj.info/Master/CardExpMaster.json'
-      )
-      setExpData(res.data)
-    })()
+    axios
+      .get('https://asset.d4dj.info/Master/CardExpMaster.json')
+      .then((res) => setExpData(res.data))
   }, [])
 
   return (

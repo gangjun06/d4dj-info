@@ -53,8 +53,8 @@ function Live2DViewContent({ urlData }: props) {
   }, [])
 
   useEffect(() => {
-    if (urlData && app) {
-      ;(async () => {
+    if (urlData && app)
+      (async () => {
         try {
           const dataStr = Buffer.from(
             (urlData as string).replaceAll(' ', '+'),
@@ -68,8 +68,8 @@ function Live2DViewContent({ urlData }: props) {
             y: number
           }[] = JSON.parse(dataStr.toString())
 
-          let models: any[] = []
-          for (let item of data) {
+          const models: any[] = []
+          for (const item of data) {
             const url = `https://asset.d4dj.info/AssetBundles/Live2D/${item.model}/${item.model}.model3.json`
             const model: any = await Live2DModel.from(url, {})
             models.push(model)
@@ -86,7 +86,7 @@ function Live2DViewContent({ urlData }: props) {
             app.stage.addChild(model)
           }
 
-          setModels((prevData) => {
+          setModels(() => {
             return data.map((item, index) => ({
               name: item.name,
               data: models[index],
@@ -98,7 +98,6 @@ function Live2DViewContent({ urlData }: props) {
           toaster.warning(`This model does not exist `)
         }
       })()
-    }
   }, [urlData, app])
 
   return (

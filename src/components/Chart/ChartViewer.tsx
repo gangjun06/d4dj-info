@@ -14,20 +14,19 @@ export function ChartViewer({
   const { t } = useTranslation()
   const ref = useRef<HTMLCanvasElement>(null)
   useEffect(() => {
-    ;(async () => {
-      if (ref.current) {
-        const res = await axios.get(
-          `https://asset.d4dj.info/ondemand/chart/chart_${pad(chartID, 8)}`
-        )
-        //@ts-ignore
-        new D4DJChartRenderer(ref.current).renderChart(res.data)
-      }
-    })()
+    if (ref.current) {
+      axios
+        .get(`https://asset.d4dj.info/ondemand/chart/chart_${pad(chartID, 8)}`)
+        .then((res) => {
+          //@ts-ignore
+          new D4DJChartRenderer(ref.current).renderChart(res.data)
+        })
+    }
   }, [chartID])
 
   const download = () => {
     if (ref.current) {
-      var link = document.createElement('a')
+      const link = document.createElement('a')
       link.href = ref.current.toDataURL('image/png')
       link.download = `${name}.png`
       document.body.appendChild(link)
