@@ -66,6 +66,16 @@ export const GET_CARD_DETAIL = gql`
       maxParameters
       skillName
       debutOrder
+      skill {
+        id
+        minRecoveryValue
+        maxRecoveryValue
+        comboSupportCount
+        minSeconds
+        scoreUpRate
+        maxSeconds
+        perfectScoreUpRate
+      }
     }
   }
 `

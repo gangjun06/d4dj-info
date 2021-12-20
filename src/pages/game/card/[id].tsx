@@ -1,17 +1,19 @@
 import { GetCardReq, GetCardRes, GET_CARD_DETAIL } from '@/apollo/gql'
-import { Card, Disclosure, Table, TableBody } from '@/components/Basic'
+import { Card, Disclosure, Modal, Table, TableBody } from '@/components/Basic'
 import { client } from 'apollo'
 import MainLayout from 'layouts/main'
 import { Card as CardModel } from 'models'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import useTransition from 'next-translate/useTranslation'
 import Image from 'next/image'
+import { useState } from 'react'
 import { formatTimeDetail, myLoader, pad } from 'utils'
 import { createLive2DShare } from 'utils/live2d'
 export default function CardDetail({
   card,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { t } = useTransition('')
+  const [showSkill, setShowSkill] = useState<boolean>(false)
 
   return (
     <MainLayout
@@ -24,6 +26,25 @@ export default function CardDetail({
         card.character?.fullNameEnglish || card.character?.firstNameEnglish
       })`}
     >
+      <Modal show={showSkill} onClose={() => setShowSkill(false)} showCloseBtn>
+        <Table>
+          <TableBody
+            data={[
+              [t('card:skill.id'), card.id],
+              [t('card:skill_name'), card.skillName],
+              [t('card:skill.minRecovery'), card.skill?.minRecoveryValue],
+              [t('card:skill.maxRecovery'), card.skill?.maxRecoveryValue],
+              [t('card:skill.minSeconds'), card.skill?.minSeconds],
+              [t('card:skill.maxSeconds'), card.skill?.maxSeconds],
+              [t('card:skill.scoreUpRate'), `${card.skill?.scoreUpRate}%`],
+              [
+                t('card:skill.perfectScoreUpRate'),
+                card.skill?.perfectScoreUpRate,
+              ],
+            ]}
+          />
+        </Table>
+      </Modal>
       <div className="grid-2">
         <div className="col-span-1">
           <Card
@@ -57,16 +78,25 @@ export default function CardDetail({
               <TableBody
                 data={[
                   [t('card:id'), card.id],
-                  [t('card:skill_name'), card.skillName],
-                  [t('card:parameter.heart'), card.maxParameters![0]],
-                  [t('card:parameter.technique'), card.maxParameters![1]],
-                  [t('card:parameter.physical'), card.maxParameters![2]],
+                  [
+                    t('card:skill_name'),
+                    { name: card.skillName, onClick: () => setShowSkill(true) },
+                  ],
+                  [t('card:parameter.heart'), card.maxParameters?.[0]],
+                  [t('card:parameter.technique'), card.maxParameters?.[1]],
+                  [t('card:parameter.physical'), card.maxParameters?.[2]],
                   [
                     t('card:parameter.total'),
-                    card.maxParameters!.reduce((a, b) => a + b, 0),
+                    card.maxParameters?.reduce((a, b) => a + b, 0),
                   ],
-                  [t('card:startdate'), formatTimeDetail(card.startDate!)],
-                  [t('card:enddate'), formatTimeDetail(card.endDate!)],
+                  [
+                    t('card:startdate'),
+                    formatTimeDetail(card.startDate || new Date()),
+                  ],
+                  [
+                    t('card:enddate'),
+                    formatTimeDetail(card.endDate || new Date()),
+                  ],
                   card.rarity > 2
                     ? [
                         t('nav:live2d'),

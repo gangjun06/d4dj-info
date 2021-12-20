@@ -2,6 +2,15 @@
   "info": "Card Info",
   "id": "Card ID",
   "skill_name": "Skill Name",
+  "skill": {
+    "id": "Skill ID",
+    "minRecovery": "Min Recovery",
+    "maxRecovery": "Max Recovery",
+    "minSeconds": "Min Seconds",
+    "maxSeconds": "Max Seconds",
+    "scoreUpRate": "Score Up Rate",
+    "perfectScoreUpRate": "Perfect Score Up Rate"
+  },
   "parameter": {
     "heart": "Heart",
     "technique": "Technique",

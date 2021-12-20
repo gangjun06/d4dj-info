@@ -8,6 +8,15 @@
     "physical": "피지컬",
     "total": "종합력"
   },
+  "skill": {
+    "id": "스킬ID",
+    "minRecovery": "최소 회복",
+    "maxRecovery": "최대 회복",
+    "minSeconds": "최소 시간",
+    "maxSeconds": "최대 시간",
+    "scoreUpRate": "스코어업 퍼센트",
+    "perfectScoreUpRate": "퍼펙스 스코어업 퍼센트"
+  },
   "startdate": "추가일",
   "enddate": "삭제일",
   "rarity": {

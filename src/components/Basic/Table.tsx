@@ -8,8 +8,9 @@ export const Table = ({ children }: { children: ReactNode }) => (
 )
 
 export type TableBodyInput = {
-  name: string
-  link: string
+  name?: string
+  link?: string
+  onClick?: () => void
 }
 
 export const TableBody = ({
@@ -28,14 +29,20 @@ export const TableBody = ({
         // if (item[1] === undefined || item[1] == null) continue;
         return (
           <tr key={i}>
-            {item.map((str, j) => (
+            {item.map((item, j) => (
               <td key={j}>
-                {typeof str === 'object' ? (
-                  <Link href={str.link} passHref>
-                    <a className="link link-primary">{str.name}</a>
-                  </Link>
+                {typeof item === 'object' ? (
+                  item.onClick ? (
+                    <div className="link link-primary" onClick={item.onClick}>
+                      {item.name || 'X'}
+                    </div>
+                  ) : (
+                    <Link href={item.link || '#'} passHref>
+                      <a className="link link-primary">{item.name || 'X'}</a>
+                    </Link>
+                  )
                 ) : (
-                  <>{str}</>
+                  <>{item || 'X'}</>
                 )}
               </td>
             ))}
@@ -63,3 +70,9 @@ export const TableHead = ({ data }: { data: string[] }) => (
     </tr>
   </thead>
 )
+
+// (
+//                   <Link href={str.link} passHref>
+//                     <a className="link link-primary">{str.name}</a>
+//                   </Link>
+//                 )
