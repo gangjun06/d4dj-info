@@ -1,12 +1,12 @@
+import { GetGachaListRaq, GetGachaListRas, GET_GACHA_LIST } from '@/apollo/gql'
+import { Card } from '@/components/Basic'
+import { GachaItem } from '@/components/Elements'
+import { WaitQuery } from '@/components/Util'
+import { useQuery } from '@apollo/client'
 import MainLayout from 'layouts/main'
 import useTransition from 'next-translate/useTranslation'
-import InfinityScroll from 'react-infinite-scroll-component'
-import { GET_GACHA_LIST, GetGachaListRaq, GetGachaListRas } from '@/apollo/gql'
-import { useQuery } from '@apollo/client'
-import { WaitQuery } from '@/components/Util'
 import { useState } from 'react'
-import { Card } from '@/components/Basic'
-import { GachaItemContent } from '@/components/elements/GachaItem'
+import InfinityScroll from 'react-infinite-scroll-component'
 
 export default function Event() {
   const { t } = useTransition('')
@@ -60,7 +60,7 @@ export default function Event() {
             {data?.gacha.map((item, index) => {
               return (
                 <Card key={index} link={`/game/gacha/${item.id}`}>
-                  <GachaItemContent data={item} />
+                  <GachaItem data={item} />
                 </Card>
               )
             })}

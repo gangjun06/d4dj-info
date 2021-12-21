@@ -1,6 +1,6 @@
 import { GetGachaReq, GetGachaRes, GET_GACHA_DETAIL } from '@/apollo/gql'
 import { Card, Disclosure, Table, TableBody } from '@/components/Basic'
-import { CardItem } from '@/components/elements'
+import { CardItem } from '@/components/Elements'
 import { client } from 'apollo'
 import MainLayout from 'layouts/main'
 import { Gacha, Gacha as GachaModel, GachaCategory } from 'models'

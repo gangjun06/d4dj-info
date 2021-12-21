@@ -1,6 +1,6 @@
 import Image from 'next/image'
+import React, { useState } from 'react'
 import { myLoader, pad } from 'utils'
-import { useState } from 'react'
 
 export const CharacterIcon = ({ id, alt }: { id: number; alt: string }) => {
   const [src, setSrc] = useState<string>(
@@ -20,7 +20,8 @@ export const CharacterIcon = ({ id, alt }: { id: number; alt: string }) => {
   )
 }
 
-export const MusicIcon = ({ id }: { id: number }) => {
+const MusicIconContent = ({ id }: { id: number }) => {
+  console.log('rerender')
   const [src, setSrc] = useState<string>(
     `music_jacket/music_jacket_${pad(id, 7)}.jpg`
   )
@@ -37,3 +38,4 @@ export const MusicIcon = ({ id }: { id: number }) => {
     />
   )
 }
+export const MusicIcon = React.memo(MusicIconContent)

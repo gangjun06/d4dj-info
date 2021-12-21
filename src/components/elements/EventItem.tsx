@@ -1,8 +1,9 @@
 import { Event } from 'models'
 import Image from 'next/image'
+import React from 'react'
 import { formatTime, myLoader } from 'utils'
 
-export const EventItemContent = ({ data }: { data: Event }) => (
+const EventItem = ({ data }: { data: Event }) => (
   <div className="flex-center flex-col">
     <Image
       loader={myLoader}
@@ -20,3 +21,5 @@ export const EventItemContent = ({ data }: { data: Event }) => (
     </div>
   </div>
 )
+
+export default React.memo(EventItem)

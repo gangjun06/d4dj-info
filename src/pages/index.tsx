@@ -1,7 +1,6 @@
 import { GetIndexReq, GetIndexRes, GET_INDEX_DATA } from '@/apollo/gql'
 import { Card } from '@/components/Basic'
-import { EventItemContent } from '@/components/elements'
-import { GachaItemContent } from '@/components/elements/GachaItem'
+import { EventItem, GachaItem } from '@/components/Elements'
 import MainLayout from 'layouts/main'
 import { GetServerSideProps } from 'next'
 import Trans from 'next-translate/Trans'
@@ -40,7 +39,7 @@ export default function Home({ data }: { data: GetIndexRes }) {
             className="h-full"
           >
             {data.event.map((item) => (
-              <EventItemContent data={item} key={item.id} />
+              <EventItem data={item} key={item.id} />
             ))}
           </Card>
         </div>
@@ -51,7 +50,7 @@ export default function Home({ data }: { data: GetIndexRes }) {
             link={`/game/gacha/${data.gacha[0].id}`}
           >
             {data.gacha.map((item) => (
-              <GachaItemContent data={item} key={item.id} />
+              <GachaItem data={item} key={item.id} />
             ))}
           </Card>
         </div>

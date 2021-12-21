@@ -1,3 +1,5 @@
-export * from './CardItem'
-export * from './EventItem'
+export { default as CardItem } from './CardItem'
+export { default as EventItem } from './EventItem'
 export * as Exp from './Exp'
+export { default as GachaItem } from './GachaItem'
+export { default as MusicItem } from './MusicItem'

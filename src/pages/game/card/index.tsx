@@ -5,7 +5,7 @@ import {
   GET_CARD_LIST,
 } from '@/apollo/gql'
 import { SideOver } from '@/components/Basic'
-import { CardItem } from '@/components/elements'
+import { CardItem } from '@/components/Elements'
 import { Checkbox, FormBlock, Radio } from '@/components/Form'
 import { WaitQuery } from '@/components/Util'
 import { useQuery } from '@apollo/client'
@@ -43,6 +43,8 @@ export default function CardList() {
 
   const openFilterSideOver = useCallback(() => setOpenFilter(true), [])
   const closeFilterSideOver = useCallback(() => setOpenFilter(false), [])
+  const setOrderDesc = useCallback(() => setValue('order', 'desc'), [setValue])
+  const setOrderAsc = useCallback(() => setValue('order', 'asc'), [setValue])
 
   const { data, loading, error, refetch, fetchMore } = useQuery<
     GetCardListRes,
@@ -124,13 +126,13 @@ export default function CardList() {
             <button
               className="btn btn-sm btn-primary btn-outline"
               type="submit"
-              onClick={() => setValue('order', 'asc')}
+              onClick={setOrderAsc}
             >
               {t('common:search')}
             </button>
             <button
               className="btn btn-sm btn-outline"
-              onClick={() => setValue('order', 'desc')}
+              onClick={setOrderDesc}
               type="submit"
             >
               {t('common:search_desc')}

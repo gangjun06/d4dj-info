@@ -1,12 +1,13 @@
 import { Gacha, GachaCategory } from 'models'
 import Image from 'next/image'
+import React from 'react'
 import { formatTime, myLoader, pad } from 'utils'
 
 const canUseBanner = (item: Gacha) =>
   item.category !== GachaCategory.Tutorial &&
   item.category !== GachaCategory.Birthday
 
-export const GachaItemContent = ({ data }: { data: Gacha }) => {
+const GachaItem = ({ data }: { data: Gacha }) => {
   const useBanner = canUseBanner(data)
   return (
     <div className="flex-center flex-col">
@@ -31,3 +32,5 @@ export const GachaItemContent = ({ data }: { data: Gacha }) => {
     </div>
   )
 }
+
+export default React.memo(GachaItem)

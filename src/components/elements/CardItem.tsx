@@ -1,11 +1,11 @@
 import { Card as CardModel } from 'models'
+import useTranslation from 'next-translate/useTranslation'
+import Image from 'next/image'
 import React from 'react'
 import { myLoader, pad } from 'utils'
-import Image from 'next/image'
 import { Card } from '../Basic'
-import useTranslation from 'next-translate/useTranslation'
 
-export const CardItem = ({ data }: { data: CardModel }) => {
+const CardItem = ({ data }: { data: CardModel }) => {
   const { t } = useTranslation()
   return (
     <Card
@@ -31,3 +31,5 @@ export const CardItem = ({ data }: { data: CardModel }) => {
     </Card>
   )
 }
+
+export default React.memo(CardItem)

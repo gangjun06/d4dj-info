@@ -1,4 +1,4 @@
-import { Exp } from '@/components/elements'
+import { Exp } from '@/components/Elements'
 import MainLayout from 'layouts/main'
 import useTransition from 'next-translate/useTranslation'
 

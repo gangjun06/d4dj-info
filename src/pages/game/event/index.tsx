@@ -1,12 +1,12 @@
+import { GetEventListReq, GetEventListRes, GET_EVENT_LIST } from '@/apollo/gql'
+import { Card } from '@/components/Basic'
+import { EventItem } from '@/components/Elements'
+import { WaitQuery } from '@/components/Util'
+import { useQuery } from '@apollo/client'
 import MainLayout from 'layouts/main'
 import useTransition from 'next-translate/useTranslation'
-import InfinityScroll from 'react-infinite-scroll-component'
-import { GET_EVENT_LIST, GetEventListReq, GetEventListRes } from '@/apollo/gql'
-import { useQuery } from '@apollo/client'
-import { WaitQuery } from '@/components/Util'
 import { useState } from 'react'
-import { Card } from '@/components/Basic'
-import { EventItemContent } from '@/components/elements'
+import InfinityScroll from 'react-infinite-scroll-component'
 
 export default function Event() {
   const { t } = useTransition('')
@@ -59,7 +59,7 @@ export default function Event() {
           <div className="grid-1">
             {data?.event.map((item, index) => (
               <Card key={index} link={`/game/event/${item.id}`}>
-                <EventItemContent data={item} />
+                <EventItem data={item} />
               </Card>
             ))}
           </div>

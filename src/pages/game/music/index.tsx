@@ -5,15 +5,16 @@ import {
   MusicSort,
   OrderType,
 } from '@/apollo/gql'
-import { Card } from '@/components/Basic'
+import { SideOver } from '@/components/Basic'
+import { MusicItem } from '@/components/Elements'
 import { Checkbox, FormBlock, Radio } from '@/components/Form'
-import { MusicIcon } from '@/components/Image'
 import { WaitQuery } from '@/components/Util'
 import { useQuery } from '@apollo/client'
 import MainLayout from 'layouts/main'
 import useTransition from 'next-translate/useTranslation'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { HiOutlineFilter } from 'react-icons/hi'
 import InfinityScroll from 'react-infinite-scroll-component'
 import { cleanArray, cleanArrayWithInt } from 'utils/array'
 import {
@@ -36,6 +37,13 @@ export default function Music() {
   })
   const [reqData, setReqData] = useState<GetMusicListReq | null>(null)
   const [hasMore, setHasMore] = useState<boolean>(true)
+  const [openFilter, setOpenFilter] = useState<boolean>(false)
+
+  const openFilterSideOver = useCallback(() => setOpenFilter(true), [])
+  const closeFilterSideOver = useCallback(() => setOpenFilter(false), [])
+  const setOrderDesc = useCallback(() => setValue('order', 'desc'), [setValue])
+  const setOrderAsc = useCallback(() => setValue('order', 'asc'), [setValue])
+
   const { data, loading, error, refetch, fetchMore } = useQuery<
     GetMusicListRes,
     GetMusicListReq
@@ -91,38 +99,51 @@ export default function Music() {
         { name: t('nav:game.music'), link: '/game/music' },
       ]}
       title={t('nav:game.music')}
+      titleSide={
+        <button className="btn btn-primary btn-sm" onClick={openFilterSideOver}>
+          <HiOutlineFilter size={22} />
+        </button>
+      }
     >
-      <Card title={t('common:filter')} className="mb-4">
-        <form onSubmit={onSubmit}>
-          <FormBlock label={t('music:category.name')}>
-            <Checkbox
-              name="category"
-              control={control}
-              list={MusicCategoryCheckbox(t)}
-            />
-          </FormBlock>
-          <FormBlock label={t('common:unit.name')}>
-            <Checkbox name="unit" control={control} list={UnitCheckbox(t)} />
-          </FormBlock>
-          <FormBlock label={t('common:sort_name')}>
-            <Radio name="orderBy" control={control} list={MusicOrderRadio(t)} />
-          </FormBlock>
-          <button
-            className="btn btn-sm btn-primary btn-outline"
-            type="submit"
-            onClick={() => setValue('order', 'asc')}
-          >
-            {t('common:search')}
-          </button>
-          <button
-            className="ml-2 btn btn-sm btn-outline"
-            onClick={() => setValue('order', 'desc')}
-            type="submit"
-          >
-            {t('common:search_desc')}
-          </button>
-        </form>
-      </Card>
+      <SideOver
+        title={t('common:filter')}
+        open={openFilter}
+        onClose={closeFilterSideOver}
+        asForm
+        onSubmit={onSubmit}
+        footer={
+          <>
+            <button
+              className="btn btn-sm btn-primary btn-outline"
+              type="submit"
+              onClick={setOrderAsc}
+            >
+              {t('common:search')}
+            </button>
+            <button
+              className="ml-2 btn btn-sm btn-outline"
+              onClick={setOrderDesc}
+              type="submit"
+            >
+              {t('common:search_desc')}
+            </button>
+          </>
+        }
+      >
+        <FormBlock label={t('music:category.name')}>
+          <Checkbox
+            name="category"
+            control={control}
+            list={MusicCategoryCheckbox(t)}
+          />
+        </FormBlock>
+        <FormBlock label={t('common:unit.name')}>
+          <Checkbox name="unit" control={control} list={UnitCheckbox(t)} />
+        </FormBlock>
+        <FormBlock label={t('common:sort_name')}>
+          <Radio name="orderBy" control={control} list={MusicOrderRadio(t)} />
+        </FormBlock>
+      </SideOver>
       <WaitQuery loading={loading} error={error}>
         <InfinityScroll
           dataLength={data?.music.length || 0}
@@ -134,25 +155,7 @@ export default function Music() {
         >
           <div className="grid-1">
             {data?.music.map((item) => (
-              <Card
-                key={item.id}
-                bodyClassName="flex justify-center items-center flex-col"
-                link={`/game/music/${item.id}`}
-              >
-                <MusicIcon id={item.id} />
-                <div className="flex flex-row gap-x-2 mt-2">
-                  {item.chart?.map((item, index) => (
-                    <div className="badge badge-outline badge-md" key={index}>
-                      {item.level}
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-2">{item.name}</div>
-                <div className="text-gray-600">
-                  {item.unit?.name} -{' '}
-                  {t(`music:category.${item.category.toLowerCase()}`)}
-                </div>
-              </Card>
+              <MusicItem key={item.id} data={item} />
             ))}
           </div>
         </InfinityScroll>

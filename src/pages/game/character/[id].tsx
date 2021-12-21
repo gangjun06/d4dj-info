@@ -4,7 +4,7 @@ import {
   GET_CHARACTER_DETAIL,
 } from '@/apollo/gql'
 import { Card, Disclosure, Table, TableBody } from '@/components/Basic'
-import { CardItem } from '@/components/elements'
+import { CardItem } from '@/components/Elements'
 import { CharacterIcon } from '@/components/Image'
 import { client } from 'apollo'
 import MainLayout from 'layouts/main'

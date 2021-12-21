@@ -11,13 +11,53 @@ import useTransition from 'next-translate/useTranslation'
 import React, { useCallback, useState } from 'react'
 import { formatTimeDetail } from 'utils'
 
+const MusicDetailCard = ({ music }: { music: Music }) => {
+  const { t } = useTransition('')
+  return (
+    <Card
+      title={t('music:info')}
+      bodyClassName="flex justify-center flex-col items-center"
+    >
+      <MusicIcon id={music.id} />
+      <div className="flex flex-row gap-x-2 mt-2">
+        {music.chart?.map((item, index) => (
+          <div className="badge badge-outline badge-md" key={index}>
+            {item.level}
+          </div>
+        ))}
+      </div>
+      <div className="mt-2">{music.name}</div>
+      <div className="text-gray-600">
+        {music.unit?.name} -{' '}
+        {t(`music:category.${music.category.toLowerCase()}`)}
+      </div>
+      <Table>
+        <TableBody
+          data={[
+            [t('music:id'), music.id],
+            [t('music:composer'), music.composer],
+            [t('music:lyrist'), music.lyrist],
+            [t('music:arranger'), music.arranger],
+            [t('music:bpm'), music.musicBpm],
+            [t('music:startdate'), formatTimeDetail(music.startDate)],
+            [t('music:enddate'), formatTimeDetail(music.endDate)],
+            [t('music:unit'), music.unit?.name],
+          ]}
+        />
+      </Table>
+    </Card>
+  )
+}
+
+const MusicDetailCardMemo = React.memo(MusicDetailCard)
+
 export default function MusicDetail({
   music,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { t } = useTransition('')
   const [tab, setTab] = useState<number>(0)
 
-  const updateTab = useCallback((index) => setTab(index), [])
+  const updateTab = useCallback((index) => setTab(index), [setTab])
 
   return (
     <MainLayout
@@ -30,38 +70,7 @@ export default function MusicDetail({
     >
       <div className="grid-2">
         <div className="col-span-1">
-          <Card
-            title={t('music:info')}
-            bodyClassName="flex justify-center flex-col items-center"
-          >
-            <MusicIcon id={music.id} />
-            <div className="flex flex-row gap-x-2 mt-2">
-              {music.chart?.map((item, index) => (
-                <div className="badge badge-outline badge-md" key={index}>
-                  {item.level}
-                </div>
-              ))}
-            </div>
-            <div className="mt-2">{music.name}</div>
-            <div className="text-gray-600">
-              {music.unit?.name} -{' '}
-              {t(`music:category.${music.category.toLowerCase()}`)}
-            </div>
-            <Table>
-              <TableBody
-                data={[
-                  [t('music:id'), music.id],
-                  [t('music:composer'), music.composer],
-                  [t('music:lyrist'), music.lyrist],
-                  [t('music:arranger'), music.arranger],
-                  [t('music:bpm'), music.musicBpm],
-                  [t('music:startdate'), formatTimeDetail(music.startDate)],
-                  [t('music:enddate'), formatTimeDetail(music.endDate)],
-                  [t('music:unit'), music.unit?.name],
-                ]}
-              />
-            </Table>
-          </Card>
+          <MusicDetailCardMemo music={music} />
         </div>
         <div className="col-span-1 md:col-span-2">
           <Card title={t('music:chart_info')}>
@@ -69,7 +78,7 @@ export default function MusicDetail({
               <div className="mb-2">
                 {music.chart!.map((item, index) => (
                   <div
-                    key={index}
+                    key={item.id}
                     className={`tab tab-bordered ${
                       index === tab ? 'tab-active' : ''
                     }`}

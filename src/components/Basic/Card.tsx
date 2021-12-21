@@ -1,8 +1,8 @@
 import Link from 'next/link'
-import { ReactNode } from 'react'
+import React, { ReactNode } from 'react'
 import { UrlObject } from 'url'
 
-export function Card({
+const Card = ({
   children,
   left,
   title,
@@ -16,7 +16,7 @@ export function Card({
   className?: string
   bodyClassName?: string
   link?: string | UrlObject
-}) {
+}) => {
   const InnerContent = () => (
     <div className="card-body bg-base-100">
       {title && (
@@ -44,3 +44,5 @@ export function Card({
     </div>
   )
 }
+
+export default React.memo(Card)
