@@ -51,7 +51,7 @@ const SideNav = ({
 }) => {
   const router = useRouter()
   const { t } = useTransition('')
-  const [_show, setShow] = useContext(SettingContext)!
+  const [, setShow] = useContext(SettingContext)!
 
   const NavItem = ({
     label,
@@ -97,7 +97,7 @@ const SideNav = ({
         />
       )}
       <nav
-        className={`fixed top-0 left-0 bottom-0 flex flex-col w-3/4 lg:w-80 sm:max-w-xs pt-6 pb-4 bg-gray-800 overflow-y-auto z-20 transition-transform lg:transition-none transform ${
+        className={`fixed top-0 left-0 bottom-0 flex flex-col w-3/4 lg:w-72 sm:max-w-xs pt-6 pb-4 bg-gray-800 overflow-y-auto z-20 transition-transform lg:transition-none transform ${
           !isOpen ? '-translate-x-full lg:translate-x-0z' : ''
         }`}
       >
@@ -189,8 +189,14 @@ type props = {
   children: ReactNode
   breadThumbs: BreadThumbs[]
   title: string
+  titleSide?: ReactNode
 }
-export default function MainLayout({ breadThumbs, children, title }: props) {
+export default function MainLayout({
+  breadThumbs,
+  children,
+  title,
+  titleSide,
+}: props) {
   const [drawer, setDrawer] = useState<boolean>(false)
   const { t } = useTransition('')
 
@@ -232,10 +238,10 @@ export default function MainLayout({ breadThumbs, children, title }: props) {
         </div>
         <div
           id="mainContent"
-          className="mx-auto lg:ml-80 h-full overflow-y-scroll bg-base-200 overflow-x-hidden"
+          className="mx-auto lg:ml-72 h-full overflow-y-scroll bg-base-200 overflow-x-hidden"
         >
-          <div className="mx-auto w-full px-8 pt-10 pb-24 md:pb-0">
-            <div className="text-sm breadcrumbs">
+          <div className="mx-auto w-full px-8 py-5 md:pb-5 pb-24">
+            <div className="text-sm breadcrumbs mt-2">
               <ul>
                 {breadThumbs.map((item, index) => (
                   <li key={index}>
@@ -248,8 +254,10 @@ export default function MainLayout({ breadThumbs, children, title }: props) {
                 ))}
               </ul>
             </div>
-
-            <div className="mb-5 font-bold text-3xl">{title}</div>
+            <div className="flex items-center justify-between mb-5 ">
+              <div className="font-bold text-3xl">{title}</div>
+              {titleSide}
+            </div>
             {children}
           </div>
         </div>

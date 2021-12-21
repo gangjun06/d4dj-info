@@ -1,27 +1,28 @@
-import MainLayout from 'layouts/main'
-import useTransition from 'next-translate/useTranslation'
-import { Card } from '@/components/Basic'
-import { useForm } from 'react-hook-form'
-import { Checkbox, FormBlock, Radio } from '@/components/Form'
-import { cleanArray, cleanArrayWithInt } from 'utils/array'
-import { Attribute, Card as CardModel } from 'models'
-import { useQuery } from '@apollo/client'
-import InfinityScroll from 'react-infinite-scroll-component'
-import { WaitQuery } from '@/components/Util'
 import {
-  GET_CARD_LIST,
   CardSort,
   GetCardListReq,
   GetCardListRes,
+  GET_CARD_LIST,
 } from '@/apollo/gql'
+import { SideOver } from '@/components/Basic'
+import { CardItem } from '@/components/elements'
+import { Checkbox, FormBlock, Radio } from '@/components/Form'
+import { WaitQuery } from '@/components/Util'
+import { useQuery } from '@apollo/client'
+import MainLayout from 'layouts/main'
+import { Attribute } from 'models'
+import useTransition from 'next-translate/useTranslation'
+import { useCallback, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { HiOutlineFilter } from 'react-icons/hi'
+import InfinityScroll from 'react-infinite-scroll-component'
 import {
   AttributeCheckbox,
+  CardOrderRadio,
   CardRearityCheckbox,
   UnitCheckbox,
-  CardOrderRadio,
-} from 'utils/constants'
-import { useState } from 'react'
-import { CardItem } from '@/components/elements'
+} from 'utils'
+import { cleanArray, cleanArrayWithInt } from 'utils/array'
 
 type FilterData = {
   attribute: Attribute[]
@@ -38,6 +39,11 @@ export default function CardList() {
   })
   const [reqData, setReqData] = useState<GetCardListReq | null>(null)
   const [hasMore, setHasMore] = useState<boolean>(true)
+  const [openFilter, setOpenFilter] = useState<boolean>(false)
+
+  const openFilterSideOver = useCallback(() => setOpenFilter(true), [])
+  const closeFilterSideOver = useCallback(() => setOpenFilter(false), [])
+
   const { data, loading, error, refetch, fetchMore } = useQuery<
     GetCardListRes,
     GetCardListReq
@@ -101,45 +107,58 @@ export default function CardList() {
         { name: t('nav:game.card'), link: '/game/card' },
       ]}
       title={t('nav:game.card')}
+      titleSide={
+        <button className="btn btn-primary btn-sm" onClick={openFilterSideOver}>
+          <HiOutlineFilter size={22} />
+        </button>
+      }
     >
-      <Card title={t('common:filter')} className="mb-4">
-        <form onSubmit={onSubmit}>
-          <FormBlock label={t('common:attribute.name')}>
-            <Checkbox
-              name="attribute"
-              control={control}
-              list={AttributeCheckbox(t)}
-            />
-          </FormBlock>
-          <FormBlock label={t('card:rarity.name')}>
-            <Checkbox
-              name="cardRearity"
-              control={control}
-              list={CardRearityCheckbox(t)}
-            />
-          </FormBlock>
-          <FormBlock label={t('common:unit.name')}>
-            <Checkbox name="unit" control={control} list={UnitCheckbox(t)} />
-          </FormBlock>
-          <FormBlock label={t('common:sort_name')}>
-            <Radio name="orderBy" control={control} list={CardOrderRadio(t)} />
-          </FormBlock>
-          <button
-            className="btn btn-sm btn-primary btn-outline"
-            type="submit"
-            onClick={() => setValue('order', 'asc')}
-          >
-            {t('common:search')}
-          </button>
-          <button
-            className="ml-2 btn btn-sm btn-outline"
-            onClick={() => setValue('order', 'desc')}
-            type="submit"
-          >
-            {t('common:search_desc')}
-          </button>
-        </form>
-      </Card>
+      <SideOver
+        open={openFilter}
+        onClose={closeFilterSideOver}
+        title={t('common:filter')}
+        asForm
+        onSubmit={onSubmit}
+        footer={
+          <>
+            <button
+              className="btn btn-sm btn-primary btn-outline"
+              type="submit"
+              onClick={() => setValue('order', 'asc')}
+            >
+              {t('common:search')}
+            </button>
+            <button
+              className="btn btn-sm btn-outline"
+              onClick={() => setValue('order', 'desc')}
+              type="submit"
+            >
+              {t('common:search_desc')}
+            </button>
+          </>
+        }
+      >
+        <FormBlock label={t('common:attribute.name')}>
+          <Checkbox
+            name="attribute"
+            control={control}
+            list={AttributeCheckbox(t)}
+          />
+        </FormBlock>
+        <FormBlock label={t('card:rarity.name')}>
+          <Checkbox
+            name="cardRearity"
+            control={control}
+            list={CardRearityCheckbox(t)}
+          />
+        </FormBlock>
+        <FormBlock label={t('common:unit.name')}>
+          <Checkbox name="unit" control={control} list={UnitCheckbox(t)} />
+        </FormBlock>
+        <FormBlock label={t('common:sort_name')}>
+          <Radio name="orderBy" control={control} list={CardOrderRadio(t)} />
+        </FormBlock>
+      </SideOver>
       <WaitQuery loading={loading} error={error}>
         <InfinityScroll
           dataLength={data?.card.length || 0}

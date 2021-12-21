@@ -71,7 +71,7 @@ export default function Home({ data }: { data: GetIndexRes }) {
                     </a>
                   </div>
                 ) : (
-                  <br />
+                  <br key={index} />
                 )}
               </>
             ))}
