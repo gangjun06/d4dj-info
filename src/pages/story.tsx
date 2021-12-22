@@ -6,7 +6,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { parseSce } from 'utils/story'
 
-const Live2DView = dynamic(() => import('@/components/Live2D'), {
+const Story = dynamic(() => import('@/components/Live2D'), {
   ssr: false,
 
   // eslint-disable-next-line react/display-name
@@ -55,29 +55,29 @@ export default function Live2D() {
   return (
     <>
       <Head>
-        <title>D4DJ.info Live2D</title>
+        <title>D4DJ.info Story</title>
         {/* eslint-disable-next-line @next/next/no-sync-scripts*/}
-        {/* <script src="/live2dcubismcore.min.js" /> */}
+        <script src="/live2dcubismcore.min.js" />
         {/* eslint-disable-next-line @next/next/no-sync-scripts*/}
-        {/* <script src="/live2d.min.js" /> */}
+        <script src="/live2d.min.js" />
       </Head>
-      <div></div>
+      {/* <div></div>
       <div {...getRootProps({ className: 'dropzone' })}>
         <input {...getInputProps()} />
         <p>Drag {"'n'"} drop some files here</p>
         <button type="button" onClick={open}>
           Open File Dialog
         </button>
-      </div>
-      {/* <div
+      </div> */}
+      <div
         style={{
           position: 'relative',
           height: '100vh',
           width: '100vw',
         }}
       >
-        <Live2DView urlData={router.query.data} />
-      </div> */}
+        <Story urlData={router.query.data} />
+      </div>
     </>
   )
 }

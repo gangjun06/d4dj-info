@@ -166,6 +166,11 @@ const SideNav = ({
                 link="/live2d"
               />
               <NavItem
+                label={t('nav:game.story')}
+                Icon={HiOutlineBookOpen}
+                link="/live2d"
+              />
+              <NavItem
                 label={t('nav:game.etc.name')}
                 Icon={HiDotsCircleHorizontal}
                 link="/game/etc"
