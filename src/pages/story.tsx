@@ -2,11 +2,9 @@ import { Spinner, Text } from 'evergreen-ui'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useCallback, useEffect, useState } from 'react'
-import { useDropzone } from 'react-dropzone'
-import { parseSce } from 'utils/story'
+import { useEffect, useState } from 'react'
 
-const Story = dynamic(() => import('@/components/Live2D'), {
+const Story = dynamic(() => import('@/components/Story'), {
   ssr: false,
 
   // eslint-disable-next-line react/display-name
@@ -41,16 +39,6 @@ function Loading() {
 
 export default function Live2D() {
   const router = useRouter()
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    if (acceptedFiles.length >= 1)
-      (async () => {
-        const text = await acceptedFiles[0].text()
-        parseSce(text)
-      })()
-  }, [])
-  const { getRootProps, getInputProps, isDragActive, open } = useDropzone({
-    onDrop,
-  })
 
   return (
     <>
@@ -61,14 +49,7 @@ export default function Live2D() {
         {/* eslint-disable-next-line @next/next/no-sync-scripts*/}
         <script src="/live2d.min.js" />
       </Head>
-      {/* <div></div>
-      <div {...getRootProps({ className: 'dropzone' })}>
-        <input {...getInputProps()} />
-        <p>Drag {"'n'"} drop some files here</p>
-        <button type="button" onClick={open}>
-          Open File Dialog
-        </button>
-      </div> */}
+
       <div
         style={{
           position: 'relative',

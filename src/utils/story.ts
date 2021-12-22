@@ -5,7 +5,7 @@ import {
   StoryGroupAction,
 } from 'models/story'
 
-export const parseSce = (sce: string) => {
+export const parseSce = (sce: string): StoryGroup[] => {
   const converted: StoryGroup[] = []
   const splited = sce.split('\n')
   splited.forEach((item) => {
@@ -53,5 +53,5 @@ export const parseSce = (sce: string) => {
       })
     }
   })
-  console.log(JSON.stringify(converted, null, '  '))
+  return converted
 }

@@ -1,17 +1,15 @@
+import { StoryGroup } from 'models/story'
 import * as PIXI from 'pixi.js'
-import React, { createContext, Dispatch, SetStateAction, useState } from 'react'
+import React, { createContext, useState } from 'react'
+import { parseSce } from 'utils/story'
 
 type ContextType = {
   background: string
   setBackground: (url: string) => void
   app?: PIXI.Application
   setApp: (app: PIXI.Application) => void
-  models: { name: string; data: any }[]
-  setModels: Dispatch<SetStateAction<{ name: string; data: any }[]>>
-  dragable: boolean
-  setDragable: Dispatch<SetStateAction<boolean>>
-  configIndex: number
-  setConfigIndex: Dispatch<SetStateAction<number>>
+  storyData?: StoryGroup[]
+  loadStoryData: (data: string) => void
 }
 
 const defaultState: ContextType = {
@@ -19,41 +17,33 @@ const defaultState: ContextType = {
     'https://asset.d4dj.info/adv/ondemand/background/bg_adv_10012.jpg',
   setBackground: () => {},
   setApp: () => {},
-  models: [],
-  setModels: () => {},
-  dragable: false,
-  setDragable: () => {},
-  configIndex: 0,
-  setConfigIndex: () => {},
+  loadStoryData: () => {},
 }
 
-export const Live2DContext = createContext<ContextType>(defaultState)
+export const StoryContext = createContext<ContextType>(defaultState)
 
-function Live2DProvider({ children }: { children: React.ReactElement }) {
+function StoryProvider({ children }: { children: React.ReactElement }) {
   const [background, setBackground] = useState<string>(defaultState.background)
-  const [dragable, setDragable] = useState<boolean>(defaultState.dragable)
-  const [models, setModels] = useState<any[]>(defaultState.models)
   const [app, setApp] = useState<PIXI.Application>()
-  const [configIndex, setConfigIndex] = React.useState<number>(0)
+  const [storyData, setStoryData] = useState<StoryGroup[]>()
 
-  // return <Live2DContext.provider>{children}</Live2DContext.provider>;
+  const loadStoryData = (data: string) => {
+    setStoryData(parseSce(data))
+  }
+
   return (
-    <Live2DContext.Provider
+    <StoryContext.Provider
       value={{
         background,
         setBackground,
         app,
         setApp,
-        models,
-        setModels,
-        dragable,
-        setDragable,
-        configIndex,
-        setConfigIndex,
+        storyData,
+        loadStoryData,
       }}
     >
       {children}
-    </Live2DContext.Provider>
+    </StoryContext.Provider>
   )
 }
-export default Live2DProvider
+export default StoryProvider
