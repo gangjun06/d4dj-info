@@ -1,6 +1,7 @@
+import axios from 'axios'
 import { StoryData, StoryMeta } from 'models/story'
 import * as PIXI from 'pixi.js'
-import React, { createContext, useState } from 'react'
+import React, { createContext, useEffect, useRef, useState } from 'react'
 import { parseSce } from 'utils/story'
 
 type ContextType = {
@@ -11,6 +12,10 @@ type ContextType = {
   storyData?: StoryData
   storyMeta?: StoryMeta
   loadStoryData: (data: string) => void
+  backgroundTable: Map<string, string>
+  music?: string
+  playMusic: (data: string, volume?: number) => void
+  stopMusic: () => void
 }
 
 const defaultState: ContextType = {
@@ -19,21 +24,65 @@ const defaultState: ContextType = {
   setBackground: () => {},
   setApp: () => {},
   loadStoryData: () => {},
+  backgroundTable: new Map<string, string>(),
+  playMusic: () => {},
+  stopMusic: () => {},
 }
 
 export const StoryContext = createContext<ContextType>(defaultState)
 
 function StoryProvider({ children }: { children: React.ReactElement }) {
-  const [background, setBackground] = useState<string>(defaultState.background)
+  const [background, setBackgroundState] = useState<string>(
+    defaultState.background
+  )
   const [app, setApp] = useState<PIXI.Application>()
   const [storyData, setStoryData] = useState<StoryData>()
   const [storyMeta, setStoryMeta] = useState<StoryMeta>()
+  const [backgroundTable, setBackgroundTable] = useState<Map<string, string>>(
+    defaultState.backgroundTable
+  )
+  const musicRef = useRef<HTMLAudioElement>(null)
 
   const loadStoryData = (data: string) => {
     const parsed = parseSce(data)
     setStoryData(parsed.data)
     setStoryMeta(parsed.meta)
   }
+
+  const playMusic = (data: string, volume?: number) => {
+    if (musicRef.current) {
+      musicRef.current.src = `https://asset.d4dj.info/plain/adv/ondemand/bgm/${data}.mp3`
+      musicRef.current.loop = true
+      if (volume) {
+        musicRef.current.volume = volume / 100
+      }
+      musicRef.current.play()
+    }
+  }
+  const stopMusic = () => {
+    musicRef?.current?.pause()
+  }
+
+  const setBackground = (name: string) => {
+    setBackgroundState(
+      `https://asset.d4dj.info/adv/ondemand/background/${
+        backgroundTable.get(name) || ''
+      }.jpg`
+    )
+  }
+
+  useEffect(() => {
+    axios
+      .get('https://asset.d4dj.info/adv/settings/background_table.txt')
+      .then((res) => {
+        const map = new Map<string, string>()
+        ;(res.data as string).split('\n').forEach((item) => {
+          const s = item.split(':')
+          map.set(s[0], s[1])
+        })
+        setBackgroundTable(map)
+      })
+  }, [])
 
   return (
     <StoryContext.Provider
@@ -45,9 +94,15 @@ function StoryProvider({ children }: { children: React.ReactElement }) {
         loadStoryData,
         storyData,
         storyMeta,
+        backgroundTable,
+        playMusic,
+        stopMusic,
       }}
     >
-      {children}
+      <>
+        <audio ref={musicRef} />
+        {children}
+      </>
     </StoryContext.Provider>
   )
 }

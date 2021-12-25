@@ -70,12 +70,12 @@ export enum SceValues {
   EffectLazer = 'レーザービーム',
   EffectRain = '雨',
   EffectSnow = '雪',
-  EffectClubLight = 'クラブライト'
+  EffectClubLight = 'クラブライト',
+  EffectConcentratedline = '集中線',
+  EffectRecollection = '回想シーン',
 
   // Layer
   AfterChara = 'キャラ後',
-
-  //Effect
 }
 
 export const getSceKeyName = (value: string) => {

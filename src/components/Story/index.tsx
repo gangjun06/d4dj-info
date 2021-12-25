@@ -39,10 +39,21 @@ const AdBlock = () => {
 }
 
 function StoryViewContent({ urlData }: props) {
-  const canvasWrapper = useRef<HTMLDivElement>(null)
   const { t } = useTranslation()
-  const { storyData, storyMeta, background, setApp, app } =
-    useContext(StoryContext)
+  const {
+    storyData,
+    storyMeta,
+    background,
+    setApp,
+    setBackground,
+    music,
+    playMusic,
+    stopMusic,
+  } = useContext(StoryContext)
+
+  const canvasWrapper = useRef<HTMLDivElement>(null)
+  const musicRef = useRef<HTMLAudioElement>(null)
+
   const [width, height] = useWindowSize()
   const [isShown, setIsShown] = useState<boolean>(false)
   const [index, setIndex] = useState<number>(-1)
@@ -55,8 +66,7 @@ function StoryViewContent({ urlData }: props) {
     e.key === ' ' && setIndex((index) => index + 1)
 
   useEffect(() => {
-    console.log(storyData)
-    if (!storyData || index == -1 || index > storyData.length) return
+    if (!storyData || index === -1 || index > storyData.length) return
     ;(async () => {
       if (title) {
         setTitle(null)
@@ -69,8 +79,17 @@ function StoryViewContent({ urlData }: props) {
       const data = storyData[index]
       const settings = data.settings
       settings.forEach(({ name, value, args }) => {
-        if (name === SceWords.Title) setTitle(value)
-        else if (name === SceWords.SubTitle) setSubTitle(value)
+        if (name === SceWords.Title) {
+          setTitle(value)
+          return
+        } else if (name === SceWords.SubTitle) {
+          setSubTitle(value)
+          return
+        } else if (name === SceWords.Background) setBackground(value)
+        else if (name === SceWords.SoundBGM)
+          playMusic(value, (args.get(SceWords.Volume) || 100) as number)
+        else if (name === SceWords.SoundBGMStop) stopMusic()
+        setIndex((index) => index + 1)
       })
     })()
   }, [index, storyData])
@@ -111,6 +130,7 @@ function StoryViewContent({ urlData }: props) {
 
   return (
     <>
+      <audio ref={musicRef} />
       <Setting isShown={isShown} onClose={() => setIsShown(false)} />
       <AdBlock />
       <Title title={title} />
