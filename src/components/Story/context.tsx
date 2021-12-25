@@ -1,4 +1,4 @@
-import { StoryGroup } from 'models/story'
+import { SceWords, StoryGroup } from 'models/story'
 import * as PIXI from 'pixi.js'
 import React, { createContext, useState } from 'react'
 import { parseSce } from 'utils/story'
@@ -28,7 +28,22 @@ function StoryProvider({ children }: { children: React.ReactElement }) {
   const [storyData, setStoryData] = useState<StoryGroup[]>()
 
   const loadStoryData = (data: string) => {
-    setStoryData(parseSce(data))
+    const parsed = parseSce(data)
+    const live2DList = new Map<string, string>()
+    for (const item of parsed) {
+      item.actions?.forEach((item) => {
+        let live2dName = ''
+        item.forEach((item) => {
+          if (item.name === SceWords.Live2dCharaCreate)
+            live2dName = item.value as string
+          else if (item.name === SceWords.CharacterName) {
+            console.log(item.value)
+            live2DList.set(live2dName, item.value as string)
+          }
+        })
+      })
+      if (item.plain === '［@End：］') break
+    }
   }
 
   return (
@@ -38,7 +53,6 @@ function StoryProvider({ children }: { children: React.ReactElement }) {
         setBackground,
         app,
         setApp,
-        storyData,
         loadStoryData,
       }}
     >

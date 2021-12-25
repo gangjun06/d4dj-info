@@ -1,9 +1,4 @@
-import {
-  getSceKeyName,
-  getSceValueName,
-  StoryGroup,
-  StoryGroupAction,
-} from 'models/story'
+import { StoryGroup, StoryGroupAction } from 'models/story'
 
 export const parseSce = (sce: string): StoryGroup[] => {
   const converted: StoryGroup[] = []
@@ -19,7 +14,7 @@ export const parseSce = (sce: string): StoryGroup[] => {
           .split('、')
           .map<StoryGroupAction>((item) => {
             const s = item.split('：')
-            return { name: getSceKeyName(s[0]), value: getSceValueName(s[1]) }
+            return { name: s[0], value: s[1] }
           })
           .filter((item) => item.value !== ''),
       ]
@@ -47,7 +42,7 @@ export const parseSce = (sce: string): StoryGroup[] => {
           .map<StoryGroupAction[]>((item) =>
             item.split('、').map<StoryGroupAction>((item) => {
               const s = item.split('：')
-              return { name: getSceKeyName(s[0]), value: getSceValueName(s[1]) }
+              return { name: s[0], value: s[1] }
             })
           ),
       })

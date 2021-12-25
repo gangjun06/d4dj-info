@@ -89,7 +89,7 @@ export const SideOver = ({
                       {title}
                     </Dialog.Title>
                   </div>
-                  <div className="mt-6 relative flex-1 px-4 sm:px-6">
+                  <div className="mt-6 relative flex-1 px-4 sm:px-6 overflow-y-scroll">
                     {children}
                   </div>
                   <div className="sticky bottom-0 px-4 sm:px-6 py-5 border-t border-gray-300 flex flex-row-reverse gap-x-2">

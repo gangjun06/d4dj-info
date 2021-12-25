@@ -1,5 +1,5 @@
 import { SideOver, SimpleFileUpload } from '@/components/Basic'
-import React, { useContext } from 'react'
+import React, { useCallback, useContext } from 'react'
 import { StoryContext } from '../context'
 
 type props = {
@@ -8,11 +8,20 @@ type props = {
 }
 
 export function Setting({ isShown, onClose }: props) {
-  const { loadStoryData } = useContext(StoryContext)
+  const { storyData, loadStoryData } = useContext(StoryContext)
+
+  const onFileUpload = useCallback(
+    async (data: FileList) => {
+      const parsed = await data.item(0)?.text()
+      parsed && loadStoryData(parsed)
+    },
+    [loadStoryData]
+  )
 
   return (
     <SideOver open={isShown} onClose={onClose} title="Story Viewer">
-      <SimpleFileUpload />
+      <SimpleFileUpload onFileUpload={onFileUpload} />
+      <div>{}</div>
     </SideOver>
   )
 }
