@@ -1,4 +1,4 @@
-import { SideOver } from '@/components/Basic'
+import { SideOver, SimpleFileUpload } from '@/components/Basic'
 import React, { useContext } from 'react'
 import { StoryContext } from '../context'
 
@@ -12,7 +12,7 @@ export function Setting({ isShown, onClose }: props) {
 
   return (
     <SideOver open={isShown} onClose={onClose} title="Story Viewer">
-      <div></div>
+      <SimpleFileUpload />
     </SideOver>
   )
 }
