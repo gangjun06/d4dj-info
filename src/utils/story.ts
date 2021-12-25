@@ -1,52 +1,64 @@
-import { StoryGroup, StoryGroupAction } from 'models/story'
+import { SceWords, Setting, Story } from 'models/story'
 
-export const parseSce = (sce: string): StoryGroup[] => {
-  const converted: StoryGroup[] = []
+export const parseSce = (sce: string): Story => {
+  const result: Story = {
+    meta: {
+      live2dList: new Map<string, string>(),
+    },
+    data: [],
+  }
+
+  const convertToSetting = (data: string) => {
+    const args = new Map<string, string>()
+    let [name, value] = ['', '']
+    data.split('、').forEach((item, index) => {
+      const s = item.split('：')
+      if (index === 0) (name = s[0]), (value = s[1] || '')
+      else args.set(s[0], s[1] || '')
+    })
+    return {
+      name,
+      value,
+      args: args,
+    }
+  }
+
   const splited = sce.split('\n')
+  let appendText = false
   splited.forEach((item) => {
     const trimed = item.trim()
     const filtered = trimed.trim().replaceAll('［', '').replaceAll('］', '')
 
     if (trimed.startsWith('［')) {
-      // setting
-      const actions = [
-        filtered
-          .split('、')
-          .map<StoryGroupAction>((item) => {
-            const s = item.split('：')
-            return { name: s[0], value: s[1] }
-          })
-          .filter((item) => item.value !== ''),
-      ]
-      const pushData: { actions?: any[]; plain?: string } = {}
-      if (actions[0].length > 0) {
-        pushData.actions = actions
-      } else {
-        pushData.plain = item
+      const settings = convertToSetting(filtered)
+      if (settings.name === SceWords.Live2dCharaCreate) {
+        const value = settings.args.get(SceWords.CharacterName)
+        result.meta.live2dList.set(settings.value, value || '')
       }
-
-      converted.push(pushData)
+      result.data.push({
+        text: '',
+        settings: [settings],
+      })
     } else if (
       trimed.startsWith('{') ||
       trimed.startsWith('}') ||
       trimed === ''
     ) {
-      converted.push({ plain: item })
+      appendText = false
     } else {
-      // voice
+      if (appendText) {
+        result.data[result.data.length - 1].text += `\n${trimed}`
+        return
+      }
       const splited = filtered.split('＠')
-      converted.push({
+      result.data.push({
         text: splited[0],
-        actions: splited
+        settings: splited
           .filter((_, index) => index !== 0)
-          .map<StoryGroupAction[]>((item) =>
-            item.split('、').map<StoryGroupAction>((item) => {
-              const s = item.split('：')
-              return { name: s[0], value: s[1] }
-            })
-          ),
+          .map<Setting>((item) => convertToSetting(item)),
       })
+      appendText = true
     }
   })
-  return converted
+  return result
 }

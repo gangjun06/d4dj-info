@@ -11,7 +11,7 @@ export enum SceWords {
   Display = '表示', // ex)［表示：ウインドウ1、 ...
   Fade = 'フェード', //ex) ...フェード：1］
 
-  LIve2dCharaFilm = 'Live2Dキャラフィルム', // ex)［Live2Dキャラフィルム：全部,
+  Live2dCharaFilm = 'Live2Dキャラフィルム', // ex)［Live2Dキャラフィルム：全部,
   Film = 'フィルム', // ex) ...フィルム：暗所
 
   SoundBGM = '音BGM', // ex)［音BGM：bgm_adv_Wakuwaku、 ...
@@ -76,13 +76,15 @@ export const getSceValueName = (value: string) => {
   )
 }
 
-export type StoryGroup = {
-  actions?: StoryGroupAction[][]
-  plain?: string
-  text?: string
+export type Story = {
+  meta: {
+    live2dList: Map<string, string>
+  }
+  data: { text: string; settings: Setting[] }[]
 }
 
-export type StoryGroupAction = {
+export type Setting = {
   name: string
-  value: string | number
+  value: string
+  args: Map<string, string | number | string[] | number[]>
 }

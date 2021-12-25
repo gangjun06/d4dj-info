@@ -48,13 +48,14 @@ export const SimpleFileUpload = ({
 
   useEffect(() => {
     const div = dropRef.current
+    const file = fileRef.current
     if (div) {
       div.addEventListener('dragenter', handleDragEnter)
       div.addEventListener('dragleave', handleDragLeave)
       div.addEventListener('dragover', handleDragOver)
       div.addEventListener('drop', handleDrop)
     }
-    if (fileRef.current) {
+    if (file) {
       fileRef.current.addEventListener('change', onChange)
     }
     return () => {
@@ -64,8 +65,8 @@ export const SimpleFileUpload = ({
         div.removeEventListener('dragover', handleDragOver)
         div.removeEventListener('drop', handleDrop)
       }
-      if (fileRef.current) {
-        fileRef.current.removeEventListener('change', onChange)
+      if (file) {
+        file.removeEventListener('change', onChange)
       }
     }
   }, [])
