@@ -1,3 +1,4 @@
+import { Live2DModel } from 'pixi-live2d-display'
 import * as PIXI from 'pixi.js'
 
 export function dragable(model: any) {
@@ -31,4 +32,22 @@ export function addFrame(model: any) {
   foreground.visible = true
 
   // checkbox("Model Frames", (checked) => (foreground.visible = checked));
+}
+
+export const getModelUrl = (model: string) =>
+  `https://asset.d4dj.info/AssetBundles/Live2D/${model}/${model}.model3.json`
+
+export const loadModels = async (modelList: string[]) => {
+  const list: any[] = []
+  modelList.forEach(async (item) => {
+    const model: any = await Live2DModel.from(getModelUrl(item), {})
+    model.x = 500
+    model.y = 500
+    model.rotation = Math.PI
+    model.skew.x = Math.PI
+    model.scale.set(0.4, 0.4)
+    model.anchor.set(0.5, 0.5)
+    list.push(model)
+  })
+  return list
 }

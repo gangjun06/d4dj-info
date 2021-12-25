@@ -1,5 +1,5 @@
 import useTranslation from 'next-translate/useTranslation'
-import { useEffect, useState } from 'react'
+import { useDelayUnmount } from 'utils'
 
 type props = {
   show: boolean
@@ -9,20 +9,6 @@ type props = {
   title?: string
 }
 
-function useDelayUnmount(isMounted: boolean, delayTime: number) {
-  const [showDiv, setShowDiv] = useState(false)
-  useEffect(() => {
-    let timeoutId: NodeJS.Timeout
-    if (isMounted && !showDiv) {
-      setShowDiv(true)
-    } else if (!isMounted && showDiv) {
-      timeoutId = setTimeout(() => setShowDiv(false), delayTime) //delay our unmount
-    }
-    return () => clearTimeout(timeoutId) // cleanup mechanism for effects , the use of setTimeout generate a sideEffect
-  }, [isMounted, delayTime, showDiv])
-  return showDiv
-}
-
 export const Modal = ({
   show,
   children,
@@ -30,7 +16,7 @@ export const Modal = ({
   showCloseBtn = false,
   onClose,
 }: props) => {
-  const display = useDelayUnmount(show, 250)
+  const [, display] = useDelayUnmount('', show, 250)
   const { t } = useTranslation()
   if (show)
     return (

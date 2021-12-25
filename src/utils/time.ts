@@ -13,3 +13,8 @@ export const formatTimeDetail = (time: number | Date) =>
     : formatToTimeZone(time, 'YY.MM.DD. hh:mm', {
         timeZone: 'Etc/GMT+0',
       })
+
+export const delay = (time: number) =>
+  new Promise((resolve) => {
+    setTimeout(resolve, time)
+  })

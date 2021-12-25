@@ -1,4 +1,4 @@
-import { Story } from 'models/story'
+import { StoryData, StoryMeta } from 'models/story'
 import * as PIXI from 'pixi.js'
 import React, { createContext, useState } from 'react'
 import { parseSce } from 'utils/story'
@@ -8,7 +8,8 @@ type ContextType = {
   setBackground: (url: string) => void
   app?: PIXI.Application
   setApp: (app: PIXI.Application) => void
-  storyData?: Story
+  storyData?: StoryData
+  storyMeta?: StoryMeta
   loadStoryData: (data: string) => void
 }
 
@@ -25,10 +26,13 @@ export const StoryContext = createContext<ContextType>(defaultState)
 function StoryProvider({ children }: { children: React.ReactElement }) {
   const [background, setBackground] = useState<string>(defaultState.background)
   const [app, setApp] = useState<PIXI.Application>()
-  const [storyData, setStoryData] = useState<Story>()
+  const [storyData, setStoryData] = useState<StoryData>()
+  const [storyMeta, setStoryMeta] = useState<StoryMeta>()
 
   const loadStoryData = (data: string) => {
     const parsed = parseSce(data)
+    setStoryData(parsed.data)
+    setStoryMeta(parsed.meta)
   }
 
   return (
@@ -39,6 +43,8 @@ function StoryProvider({ children }: { children: React.ReactElement }) {
         app,
         setApp,
         loadStoryData,
+        storyData,
+        storyMeta,
       }}
     >
       {children}

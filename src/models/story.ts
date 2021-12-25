@@ -44,12 +44,13 @@ export enum SceWords {
 }
 
 export enum SceValues {
-  // Live2DCharaHide, Film
-  All = '全部',
+  // Live2DCharaHide
+  HideAll = '全部',
 
   // Film
-  Normal = '通常',
-  DarkPlace = '暗所',
+  FilmAll = '全部',
+  FilmNormal = '通常',
+  FilmDarkPlace = '暗所',
 
   // WindowCreate, Display
   Window1 = 'ウインドウ1',
@@ -60,11 +61,21 @@ export enum SceValues {
   Center = '中央',
 
   // Fade
-  White = '白',
-  Black = '黒',
+  FadeWhite = '白',
+  FadeBlack = '黒',
+  FadeCross = 'クロス',
+  FadeNormal = '通常',
+
+  // Effect
+  EffectLazer = 'レーザービーム',
+  EffectRain = '雨',
+  EffectSnow = '雪',
+  EffectClubLight = 'クラブライト'
 
   // Layer
   AfterChara = 'キャラ後',
+
+  //Effect
 }
 
 export const getSceKeyName = (value: string) => {
@@ -77,11 +88,17 @@ export const getSceValueName = (value: string) => {
 }
 
 export type Story = {
-  meta: {
-    live2dList: Map<string, string>
-  }
-  data: { text: string; settings: Setting[] }[]
+  meta: StoryMeta
+  data: StoryData
 }
+
+export type StoryMeta = {
+  live2dList: Map<string, string>
+}
+export type StoryData = {
+  text: string
+  settings: Setting[]
+}[]
 
 export type Setting = {
   name: string
