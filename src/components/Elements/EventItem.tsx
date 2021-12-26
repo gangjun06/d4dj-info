@@ -1,17 +1,11 @@
 import { Event } from 'models'
-import Image from 'next/image'
 import React from 'react'
-import { formatTime, myLoader } from 'utils'
+import { formatTime } from 'utils'
+import { EventIcon } from '../Image'
 
 const EventItem = ({ data }: { data: Event }) => (
   <div className="flex-center flex-col">
-    <Image
-      loader={myLoader}
-      src={`ondemand/event/event_${data.id}/title_logo.png`}
-      width="350"
-      alt={data.id.toString()}
-      height="200"
-    />
+    <EventIcon id={data.id} />
     <div className="flex flex-row gap-x-2 my-2">
       <div className="badge badge-outline badge-md">{data.type}</div>
     </div>

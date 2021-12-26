@@ -1,5 +1,6 @@
 import { GetEventReq, GetEventRes, GET_EVENT_DETAIL } from '@/apollo/gql'
 import { Card, Disclosure, Table, TableBody } from '@/components/Basic'
+import { EventIcon } from '@/components/Image'
 import { client } from 'apollo'
 import MainLayout from 'layouts/main'
 import { Event as EventModel } from 'models'
@@ -32,13 +33,7 @@ export default function GachaDetail({
             title={t('event:info')}
             bodyClassName="flex justify-center flex-col items-center"
           >
-            <Image
-              loader={myLoader}
-              src={`${baseUrl}title_logo.png`}
-              width="350"
-              alt={event.id.toString()}
-              height="200"
-            />
+            <EventIcon id={event.id} />
             <div className="flex flex-row gap-x-2 my-2">
               <div className="badge badge-outline badge-md">{event.type}</div>
             </div>
