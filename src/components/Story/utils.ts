@@ -37,17 +37,13 @@ export function addFrame(model: any) {
 export const getModelUrl = (model: string) =>
   `https://asset.d4dj.info/AssetBundles/Live2D/${model}/${model}.model3.json`
 
-export const loadModels = async (modelList: string[]) => {
-  const list: any[] = []
-  modelList.forEach(async (item) => {
-    const model: any = await Live2DModel.from(getModelUrl(item), {})
-    model.x = 500
-    model.y = 500
-    model.rotation = Math.PI
-    model.skew.x = Math.PI
-    model.scale.set(0.4, 0.4)
-    model.anchor.set(0.5, 0.5)
-    list.push(model)
-  })
-  return list
+export const loadModel = async (modelFile: string) => {
+  const model: any = await Live2DModel.from(getModelUrl(modelFile), {})
+  model.x = 500
+  model.y = 500
+  model.rotation = Math.PI
+  model.skew.x = Math.PI
+  model.scale.set(0.4, 0.4)
+  model.anchor.set(0.5, 0.5)
+  return model
 }

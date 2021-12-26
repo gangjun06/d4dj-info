@@ -1,15 +1,17 @@
 import { useWindowSize } from '@react-hook/window-size'
-import { SceWords } from 'models/story'
+import { SceValues, SceWords } from 'models/story'
 import useTranslation from 'next-translate/useTranslation'
 import { InternalModel, Live2DModel } from 'pixi-live2d-display'
 import * as PIXI from 'pixi.js'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { HiCog } from 'react-icons/hi'
 import { delay } from 'utils'
+import { Dialogue } from './components/Dialogue'
+import { Fade } from './components/Fade'
 import { SubTitle, Title } from './components/Title'
 import StoryProvider, { StoryContext } from './context'
 import { Setting } from './setting'
-import { loadModels } from './utils'
+import { loadModel } from './utils'
 
 type props = {
   urlData: string | string[] | undefined
@@ -46,9 +48,12 @@ function StoryViewContent({ urlData }: props) {
     background,
     setApp,
     setBackground,
-    music,
     playMusic,
     stopMusic,
+    speaker,
+    setSpeaker,
+    text,
+    setText,
   } = useContext(StoryContext)
 
   const canvasWrapper = useRef<HTMLDivElement>(null)
@@ -57,9 +62,12 @@ function StoryViewContent({ urlData }: props) {
   const [width, height] = useWindowSize()
   const [isShown, setIsShown] = useState<boolean>(false)
   const [index, setIndex] = useState<number>(-1)
-  const [models, setModels] = useState<Live2DModel<InternalModel>[]>()
+  const [models, setModels] =
+    useState<Map<string, Live2DModel<InternalModel>>>()
   const [title, setTitle] = useState<string | null>(null)
   const [subTitle, setSubTitle] = useState<string | null>(null)
+
+  const [fade, setFade] = useState<SceValues | null>(null)
 
   const canvasClick = () => setIndex((index) => index + 1)
   const keyDown = (e: KeyboardEvent) =>
@@ -78,17 +86,33 @@ function StoryViewContent({ urlData }: props) {
       }
       const data = storyData[index]
       const settings = data.settings
-      settings.forEach(({ name, value, args }) => {
+      if (data.text !== '') {
+        setText(data.text)
+        return
+      } else if (text !== '') {
+        setText(null)
+      }
+      settings.forEach(async ({ name, value, args }) => {
         if (name === SceWords.Title) {
           setTitle(value)
           return
         } else if (name === SceWords.SubTitle) {
           setSubTitle(value)
           return
-        } else if (name === SceWords.Background) setBackground(value)
+        } else if (name === SceWords.Background) {
+          setBackground(value)
+          await delay(100)
+        } else if (name === SceWords.Speaker) setSpeaker(value)
         else if (name === SceWords.SoundBGM)
           playMusic(value, (args.get(SceWords.Volume) || 100) as number)
         else if (name === SceWords.SoundBGMStop) stopMusic()
+        else if (name === SceWords.FadeIn) {
+          setFade(value as SceValues)
+          await delay(500)
+        } else if (name === SceWords.FadeOut) {
+          setFade(null)
+          await delay(500)
+        }
         setIndex((index) => index + 1)
       })
     })()
@@ -122,10 +146,16 @@ function StoryViewContent({ urlData }: props) {
   }, [])
 
   useEffect(() => {
-    if (storyMeta)
-      loadModels(Array.from(storyMeta.live2dList.values())).then((res) => {
-        setModels(res)
+    const map = new Map<string, Live2DModel<InternalModel>>()
+    if (storyMeta) {
+      Array.from(storyMeta.live2dList.keys()).forEach(async (item) => {
+        const name = storyMeta.live2dList.get(item)
+        if (name) {
+          const model = await loadModel(name)
+          map.set(item, model)
+        }
       })
+    }
   }, [storyMeta])
 
   return (
@@ -135,6 +165,8 @@ function StoryViewContent({ urlData }: props) {
       <AdBlock />
       <Title title={title} />
       <SubTitle subTitle={subTitle} />
+      <Fade color={fade} />
+      <Dialogue name={speaker} text={text} />
 
       <div
         className="absolute top-0 left-0 w-full h-full bg-cover"

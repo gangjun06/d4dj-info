@@ -8,7 +8,7 @@ type props = {
 }
 
 export function Setting({ isShown, onClose }: props) {
-  const { loadStoryData } = useContext(StoryContext)
+  const { loadStoryData, speaker } = useContext(StoryContext)
 
   const onFileUpload = useCallback(
     async (data: FileList) => {
@@ -21,6 +21,7 @@ export function Setting({ isShown, onClose }: props) {
   return (
     <SideOver open={isShown} onClose={onClose} title="Story Viewer">
       <SimpleFileUpload onFileUpload={onFileUpload} />
+      {speaker}
     </SideOver>
   )
 }

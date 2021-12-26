@@ -13,9 +13,12 @@ type ContextType = {
   storyMeta?: StoryMeta
   loadStoryData: (data: string) => void
   backgroundTable: Map<string, string>
-  music?: string
   playMusic: (data: string, volume?: number) => void
   stopMusic: () => void
+  speaker: string | null
+  setSpeaker: (data: string) => void
+  text: string | null
+  setText: (data: string | null) => void
 }
 
 const defaultState: ContextType = {
@@ -27,6 +30,10 @@ const defaultState: ContextType = {
   backgroundTable: new Map<string, string>(),
   playMusic: () => {},
   stopMusic: () => {},
+  speaker: null,
+  setSpeaker: () => {},
+  text: null,
+  setText: () => {},
 }
 
 export const StoryContext = createContext<ContextType>(defaultState)
@@ -41,6 +48,9 @@ function StoryProvider({ children }: { children: React.ReactElement }) {
   const [backgroundTable, setBackgroundTable] = useState<Map<string, string>>(
     defaultState.backgroundTable
   )
+  const [speaker, setSpeaker] = useState<string | null>(defaultState.speaker)
+  const [text, setText] = useState<string | null>(defaultState.text)
+
   const musicRef = useRef<HTMLAudioElement>(null)
 
   const loadStoryData = (data: string) => {
@@ -97,6 +107,10 @@ function StoryProvider({ children }: { children: React.ReactElement }) {
         backgroundTable,
         playMusic,
         stopMusic,
+        speaker,
+        setSpeaker,
+        text,
+        setText,
       }}
     >
       <>
