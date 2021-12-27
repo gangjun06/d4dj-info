@@ -39,11 +39,5 @@ export const getModelUrl = (model: string) =>
 
 export const loadModel = async (modelFile: string) => {
   const model: any = await Live2DModel.from(getModelUrl(modelFile), {})
-  model.x = 500
-  model.y = 500
-  model.rotation = Math.PI
-  model.skew.x = Math.PI
-  model.scale.set(0.4, 0.4)
-  model.anchor.set(0.5, 0.5)
   return model
 }

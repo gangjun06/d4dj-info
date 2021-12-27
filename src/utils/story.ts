@@ -1,6 +1,7 @@
 import { SceWords, Setting, Story } from 'models/story'
 
 export const parseSce = (sce: string): Story => {
+  let cnt = 0
   const result: Story = {
     meta: {
       live2dList: new Map<string, string>(),
@@ -14,7 +15,14 @@ export const parseSce = (sce: string): Story => {
     data.split('、').forEach((item, index) => {
       const s = item.split('：')
       if (index === 0) (name = s[0]), (value = s[1] || '')
-      else args.set(s[0], s[1] || '')
+      else {
+        if (s[1] && s[1].startsWith('vo_') && s[0] === SceWords.VoiceName) {
+          s[1] = s[1].replace('vo', 'sce')
+          s[1] = s[1].replace(/_\d{4}_\d{3}/, '')
+          s[1] = s[1] = `${s[1]}-${++cnt}`
+        }
+        args.set(s[0], s[1] || '')
+      }
     })
     return {
       name,
@@ -46,16 +54,20 @@ export const parseSce = (sce: string): Story => {
     ) {
       appendText = false
     } else {
+      const splited = filtered.split('＠')
+      const text = splited[0]
+      const settings = splited
+        .filter((_, index) => index !== 0)
+        .map<Setting>((item) => convertToSetting(item))
+
       if (appendText) {
-        result.data[result.data.length - 1].text += `\n${trimed}`
+        result.data[result.data.length - 1].text += `\n${text}`
+        result.data[result.data.length - 1].settings.concat(settings)
         return
       }
-      const splited = filtered.split('＠')
       result.data.push({
-        text: splited[0],
-        settings: splited
-          .filter((_, index) => index !== 0)
-          .map<Setting>((item) => convertToSetting(item)),
+        text: text,
+        settings: settings,
       })
       appendText = true
     }

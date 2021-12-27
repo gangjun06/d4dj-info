@@ -1,17 +1,16 @@
 import styles from '@/assets/story.module.css'
 import { Transition } from '@headlessui/react'
 import React, { Fragment } from 'react'
-import { useDelayUnmount } from 'utils'
 
 const DialogueContent = (props: {
   name: string | null
   text: string | null
 }) => {
-  const [data, display] = useDelayUnmount(props, props.text !== null, 200)
+  // const [data, display] = useDelayUnmount(props, , 200)
   return (
     <Transition
       as={Fragment}
-      show={display}
+      show={props.text !== null}
       enter="transition-opacity duration-200"
       enterFrom="opacity-0"
       enterTo="opacity-100"
@@ -21,10 +20,10 @@ const DialogueContent = (props: {
     >
       <div className={styles.dialogueWrapper}>
         <div className={styles.dialogue}>
-          <div className={styles.name}>{data?.name}</div>
+          <div className={styles.name}>{props.name}</div>
           <div className={styles.dialogueTextWrapper}>
             <div>
-              {data?.text?.split('\n').map((item) => (
+              {props.text?.split('\n').map((item) => (
                 <>
                   {item}
                   <br />

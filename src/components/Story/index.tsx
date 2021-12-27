@@ -3,6 +3,7 @@ import { SceValues, SceWords } from 'models/story'
 import useTranslation from 'next-translate/useTranslation'
 import { InternalModel, Live2DModel } from 'pixi-live2d-display'
 import * as PIXI from 'pixi.js'
+import { Application, TickerPlugin } from 'pixi.js'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { HiCog } from 'react-icons/hi'
 import { delay } from 'utils'
@@ -34,7 +35,7 @@ const AdBlock = () => {
   if (displayText)
     return (
       <div className="absolute mt-5 ml-5 text-2xl font-bold">
-        {t('common:adblock')}
+        {/* {t('common:adblock')} */}
       </div>
     )
   return <></>
@@ -46,6 +47,7 @@ function StoryViewContent({ urlData }: props) {
     storyData,
     storyMeta,
     background,
+    app,
     setApp,
     setBackground,
     playMusic,
@@ -69,6 +71,8 @@ function StoryViewContent({ urlData }: props) {
 
   const [fade, setFade] = useState<SceValues | null>(null)
 
+  const [charaStack, setCharaStack] = useState<Map<any, string>>(new Map())
+
   const canvasClick = () => setIndex((index) => index + 1)
   const keyDown = (e: KeyboardEvent) =>
     e.key === ' ' && setIndex((index) => index + 1)
@@ -85,12 +89,17 @@ function StoryViewContent({ urlData }: props) {
         await delay(200)
       }
       const data = storyData[index]
+      console.log(data)
       const settings = data.settings
+      const audio = musicRef.current
+
       if (data.text !== '') {
         setText(data.text)
-        return
       } else if (text !== '') {
         setText(null)
+        if (audio && audio.src !== '' && !audio.paused) {
+          musicRef.current.pause()
+        }
       }
       settings.forEach(async ({ name, value, args }) => {
         if (name === SceWords.Title) {
@@ -112,8 +121,93 @@ function StoryViewContent({ urlData }: props) {
         } else if (name === SceWords.FadeOut) {
           setFade(null)
           await delay(500)
+        } else if (name === SceWords.Live2dCharaVoice) {
+          const voiceName = args.get(SceWords.VoiceName)
+          if (typeof voiceName === 'string')
+            if (musicRef.current) {
+              musicRef.current.src = `https://asset.d4dj.info/plain/adv/ondemand/voice/${voiceName}.mp3`
+              await musicRef.current.play()
+            }
+        } else if (name === SceWords.Live2dCharaDisplay) {
+          const model: any = models?.get(value)
+          if (model && app) {
+            const animation = args.get(SceWords.Animation)
+            const position = args.get(SceWords.Position)
+            const chara = charaStack.get(position)
+
+            const addModel = () => {
+              if (typeof position === 'string') {
+                if (position === SceValues.Left)
+                  model.x = 0.35 * app!.renderer.width
+                else if (position === SceValues.Right)
+                  model.x = 0.65 * app!.renderer.width
+                else if (position === SceValues.Center)
+                  model.x = 0.5 * app!.renderer.width
+              } else if (typeof position === 'number') {
+                if (position === 1) model.x = 0.2 * app!.renderer.width
+                else if (position === 2) model.x = 0.4 * app!.renderer.width
+                else if (position === 3) model.x = 0.6 * app!.renderer.width
+                else if (position === 4) model.x = 0.8 * app!.renderer.width
+              } else {
+                model.x = 0.5 * app!.renderer.width
+              }
+              model.y = 0.7 * app!.renderer.height
+              model.rotation = Math.PI
+              model.skew.x = Math.PI
+              model.scale.set(0.3)
+              model.anchor.set(0.5, 0.5)
+
+              model && app?.stage.addChild(model)
+            }
+
+            if (chara) {
+              if (chara !== value) {
+                const fileName = storyMeta?.live2dList.get(chara)
+                const index = app!.stage.children.findIndex(
+                  ({ interactionManager: im }: any) =>
+                    im.settings && im.settings.name === fileName
+                )
+                index >= 0 && app!.stage.removeChildAt(index)
+                addModel()
+              }
+            } else addModel()
+
+            setCharaStack((stack) => {
+              stack.set(position, value)
+              return stack
+            })
+
+            if (animation) {
+              if (typeof animation === 'string') {
+                const splited = animation.split('@')
+                await model.internalModel.motionManager.startMotion(
+                  '',
+                  model.internalModel.motionManager.settings.motions[
+                    ''
+                  ].findIndex((item: { File: string }) =>
+                    item.File.includes(splited[0])
+                  )
+                )
+                // splited[1] &&
+                //   (await model.internalModel.motionManager.expressionManager.setExpression(
+                //     model.internalModel.motionManager.settings.motions[
+                //       ''
+                //     ].findIndex((item: { File: string }) =>
+                //       item.File.includes(splited[0])
+                //     )
+                //   ))
+              }
+            }
+          }
+          return
+        } else if (name === SceWords.Live2dCharaHide) {
+          app?.stage.removeChildren()
+          setCharaStack((stack) => {
+            stack.clear()
+            return stack
+          })
         }
-        setIndex((index) => index + 1)
+        if (data.text === '') setIndex((index) => index + 1)
       })
     })()
   }, [index, storyData])
@@ -128,12 +222,16 @@ function StoryViewContent({ urlData }: props) {
       width,
       height,
     })
+    Application.registerPlugin(TickerPlugin)
     Live2DModel.registerTicker(PIXI.Ticker)
     app.view.setAttribute(
       'style',
       `${app.view.getAttribute('style')}position: absolute;`
     )
     canvas?.appendChild(app.view)
+    // const filter = new PIXI.filters.ColorMatrixFilter()
+    // filter.brightness(0.6, false)
+    // app.stage.filters = [filter]
     setApp(app)
 
     return () => {
@@ -156,11 +254,12 @@ function StoryViewContent({ urlData }: props) {
         }
       })
     }
+    setModels(map)
   }, [storyMeta])
 
   return (
     <>
-      <audio ref={musicRef} />
+      <audio ref={musicRef} autoPlay />
       <Setting isShown={isShown} onClose={() => setIsShown(false)} />
       <AdBlock />
       <Title title={title} />
@@ -183,7 +282,8 @@ function StoryViewContent({ urlData }: props) {
       ></div>
       <div className="absolute right-0 top-0">
         <button className="my-3 mr-4 btn" onClick={() => setIsShown(true)}>
-          <HiCog /> {t('common:setting')}
+          <HiCog size={22} />
+          {/*t('common:setting')*/}
         </button>
       </div>
     </>
