@@ -3,7 +3,6 @@ import { SceValues, SceWords } from 'models/story'
 import useTranslation from 'next-translate/useTranslation'
 import { InternalModel, Live2DModel } from 'pixi-live2d-display'
 import * as PIXI from 'pixi.js'
-import { Application, TickerPlugin } from 'pixi.js'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { HiCog } from 'react-icons/hi'
 import { delay } from 'utils'
@@ -73,12 +72,37 @@ function StoryViewContent({ urlData }: props) {
 
   const [charaStack, setCharaStack] = useState<Map<any, string>>(new Map())
 
+  const [animationTimeout, setAnimationTimeout] = useState<NodeJS.Timeout>()
+
   const canvasClick = () => setIndex((index) => index + 1)
   const keyDown = (e: KeyboardEvent) =>
     e.key === ' ' && setIndex((index) => index + 1)
 
+  const doAnimation = async (animation: string, cur: number, model: any) => {
+    if (cur === 0 && animationTimeout) clearTimeout(animationTimeout)
+    const splited = animation.split(',')
+    const item = splited[cur]
+    const s = item.split('@')
+    model.internalModel.motionManager.stopAllMotions()
+    await model.internalModel.motionManager.startMotion(
+      '',
+      model.internalModel.motionManager.settings.motions[''].findIndex(
+        (item: { File: string }) => item.File.includes(s[0])
+      )
+    )
+    s[1] &&
+      (await model.internalModel.motionManager.expressionManager.setExpression(
+        s[1]
+      ))
+    if (splited.length - 1 > cur) {
+      setAnimationTimeout(
+        setTimeout(() => doAnimation(animation, cur + 1, model), 2000)
+      )
+    }
+  }
+
   useEffect(() => {
-    if (!storyData || index === -1 || index > storyData.length) return
+    if (!storyData || index === -1) return
     ;(async () => {
       if (title) {
         setTitle(null)
@@ -89,7 +113,10 @@ function StoryViewContent({ urlData }: props) {
         await delay(200)
       }
       const data = storyData[index]
-      console.log(data)
+      if (!data) {
+        reset()
+        return
+      }
       const settings = data.settings
       const audio = musicRef.current
 
@@ -143,11 +170,10 @@ function StoryViewContent({ urlData }: props) {
                   model.x = 0.65 * app!.renderer.width
                 else if (position === SceValues.Center)
                   model.x = 0.5 * app!.renderer.width
-              } else if (typeof position === 'number') {
-                if (position === 1) model.x = 0.2 * app!.renderer.width
-                else if (position === 2) model.x = 0.4 * app!.renderer.width
-                else if (position === 3) model.x = 0.6 * app!.renderer.width
-                else if (position === 4) model.x = 0.8 * app!.renderer.width
+                if (position === '1') model.x = 0.5 * app!.renderer.width
+                else if (position === '2') model.x = 0.35 * app!.renderer.width
+                else if (position === '3') model.x = 0.65 * app!.renderer.width
+                else if (position === '4') model.x = 0.95 * app!.renderer.width
               } else {
                 model.x = 0.5 * app!.renderer.width
               }
@@ -164,7 +190,7 @@ function StoryViewContent({ urlData }: props) {
               if (chara !== value) {
                 const fileName = storyMeta?.live2dList.get(chara)
                 const index = app!.stage.children.findIndex(
-                  ({ interactionManager: im }: any) =>
+                  ({ internalModel: im }: any) =>
                     im.settings && im.settings.name === fileName
                 )
                 index >= 0 && app!.stage.removeChildAt(index)
@@ -177,29 +203,16 @@ function StoryViewContent({ urlData }: props) {
               return stack
             })
 
-            if (animation) {
-              if (typeof animation === 'string') {
-                const splited = animation.split('@')
-                await model.internalModel.motionManager.startMotion(
-                  '',
-                  model.internalModel.motionManager.settings.motions[
-                    ''
-                  ].findIndex((item: { File: string }) =>
-                    item.File.includes(splited[0])
-                  )
-                )
-                // splited[1] &&
-                //   (await model.internalModel.motionManager.expressionManager.setExpression(
-                //     model.internalModel.motionManager.settings.motions[
-                //       ''
-                //     ].findIndex((item: { File: string }) =>
-                //       item.File.includes(splited[0])
-                //     )
-                //   ))
-              }
+            if (typeof animation === 'string') {
+              doAnimation(animation, 0, model)
             }
           }
-          return
+        } else if (name === SceWords.Live2dCharaAnimation) {
+          const model = models?.get(value)
+          const animation = args.get(SceWords.Animation)
+          if (model && typeof animation === 'string') {
+            doAnimation(animation, 0, model)
+          }
         } else if (name === SceWords.Live2dCharaHide) {
           app?.stage.removeChildren()
           setCharaStack((stack) => {
@@ -216,14 +229,16 @@ function StoryViewContent({ urlData }: props) {
     const canvas = canvasWrapper.current
     canvas?.addEventListener('click', canvasClick)
     document.addEventListener('keydown', keyDown)
+
+    // Application.registerPlugin(PIXI.TickerPlugin)
+    Live2DModel.registerTicker(PIXI.Ticker)
     const app = new PIXI.Application({
       backgroundAlpha: 0,
       autoStart: true,
       width,
       height,
     })
-    Application.registerPlugin(TickerPlugin)
-    Live2DModel.registerTicker(PIXI.Ticker)
+
     app.view.setAttribute(
       'style',
       `${app.view.getAttribute('style')}position: absolute;`
@@ -243,9 +258,23 @@ function StoryViewContent({ urlData }: props) {
     }
   }, [])
 
+  const reset = () => {
+    setIndex(-1)
+    setTitle(null)
+    setSubTitle(null)
+    setSpeaker('')
+    setText(null)
+    setAnimationTimeout(undefined)
+    setBackground('default')
+    setFade(null)
+    stopMusic()
+    app?.stage.removeChildren()
+  }
+
   useEffect(() => {
     const map = new Map<string, Live2DModel<InternalModel>>()
     if (storyMeta) {
+      reset()
       Array.from(storyMeta.live2dList.keys()).forEach(async (item) => {
         const name = storyMeta.live2dList.get(item)
         if (name) {
@@ -285,6 +314,11 @@ function StoryViewContent({ urlData }: props) {
           <HiCog size={22} />
           {/*t('common:setting')*/}
         </button>
+      </div>
+      <div>
+        {index === -1 && (
+          <div className="absolute z-20">Click Setting to play</div>
+        )}
       </div>
     </>
   )
