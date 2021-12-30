@@ -36,6 +36,7 @@ export default function UnitEpisode({
             id={data.episode.id}
             title1={`${data.season} - ${data.chapterNumber}`}
             title2={data.episode.title}
+            to={`/game/unit/${unit.id}/story/${data.season}-${data.chapterNumber}`}
           />
         ))}
       </div>

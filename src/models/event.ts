@@ -1,4 +1,5 @@
 import { Card, Character } from './character'
+import { EventEpisode } from './episode'
 
 export enum EventType {
   Raid = 'Raid',
@@ -28,6 +29,7 @@ export type Event = {
   topPrefabPath: string
   bgmpath: string
   episodeCharactersData?: Character[]
+  eventEpisode: EventEpisode[]
 }
 
 export enum GachaCategory {

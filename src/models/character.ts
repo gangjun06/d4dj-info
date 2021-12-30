@@ -1,4 +1,4 @@
-import { UnitEpisode } from './episode'
+import { CharacterEpisode, UnitEpisode } from './episode'
 
 export enum Attribute {
   STREET = 'STREET',
@@ -29,6 +29,7 @@ export type Character = {
   colorCode: string
   unit?: Unit
   card?: Card[]
+  characterEpisode: CharacterEpisode[]
 }
 
 export type Card = {

@@ -4,7 +4,7 @@ import {
   GET_CHARACTER_DETAIL,
 } from '@/apollo/gql'
 import { Card, Disclosure, Table, TableBody } from '@/components/Basic'
-import { CardItem } from '@/components/Elements'
+import { CardItem, StoryItem } from '@/components/Elements'
 import { CharacterIcon } from '@/components/Image'
 import { client } from 'apollo'
 import MainLayout from 'layouts/main'
@@ -147,8 +147,27 @@ export default function CardDetail({
                 </div>
               </Disclosure>
             </Card>
+            {character.characterEpisode!.length !== 0 && (
+              <Card className="mt-4" title={t('character:episode')}>
+                <div className="grid-2">
+                  {character.characterEpisode!.map((data) => (
+                    <StoryItem
+                      key={data.episode.id}
+                      id={data.episode.id}
+                      title1={`${data.chapterNumber + 1}`}
+                      title2={data.episode.title}
+                      imgPrefix="60"
+                      to={`/game/character/${character.id}/story/${
+                        data.chapterNumber + 1
+                      }`}
+                    />
+                  ))}
+                </div>
+              </Card>
+            )}
           </div>
         )}
+
         {character.card!.length !== 0 && (
           <>
             <div className="subtitle">{t('character:card_list')}</div>

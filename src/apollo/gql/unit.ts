@@ -49,7 +49,7 @@ export const GET_UNIT_EPISODE = gql`
           startDate
           endDate
           title
-          summary
+          # summary
         }
       }
     }

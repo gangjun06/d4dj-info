@@ -3,7 +3,7 @@ import { NextSeo } from 'next-seo'
 import useTransition from 'next-translate/useTranslation'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { ReactNode, useContext, useState } from 'react'
+import { CSSProperties, ReactNode, useContext, useState } from 'react'
 import { IconType } from 'react-icons'
 import {
   HiDotsCircleHorizontal,
@@ -195,12 +195,14 @@ type props = {
   breadThumbs: BreadThumbs[]
   title: string
   titleSide?: ReactNode
+  mainContentStyle?: CSSProperties
 }
 export default function MainLayout({
   breadThumbs,
   children,
   title,
   titleSide,
+  mainContentStyle,
 }: props) {
   const [drawer, setDrawer] = useState<boolean>(false)
   const { t } = useTransition('')
@@ -242,6 +244,7 @@ export default function MainLayout({
           />
         </div>
         <div
+          style={mainContentStyle}
           id="mainContent"
           className="mx-auto lg:ml-72 h-full overflow-y-scroll bg-base-200 overflow-x-hidden"
         >

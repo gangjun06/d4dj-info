@@ -28,6 +28,16 @@ export const GET_CHARACTER_DETAIL = gql`
         cardName
         attribute
       }
+      characterEpisode {
+        id
+        chapterNumber
+        episode {
+          id
+          title
+          startDate
+          endDate
+        }
+      }
     }
   }
 `

@@ -1,5 +1,6 @@
 import { GetEventReq, GetEventRes, GET_EVENT_DETAIL } from '@/apollo/gql'
 import { Card, Disclosure, Table, TableBody } from '@/components/Basic'
+import { StoryItem } from '@/components/Elements'
 import { client } from 'apollo'
 import MainLayout from 'layouts/main'
 import { Event as EventModel } from 'models'
@@ -104,6 +105,22 @@ export default function GachaDetail({
               />
             </Disclosure>
           </Card>
+          {event.eventEpisode!.length !== 0 && (
+            <Card className="mt-4" title={t('character:episode')}>
+              <div className="grid-2">
+                {event.eventEpisode!.map((data) => (
+                  <StoryItem
+                    key={data.episode.id}
+                    id={data.episode.id}
+                    title1={`${data.chapterNumber}`}
+                    title2={data.episode.title}
+                    imgPrefix="2000"
+                    to={`/game/event/${event.id}/story/${data.chapterNumber}`}
+                  />
+                ))}
+              </div>
+            </Card>
+          )}
         </div>
 
         {event.episodeCharactersData!.length > 0 && (
