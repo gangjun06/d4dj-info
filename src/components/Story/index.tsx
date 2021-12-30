@@ -117,6 +117,7 @@ function StoryViewContent({ urlData }: props) {
         reset()
         return
       }
+      console.log(data)
       const settings = data.settings
       const audio = musicRef.current
 

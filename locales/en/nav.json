@@ -8,6 +8,10 @@
     "name": "Game",
     "character": "Characater",
     "character_detail": "Characater Detail",
+    "unit": {
+      "name": "Unit",
+      "story": "Unit Story"
+    },
     "card": "Card",
     "card_detail": "Card Detail",
     "music": "Music",

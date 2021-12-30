@@ -43,7 +43,7 @@ export const SkillExpCard = () => {
       </Modal>
       <Card
         title={t('exp:skillExp')}
-        left={
+        right={
           <HiOutlineInformationCircle
             size={22}
             className="cursor-pointer"

@@ -6,6 +6,10 @@
   },
   "game": {
     "name": "게임",
+    "unit": {
+      "name": "유닛",
+      "story": "유닛 스토리"
+    },
     "character": "캐릭터",
     "character_detail": "캐릭터 정보",
     "card": "카드",
@@ -22,7 +26,8 @@
     "etc": {
       "name": "기타",
       "exp": "경험치 계산기"
-    }
+    },
+    "episode": "스토리  "
   },
   "about": "사이트 정보",
   "live2d": "라이브2D"

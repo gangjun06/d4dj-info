@@ -4,17 +4,19 @@ import { UrlObject } from 'url'
 
 const Card = ({
   children,
-  left,
+  right,
   title,
   className = '',
   bodyClassName = '',
+  bodyStyle,
   link,
 }: {
   children: ReactNode
-  left?: ReactNode
+  right?: ReactNode
   title?: string
   className?: string
   bodyClassName?: string
+  bodyStyle?: React.CSSProperties
   link?: string | UrlObject
 }) => {
   const InnerContent = () => (
@@ -22,10 +24,12 @@ const Card = ({
       {title && (
         <div className="flex items-center justify-between">
           <h2 className="card-title">{title}</h2>
-          {left && left}
+          {right && right}
         </div>
       )}
-      <div className={`h-full ${bodyClassName}`}>{children}</div>
+      <div style={bodyStyle} className={`h-full ${bodyClassName}`}>
+        {children}
+      </div>
     </div>
   )
 

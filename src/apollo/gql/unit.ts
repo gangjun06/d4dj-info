@@ -25,3 +25,33 @@ export const GET_UNIT = gql`
     }
   }
 `
+
+export interface GetUnitEpisodeReq {
+  filter: {
+    id: number
+  }
+}
+
+export interface GetUnitEpisodeRes {
+  unit: models.Unit[]
+}
+export const GET_UNIT_EPISODE = gql`
+  query Query {
+    unit {
+      id
+      name
+      unitEpisode {
+        id
+        season
+        chapterNumber
+        episode {
+          id
+          startDate
+          endDate
+          title
+          summary
+        }
+      }
+    }
+  }
+`
