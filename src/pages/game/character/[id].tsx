@@ -22,7 +22,7 @@ export default function CardDetail({
 
   return (
     <MainLayout
-      breadThumbs={[
+      breadCrumbs={[
         { name: t('nav:game.name'), link: '' },
         { name: t('nav:game.character'), link: '/game/character' },
         {

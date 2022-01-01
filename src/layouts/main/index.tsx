@@ -35,7 +35,7 @@ const NavbarGroup = ({
   )
 }
 
-type BreadThumbs = {
+type breadCrumbs = {
   name: string
   link: string
 }
@@ -192,13 +192,13 @@ const SideNav = ({
 
 type props = {
   children: ReactNode
-  breadThumbs: BreadThumbs[]
+  breadCrumbs: breadCrumbs[]
   title: string
   titleSide?: ReactNode
   mainContentStyle?: CSSProperties
 }
 export default function MainLayout({
-  breadThumbs,
+  breadCrumbs,
   children,
   title,
   titleSide,
@@ -251,7 +251,7 @@ export default function MainLayout({
           <div className="mx-auto w-full px-8 py-5 md:pb-5 pb-24">
             <div className="text-sm breadcrumbs mt-2">
               <ul>
-                {breadThumbs.map((item, index) => (
+                {breadCrumbs.map((item, index) => (
                   <li key={index}>
                     {item.link === '' ? (
                       <p>{item.name}</p>

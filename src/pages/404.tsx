@@ -3,7 +3,7 @@ import MainLayout from 'layouts/main'
 export default function NotFound() {
   return (
     <MainLayout
-      breadThumbs={[
+      breadCrumbs={[
         { name: 'Main', link: '/' },
         { name: 'Page Not Found', link: '' },
       ]}

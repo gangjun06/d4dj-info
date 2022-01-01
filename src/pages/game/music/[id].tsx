@@ -61,7 +61,7 @@ export default function MusicDetail({
 
   return (
     <MainLayout
-      breadThumbs={[
+      breadCrumbs={[
         { name: t('nav:game.name'), link: '' },
         { name: t('nav:game.music'), link: '/game/music' },
         { name: t('nav:game.music_detail'), link: `/game/music/${music.id}` },

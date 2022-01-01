@@ -14,7 +14,7 @@ export default function Character() {
   return (
     <MainLayout
       title={t('nav:game.character')}
-      breadThumbs={[
+      breadCrumbs={[
         { name: t('nav:game.name'), link: '' },
         { name: t('nav:game.character'), link: '/game/character' },
       ]}

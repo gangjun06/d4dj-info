@@ -104,7 +104,7 @@ export default function CardList() {
 
   return (
     <MainLayout
-      breadThumbs={[
+      breadCrumbs={[
         { name: t('nav:game.name'), link: '' },
         { name: t('nav:game.card'), link: '/game/card' },
       ]}

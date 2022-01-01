@@ -17,7 +17,7 @@ export default function GachaDetail({
 
   return (
     <MainLayout
-      breadThumbs={[
+      breadCrumbs={[
         { name: t('nav:game.name'), link: '' },
         { name: t('nav:game.event'), link: '/game/event' },
         {
