@@ -13,10 +13,10 @@ export default function Character() {
   const { loading, error, data } = useQuery<GetUnitRes>(GET_UNIT)
   return (
     <MainLayout
-      title={t('nav:game.character')}
+      title={t('nav:game.character.name')}
       breadCrumbs={[
         { name: t('nav:game.name'), link: '' },
-        { name: t('nav:game.character'), link: '/game/character' },
+        { name: t('nav:game.character.name'), link: '/game/character' },
       ]}
     >
       <WaitQuery loading={loading} error={error}>

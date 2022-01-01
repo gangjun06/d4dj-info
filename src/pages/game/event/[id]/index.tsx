@@ -19,7 +19,7 @@ export default function GachaDetail({
     <MainLayout
       breadCrumbs={[
         { name: t('nav:game.name'), link: '' },
-        { name: t('nav:game.event'), link: '/game/event' },
+        { name: t('nav:game.event.name'), link: '/game/event' },
         {
           name: t('nav:game.event_detail'),
           link: `/game/event/${event.id}`,
@@ -106,7 +106,7 @@ export default function GachaDetail({
             </Disclosure>
           </Card>
           {event.eventEpisode!.length !== 0 && (
-            <Card className="mt-4" title={t('character:episode')}>
+            <Card className="mt-4" title={t('nav:game.event.story')}>
               <div className="grid-2">
                 {event.eventEpisode!.map((data) => (
                   <StoryItem

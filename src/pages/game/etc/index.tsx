@@ -20,6 +20,18 @@ export default function Etc() {
             <HiChevronRight size={22} />
           </div>
         </Card>
+        <Card link="/live2d">
+          <div className="flex justify-between items-center">
+            <div>{t('nav:live2d_viewer')}</div>
+            <HiChevronRight size={22} />
+          </div>
+        </Card>
+        <Card link="/story">
+          <div className="flex justify-between items-center">
+            <div>{t('nav:story_viewer')}</div>
+            <HiChevronRight size={22} />
+          </div>
+        </Card>
       </div>
     </MainLayout>
   )

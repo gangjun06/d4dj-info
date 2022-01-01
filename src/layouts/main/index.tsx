@@ -12,7 +12,6 @@ import {
   HiOutlineChartPie,
   HiOutlineCog,
   HiOutlineCollection,
-  HiOutlineCube,
   HiOutlineMenu,
   HiOutlineMusicNote,
   HiOutlineViewGrid,
@@ -131,7 +130,7 @@ const SideNav = ({
             </NavbarGroup>
             <NavbarGroup label={t('nav:game.name')}>
               <NavItem
-                label={t('nav:game.character')}
+                label={t('nav:game.character.name')}
                 Icon={HiOutlineArchive}
                 link="/game/character"
               />
@@ -146,7 +145,7 @@ const SideNav = ({
                 link="/game/music"
               />
               <NavItem
-                label={t('nav:game.event')}
+                label={t('nav:game.event.name')}
                 Icon={HiOutlineBookOpen}
                 link="/game/event"
               />
@@ -160,16 +159,6 @@ const SideNav = ({
                 Icon={HiOutlinePhotograph}
                 link="/game/gallery"
               /> */}
-              <NavItem
-                label={t('nav:game.live2d')}
-                Icon={HiOutlineCube}
-                link="/live2d"
-              />
-              <NavItem
-                label={t('nav:game.story')}
-                Icon={HiOutlineBookOpen}
-                link="/story"
-              />
               <NavItem
                 label={t('nav:game.etc.name')}
                 Icon={HiDotsCircleHorizontal}

@@ -24,7 +24,7 @@ export default function CardDetail({
     <MainLayout
       breadCrumbs={[
         { name: t('nav:game.name'), link: '' },
-        { name: t('nav:game.character'), link: '/game/character' },
+        { name: t('nav:game.character.name'), link: '/game/character' },
         {
           name: t('nav:game.character_detail'),
           link: `/game/character/${character.id}`,
@@ -148,7 +148,7 @@ export default function CardDetail({
               </Disclosure>
             </Card>
             {character.characterEpisode!.length !== 0 && (
-              <Card className="mt-4" title={t('character:episode')}>
+              <Card className="mt-4" title={t('nav:game.character.story')}>
                 <div className="grid-2">
                   {character.characterEpisode!.map((data) => (
                     <StoryItem
