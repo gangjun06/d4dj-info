@@ -1,5 +1,11 @@
 import { SideOver, SimpleFileUpload } from '@/components/Basic'
+import Link from 'next/link'
 import React, { useCallback, useContext } from 'react'
+import {
+  HiOutlineCollection,
+  HiOutlineFastForward,
+  HiOutlineRewind,
+} from 'react-icons/hi'
 import { StoryContext } from '../context'
 
 type props = {
@@ -8,7 +14,7 @@ type props = {
 }
 
 export function Setting({ isShown, onClose }: props) {
-  const { loadStoryData, speaker } = useContext(StoryContext)
+  const { loadStoryData, next } = useContext(StoryContext)
 
   const onFileUpload = useCallback(
     async (data: FileList) => {
@@ -19,9 +25,42 @@ export function Setting({ isShown, onClose }: props) {
   )
 
   return (
-    <SideOver open={isShown} onClose={onClose} title="Story Viewer">
-      <SimpleFileUpload onFileUpload={onFileUpload} />
-      {speaker}
+    <SideOver
+      open={isShown}
+      onClose={onClose}
+      title="Story Viewer"
+      footer={
+        next ? (
+          <>
+            {next.prev ? (
+              // <Link passHref href={next.prev}>
+              <a href={next.prev} className="btn btn-sm btn-outline">
+                <HiOutlineRewind />
+              </a>
+            ) : (
+              // </Link>
+              <span />
+            )}
+            <Link passHref href={next.list}>
+              <span className="btn btn-sm btn-outline">
+                <HiOutlineCollection />
+              </span>
+            </Link>
+            {next.next ? (
+              // <Link passHref href={next.next}>
+              <a href={next.next} className="btn btn-sm btn-outline">
+                <HiOutlineFastForward />
+              </a>
+            ) : (
+              // </Link>
+              <span />
+            )}
+          </>
+        ) : undefined
+      }
+      footerClassName="flex justify-between"
+    >
+      {!next && <SimpleFileUpload onFileUpload={onFileUpload} />}
     </SideOver>
   )
 }

@@ -1,5 +1,6 @@
 import { useWindowSize } from '@react-hook/window-size'
-import { SceValues, SceWords } from 'models/story'
+import axios from 'axios'
+import { SceValues, SceWords, StoryNext } from 'models/story'
 import useTranslation from 'next-translate/useTranslation'
 import { InternalModel, Live2DModel } from 'pixi-live2d-display'
 import * as PIXI from 'pixi.js'
@@ -14,7 +15,8 @@ import { Setting } from './setting'
 import { loadModel } from './utils'
 
 type props = {
-  urlData: string | string[] | undefined
+  data?: string
+  next?: StoryNext
 }
 
 const AdBlock = () => {
@@ -40,7 +42,7 @@ const AdBlock = () => {
   return <></>
 }
 
-function StoryViewContent({ urlData }: props) {
+function StoryViewContent({ data: openFileName, next }: props) {
   const { t } = useTranslation()
   const {
     storyData,
@@ -55,6 +57,8 @@ function StoryViewContent({ urlData }: props) {
     setSpeaker,
     text,
     setText,
+    setNext,
+    loadStoryData,
   } = useContext(StoryContext)
 
   const canvasWrapper = useRef<HTMLDivElement>(null)
@@ -227,6 +231,18 @@ function StoryViewContent({ urlData }: props) {
   }, [index, storyData])
 
   useEffect(() => {
+    if (next) setNext(next)
+  }, [next])
+
+  useEffect(() => {
+    if (openFileName)
+      (async () => {
+        const res = await axios.get(
+          `https://asset.d4dj.info/adv/ondemand/scenario/sce_${openFileName}.sce`
+        )
+        loadStoryData(res.data)
+      })()
+
     const canvas = canvasWrapper.current
     canvas?.addEventListener('click', canvasClick)
     document.addEventListener('keydown', keyDown)
@@ -325,10 +341,12 @@ function StoryViewContent({ urlData }: props) {
   )
 }
 
-export default function Live2DView(props: props) {
+export default function StoryView(props: props) {
   return (
-    <StoryProvider>
-      <StoryViewContent {...props} />
-    </StoryProvider>
+    <>
+      <StoryProvider>
+        <StoryViewContent {...props} />
+      </StoryProvider>
+    </>
   )
 }

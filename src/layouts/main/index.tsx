@@ -192,10 +192,11 @@ const SideNav = ({
 
 type props = {
   children: ReactNode
-  breadCrumbs: breadCrumbs[]
+  breadCrumbs?: breadCrumbs[]
   title: string
   titleSide?: ReactNode
   mainContentStyle?: CSSProperties
+  disableLayout?: boolean
 }
 export default function MainLayout({
   breadCrumbs,
@@ -203,6 +204,7 @@ export default function MainLayout({
   title,
   titleSide,
   mainContentStyle,
+  disableLayout = false,
 }: props) {
   const [drawer, setDrawer] = useState<boolean>(false)
   const { t } = useTransition('')
@@ -216,60 +218,66 @@ export default function MainLayout({
           description: 'D4DJ Information Website',
         }}
       />
-      <SettingProvider>
-        <nav className="lg:hidden py-6 px-6 bg-gray-800">
-          <div className="flex items-center justify-between">
-            <Link href="/" passHref>
-              <div className="text-2xl text-white font-semibold cursor-pointer">
-                {t('common:title')}
-              </div>
-            </Link>
-            <button
-              className="navbar-burger flex items-center rounded focus:outline-none"
-              onClick={() => setDrawer(!drawer)}
-            >
-              <HiOutlineMenu className="text-white bg-primary hover:bg-primary-focus block h-8 w-8 p-2 rounded" />
-            </button>
-          </div>
-        </nav>
+      {disableLayout ? (
+        <>{children}</>
+      ) : (
+        <SettingProvider>
+          <nav className="lg:hidden py-6 px-6 bg-gray-800">
+            <div className="flex items-center justify-between">
+              <Link href="/" passHref>
+                <div className="text-2xl text-white font-semibold cursor-pointer">
+                  {t('common:title')}
+                </div>
+              </Link>
+              <button
+                className="navbar-burger flex items-center rounded focus:outline-none"
+                onClick={() => setDrawer(!drawer)}
+              >
+                <HiOutlineMenu className="text-white bg-primary hover:bg-primary-focus block h-8 w-8 p-2 rounded" />
+              </button>
+            </div>
+          </nav>
 
-        <div className="hidden lg:block">
-          <SideNav onClose={() => {}} isOpen={true} showTitle={true} />
-        </div>
-        <div className="block lg:hidden">
-          <SideNav
-            onClose={() => setDrawer(false)}
-            isOpen={drawer}
-            showTitle={false}
-          />
-        </div>
-        <div
-          style={mainContentStyle}
-          id="mainContent"
-          className="mx-auto lg:ml-72 h-full overflow-y-scroll bg-base-200 overflow-x-hidden"
-        >
-          <div className="mx-auto w-full px-8 py-5 md:pb-5 pb-24">
-            <div className="text-sm breadcrumbs mt-2">
-              <ul>
-                {breadCrumbs.map((item, index) => (
-                  <li key={index}>
-                    {item.link === '' ? (
-                      <p>{item.name}</p>
-                    ) : (
-                      <Link href={item.link}>{item.name}</Link>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="flex items-center justify-between mb-5 ">
-              <div className="font-bold text-3xl">{title}</div>
-              {titleSide}
-            </div>
-            {children}
+          <div className="hidden lg:block">
+            <SideNav onClose={() => {}} isOpen={true} showTitle={true} />
           </div>
-        </div>
-      </SettingProvider>
+          <div className="block lg:hidden">
+            <SideNav
+              onClose={() => setDrawer(false)}
+              isOpen={drawer}
+              showTitle={false}
+            />
+          </div>
+          <div
+            style={mainContentStyle}
+            id="mainContent"
+            className="mx-auto lg:ml-72 h-full overflow-y-scroll bg-base-200 overflow-x-hidden"
+          >
+            <div className="mx-auto w-full px-8 py-5 md:pb-5 pb-24">
+              {breadCrumbs && (
+                <div className="text-sm breadcrumbs mt-2">
+                  <ul>
+                    {breadCrumbs.map((item, index) => (
+                      <li key={index}>
+                        {item.link === '' ? (
+                          <p>{item.name}</p>
+                        ) : (
+                          <Link href={item.link}>{item.name}</Link>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              <div className="flex items-center justify-between mb-5 ">
+                <div className="font-bold text-3xl">{title}</div>
+                {titleSide}
+              </div>
+              {children}
+            </div>
+          </div>
+        </SettingProvider>
+      )}
     </>
   )
 }

@@ -105,3 +105,9 @@ export type Setting = {
   value: string
   args: Map<string, string | number | string[] | number[]>
 }
+
+export type StoryNext = {
+  prev?: string
+  list: string
+  next?: string
+}

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { StoryData, StoryMeta } from 'models/story'
+import { StoryData, StoryMeta, StoryNext } from 'models/story'
 import * as PIXI from 'pixi.js'
 import React, { createContext, useEffect, useRef, useState } from 'react'
 import { parseSce } from 'utils/story'
@@ -19,6 +19,8 @@ type ContextType = {
   setSpeaker: (data: string) => void
   text: string | null
   setText: (data: string | null) => void
+  next?: StoryNext
+  setNext: (data: StoryNext) => void
 }
 
 const defaultState: ContextType = {
@@ -34,6 +36,7 @@ const defaultState: ContextType = {
   setSpeaker: () => {},
   text: null,
   setText: () => {},
+  setNext: () => {},
 }
 
 export const StoryContext = createContext<ContextType>(defaultState)
@@ -50,6 +53,7 @@ function StoryProvider({ children }: { children: React.ReactElement }) {
   )
   const [speaker, setSpeaker] = useState<string | null>(defaultState.speaker)
   const [text, setText] = useState<string | null>(defaultState.text)
+  const [next, setNext] = useState<StoryNext>()
 
   const musicRef = useRef<HTMLAudioElement>(null)
 
@@ -111,6 +115,8 @@ function StoryProvider({ children }: { children: React.ReactElement }) {
         setSpeaker,
         text,
         setText,
+        next,
+        setNext,
       }}
     >
       <>

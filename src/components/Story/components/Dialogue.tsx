@@ -23,11 +23,11 @@ const DialogueContent = (props: {
           <div className={styles.name}>{props.name}</div>
           <div className={styles.dialogueTextWrapper}>
             <div>
-              {props.text?.split('\n').map((item) => (
-                <>
+              {props.text?.split('\n').map((item, index) => (
+                <Fragment key={index}>
                   {item}
                   <br />
-                </>
+                </Fragment>
               ))}
             </div>
           </div>

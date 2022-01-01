@@ -1,7 +1,7 @@
+import Live2DHeader from '@/components/live2dHeader'
 import { Spinner, Text } from 'evergreen-ui'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
-import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
 const Story = dynamic(() => import('@/components/Story'), {
@@ -38,17 +38,12 @@ function Loading() {
 }
 
 export default function Live2D() {
-  const router = useRouter()
-
   return (
     <>
       <Head>
         <title>D4DJ.info Story</title>
-        {/* eslint-disable-next-line @next/next/no-sync-scripts*/}
-        <script src="/live2dcubismcore.min.js" />
-        {/* eslint-disable-next-line @next/next/no-sync-scripts*/}
-        <script src="/live2d.min.js" />
       </Head>
+      <Live2DHeader />
 
       <div
         style={{
@@ -57,7 +52,7 @@ export default function Live2D() {
           width: '100vw',
         }}
       >
-        <Story urlData={router.query.data} />
+        <Story />
       </div>
     </>
   )

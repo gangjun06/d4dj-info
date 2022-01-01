@@ -3,53 +3,47 @@ import {
   GetUnitEpisodeRes,
   GET_UNIT_EPISODE,
 } from '@/apollo/gql'
+import CommonStoryPage from '@/components/Story/CommonStoryPage'
 import { client } from 'apollo'
 import MainLayout from 'layouts/main'
-import { Unit } from 'models'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
-import useTransition from 'next-translate/useTranslation'
 import React from 'react'
 
 export default function UnitEpisode({
-  unit,
-  index,
+  title,
+  unitName,
+  episodeID,
+  unitID,
+  prevUrl,
+  nextUrl,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const { t } = useTransition('')
-
   return (
-    <MainLayout
-      breadCrumbs={[
-        { name: t('nav:game.name'), link: '' },
-        { name: t('nav:game.character'), link: '/game/character' },
-        { name: unit.name, link: '' },
-        {
-          name: `${t('nav:game.unit.story')}`,
-          link: `/game/unit/${unit.id}/story`,
-        },
-        {
-          name: `${t('nav:game.unit.story')}`,
-          link: `/game/unit/${unit.id}/story`,
-        },
-      ]}
-      title={`${unit.unitEpisode[index].episode.title} [${unit.name}]`}
-    >
-      <div className="grid-1">
-        {/* <StoryItem
-            key={unit.episode.id}
-            id={data.episode.id}
-            title1={`${data.season} - ${data.chapterNumber}`}
-            title2={data.episode.title}
-            to={`/game/unit/${unit.id}/story/${data.season}-${data.chapterNumber}`}
-          /> */}
-      </div>
+    <MainLayout disableLayout title={`${title} [${unitName}]`}>
+      <CommonStoryPage
+        name={`10${episodeID}`}
+        next={{
+          prev: prevUrl && `/game/unit/${unitID}/story/${prevUrl}`,
+          list: `/game/unit/${unitID}/story/`,
+          next: nextUrl && `/game/unit/${unitID}/story/${nextUrl}`,
+        }}
+      />
+      {/* </div> */}
     </MainLayout>
   )
 }
 
-export const getServerSideProps: GetServerSideProps<{
-  unit: Unit
-  index: number
-}> = async (context) => {
+type props = {
+  title: string
+  unitName: string
+  unitID: number
+  episodeID: number
+  prevUrl?: string
+  nextUrl?: string
+}
+
+export const getServerSideProps: GetServerSideProps<props> = async (
+  context
+) => {
   const id = context.query.id
   const storyID = context.query.storyID
   if (typeof id !== 'string' || typeof storyID !== 'string')
@@ -67,10 +61,11 @@ export const getServerSideProps: GetServerSideProps<{
       notFound: true,
     }
 
-  const [chapterNumber, season] = [
+  const [season, chapterNumber] = [
     parseInt(splitedStoryID[0]),
     parseInt(splitedStoryID[1]),
   ]
+
   if (chapterNumber > 20 || season > 2)
     return {
       notFound: true,
@@ -89,14 +84,29 @@ export const getServerSideProps: GetServerSideProps<{
   if (!data) {
     return { notFound: true }
   }
-  const index = data.unit[0].unitEpisode.findIndex(
+  const unit = data.unit[0]
+  const index = unit.unitEpisode.findIndex(
     (d) => d.chapterNumber === chapterNumber && d.season === season
   )
+  const targetEpisode = unit.unitEpisode[index].episode
+  const prevEpisode = unit.unitEpisode[index - 1]
+  const nextEpisode = unit.unitEpisode[index + 1]
+
+  const returnData: props = {
+    unitID: unit.id,
+    unitName: unit.name,
+    title: targetEpisode.title,
+    episodeID: targetEpisode.id,
+  }
+
+  if (prevEpisode)
+    returnData.prevUrl = `${prevEpisode.season}-${prevEpisode.chapterNumber}`
+  if (nextEpisode)
+    returnData.nextUrl = `${nextEpisode.season}-${nextEpisode.chapterNumber}`
 
   return {
     props: {
-      unit: data.unit[0],
-      index,
+      ...returnData,
     },
   }
 }

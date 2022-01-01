@@ -8,6 +8,7 @@ type props = {
   children: ReactNode
   title: string
   footer?: ReactNode
+  footerClassName?: string
   asForm?: boolean
   onSubmit?: FormEventHandler<HTMLFormElement>
 }
@@ -20,6 +21,7 @@ export const SideOver = ({
   footer,
   asForm,
   onSubmit,
+  footerClassName,
 }: props) => {
   const Content = ({ children }: { children: ReactNode }) => {
     const className =
@@ -92,9 +94,17 @@ export const SideOver = ({
                   <div className="mt-6 relative flex-1 px-4 sm:px-6 overflow-y-scroll">
                     {children}
                   </div>
-                  <div className="sticky bottom-0 px-4 sm:px-6 py-5 border-t border-gray-300 flex flex-row-reverse gap-x-2">
-                    {footer}
-                  </div>
+                  {footer && (
+                    <div
+                      className={`sticky bottom-0 px-4 sm:px-6 py-5 border-t border-gray-300 ${
+                        footerClassName
+                          ? footerClassName
+                          : 'flex flex-row-reverse gap-x-2'
+                      }`}
+                    >
+                      {footer}
+                    </div>
+                  )}
                 </Content>
               </div>
             </Transition.Child>
