@@ -175,10 +175,10 @@ function StoryViewContent({ data: openFileName, next }: props) {
                   model.x = 0.65 * app!.renderer.width
                 else if (position === SceValues.Center)
                   model.x = 0.5 * app!.renderer.width
-                if (position === '1') model.x = 0.5 * app!.renderer.width
-                else if (position === '2') model.x = 0.35 * app!.renderer.width
-                else if (position === '3') model.x = 0.65 * app!.renderer.width
-                else if (position === '4') model.x = 0.95 * app!.renderer.width
+                if (position === '1') model.x = 0.15 * app!.renderer.width
+                else if (position === '2') model.x = 0.38 * app!.renderer.width
+                else if (position === '3') model.x = 0.61 * app!.renderer.width
+                else if (position === '4') model.x = 0.85 * app!.renderer.width
               } else {
                 model.x = 0.5 * app!.renderer.width
               }

@@ -10,8 +10,12 @@ export function FormBlock({
   className?: string
 }) {
   return (
-    <div className={`my-2 ${className || ''}`}>
-      <div>{label}</div>
+    <div
+      className={`block text-sm font-medium text-gray-700 my-2 ${
+        className || ''
+      }`}
+    >
+      <div className="mb-1">{label}</div>
       {children}
     </div>
   )

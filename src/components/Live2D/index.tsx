@@ -1,9 +1,10 @@
 import { useWindowSize } from '@react-hook/window-size'
-import { Button, CogIcon, Pane, toaster } from 'evergreen-ui'
+import { toaster } from 'evergreen-ui'
 import useTranslation from 'next-translate/useTranslation'
 import { Live2DModel } from 'pixi-live2d-display'
 import * as PIXI from 'pixi.js'
 import { useContext, useEffect, useRef, useState } from 'react'
+import { HiCog } from 'react-icons/hi'
 import Live2DProvider, { Live2DContext } from './context'
 import { Setting } from './setting'
 import { dragable } from './utils'
@@ -103,11 +104,6 @@ function Live2DViewContent({ urlData }: props) {
   return (
     <>
       <Setting isShown={isShown} onClose={() => setIsShown(false)} />
-      {displayText && (
-        <div className="absolute mt-5 ml-5 text-2xl font-bold">
-          {t('common:adblock')}
-        </div>
-      )}
       <div
         style={{
           position: 'absolute',
@@ -119,20 +115,6 @@ function Live2DViewContent({ urlData }: props) {
           backgroundImage: background ? `url("${background}")` : '',
         }}
       ></div>
-      <Pane position="absolute" right={0} bottom={0}>
-        <Button
-          marginY={8}
-          marginRight={12}
-          iconAfter={CogIcon}
-          intent={'info'}
-          className="live2d-button"
-          appearance="minimal"
-          onClick={() => setIsShown(true)}
-          zIndex={2}
-        >
-          {t('common:setting')}
-        </Button>
-      </Pane>
       <div
         ref={canvasWrapper}
         style={{
@@ -141,6 +123,12 @@ function Live2DViewContent({ urlData }: props) {
           zIndex: 1,
         }}
       ></div>
+      <div className="absolute right-0 top-0">
+        <button className="my-3 mr-4 btn" onClick={() => setIsShown(true)}>
+          <HiCog size={22} />
+          {/*t('common:setting')*/}
+        </button>
+      </div>
     </>
   )
 }

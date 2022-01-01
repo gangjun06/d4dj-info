@@ -2,9 +2,10 @@ import Live2DHeader from '@/components/Live2DHeader'
 import { Spinner, Text } from 'evergreen-ui'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
-const Story = dynamic(() => import('@/components/Story'), {
+const Live2DView = dynamic(() => import('@/components/Live2D'), {
   ssr: false,
 
   // eslint-disable-next-line react/display-name
@@ -38,10 +39,11 @@ function Loading() {
 }
 
 export default function Live2D() {
+  const router = useRouter()
   return (
     <>
       <Head>
-        <title>Story Viewer | D4DJ.info</title>
+        <title>Live2D Viewer | D4DJ.info</title>
       </Head>
       <Live2DHeader />
 
@@ -52,7 +54,7 @@ export default function Live2D() {
           width: '100vw',
         }}
       >
-        <Story />
+        <Live2DView urlData={router.query.data} />
       </div>
     </>
   )

@@ -20,7 +20,7 @@ export default function UnitEpisode({
     <MainLayout
       breadCrumbs={[
         { name: t('nav:game.name'), link: '' },
-        { name: t('nav:game.character'), link: '/game/character' },
+        { name: t('nav:game.character.name'), link: '/game/character' },
         { name: unit.name, link: '' },
         {
           name: `${t('nav:game.unit.story')}`,

@@ -1,22 +1,16 @@
+import { GetCharacterListRes, GET_CHARACTER_LIST } from '@/apollo/gql'
+import { FormBlock, Input, Select, Switch } from '@/components/Form'
+import { useQuery } from '@apollo/client'
 import { joiResolver } from '@hookform/resolvers/joi'
 import { useWindowSize } from '@react-hook/window-size'
-import {
-  Button,
-  FormField,
-  Heading,
-  Pane,
-  SelectField,
-  Switch,
-  TextInputField,
-  toaster,
-} from 'evergreen-ui'
+import { Button, Pane, toaster } from 'evergreen-ui'
 import Joi from 'joi'
 import { Live2DModel } from 'pixi-live2d-display'
-import React, { useCallback, useContext, useState } from 'react'
-import { Controller, useForm } from 'react-hook-form'
+import React, { useCallback, useContext } from 'react'
+import { useForm } from 'react-hook-form'
+import { pad } from 'utils'
 import { createLive2DShare, Live2DShare } from 'utils/live2d'
 import { Live2DContext } from '../context'
-import { modelDataWithID } from '../modelData'
 import { dragable } from '../utils'
 
 type FormData = {
@@ -36,17 +30,15 @@ export function TabConfig() {
 
 export function AddModel() {
   const { app, setModels, dragable: dragableState } = useContext(Live2DContext)
-  const [modelName, setModelName] = useState<string>('Rinku Aimoto')
-  const { control, handleSubmit } = useForm<FormData>()
+  const { control, handleSubmit } = useForm<FormData>({
+    defaultValues: {
+      model: '011',
+      type: 'live2d_chara_',
+      id: '0001',
+    },
+  })
 
-  const idSelect = useCallback(() => {
-    const result = []
-    for (let i = 1; i <= 15; i++)
-      result.push({ id: String(i).padStart(4, '0'), name: i })
-    return result
-  }, [])
-
-  const modelSelect = useCallback(() => modelDataWithID(), [])
+  const { data } = useQuery<GetCharacterListRes>(GET_CHARACTER_LIST)
 
   const onSubmit = async ({ model, type, id }: FormData) => {
     if (!app) return
@@ -65,16 +57,10 @@ export function AddModel() {
 
       dragable(model)
       app.stage.addChild(model)
-      let typeShort = ''
-      if (type === 'live2d_chara_') typeShort = 'Character'
-      else if (type === 'live2d_card_chara_03') typeShort = 'Card3'
-      else if (type === 'live2d_card_chara_04') typeShort = 'Card4'
-      setModels((data) =>
-        data.concat({
-          name: `${modelName}-${typeShort}-${id}`,
-          data: model,
-        })
-      )
+      // let typeShort = ''
+      // if (type === 'live2d_chara_') typeShort = 'Character'
+      // else if (type === 'live2d_card_chara_03') typeShort = 'Card3'
+      // else if (type === 'live2d_card_chara_04') typeShort = 'Card4'
     } catch (error) {
       toaster.warning(`This model does not exist `)
     }
@@ -82,67 +68,66 @@ export function AddModel() {
 
   return (
     <>
-      <Heading>Add Model</Heading>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Controller
-          name="model"
-          control={control}
-          defaultValue={'011'}
-          render={({ field }) => (
-            <SelectField
-              {...field}
-              ref={null}
-              label="Model ID"
-              flex="1"
-              marginTop={12}
-              onChange={(e) => {
-                field.onChange(e.target.value)
-                setModelName(e.target.options[e.target.selectedIndex].text)
-              }}
-            >
-              {modelSelect().map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.name}
-                </option>
-              ))}
-            </SelectField>
-          )}
-        />
-        <Pane display="flex" width="100%" gap="5px">
-          <Controller
-            name="type"
+        <div className="font-bold">Add Model</div>
+        <FormBlock label="Model Name">
+          <Select
             control={control}
-            defaultValue={'live2d_chara_'}
-            render={({ field }) => (
-              <SelectField {...field} label="Type" flex="1" ref={null}>
-                <option value="live2d_card_chara_07">Special</option>
-                <option value="live2d_card_chara_04">Character Card 4</option>
-                <option value="live2d_card_chara_03">Character Card 3</option>
-                <option value="live2d_chara_">Character</option>
-              </SelectField>
-            )}
+            name="model"
+            data={
+              data
+                ? data.character.map((item) => ({
+                    id: pad(item.id, 3),
+                    name: item.fullNameEnglish || item.firstNameEnglish,
+                    img: `adv/ondemand/chara_icon/adv_icon_${pad(
+                      item.id,
+                      3
+                    )}.png`,
+                  }))
+                : []
+            }
           />
-          <Controller
-            name="id"
-            control={control}
-            defaultValue={'0001'}
-            render={({ field }) => (
-              <SelectField {...field} label="Model ID" flex="1" ref={null}>
-                {idSelect().map((item) => (
-                  <option key={item.id} value={item.id}>
-                    {item.name}
-                  </option>
-                ))}
-              </SelectField>
-            )}
-          />
-        </Pane>
+        </FormBlock>
+        <div className="flex justify-between gap-x-3">
+          <FormBlock label="Type" className="flex-1">
+            <Select
+              name="type"
+              control={control}
+              data={[
+                { id: 'live2d_chara_', name: 'Character' },
+                { id: 'live2d_card_chara_03', name: 'Character Card 3' },
+                { id: 'live2d_card_chara_04', name: 'Character Card 4' },
+                { id: 'live2d_card_chara_04', name: 'Special Card' },
+              ]}
+            />
+          </FormBlock>
+          <FormBlock label="Model ID" className="flex-1">
+            <Select
+              name="id"
+              control={control}
+              data={[
+                { id: '0001', name: '1' },
+                { id: '0002', name: '2' },
+                { id: '0003', name: '3' },
+                { id: '0004', name: '4' },
+                { id: '0005', name: '5' },
+                { id: '0006', name: '6' },
+                { id: '0007', name: '7' },
+                { id: '0008', name: '8' },
+                { id: '0009', name: '9' },
+              ]}
+            />
+          </FormBlock>
+        </div>
 
-        <Pane display="flex" justifyContent="end" width="100%">
-          <Button intent="success" type="submit">
+        <div className="flex justify-end">
+          <button
+            type="submit"
+            className="btn btn-sm mt-2 btn-outline btn-success"
+          >
             Add Model
-          </Button>
-        </Pane>
+          </button>
+        </div>
       </form>
     </>
   )
@@ -159,8 +144,11 @@ export function EtcConfig() {
   const [width, height] = useWindowSize()
   const { background, setBackground, dragable, setDragable, models } =
     useContext(Live2DContext)
-  const { handleSubmit, control, reset } = useForm<FormDataBackground>({
+  const { handleSubmit, control } = useForm<FormDataBackground>({
     resolver: joiResolver(schemaBackground),
+    defaultValues: {
+      background,
+    },
   })
   const onSubmit = (data: FormDataBackground) => {
     setBackground(data.background)
@@ -193,36 +181,26 @@ export function EtcConfig() {
 
   return (
     <>
-      <Heading marginTop={20}>Config</Heading>
+      <div className="font-bold">Config</div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Controller
-          name="background"
-          control={control}
-          defaultValue={background}
-          rules={{ required: true }}
-          render={({ field, fieldState }) => (
-            <TextInputField
-              {...field}
-              isInvalid={fieldState.invalid}
-              required
-              marginTop={12}
-              label="Background Image Url"
-              placeholder="https://......."
-            />
-          )}
-        />
-        <Pane display="flex" justifyContent="end" width="100%">
-          <Button intent="success" type="submit">
-            Update Background
-          </Button>
-        </Pane>
+        <FormBlock label="Background Image">
+          <Input
+            control={control}
+            name="background"
+            placeholder="https://......"
+          />
+        </FormBlock>
+        <div className="flex justify-end">
+          <button
+            type="submit"
+            className="btn btn-sm mt-2 btn-outline btn-success"
+          >
+            update
+          </button>
+        </div>
       </form>
-      <FormField label="Dragable">
-        <Switch
-          checked={dragable}
-          onChange={(e) => setDragable(e.target.checked)}
-        />
-      </FormField>
+
+      <Switch checked={dragable} onChange={setDragable} label={'Dragable'} />
       <Pane
         display="flex"
         justifyContent="start"
