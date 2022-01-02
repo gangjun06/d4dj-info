@@ -17,7 +17,7 @@ type FormData = {
   id: string
 }
 
-export function TabConfig() {
+export function ConfigSection() {
   return (
     <>
       <AddModel />

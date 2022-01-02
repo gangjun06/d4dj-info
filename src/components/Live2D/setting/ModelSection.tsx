@@ -8,9 +8,9 @@ type FormData = {
   motion: string
 }
 
-export function TabModel() {
-  const { models, setModels, app, setConfigIndex } = useContext(Live2DContext)
-  const { control, handleSubmit, getValues } = useForm<FormData>()
+export function ModelSection() {
+  const { models, setModels, app } = useContext(Live2DContext)
+  const { control, handleSubmit } = useForm<FormData>()
   const [index, setIndex] = useState<number>(-1)
 
   const motions = useMemo((): any[] => {

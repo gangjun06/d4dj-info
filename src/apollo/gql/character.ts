@@ -50,6 +50,7 @@ export const GET_CHARACTER_DETAIL = gql`
           title
           startDate
           endDate
+          hasVoice
         }
       }
     }

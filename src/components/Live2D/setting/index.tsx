@@ -3,8 +3,8 @@ import { useWindowSize } from '@react-hook/window-size'
 import React, { useCallback, useContext, useEffect } from 'react'
 import { createLive2DShare, Live2DShare } from 'utils/live2d'
 import { Live2DContext } from '../context'
-import { TabConfig } from './tabConfig'
-import { TabModel } from './tabModel'
+import { ConfigSection } from './ConfigSection'
+import { ModelSection } from './ModelSection'
 
 type props = {
   isShown: boolean
@@ -61,6 +61,7 @@ export function Setting({ isShown, onClose }: props) {
     <SideOver
       open={isShown}
       onClose={onClose}
+      customOverlay="bg-transparent"
       title="Live2D Config"
       footer={
         <div className="btn btn-outline btn-sm" onClick={share}>
@@ -68,8 +69,8 @@ export function Setting({ isShown, onClose }: props) {
         </div>
       }
     >
-      <TabConfig />
-      <TabModel />
+      <ConfigSection />
+      <ModelSection />
     </SideOver>
   )
 }

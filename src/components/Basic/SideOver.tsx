@@ -1,4 +1,5 @@
 import { Dialog, Transition } from '@headlessui/react'
+import classNames from 'classnames'
 import { FormEventHandler, Fragment, ReactNode } from 'react'
 import { HiX } from 'react-icons/hi'
 
@@ -11,6 +12,7 @@ type props = {
   footerClassName?: string
   asForm?: boolean
   onSubmit?: FormEventHandler<HTMLFormElement>
+  customOverlay?: string
 }
 
 export const SideOver = ({
@@ -22,6 +24,7 @@ export const SideOver = ({
   asForm,
   onSubmit,
   footerClassName,
+  customOverlay,
 }: props) => {
   const Content = ({ children }: { children: ReactNode }) => {
     const className =
@@ -39,7 +42,7 @@ export const SideOver = ({
     <Transition.Root show={open} as={Fragment}>
       <Dialog
         as="div"
-        className="fixed inset-0 overflow-hidden"
+        className="fixed z-30 inset-0 overflow-hidden"
         onClose={onClose}
       >
         <div className="absolute inset-0 overflow-hidden">
@@ -52,7 +55,12 @@ export const SideOver = ({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Dialog.Overlay className="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+            <Dialog.Overlay
+              className={classNames(
+                'absolute inset-0 transition-opacity',
+                customOverlay ? customOverlay : 'bg-gray-500 bg-opacity-75'
+              )}
+            />
           </Transition.Child>
           <div className="fixed inset-y-0 right-0 pl-10 max-w-full flex">
             <Transition.Child

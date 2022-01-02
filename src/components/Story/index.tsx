@@ -4,9 +4,10 @@ import { SceValues, SceWords, StoryNext } from 'models/story'
 import useTranslation from 'next-translate/useTranslation'
 import { InternalModel, Live2DModel } from 'pixi-live2d-display'
 import * as PIXI from 'pixi.js'
-import { useContext, useEffect, useRef, useState } from 'react'
+import { Fragment, useContext, useEffect, useRef, useState } from 'react'
 import { HiCog } from 'react-icons/hi'
 import { delay } from 'utils'
+import { TempModal } from '../Basic'
 import { AdBlockAlert } from '../Util/AdBlockAlert'
 import { Dialogue } from './components/Dialogue'
 import { Fade } from './components/Fade'
@@ -16,11 +17,15 @@ import { Setting } from './setting'
 import { loadModel } from './utils'
 
 type props = {
-  data?: string
+  data?: {
+    name?: string
+    hasVoice?: boolean
+  }
   next?: StoryNext
 }
 
-function StoryViewContent({ data: openFileName, next }: props) {
+function StoryViewContent({ data, next }: props) {
+  const { name: openFileName } = data || {}
   const { t } = useTranslation()
   const {
     storyData,
@@ -43,6 +48,7 @@ function StoryViewContent({ data: openFileName, next }: props) {
   const musicRef = useRef<HTMLAudioElement>(null)
 
   const [width, height] = useWindowSize()
+  const [reloadAlert, setReloadAlert] = useState<boolean>(false)
   const [isShown, setIsShown] = useState<boolean>(false)
   const [index, setIndex] = useState<number>(-1)
   const [models, setModels] =
@@ -134,10 +140,12 @@ function StoryViewContent({ data: openFileName, next }: props) {
         } else if (name === SceWords.Live2dCharaVoice) {
           const voiceName = args.get(SceWords.VoiceName)
           if (typeof voiceName === 'string')
-            if (musicRef.current) {
-              musicRef.current.src = `https://asset.d4dj.info/plain/adv/ondemand/voice/${voiceName}.mp3`
-              await musicRef.current.play()
-            }
+            try {
+              if (musicRef.current) {
+                musicRef.current.src = `https://asset.d4dj.info/plain/adv/ondemand/voice/${voiceName}.mp3`
+                await musicRef.current.play()
+              }
+            } catch {}
         } else if (name === SceWords.Live2dCharaDisplay) {
           const model: any = models?.get(value)
           if (model && app) {
@@ -163,7 +171,7 @@ function StoryViewContent({ data: openFileName, next }: props) {
               model.y = 0.7 * app!.renderer.height
               model.rotation = Math.PI
               model.skew.x = Math.PI
-              model.scale.set(0.3)
+              model.scale.set(app!.renderer.height > 640 ? 0.35 : 0.2)
               model.anchor.set(0.5, 0.5)
 
               model && app?.stage.addChild(model)
@@ -211,6 +219,12 @@ function StoryViewContent({ data: openFileName, next }: props) {
   useEffect(() => {
     if (next) setNext(next)
   }, [next])
+
+  useEffect(() => {
+    if (height > width) {
+      setReloadAlert(true)
+    }
+  }, [width, height])
 
   useEffect(() => {
     if (openFileName)
@@ -290,6 +304,7 @@ function StoryViewContent({ data: openFileName, next }: props) {
       <SubTitle subTitle={subTitle} />
       <Fade color={fade} />
       <Dialogue name={speaker} text={text} />
+      <TempModal id="story-data-alert">{t('common:data_alert')}</TempModal>
 
       <div
         className="absolute top-0 left-0 w-full h-full bg-cover"
@@ -310,11 +325,23 @@ function StoryViewContent({ data: openFileName, next }: props) {
           {/*t('common:setting')*/}
         </button>
       </div>
-      <div>
-        {index === -1 && (
-          <div className="absolute z-20">Click Setting to play</div>
-        )}
-      </div>
+      {index === -1 && !reloadAlert && (
+        <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 bg-white/70 backdrop-blur rounded px-3 py-2">
+          Click Screen to play
+        </div>
+      )}
+      {reloadAlert && (
+        <div className="absolute z-20 left-0 top-0 w-full h-full flex flex-col opacity-80 backdrop-blur text-center bg-black/70 items-center justify-center text-white">
+          {t('common:rotate')
+            .split('\n')
+            .map((item, index) => (
+              <Fragment key={index}>
+                {item}
+                <br />
+              </Fragment>
+            ))}
+        </div>
+      )}
     </>
   )
 }

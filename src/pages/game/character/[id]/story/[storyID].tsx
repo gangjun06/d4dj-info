@@ -16,18 +16,19 @@ export default function CharacterEpisode({
   characterID,
   prevUrl,
   nextUrl,
+  hasVoice,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <MainLayout disableLayout title={`${title} [${characterName}]`}>
       <CommonStoryPage
         name={`60${episodeID}`}
+        hasVoice={hasVoice}
         next={{
-          prev: prevUrl && `/game/event/${characterID}/story/${prevUrl}`,
-          list: `/game/event/${characterID}`,
-          next: nextUrl && `/game/event/${characterID}/story/${nextUrl}`,
+          prev: prevUrl && `/game/character/${characterID}/story/${prevUrl}`,
+          list: `/game/character/${characterID}`,
+          next: nextUrl && `/game/character/${characterID}/story/${nextUrl}`,
         }}
       />
-      {/* </div> */}
     </MainLayout>
   )
 }
@@ -39,6 +40,7 @@ type props = {
   episodeID: number
   prevUrl?: string
   nextUrl?: string
+  hasVoice: boolean
 }
 
 export const getServerSideProps: GetServerSideProps<props> = async (
@@ -92,10 +94,11 @@ export const getServerSideProps: GetServerSideProps<props> = async (
     characterName: character.firstNameEnglish,
     title: targetEpisode.episode.title,
     episodeID: targetEpisode.id,
+    hasVoice: targetEpisode.episode.hasVoice,
   }
 
-  if (prevEpisode) returnData.prevUrl = `${prevEpisode.chapterNumber}`
-  if (nextEpisode) returnData.nextUrl = `${nextEpisode.chapterNumber}`
+  if (prevEpisode) returnData.prevUrl = `${prevEpisode.chapterNumber + 1}`
+  if (nextEpisode) returnData.nextUrl = `${nextEpisode.chapterNumber + 1}`
 
   return {
     props: {

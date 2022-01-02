@@ -12,15 +12,23 @@ const Story = dynamic(() => import('.'), {
 export default function CommonStoryPage({
   name,
   next,
+  hasVoice,
 }: {
   name: string
   next: StoryNext
+  hasVoice?: boolean
 }) {
   return (
     <>
       <Live2DHeader />
       <div className="h-full">
-        <Story data={name} next={next} />
+        <Story
+          data={{
+            name,
+            hasVoice,
+          }}
+          next={next}
+        />
       </div>
     </>
   )

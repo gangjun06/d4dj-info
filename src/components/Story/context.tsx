@@ -80,7 +80,7 @@ function StoryProvider({ children }: { children: React.ReactElement }) {
   const setBackground = (name: string) => {
     setBackgroundState(
       `https://asset.d4dj.info/adv/ondemand/background/${
-        name === 'default' ? 'bg_adv_10012' : backgroundTable.get(name) || ''
+        name === 'default' ? 'bg_adv_10012' : backgroundTable.get(name) || name
       }.jpg`
     )
   }
