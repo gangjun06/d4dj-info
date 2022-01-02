@@ -88,7 +88,6 @@ export const CharacterIcon = ({ id, alt }: { id: number; alt: string }) => {
 }
 
 const MusicIconContent = ({ id }: { id: number }) => {
-  console.log('rerender')
   const [src, setSrc] = useState<string>(
     `music_jacket/music_jacket_${pad(id, 7)}.jpg`
   )

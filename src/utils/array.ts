@@ -9,3 +9,6 @@ export const cleanArrayWithInt = (data: any[]) => {
     .map((item) => parseInt(item))
   return filtered.length ? filtered : undefined
 }
+
+export const classNames = (...classes: (string | undefined)[]) =>
+  classes.filter(Boolean).join(' ')

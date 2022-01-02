@@ -20,6 +20,6 @@
       "@/apollo/*": ["apollo/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "public/f-adblock.js"],
   "exclude": ["node_modules"]
 }

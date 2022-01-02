@@ -6,23 +6,36 @@
   },
   "game": {
     "name": "Game",
-    "character": "Characater",
+    "character": {
+      "name": "Character",
+      "story": "Character Story"
+    },
     "character_detail": "Characater Detail",
+    "unit": {
+      "name": "Unit",
+      "story": "Unit Story"
+    },
     "card": "Card",
     "card_detail": "Card Detail",
     "music": "Music",
     "music_detail": "Music Detail",
-    "event": "Event",
+    "event": {
+      "name": "Event",
+      "story": "Event Story"
+    },
     "event_detail": "Event Detail",
     "gacha": "Gacha",
     "gacha_detail": "Gacha Detail",
     "gallery": "Gallery",
-    "live2d": "Live2D Viewer",
+    "story": "Story",
     "etc": {
       "name": "Etc",
       "exp": "Exp Calculator"
     }
   },
-  "about": "About Website",
-  "live2d": "Live2D"
+  "story": "Story",
+  "story_viewer": "Story Viewer",
+  "about": "사이트 정보",
+  "live2d": "Live2D",
+  "live2d_viewer": "Live2D Viewer"
 }

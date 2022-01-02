@@ -1,6 +1,20 @@
 import { gql } from '@apollo/client'
 import * as models from 'models'
 
+export interface GetCharacterListRes {
+  character: models.Character[]
+}
+
+export const GET_CHARACTER_LIST = gql`
+  query Query {
+    character {
+      id
+      fullNameEnglish
+      firstNameEnglish
+    }
+  }
+`
+
 export interface GetCharacterRes {
   character: models.Character[]
 }
@@ -27,6 +41,17 @@ export const GET_CHARACTER_DETAIL = gql`
         rarity
         cardName
         attribute
+      }
+      characterEpisode {
+        id
+        chapterNumber
+        episode {
+          id
+          title
+          startDate
+          endDate
+          hasVoice
+        }
       }
     }
   }

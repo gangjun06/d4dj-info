@@ -46,3 +46,13 @@ body {
 .flex-center {
   @apply flex justify-center items-center h-full;
 }
+
+.story-overlay {
+  @apply rounded absolute top-0 h-full w-full;
+  background: rgb(51, 65, 85);
+  background: linear-gradient(
+    0deg,
+    rgba(30, 41, 59, 0.5) 0%,
+    rgba(255, 255, 255, 0) 50%
+  );
+}

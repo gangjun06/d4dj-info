@@ -1,5 +1,6 @@
 import { GetEventReq, GetEventRes, GET_EVENT_DETAIL } from '@/apollo/gql'
 import { Card, Disclosure, Table, TableBody } from '@/components/Basic'
+import { StoryItem } from '@/components/Elements'
 import { EventIcon } from '@/components/Image'
 import { client } from 'apollo'
 import MainLayout from 'layouts/main'
@@ -17,9 +18,9 @@ export default function GachaDetail({
 
   return (
     <MainLayout
-      breadThumbs={[
+      breadCrumbs={[
         { name: t('nav:game.name'), link: '' },
-        { name: t('nav:game.event'), link: '/game/event' },
+        { name: t('nav:game.event.name'), link: '/game/event' },
         {
           name: t('nav:game.event_detail'),
           link: `/game/event/${event.id}`,
@@ -99,6 +100,22 @@ export default function GachaDetail({
               />
             </Disclosure>
           </Card>
+          {event.eventEpisode!.length !== 0 && (
+            <Card className="mt-4" title={t('nav:game.event.story')}>
+              <div className="grid-2">
+                {event.eventEpisode!.map((data) => (
+                  <StoryItem
+                    key={data.episode.id}
+                    id={data.episode.id}
+                    title1={`${data.chapterNumber}`}
+                    title2={data.episode.title}
+                    imgPrefix="2000"
+                    to={`/game/event/${event.id}/story/${data.chapterNumber}`}
+                  />
+                ))}
+              </div>
+            </Card>
+          )}
         </div>
 
         {event.episodeCharactersData!.length > 0 && (

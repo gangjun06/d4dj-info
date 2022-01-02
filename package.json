@@ -13,10 +13,12 @@
     "@headlessui/react": "^1.4.1",
     "@hookform/resolvers": "^2.8.1",
     "@react-hook/window-size": "^3.0.7",
+    "@tailwindcss/forms": "^0.4.0",
     "@types/lodash": "^4.14.176",
     "@types/react-modal": "^3.13.1",
     "@types/react-virtualized": "^9.21.14",
     "@zeit/next-sass": "^1.0.1",
+    "adblock-detect-react": "^1.0.5",
     "add": "^2.0.6",
     "availity-reactstrap-validation": "^2.7.1",
     "axios": "^0.24.0",
@@ -42,6 +44,7 @@
     "react": "17.0.2",
     "react-chartjs-2": "^3.3.0",
     "react-dom": "17.0.2",
+    "react-dropzone": "^11.4.2",
     "react-hook-form": "^7.17.5",
     "react-icons": "^4.3.1",
     "react-infinite-scroll-component": "^6.1.0",
@@ -49,7 +52,7 @@
     "react-virtualized": "^9.22.3",
     "reactstrap": "^8.9.0",
     "simplebar-react": "^2.3.4",
-    "yarn": "^1.22.11"
+    "yarn": "^1.22.17"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^12.0.7",
@@ -65,7 +68,7 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "postcss": "^8.3.8",
     "prettier": "^2.3.2",
-    "tailwindcss": "^2.2.16",
+    "tailwindcss": "^3.0.7",
     "typescript": "4.3.5"
   }
 }

@@ -7,7 +7,7 @@ export default function Etc() {
   return (
     <MainLayout
       title={t('nav:game.etc.exp')}
-      breadThumbs={[
+      breadCrumbs={[
         { name: t('nav:game.name'), link: '' },
         { name: t('nav:game.etc.name'), link: '/game/etc' },
         { name: t('nav:game.etc.exp'), link: '/game/etc/exp' },

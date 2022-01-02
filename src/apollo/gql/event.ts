@@ -73,6 +73,16 @@ export const GET_EVENT_DETAIL = gql`
       rankFixStartDate
       receptionCloseDate
       storyUnlockDate
+      eventEpisode {
+        id
+        chapterNumber
+        episode {
+          title
+          id
+          startDate
+          endDate
+        }
+      }
     }
   }
 `

@@ -8,7 +8,7 @@ export default function Etc() {
   return (
     <MainLayout
       title={t('nav:game.etc.name')}
-      breadThumbs={[
+      breadCrumbs={[
         { name: t('nav:game.name'), link: '' },
         { name: t('nav:game.etc.name'), link: '/game/etc' },
       ]}
@@ -17,6 +17,18 @@ export default function Etc() {
         <Card link="/game/etc/exp">
           <div className="flex justify-between items-center">
             <div>{t('nav:game.etc.exp')}</div>
+            <HiChevronRight size={22} />
+          </div>
+        </Card>
+        <Card link="/live2d">
+          <div className="flex justify-between items-center">
+            <div>{t('nav:live2d_viewer')}</div>
+            <HiChevronRight size={22} />
+          </div>
+        </Card>
+        <Card link="/story">
+          <div className="flex justify-between items-center">
+            <div>{t('nav:story_viewer')}</div>
             <HiChevronRight size={22} />
           </div>
         </Card>

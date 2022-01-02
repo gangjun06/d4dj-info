@@ -26,7 +26,7 @@ export default function Home({ data }: { data: GetIndexRes }) {
   return (
     <MainLayout
       title={t('nav:main.dashboard')}
-      breadThumbs={[
+      breadCrumbs={[
         { name: t('nav:main.name'), link: '' },
         { name: t('nav:main.dashboard'), link: '/' },
       ]}

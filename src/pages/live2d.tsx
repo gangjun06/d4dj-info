@@ -1,7 +1,8 @@
+import Live2DHeader from '@/components/Live2DHeader'
+import { Spinner, Text } from 'evergreen-ui'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { Spinner, Text } from 'evergreen-ui'
 import { useEffect, useState } from 'react'
 
 const Live2DView = dynamic(() => import('@/components/Live2D'), {
@@ -42,12 +43,10 @@ export default function Live2D() {
   return (
     <>
       <Head>
-        <title>D4DJ.info Live2D</title>
-        {/* eslint-disable-next-line @next/next/no-sync-scripts*/}
-        <script src="/live2dcubismcore.min.js" />
-        {/* eslint-disable-next-line @next/next/no-sync-scripts*/}
-        <script src="/live2d.min.js" />
+        <title>Live2D Viewer | D4DJ.info</title>
       </Head>
+      <Live2DHeader />
+
       <div
         style={{
           position: 'relative',

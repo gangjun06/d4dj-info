@@ -1,3 +1,5 @@
+import { CharacterEpisode, UnitEpisode } from './episode'
+
 export enum Attribute {
   STREET = 'STREET',
   PARTY = 'PARTY',
@@ -15,6 +17,7 @@ export type Unit = {
   shortName: string
   mainColorCode: string
   characters: Character[]
+  unitEpisode: UnitEpisode[]
 }
 
 export type Character = {
@@ -26,6 +29,7 @@ export type Character = {
   colorCode: string
   unit?: Unit
   card?: Card[]
+  characterEpisode: CharacterEpisode[]
 }
 
 export type Card = {

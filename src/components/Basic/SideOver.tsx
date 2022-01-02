@@ -1,4 +1,5 @@
 import { Dialog, Transition } from '@headlessui/react'
+import classNames from 'classnames'
 import { FormEventHandler, Fragment, ReactNode } from 'react'
 import { HiX } from 'react-icons/hi'
 
@@ -8,8 +9,10 @@ type props = {
   children: ReactNode
   title: string
   footer?: ReactNode
+  footerClassName?: string
   asForm?: boolean
   onSubmit?: FormEventHandler<HTMLFormElement>
+  customOverlay?: string
 }
 
 export const SideOver = ({
@@ -20,6 +23,8 @@ export const SideOver = ({
   footer,
   asForm,
   onSubmit,
+  footerClassName,
+  customOverlay,
 }: props) => {
   const Content = ({ children }: { children: ReactNode }) => {
     const className =
@@ -37,7 +42,7 @@ export const SideOver = ({
     <Transition.Root show={open} as={Fragment}>
       <Dialog
         as="div"
-        className="fixed inset-0 overflow-hidden"
+        className="fixed z-30 inset-0 overflow-hidden"
         onClose={onClose}
       >
         <div className="absolute inset-0 overflow-hidden">
@@ -50,7 +55,12 @@ export const SideOver = ({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Dialog.Overlay className="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+            <Dialog.Overlay
+              className={classNames(
+                'absolute inset-0 transition-opacity',
+                customOverlay ? customOverlay : 'bg-gray-500 bg-opacity-75'
+              )}
+            />
           </Transition.Child>
           <div className="fixed inset-y-0 right-0 pl-10 max-w-full flex">
             <Transition.Child
@@ -89,12 +99,20 @@ export const SideOver = ({
                       {title}
                     </Dialog.Title>
                   </div>
-                  <div className="mt-6 relative flex-1 px-4 sm:px-6">
+                  <div className="mt-6 relative flex-1 px-4 sm:px-6 pb-4 overflow-y-scroll">
                     {children}
                   </div>
-                  <div className="sticky bottom-0 px-4 sm:px-6 py-5 border-t border-gray-300 flex flex-row-reverse gap-x-2">
-                    {footer}
-                  </div>
+                  {footer && (
+                    <div
+                      className={`sticky bottom-0 px-4 sm:px-6 py-5 border-t border-gray-300 ${
+                        footerClassName
+                          ? footerClassName
+                          : 'flex flex-row-reverse gap-x-2'
+                      }`}
+                    >
+                      {footer}
+                    </div>
+                  )}
                 </Content>
               </div>
             </Transition.Child>

@@ -3,6 +3,7 @@
   "filter": "Filter",
   "search": "Search",
   "search_desc": "Search Reverse",
+  "select": "Select...",
   "attribute": {
     "name": "Attribute",
     "STREET": "street",
@@ -26,7 +27,9 @@
   "save": "Save",
   "close": "Close",
   "calculate": "Calculate",
-  "adblock": "Please Turn off the Adblock",
+  "adblock": "Please Turn off the Adblock\nThis website doesn't have ad\nAd blocking plugins interfere with resource loading",
+  "rotate": "Please rotate the screen horizontally\nand refresh",
+  "data_alert": "Because it brings a lot of data, we recommend using Wi-Fi.",
   "sort_name": "Sort",
   "sort": {
     "id": "ID",

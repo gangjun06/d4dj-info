@@ -1,52 +1,20 @@
-import { useWindowWidth } from '@react-hook/window-size'
-import {
-  defaultTheme,
-  Heading,
-  Pane,
-  Paragraph,
-  SideSheet,
-  Tab,
-  Tablist,
-  ThemeProvider,
-} from 'evergreen-ui'
-import React, { useContext, useEffect, useMemo } from 'react'
+import { SideOver } from '@/components/Basic'
+import { useWindowSize } from '@react-hook/window-size'
+import React, { useCallback, useContext, useEffect } from 'react'
+import { createLive2DShare, Live2DShare } from 'utils/live2d'
 import { Live2DContext } from '../context'
-import { TabConfig } from './tabConfig'
-import { TabModel } from './tabModel'
-
-const theme = {
-  ...defaultTheme,
-  colors: {
-    //@ts-ignore
-    ...defaultTheme.colors,
-    overlay: 'rgba(0,0,0,0)',
-  },
-}
+import { ConfigSection } from './ConfigSection'
+import { ModelSection } from './ModelSection'
 
 type props = {
   isShown: boolean
   onClose: () => void
 }
 
-function Content({ selectedIndex }: { selectedIndex: number }) {
-  switch (selectedIndex) {
-    case 0:
-      return <TabConfig />
-    default:
-      return <TabModel index={selectedIndex - 1} />
-  }
-}
-
 export function Setting({ isShown, onClose }: props) {
-  // const [isShown, setIsShown] = React.useState(false);
-  const { dragable, setModels, models, configIndex, setConfigIndex } =
-    useContext(Live2DContext)
-  const windowWidth = useWindowWidth()
-  const sideSheetSize = useMemo(() => {
-    if (windowWidth > 800) return undefined
-    if (windowWidth > 455) return 400
-    return windowWidth - 55
-  }, [windowWidth])
+  const { dragable, models, setModels, app } = useContext(Live2DContext)
+  const [width, height] = useWindowSize()
+
   useEffect(() => {
     setModels((item) => {
       item.forEach((model) => {
@@ -54,48 +22,55 @@ export function Setting({ isShown, onClose }: props) {
       })
       return item
     })
-  }, [dragable])
+  }, [dragable, setModels])
+
+  const share = useCallback(() => {
+    const result: Live2DShare[] = models.map((item) => {
+      const index = app!.stage.children.findIndex(
+        ({ internalModel: im }: any) =>
+          im.settings && im.settings.name === item.name
+      )
+      const model: any = app?.stage.children[index]
+
+      return {
+        model: (model.tag as string)
+          .replace('Live2DModel(', '')
+          .replace(')', ''),
+        scale: model.scale._x,
+        x: (model.x / width).toFixed(4),
+        y: (model.y / height).toFixed(4),
+        name: item.name,
+      }
+    })
+
+    const url = `https://d4dj.info/${createLive2DShare(result)}`
+    try {
+      const shareData = {
+        title: 'D4DJ.Info Live2D Share',
+        text: '',
+        url,
+      }
+      navigator.share(shareData)
+    } catch (e) {
+      navigator.clipboard.writeText(url)
+      // toaster.success(`Share URL copied`)
+    }
+  }, [models, width, height])
+
   return (
-    <ThemeProvider value={theme}>
-      <SideSheet
-        isShown={isShown}
-        onCloseComplete={onClose}
-        width={sideSheetSize}
-        containerProps={{
-          zIndex: 10,
-          display: 'flex',
-          flex: '1',
-          flexDirection: 'column',
-        }}
-      >
-        <Pane zIndex={1} flexShrink={0} elevation={0} backgroundColor="white">
-          <Pane padding={16} borderBottom="muted">
-            <Heading size={600}>Live2D Config</Heading>
-            <Paragraph size={400} color="muted">
-              Live2D configuration displayed on screen
-            </Paragraph>
-          </Pane>
-          <Pane display="flex" padding={8}>
-            <Tablist>
-              {[
-                'Config',
-                ...(models ? models.map((item) => item.name) : []),
-              ].map((tab, index) => (
-                <Tab
-                  key={tab}
-                  isSelected={configIndex === index}
-                  onSelect={() => setConfigIndex(index)}
-                >
-                  {tab}
-                </Tab>
-              ))}
-            </Tablist>
-          </Pane>
-        </Pane>
-        <Pane flex="1" overflowY="scroll" background="tint1" padding={16}>
-          <Content selectedIndex={configIndex} />
-        </Pane>
-      </SideSheet>
-    </ThemeProvider>
+    <SideOver
+      open={isShown}
+      onClose={onClose}
+      customOverlay="bg-transparent"
+      title="Live2D Config"
+      footer={
+        <div className="btn btn-outline btn-sm" onClick={share}>
+          Share
+        </div>
+      }
+    >
+      <ConfigSection />
+      <ModelSection />
+    </SideOver>
   )
 }

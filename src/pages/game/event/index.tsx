@@ -41,11 +41,11 @@ export default function Event() {
 
   return (
     <MainLayout
-      breadThumbs={[
+      breadCrumbs={[
         { name: t('nav:game.name'), link: '' },
-        { name: t('nav:game.event'), link: '/game/event' },
+        { name: t('nav:game.event.name'), link: '/game/event' },
       ]}
-      title={t('nav:game.event')}
+      title={t('nav:game.event.name')}
     >
       <WaitQuery loading={loading} error={error}>
         <InfinityScroll

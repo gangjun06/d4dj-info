@@ -1,0 +1,65 @@
+.titleWrap {
+  @apply absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2;
+  @apply py-1 text-black font-bold;
+  background: rgb(255, 255, 255);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 1) 20%,
+    rgba(255, 255, 255, 1) 80%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+.title {
+  @apply px-24 py-1;
+  @apply border-t-2 border-b-2;
+  border-color: #5e47a0;
+}
+
+.subTitle {
+  @apply absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2;
+  @apply px-24 py-1 text-white font-bold;
+  background: rgb(0, 0, 0);
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 1) 20%,
+    rgba(0, 0, 0, 1) 80%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+
+.fade {
+  @apply absolute z-20 top-0 left-0 w-full h-full;
+}
+
+.dialogueWrapper {
+  @apply absolute z-10 bottom-4 md:bottom-12 left-1/2 transform -translate-x-1/2 w-3/5 md:h-32;
+  @apply bg-white/75;
+  @apply px-1 py-1 rounded-2xl;
+}
+
+.dialogue {
+  @apply relative h-full;
+}
+
+.dialogue > .name {
+  @apply absolute -top-6 left-3 pl-3 w-36 py-1.5 font-bold;
+  @apply text-white rounded-tl-xl rounded-br-xl;
+  @apply border-2 border-white;
+  background-color: #661cd5;
+}
+
+.dialogue > .dialogueTextWrapper {
+  @apply px-5 py-4 h-full flex flex-col overflow-y-scroll;
+  @apply bg-transparent text-lg;
+  @apply border-2 rounded-2xl;
+  border-color: rgba(143, 100, 209);
+}
+
+@media (max-height: 640px) {
+  .dialogueWrapper {
+    @apply bottom-4 h-1/4 w-2/3;
+  }
+}

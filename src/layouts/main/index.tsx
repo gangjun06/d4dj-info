@@ -3,7 +3,7 @@ import { NextSeo } from 'next-seo'
 import useTransition from 'next-translate/useTranslation'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { ReactNode, useContext, useState } from 'react'
+import { CSSProperties, ReactNode, useContext, useState } from 'react'
 import { IconType } from 'react-icons'
 import {
   HiDotsCircleHorizontal,
@@ -12,7 +12,6 @@ import {
   HiOutlineChartPie,
   HiOutlineCog,
   HiOutlineCollection,
-  HiOutlineCube,
   HiOutlineMenu,
   HiOutlineMusicNote,
   HiOutlineViewGrid,
@@ -35,7 +34,7 @@ const NavbarGroup = ({
   )
 }
 
-type BreadThumbs = {
+type breadCrumbs = {
   name: string
   link: string
 }
@@ -92,12 +91,12 @@ const SideNav = ({
     <div className="navbar-menu relative">
       {isOpen && (
         <div
-          className="fixed top-0 left-0 bottom-0 flex flex-col bg-black bg-opacity-30 w-full h-full z-10 cursor-pointer lg:hidden"
+          className="fixed top-0 left-0 bottom-0 flex flex-col bg-black bg-opacity-30 w-full h-full z-40 cursor-pointer lg:hidden"
           onClick={() => onClose()}
         />
       )}
       <nav
-        className={`fixed top-0 left-0 bottom-0 flex flex-col w-3/4 lg:w-72 sm:max-w-xs pt-6 pb-4 bg-gray-800 overflow-y-auto z-20 transition-transform lg:transition-none transform ${
+        className={`fixed top-0 left-0 bottom-0 flex flex-col w-3/4 lg:w-72 sm:max-w-xs pt-6 pb-4 bg-gray-800 overflow-y-auto z-40 transition-transform lg:transition-none transform ${
           !isOpen ? '-translate-x-full lg:translate-x-0z' : ''
         }`}
       >
@@ -131,7 +130,7 @@ const SideNav = ({
             </NavbarGroup>
             <NavbarGroup label={t('nav:game.name')}>
               <NavItem
-                label={t('nav:game.character')}
+                label={t('nav:game.character.name')}
                 Icon={HiOutlineArchive}
                 link="/game/character"
               />
@@ -146,7 +145,7 @@ const SideNav = ({
                 link="/game/music"
               />
               <NavItem
-                label={t('nav:game.event')}
+                label={t('nav:game.event.name')}
                 Icon={HiOutlineBookOpen}
                 link="/game/event"
               />
@@ -160,11 +159,6 @@ const SideNav = ({
                 Icon={HiOutlinePhotograph}
                 link="/game/gallery"
               /> */}
-              <NavItem
-                label={t('nav:game.live2d')}
-                Icon={HiOutlineCube}
-                link="/live2d"
-              />
               <NavItem
                 label={t('nav:game.etc.name')}
                 Icon={HiDotsCircleHorizontal}
@@ -187,15 +181,19 @@ const SideNav = ({
 
 type props = {
   children: ReactNode
-  breadThumbs: BreadThumbs[]
+  breadCrumbs?: breadCrumbs[]
   title: string
   titleSide?: ReactNode
+  mainContentStyle?: CSSProperties
+  disableLayout?: boolean
 }
 export default function MainLayout({
-  breadThumbs,
+  breadCrumbs,
   children,
   title,
   titleSide,
+  mainContentStyle,
+  disableLayout = false,
 }: props) {
   const [drawer, setDrawer] = useState<boolean>(false)
   const { t } = useTransition('')
@@ -209,59 +207,66 @@ export default function MainLayout({
           description: 'D4DJ Information Website',
         }}
       />
-      <SettingProvider>
-        <nav className="lg:hidden py-6 px-6 bg-gray-800">
-          <div className="flex items-center justify-between">
-            <Link href="/" passHref>
-              <div className="text-2xl text-white font-semibold cursor-pointer">
-                {t('common:title')}
-              </div>
-            </Link>
-            <button
-              className="navbar-burger flex items-center rounded focus:outline-none"
-              onClick={() => setDrawer(!drawer)}
-            >
-              <HiOutlineMenu className="text-white bg-primary hover:bg-primary-focus block h-8 w-8 p-2 rounded" />
-            </button>
-          </div>
-        </nav>
+      {disableLayout ? (
+        <>{children}</>
+      ) : (
+        <SettingProvider>
+          <nav className="lg:hidden py-6 px-6 bg-gray-800">
+            <div className="flex items-center justify-between">
+              <Link href="/" passHref>
+                <div className="text-2xl text-white font-semibold cursor-pointer">
+                  {t('common:title')}
+                </div>
+              </Link>
+              <button
+                className="navbar-burger flex items-center rounded focus:outline-none"
+                onClick={() => setDrawer(!drawer)}
+              >
+                <HiOutlineMenu className="text-white bg-primary hover:bg-primary-focus block h-8 w-8 p-2 rounded" />
+              </button>
+            </div>
+          </nav>
 
-        <div className="hidden lg:block">
-          <SideNav onClose={() => {}} isOpen={true} showTitle={true} />
-        </div>
-        <div className="block lg:hidden">
-          <SideNav
-            onClose={() => setDrawer(false)}
-            isOpen={drawer}
-            showTitle={false}
-          />
-        </div>
-        <div
-          id="mainContent"
-          className="mx-auto lg:ml-72 h-full overflow-y-scroll bg-base-200 overflow-x-hidden"
-        >
-          <div className="mx-auto w-full px-8 py-5 md:pb-5 pb-24">
-            <div className="text-sm breadcrumbs mt-2">
-              <ul>
-                {breadThumbs.map((item, index) => (
-                  <li key={index}>
-                    {item.link === '' ? (
-                      <p>{item.name}</p>
-                    ) : (
-                      <Link href={item.link}>{item.name}</Link>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="flex items-center justify-between mb-5 ">
-              <div className="font-bold text-3xl">{title}</div>
-              {titleSide}
-            </div>
-            {children}
+          <div className="hidden lg:block">
+            <SideNav onClose={() => {}} isOpen={true} showTitle={true} />
           </div>
-        </div>
-      </SettingProvider>
+          <div className="block lg:hidden">
+            <SideNav
+              onClose={() => setDrawer(false)}
+              isOpen={drawer}
+              showTitle={false}
+            />
+          </div>
+          <div
+            style={mainContentStyle}
+            id="mainContent"
+            className="mx-auto lg:ml-72 h-full overflow-y-scroll bg-base-200 overflow-x-hidden"
+          >
+            <div className="mx-auto w-full px-8 py-5 md:pb-5 pb-24">
+              {breadCrumbs && (
+                <div className="text-sm breadcrumbs mt-2">
+                  <ul>
+                    {breadCrumbs.map((item, index) => (
+                      <li key={index}>
+                        {item.link === '' ? (
+                          <p>{item.name}</p>
+                        ) : (
+                          <Link href={item.link}>{item.name}</Link>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              <div className="flex items-center justify-between mb-5 ">
+                <div className="font-bold text-3xl">{title}</div>
+                {titleSide}
+              </div>
+              {children}
+            </div>
+          </div>
+        </SettingProvider>
+      )}
     </>
   )
 }

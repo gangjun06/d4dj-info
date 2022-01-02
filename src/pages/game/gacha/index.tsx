@@ -41,7 +41,7 @@ export default function Event() {
 
   return (
     <MainLayout
-      breadThumbs={[
+      breadCrumbs={[
         { name: t('nav:game.name'), link: '' },
         { name: t('nav:game.gacha'), link: '/game/gacha' },
       ]}
