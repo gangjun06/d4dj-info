@@ -1,5 +1,4 @@
 import Live2DHeader from '@/components/Live2DHeader'
-import { Spinner, Text } from 'evergreen-ui'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
@@ -27,11 +26,10 @@ function Loading() {
         flexDirection: 'column',
       }}
     >
-      <Spinner />
       {show && (
-        <Text color="muted" marginTop={5}>
+        <div className="text-black">
           If loading continues, please close the page and try again
-        </Text>
+        </div>
       )}
     </div>
   )

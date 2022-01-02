@@ -28,7 +28,7 @@ function Loading() {
       }}
     >
       {show && (
-        <div className="">
+        <div className="text-black">
           If loading continues, please close the page and try again
         </div>
       )}

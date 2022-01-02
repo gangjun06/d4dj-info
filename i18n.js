@@ -12,7 +12,6 @@ module.exports = {
     '/game/music/[id]': ['music'],
     '/game/event/[id]': ['event'],
     '/game/etc/exp': ['exp', 'card'],
-    '/story': ['story'],
     '/about': ['about'],
   },
 }

@@ -116,7 +116,7 @@ function StoryViewContent({ data, next }: props) {
       } else if (text !== '') {
         setText(null)
         if (audio && audio.src !== '' && !audio.paused) {
-          musicRef.current.pause()
+          audio.pause()
         }
       }
       settings.forEach(async ({ name, value, args }) => {
@@ -212,7 +212,6 @@ function StoryViewContent({ data, next }: props) {
           }
         } else if (name === SceWords.Live2dCharaMove) {
           const position = args.get(SceWords.Position)
-          console.log('move')
           const model: any = models?.get(value)
           if (model) {
             model.x = getPosition(position, app!.renderer.width)
