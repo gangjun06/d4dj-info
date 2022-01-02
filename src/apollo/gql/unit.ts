@@ -36,8 +36,8 @@ export interface GetUnitEpisodeRes {
   unit: models.Unit[]
 }
 export const GET_UNIT_EPISODE = gql`
-  query Query {
-    unit {
+  query Query($filter: UnitFilterInput) {
+    unit(filter: $filter) {
       id
       name
       unitEpisode {

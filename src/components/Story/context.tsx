@@ -1,7 +1,13 @@
 import axios from 'axios'
 import { StoryData, StoryMeta, StoryNext } from 'models/story'
 import * as PIXI from 'pixi.js'
-import React, { createContext, useEffect, useRef, useState } from 'react'
+import React, {
+  createContext,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import { parseSce } from 'utils/story'
 
 type ContextType = {
@@ -21,6 +27,7 @@ type ContextType = {
   setText: (data: string | null) => void
   next?: StoryNext
   setNext: (data: StoryNext) => void
+  playSE?: (name: string) => Promise<void>
 }
 
 const defaultState: ContextType = {
@@ -56,6 +63,7 @@ function StoryProvider({ children }: { children: React.ReactElement }) {
   const [next, setNext] = useState<StoryNext>()
 
   const musicRef = useRef<HTMLAudioElement>(null)
+  const seRef = useRef<HTMLAudioElement>(null)
 
   const loadStoryData = (data: string) => {
     const parsed = parseSce(data)
@@ -84,6 +92,17 @@ function StoryProvider({ children }: { children: React.ReactElement }) {
       }.jpg`
     )
   }
+
+  const playSE = useCallback(
+    async (name: string) => {
+      if (seRef.current) {
+        seRef.current.src = `https://asset.d4dj.info/plain/adv/se/AdvSE-${name}.mp3`
+        seRef.current.loop = false
+        await seRef.current.play()
+      }
+    },
+    [seRef]
+  )
 
   useEffect(() => {
     axios
@@ -117,10 +136,12 @@ function StoryProvider({ children }: { children: React.ReactElement }) {
         setText,
         next,
         setNext,
+        playSE,
       }}
     >
       <>
         <audio ref={musicRef} />
+        <audio ref={seRef} />
         {children}
       </>
     </StoryContext.Provider>

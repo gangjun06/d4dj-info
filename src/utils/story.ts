@@ -1,7 +1,6 @@
 import { SceWords, Setting, Story } from 'models/story'
 
 export const parseSce = (sce: string): Story => {
-  let cnt = 0
   const result: Story = {
     meta: {
       live2dList: new Map<string, string>(),
@@ -16,11 +15,6 @@ export const parseSce = (sce: string): Story => {
       const s = item.split('：')
       if (index === 0) (name = s[0]), (value = s[1] || '')
       else {
-        if (s[1] && s[1].startsWith('vo_') && s[0] === SceWords.VoiceName) {
-          s[1] = s[1].replace('vo', 'sce')
-          s[1] = s[1].replace(/_\d{4}_\d{3}/, '')
-          s[1] = s[1] = `${s[1]}-${++cnt}`
-        }
         args.set(s[0], s[1] || '')
       }
     })

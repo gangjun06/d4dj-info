@@ -1,5 +1,4 @@
 import { SceValues } from 'models'
-import { Live2DModel } from 'pixi-live2d-display'
 
 export const getPosition = (position: any, width: number) => {
   if (typeof position !== 'string') return 0.5 * width
@@ -42,8 +41,3 @@ export const setModelData = (
 
 export const getModelUrl = (model: string) =>
   `https://asset.d4dj.info/AssetBundles/Live2D/${model}/${model}.model3.json`
-
-export const loadModel = async (modelFile: string) => {
-  const model: any = await Live2DModel.from(getModelUrl(modelFile), {})
-  return model
-}

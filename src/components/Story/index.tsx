@@ -15,7 +15,7 @@ import { Fade } from './components/Fade'
 import { SubTitle, Title } from './components/Title'
 import StoryProvider, { StoryContext } from './context'
 import { Setting } from './setting'
-import { getPosition, loadModel, setModelData } from './utils'
+import { getModelUrl, getPosition, setModelData } from './utils'
 
 type props = {
   data?: {
@@ -42,6 +42,7 @@ function StoryViewContent({ data, next }: props) {
     setText,
     setNext,
     loadStoryData,
+    playSE,
   } = useContext(StoryContext)
 
   const canvasWrapper = useRef<HTMLDivElement>(null)
@@ -49,8 +50,10 @@ function StoryViewContent({ data, next }: props) {
 
   const [width, height] = useWindowSize()
   const [index, setIndex] = useState<number>(-1)
-  const [models, setModels] =
-    useState<Map<string, Live2DModel<InternalModel>>>()
+  const [models, setModels] = useState<Map<
+    string,
+    Live2DModel<InternalModel>
+  > | null>(null)
   const [title, setTitle] = useState<string | null>(null)
   const [subTitle, setSubTitle] = useState<string | null>(null)
 
@@ -88,7 +91,7 @@ function StoryViewContent({ data, next }: props) {
   }
 
   useEffect(() => {
-    if (!storyData || index === -1) return
+    if (!storyData || index === -1 || !models) return
     ;(async () => {
       if (title) {
         setTitle(null)
@@ -125,6 +128,10 @@ function StoryViewContent({ data, next }: props) {
         } else if (name === SceWords.Background) {
           setBackground(value)
           await delay(100)
+        } else if (name === SceWords.Delay) {
+          try {
+            await delay(parseFloat(value) * 1000)
+          } catch {}
         } else if (name === SceWords.Speaker) setSpeaker(value)
         else if (name === SceWords.SoundBGM)
           playMusic(value, (args.get(SceWords.Volume) || 100) as number)
@@ -135,12 +142,34 @@ function StoryViewContent({ data, next }: props) {
         } else if (name === SceWords.FadeOut) {
           setFade(null)
           await delay(500)
+        } else if (name === SceWords.SoundSE) {
+          const waitStop = args.get(SceWords.WaitStop)
+          if (waitStop && waitStop === SceValues.True) {
+            await playSE!(value)
+            await delay(150)
+          } else playSE!(value)
+        } else if (name === SceWords.Live2dCharaFilm) {
+          const film = args.get(SceWords.Film)
+          if (
+            value === SceValues.FilmAll &&
+            film &&
+            film === SceValues.FilmDarkPlace
+          ) {
+            const filter = new PIXI.filters.ColorMatrixFilter()
+            filter.brightness(0.6, false)
+            app!.stage.filters = [filter]
+          } else app!.stage.filters = []
         } else if (name === SceWords.Live2dCharaVoice) {
-          const voiceName = args.get(SceWords.VoiceName)
+          let voiceName = args.get(SceWords.VoiceName)
           if (typeof voiceName === 'string')
             try {
               if (musicRef.current) {
-                musicRef.current.src = `https://asset.d4dj.info/plain/adv/ondemand/voice/${voiceName}.mp3`
+                if (voiceName.startsWith('vo_')) {
+                  voiceName = `https://asset.d4dj.info/plain/adv/ondemand/voice/sce_${/\d+(?=_)/.exec(
+                    voiceName
+                  )}-${voiceName}.mp3`
+                }
+                musicRef.current.src = voiceName
                 await musicRef.current.play()
               }
             } catch {}
@@ -236,9 +265,7 @@ function StoryViewContent({ data, next }: props) {
       `${app.view.getAttribute('style')}position: absolute;`
     )
     canvas?.appendChild(app.view)
-    // const filter = new PIXI.filters.ColorMatrixFilter()
-    // filter.brightness(0.6, false)
-    // app.stage.filters = [filter]
+
     setApp(app)
 
     return () => {
@@ -260,6 +287,7 @@ function StoryViewContent({ data, next }: props) {
     setBackground('default')
     setFade(null)
     stopMusic()
+    app!.stage.filters = []
     app?.stage.removeChildren()
   }
 
@@ -270,7 +298,7 @@ function StoryViewContent({ data, next }: props) {
       Array.from(storyMeta.live2dList.keys()).forEach(async (item) => {
         const name = storyMeta.live2dList.get(item)
         if (name) {
-          const model = await loadModel(name)
+          const model: any = await Live2DModel.from(getModelUrl(name), {})
           map.set(item, model)
         }
       })
@@ -300,7 +328,7 @@ function StoryViewContent({ data, next }: props) {
       ></div>
       {index === -1 && (
         <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 bg-white/70 backdrop-blur rounded px-3 py-2">
-          Click Screen{width > 1000 ? ' or Press space ' : ''}to play
+          {`Click Screen ${width > 1000 ? 'or Press space ' : ''}to play`}
         </div>
       )}
     </>

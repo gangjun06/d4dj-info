@@ -62,7 +62,7 @@ export function Setting() {
       >
         {!next && <SimpleFileUpload onFileUpload={onFileUpload} />}
       </SideOver>
-      <div className="absolute right-0 top-0">
+      <div className="absolute z-10 right-0 top-0">
         <button className="my-3 mr-4 btn" onClick={() => setOpen(true)}>
           <HiCog size={22} />
           {/*t('common:setting')*/}

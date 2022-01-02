@@ -11,6 +11,11 @@ export enum SceWords {
   Display = '表示', // ex)［表示：ウインドウ1、 ...
   Fade = 'フェード', //ex) ...フェード：1］
 
+  Delay = '待', // ex) ［待：0.5］
+
+  SoundSE = '音SE', // ex) [音SE： HingedDoorOpenStrong、 ...
+  WaitStop = '終了待ち', // ex) ...終了待ち：1]
+
   Live2dCharaFilm = 'Live2Dキャラフィルム', // ex)［Live2Dキャラフィルム：全部,
   Film = 'フィルム', // ex) ...フィルム：暗所
 
@@ -79,6 +84,10 @@ export enum SceValues {
 
   // Layer
   AfterChara = 'キャラ後',
+
+  // Values
+  True = '1',
+  False = '0',
 }
 
 export const getSceKeyName = (value: string) => {

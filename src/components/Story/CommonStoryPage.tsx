@@ -6,7 +6,7 @@ const Story = dynamic(() => import('.'), {
   ssr: false,
 
   // eslint-disable-next-line react/display-name
-  loading: () => <>loading</>,
+  loading: () => <></>,
 })
 
 export default function CommonStoryPage({
