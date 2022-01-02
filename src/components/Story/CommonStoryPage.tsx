@@ -1,6 +1,6 @@
 import { StoryNext } from 'models'
 import dynamic from 'next/dynamic'
-import Live2DHeader from '../live2dHeader'
+import Live2DHeader from '../Live2DHeader'
 
 const Story = dynamic(() => import('.'), {
   ssr: false,

@@ -5,6 +5,7 @@ import { Live2DModel } from 'pixi-live2d-display'
 import * as PIXI from 'pixi.js'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { HiCog } from 'react-icons/hi'
+import { AdBlockAlert } from '../Util/AdBlockAlert'
 import Live2DProvider, { Live2DContext } from './context'
 import { Setting } from './setting'
 import { dragable } from './utils'
@@ -100,6 +101,7 @@ function Live2DViewContent({ urlData }: props) {
   return (
     <>
       <Setting isShown={isShown} onClose={() => setIsShown(false)} />
+      <AdBlockAlert />
       <div
         style={{
           position: 'absolute',
@@ -122,7 +124,6 @@ function Live2DViewContent({ urlData }: props) {
       <div className="absolute right-0 top-0">
         <button className="my-3 mr-4 btn" onClick={() => setIsShown(true)}>
           <HiCog size={22} />
-          {/*t('common:setting')*/}
         </button>
       </div>
     </>

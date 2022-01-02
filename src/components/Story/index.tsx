@@ -7,6 +7,7 @@ import * as PIXI from 'pixi.js'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { HiCog } from 'react-icons/hi'
 import { delay } from 'utils'
+import { AdBlockAlert } from '../Util/AdBlockAlert'
 import { Dialogue } from './components/Dialogue'
 import { Fade } from './components/Fade'
 import { SubTitle, Title } from './components/Title'
@@ -17,29 +18,6 @@ import { loadModel } from './utils'
 type props = {
   data?: string
   next?: StoryNext
-}
-
-const AdBlock = () => {
-  const [displayText, setDisplayText] = useState<boolean>(false)
-  const { t } = useTranslation()
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setDisplayText(true)
-    }, 3000)
-
-    return () => {
-      clearTimeout(timeout)
-    }
-  }, [])
-
-  if (displayText)
-    return (
-      <div className="absolute mt-5 ml-5 text-2xl font-bold">
-        {/* {t('common:adblock')} */}
-      </div>
-    )
-  return <></>
 }
 
 function StoryViewContent({ data: openFileName, next }: props) {
@@ -307,7 +285,7 @@ function StoryViewContent({ data: openFileName, next }: props) {
     <>
       <audio ref={musicRef} autoPlay />
       <Setting isShown={isShown} onClose={() => setIsShown(false)} />
-      <AdBlock />
+      <AdBlockAlert />
       <Title title={title} />
       <SubTitle subTitle={subTitle} />
       <Fade color={fade} />

@@ -27,7 +27,7 @@
   "save": "Save",
   "close": "Close",
   "calculate": "Calculate",
-  "adblock": "Please Turn off the Adblock",
+  "adblock": "Please Turn off the Adblock\nThis website doesn't have ad\nAd blocking plugins interfere with resource loading",
   "sort_name": "Sort",
   "sort": {
     "id": "ID",
