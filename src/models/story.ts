@@ -14,6 +14,9 @@ export enum SceWords {
   Live2dCharaFilm = 'Live2Dキャラフィルム', // ex)［Live2Dキャラフィルム：全部,
   Film = 'フィルム', // ex) ...フィルム：暗所
 
+  Live2dCharaMove = 'Live2Dキャラ移動', //[Live2Dキャラ移動: むに,
+  // Position ex) ...位置：左
+
   SoundBGM = '音BGM', // ex)［音BGM：bgm_adv_Wakuwaku、 ...
   Volume = 'ボリューム', // ex) ...ボリューム：80］
   SoundBGMStop = '音BGM停止', // ex)［音BGM停止：2］
@@ -24,7 +27,7 @@ export enum SceWords {
 
   Live2dCharaDisplay = 'Live2Dキャラ表示', // ex)［Live2Dキャラ表示：りんく、 ...
   Animation = 'アニメーション', // ex) ...アニメーション：idle_01_E@E_smile
-  Position = '位置', // ex) ...位置：左
+  Position = '位置', // ex) ...位置：左a
 
   Live2dCharaVoice = 'Live2Dキャラボイス', // ex)［Live2Dキャラボイス：真秀、...、リップシンク：1］
   VoiceName = 'キュー名', // ex) ...キュー名：vo_1020010020_0020_012

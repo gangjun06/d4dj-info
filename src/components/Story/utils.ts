@@ -1,37 +1,43 @@
+import { SceValues } from 'models'
 import { Live2DModel } from 'pixi-live2d-display'
-import * as PIXI from 'pixi.js'
 
-export function dragable(model: any) {
-  model.buttonMode = true
-  model.on('pointerdown', (e: any) => {
-    if (model.dragable) {
-      model.dragging = true
-      model._pointerX = e.data.global.x - model.x
-      model._pointerY = e.data.global.y - model.y
-    } else {
-      model.internalModel.motionManager.startRandomMotion('')
-    }
-  })
-  model.on('pointermove', (e: any) => {
-    if (model.dragging) {
-      model.position.x = e.data.global.x - model._pointerX
-      model.position.y = e.data.global.y - model._pointerY
-    }
-  })
-  model.on('pointerupoutside', () => (model.dragging = false))
-  model.on('pointerup', () => (model.dragging = false))
+export const getPosition = (position: any, width: number) => {
+  if (typeof position !== 'string') return 0.5 * width
+
+  switch (position) {
+    case SceValues.Left:
+      return 0.35 * width
+    case SceValues.Right:
+      return 0.65 * width
+    case SceValues.Center:
+      return 0.5 * width
+
+    case '1':
+      return 0.15 * width
+    case '2':
+      return 0.38 * width
+    case '3':
+      return 0.61 * width
+    case '4':
+      return 0.85 * width
+  }
+  return 0.5 * width
 }
 
-export function addFrame(model: any) {
-  const foreground = PIXI.Sprite.from(PIXI.Texture.WHITE)
-  foreground.width = model.internalModel.width
-  foreground.height = model.internalModel.height
-  foreground.alpha = 0.2
+export const setModelData = (
+  model: any,
+  position: any,
+  width: number,
+  height: number
+) => {
+  model.x = getPosition(position as any, width)
+  model.y = 0.7 * height
 
-  model.addChild(foreground)
-  foreground.visible = true
-
-  // checkbox("Model Frames", (checked) => (foreground.visible = checked));
+  model.rotation = Math.PI
+  model.skew.x = Math.PI
+  model.scale.set(height > 640 ? 0.35 : 0.2)
+  model.anchor.set(0.5, 0.5)
+  return model
 }
 
 export const getModelUrl = (model: string) =>

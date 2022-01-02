@@ -4,17 +4,18 @@ import { SceValues, SceWords, StoryNext } from 'models/story'
 import useTranslation from 'next-translate/useTranslation'
 import { InternalModel, Live2DModel } from 'pixi-live2d-display'
 import * as PIXI from 'pixi.js'
-import { Fragment, useContext, useEffect, useRef, useState } from 'react'
-import { HiCog } from 'react-icons/hi'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { delay } from 'utils'
 import { TempModal } from '../Basic'
 import { AdBlockAlert } from '../Util/AdBlockAlert'
+import { Alert } from './components/Alert'
+import { Background } from './components/Background'
 import { Dialogue } from './components/Dialogue'
 import { Fade } from './components/Fade'
 import { SubTitle, Title } from './components/Title'
 import StoryProvider, { StoryContext } from './context'
 import { Setting } from './setting'
-import { loadModel } from './utils'
+import { getPosition, loadModel, setModelData } from './utils'
 
 type props = {
   data?: {
@@ -30,7 +31,6 @@ function StoryViewContent({ data, next }: props) {
   const {
     storyData,
     storyMeta,
-    background,
     app,
     setApp,
     setBackground,
@@ -48,8 +48,6 @@ function StoryViewContent({ data, next }: props) {
   const musicRef = useRef<HTMLAudioElement>(null)
 
   const [width, height] = useWindowSize()
-  const [reloadAlert, setReloadAlert] = useState<boolean>(false)
-  const [isShown, setIsShown] = useState<boolean>(false)
   const [index, setIndex] = useState<number>(-1)
   const [models, setModels] =
     useState<Map<string, Live2DModel<InternalModel>>>()
@@ -147,34 +145,20 @@ function StoryViewContent({ data, next }: props) {
               }
             } catch {}
         } else if (name === SceWords.Live2dCharaDisplay) {
-          const model: any = models?.get(value)
+          let model: any = models?.get(value)
           if (model && app) {
             const animation = args.get(SceWords.Animation)
             const position = args.get(SceWords.Position)
             const chara = charaStack.get(position)
 
             const addModel = () => {
-              if (typeof position === 'string') {
-                if (position === SceValues.Left)
-                  model.x = 0.35 * app!.renderer.width
-                else if (position === SceValues.Right)
-                  model.x = 0.65 * app!.renderer.width
-                else if (position === SceValues.Center)
-                  model.x = 0.5 * app!.renderer.width
-                if (position === '1') model.x = 0.15 * app!.renderer.width
-                else if (position === '2') model.x = 0.38 * app!.renderer.width
-                else if (position === '3') model.x = 0.61 * app!.renderer.width
-                else if (position === '4') model.x = 0.85 * app!.renderer.width
-              } else {
-                model.x = 0.5 * app!.renderer.width
-              }
-              model.y = 0.7 * app!.renderer.height
-              model.rotation = Math.PI
-              model.skew.x = Math.PI
-              model.scale.set(app!.renderer.height > 640 ? 0.35 : 0.2)
-              model.anchor.set(0.5, 0.5)
-
-              model && app?.stage.addChild(model)
+              model = setModelData(
+                model,
+                position,
+                app!.renderer.width,
+                app!.renderer.height
+              )
+              app?.stage.addChild(model)
             }
 
             if (chara) {
@@ -194,9 +178,14 @@ function StoryViewContent({ data, next }: props) {
               return stack
             })
 
-            if (typeof animation === 'string') {
-              doAnimation(animation, 0, model)
-            }
+            if (typeof animation === 'string') doAnimation(animation, 0, model)
+          }
+        } else if (name === SceWords.Live2dCharaMove) {
+          const position = args.get(SceWords.Position)
+          console.log('move')
+          const model: any = models?.get(value)
+          if (model) {
+            model.x = getPosition(position, app!.renderer.width)
           }
         } else if (name === SceWords.Live2dCharaAnimation) {
           const model = models?.get(value)
@@ -219,12 +208,6 @@ function StoryViewContent({ data, next }: props) {
   useEffect(() => {
     if (next) setNext(next)
   }, [next])
-
-  useEffect(() => {
-    if (height > width) {
-      setReloadAlert(true)
-    }
-  }, [width, height])
 
   useEffect(() => {
     if (openFileName)
@@ -298,20 +281,16 @@ function StoryViewContent({ data, next }: props) {
   return (
     <>
       <audio ref={musicRef} autoPlay />
-      <Setting isShown={isShown} onClose={() => setIsShown(false)} />
-      <AdBlockAlert />
+      <Background />
       <Title title={title} />
       <SubTitle subTitle={subTitle} />
       <Fade color={fade} />
       <Dialogue name={speaker} text={text} />
       <TempModal id="story-data-alert">{t('common:data_alert')}</TempModal>
+      <Setting />
+      <Alert />
+      <AdBlockAlert />
 
-      <div
-        className="absolute top-0 left-0 w-full h-full bg-cover"
-        style={{
-          backgroundImage: background ? `url("${background}")` : '',
-        }}
-      ></div>
       <div
         ref={canvasWrapper}
         style={{
@@ -319,27 +298,9 @@ function StoryViewContent({ data, next }: props) {
           height: '100%',
         }}
       ></div>
-      <div className="absolute right-0 top-0">
-        <button className="my-3 mr-4 btn" onClick={() => setIsShown(true)}>
-          <HiCog size={22} />
-          {/*t('common:setting')*/}
-        </button>
-      </div>
-      {index === -1 && !reloadAlert && (
+      {index === -1 && (
         <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 bg-white/70 backdrop-blur rounded px-3 py-2">
-          Click Screen to play
-        </div>
-      )}
-      {reloadAlert && (
-        <div className="absolute z-20 left-0 top-0 w-full h-full flex flex-col opacity-80 backdrop-blur text-center bg-black/70 items-center justify-center text-white">
-          {t('common:rotate')
-            .split('\n')
-            .map((item, index) => (
-              <Fragment key={index}>
-                {item}
-                <br />
-              </Fragment>
-            ))}
+          Click Screen{width > 1000 ? ' or Press space ' : ''}to play
         </div>
       )}
     </>
@@ -348,10 +309,8 @@ function StoryViewContent({ data, next }: props) {
 
 export default function StoryView(props: props) {
   return (
-    <>
-      <StoryProvider>
-        <StoryViewContent {...props} />
-      </StoryProvider>
-    </>
+    <StoryProvider>
+      <StoryViewContent {...props} />
+    </StoryProvider>
   )
 }
