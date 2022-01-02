@@ -1,13 +1,13 @@
 import { GetGachaReq, GetGachaRes, GET_GACHA_DETAIL } from '@/apollo/gql'
 import { Card, Disclosure, Table, TableBody } from '@/components/Basic'
 import { CardItem } from '@/components/Elements'
+import { GachaIcon } from '@/components/Image'
 import { client } from 'apollo'
 import MainLayout from 'layouts/main'
 import { Gacha, Gacha as GachaModel, GachaCategory } from 'models'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import useTransition from 'next-translate/useTranslation'
-import Image from 'next/image'
-import { formatTimeDetail, myLoader, pad } from 'utils'
+import { formatTimeDetail } from 'utils'
 
 const canUseBanner = (item: Gacha) =>
   item.category !== GachaCategory.Tutorial &&
@@ -37,20 +37,7 @@ export default function GachaDetail({
             title={t('gacha:info')}
             bodyClassName="flex justify-center flex-col items-center"
           >
-            <Image
-              loader={myLoader}
-              src={
-                useBanner
-                  ? `ondemand/banner/banner_gacha_${pad(
-                      gacha.id,
-                      gacha.id < 10 ? 4 : 5
-                    )}.png`
-                  : `ondemand/gacha/top/banner/${gacha.id}.png`
-              }
-              width={useBanner ? 612 : 324}
-              alt={gacha.id.toString()}
-              height={useBanner ? 200 : 172}
-            />
+            <GachaIcon id={gacha.id} category={gacha.category} />
             <div className="mt-2">{gacha.name}</div>
             <div className="text-gray-600">{gacha.summary}</div>
 

@@ -1,5 +1,6 @@
 import { GetCardReq, GetCardRes, GET_CARD_DETAIL } from '@/apollo/gql'
 import { Card, Disclosure, Modal, Table, TableBody } from '@/components/Basic'
+import { CardIcon } from '@/components/Image'
 import { client } from 'apollo'
 import MainLayout from 'layouts/main'
 import { Card as CardModel } from 'models'
@@ -51,15 +52,7 @@ export default function CardDetail({
             title={t('card:info')}
             bodyClassName="flex justify-center flex-col items-center"
           >
-            <Image
-              loader={myLoader}
-              src={`ondemand/card_icon/card_icon_${pad(card.id, 9)}_${
-                card.rarity > 2 ? '1' : '0'
-              }.jpg`}
-              width="128"
-              alt={'card image'}
-              height="128"
-            />
+            <CardIcon id={card.id} rarity={card.rarity} />
             <div className="flex flex-row gap-x-2 mt-2">
               <div className="badge badge-outline badge-md">
                 {t(`card:rarity.${card.rarity}`)}
