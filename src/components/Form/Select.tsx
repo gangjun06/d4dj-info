@@ -1,5 +1,6 @@
 import { Listbox, Transition } from '@headlessui/react'
 import classNames from 'classnames'
+import useTranslation from 'next-translate/useTranslation'
 import Image from 'next/image'
 import { Fragment } from 'react'
 import { Control, Controller } from 'react-hook-form'
@@ -16,9 +17,11 @@ type props = {
   data: DataType[]
   control: Control<any, object>
   name: string
+  onChange?: (data: string | number) => void
 }
 
-export function Select({ name, control, data }: props) {
+export function Select({ name, control, data, onChange }: props) {
+  const { t } = useTranslation()
   return (
     <Controller
       control={control}
@@ -26,7 +29,10 @@ export function Select({ name, control, data }: props) {
       render={({ field }) => (
         <Listbox
           value={data.find((item) => item.id === field.value)}
-          onChange={(data) => field.onChange(data?.id)}
+          onChange={(data) => {
+            field.onChange(data?.id)
+            if (onChange && data) onChange(data.id)
+          }}
         >
           {({ open }) => (
             <>
@@ -53,7 +59,8 @@ export function Select({ name, control, data }: props) {
                         'block truncate'
                       )}
                     >
-                      {data.find((item) => item.id === field.value)?.name}
+                      {data.find((item) => item.id === field.value)?.name ||
+                        t('common:select')}
                     </span>
                   </span>
                   <span

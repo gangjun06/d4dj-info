@@ -25,12 +25,9 @@ function Live2DViewContent({ urlData }: props) {
   } = useContext(Live2DContext)
   const [width, height] = useWindowSize()
   const [isShown, setIsShown] = useState<boolean>(false)
-  const [displayText, setDisplayText] = useState<boolean>(false)
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setDisplayText(true)
-    }, 3000)
+    const canvas = canvasWrapper.current
     const app = new PIXI.Application({
       backgroundAlpha: 0,
       autoStart: true,
@@ -42,14 +39,13 @@ function Live2DViewContent({ urlData }: props) {
       'style',
       `${app.view.getAttribute('style')}position: absolute;`
     )
-    canvasWrapper.current?.appendChild(app.view)
+    canvas?.appendChild(app.view)
     setApp(app)
 
     return () => {
-      if (canvasWrapper.current?.firstChild) {
-        canvasWrapper.current?.removeChild(canvasWrapper.current.firstChild)
+      if (canvas?.firstChild) {
+        canvas.removeChild(canvas.firstChild)
       }
-      clearTimeout(timeout)
     }
   }, [])
 

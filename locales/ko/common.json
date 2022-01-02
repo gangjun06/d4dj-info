@@ -3,6 +3,7 @@
   "filter": "필터",
   "search": "검색",
   "search_desc": "역순 검색",
+  "select": "선택...",
   "attribute": {
     "name": "속성",
     "STREET": "스트릿",

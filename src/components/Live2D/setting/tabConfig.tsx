@@ -2,14 +2,12 @@ import { GetCharacterListRes, GET_CHARACTER_LIST } from '@/apollo/gql'
 import { FormBlock, Input, Select, Switch } from '@/components/Form'
 import { useQuery } from '@apollo/client'
 import { joiResolver } from '@hookform/resolvers/joi'
-import { useWindowSize } from '@react-hook/window-size'
-import { Button, Pane, toaster } from 'evergreen-ui'
+import { Pane, toaster } from 'evergreen-ui'
 import Joi from 'joi'
 import { Live2DModel } from 'pixi-live2d-display'
-import React, { useCallback, useContext } from 'react'
+import React, { useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import { pad } from 'utils'
-import { createLive2DShare, Live2DShare } from 'utils/live2d'
 import { Live2DContext } from '../context'
 import { dragable } from '../utils'
 
@@ -40,9 +38,9 @@ export function AddModel() {
 
   const { data } = useQuery<GetCharacterListRes>(GET_CHARACTER_LIST)
 
-  const onSubmit = async ({ model, type, id }: FormData) => {
+  const onSubmit = async ({ model: modelStr, type, id }: FormData) => {
     if (!app) return
-    const url = `https://asset.d4dj.info/AssetBundles/Live2D/${type}${model}${id}/${type}${model}${id}.model3.json`
+    const url = `https://asset.d4dj.info/AssetBundles/Live2D/${type}${modelStr}${id}/${type}${modelStr}${id}.model3.json`
     try {
       const model: any = await Live2DModel.from(url, {})
 
@@ -50,17 +48,17 @@ export function AddModel() {
       model.y = 0.4 * app.renderer.height
       model.rotation = Math.PI
       model.skew.x = Math.PI
-      model.scale.set(0.3, 0.3)
+      model.scale.set(0.25, 0.25)
       model.anchor.set(0.5, 0.5)
 
       model.dragable = dragableState
 
       dragable(model)
       app.stage.addChild(model)
-      // let typeShort = ''
-      // if (type === 'live2d_chara_') typeShort = 'Character'
-      // else if (type === 'live2d_card_chara_03') typeShort = 'Card3'
-      // else if (type === 'live2d_card_chara_04') typeShort = 'Card4'
+
+      setModels((item) =>
+        item.concat({ name: `${type}${modelStr}${id}`, data: model })
+      )
     } catch (error) {
       toaster.warning(`This model does not exist `)
     }
@@ -141,7 +139,6 @@ const schemaBackground = Joi.object().keys({
 })
 
 export function EtcConfig() {
-  const [width, height] = useWindowSize()
   const { background, setBackground, dragable, setDragable, models } =
     useContext(Live2DContext)
   const { handleSubmit, control } = useForm<FormDataBackground>({
@@ -153,31 +150,6 @@ export function EtcConfig() {
   const onSubmit = (data: FormDataBackground) => {
     setBackground(data.background)
   }
-
-  const share = useCallback(() => {
-    const result: Live2DShare[] = models.map((model) => ({
-      model: (model.data.tag as string)
-        .replace('Live2DModel(', '')
-        .replace(')', ''),
-      scale: model.data.scale._x,
-      x: (model.data.x / width).toFixed(4),
-      y: (model.data.y / height).toFixed(4),
-      name: model.name,
-    }))
-
-    const url = `https://d4dj.info/live2d?data=${createLive2DShare(result)}`
-    try {
-      const shareData = {
-        title: 'D4DJ.Info Live2D Share',
-        text: '',
-        url,
-      }
-      navigator.share(shareData)
-    } catch (e) {
-      navigator.clipboard.writeText(url)
-      toaster.success(`Share URL copied`)
-    }
-  }, [models])
 
   return (
     <>
@@ -207,11 +179,7 @@ export function EtcConfig() {
         gap={5}
         width="100%"
         marginTop={20}
-      >
-        <Button intent="info" type="submit" onClick={share}>
-          Share
-        </Button>
-      </Pane>
+      ></Pane>
     </>
   )
 }
