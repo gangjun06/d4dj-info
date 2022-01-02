@@ -1,11 +1,7 @@
-import { Gacha, GachaCategory } from 'models'
+import { Gacha } from 'models'
 import React from 'react'
 import { formatTime } from 'utils'
 import { GachaIcon } from '../Image'
-
-const canUseBanner = (item: Gacha) =>
-  item.category !== GachaCategory.Tutorial &&
-  item.category !== GachaCategory.Birthday
 
 const GachaItem = ({ data }: { data: Gacha }) => {
   return (

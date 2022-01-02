@@ -4,20 +4,15 @@ import { CardItem } from '@/components/Elements'
 import { GachaIcon } from '@/components/Image'
 import { client } from 'apollo'
 import MainLayout from 'layouts/main'
-import { Gacha, Gacha as GachaModel, GachaCategory } from 'models'
+import { Gacha as GachaModel } from 'models'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import useTransition from 'next-translate/useTranslation'
 import { formatTimeDetail } from 'utils'
-
-const canUseBanner = (item: Gacha) =>
-  item.category !== GachaCategory.Tutorial &&
-  item.category !== GachaCategory.Birthday
 
 export default function GachaDetail({
   gacha,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { t } = useTransition('')
-  const useBanner = canUseBanner(gacha)
 
   return (
     <MainLayout

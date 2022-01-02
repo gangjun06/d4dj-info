@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useWindowSize } from '@react-hook/window-size'
 import axios from 'axios'
 import { SceValues, SceWords, StoryNext } from 'models/story'

@@ -1,10 +1,9 @@
 import { useWindowSize } from '@react-hook/window-size'
-import { toaster } from 'evergreen-ui'
-import useTranslation from 'next-translate/useTranslation'
 import { Live2DModel } from 'pixi-live2d-display'
 import * as PIXI from 'pixi.js'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { HiCog } from 'react-icons/hi'
+import { toast } from 'react-toastify'
 import { AdBlockAlert } from '../Util/AdBlockAlert'
 import Live2DProvider, { Live2DContext } from './context'
 import { Setting } from './setting'
@@ -16,7 +15,6 @@ type props = {
 
 function Live2DViewContent({ urlData }: props) {
   const canvasWrapper = useRef<HTMLDivElement>(null)
-  const { t } = useTranslation()
   const {
     app,
     background,
@@ -48,6 +46,7 @@ function Live2DViewContent({ urlData }: props) {
         canvas.removeChild(canvas.firstChild)
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -90,12 +89,13 @@ function Live2DViewContent({ urlData }: props) {
               data: models[index],
             }))
           })
-          toaster.success(`Successfully imported models`)
+          toast.success(`Successfully imported models`)
         } catch (e) {
           console.error(e)
-          toaster.warning(`This model does not exist `)
+          toast.warning(`Error loading models`)
         }
       })()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [urlData, app])
 
   return (

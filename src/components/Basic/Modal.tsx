@@ -68,7 +68,7 @@ export const TempModal = ({
     const data = JSON.parse(localStorage.getItem('modal') || '{}')
     data[id] = true
     localStorage.setItem('modal', JSON.stringify(data))
-  }, [])
+  }, [id])
 
   return (
     <Modal show={show} onClose={close} showCloseBtn>

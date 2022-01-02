@@ -1,6 +1,7 @@
 import { SideOver } from '@/components/Basic'
 import { useWindowSize } from '@react-hook/window-size'
 import React, { useCallback, useContext, useEffect } from 'react'
+import { toast } from 'react-toastify'
 import { createLive2DShare, Live2DShare } from 'utils/live2d'
 import { Live2DContext } from '../context'
 import { ConfigSection } from './ConfigSection'
@@ -53,9 +54,9 @@ export function Setting({ isShown, onClose }: props) {
       navigator.share(shareData)
     } catch (e) {
       navigator.clipboard.writeText(url)
-      // toaster.success(`Share URL copied`)
+      toast.success(`Share URL copied`)
     }
-  }, [models, width, height])
+  }, [models, app, width, height])
 
   return (
     <SideOver

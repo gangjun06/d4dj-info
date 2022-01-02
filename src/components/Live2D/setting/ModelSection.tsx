@@ -77,7 +77,7 @@ export function ModelSection() {
 
   return (
     <>
-      <div className="font-bold">Model Setting</div>
+      <div className="font-bold mt-2">Model Setting</div>
       <form onSubmit={onSubmit}>
         <Select
           control={control}

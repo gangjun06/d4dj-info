@@ -1,5 +1,4 @@
 import Live2DHeader from '@/components/Live2DHeader'
-import { Spinner, Text } from 'evergreen-ui'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
@@ -28,11 +27,10 @@ function Loading() {
         flexDirection: 'column',
       }}
     >
-      <Spinner />
       {show && (
-        <Text color="muted" marginTop={5}>
+        <div className="">
           If loading continues, please close the page and try again
-        </Text>
+        </div>
       )}
     </div>
   )

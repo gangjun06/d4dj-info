@@ -2,11 +2,11 @@ import { GetCharacterListRes, GET_CHARACTER_LIST } from '@/apollo/gql'
 import { FormBlock, Input, Select, Switch } from '@/components/Form'
 import { useQuery } from '@apollo/client'
 import { joiResolver } from '@hookform/resolvers/joi'
-import { Pane, toaster } from 'evergreen-ui'
 import Joi from 'joi'
 import { Live2DModel } from 'pixi-live2d-display'
 import React, { useContext } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
 import { pad } from 'utils'
 import { Live2DContext } from '../context'
 import { dragable } from '../utils'
@@ -59,8 +59,9 @@ export function AddModel() {
       setModels((item) =>
         item.concat({ name: `${type}${modelStr}${id}`, data: model })
       )
+      toast.success('Successfully imported models')
     } catch (error) {
-      toaster.warning(`This model does not exist `)
+      toast.warn(`Error while loading model`)
     }
   }
 
@@ -95,7 +96,7 @@ export function AddModel() {
                 { id: 'live2d_chara_', name: 'Character' },
                 { id: 'live2d_card_chara_03', name: 'Character Card 3' },
                 { id: 'live2d_card_chara_04', name: 'Character Card 4' },
-                { id: 'live2d_card_chara_04', name: 'Special Card' },
+                { id: 'live2d_card_chara_07', name: 'Special Card' },
               ]}
             />
           </FormBlock>
@@ -139,7 +140,7 @@ const schemaBackground = Joi.object().keys({
 })
 
 export function EtcConfig() {
-  const { background, setBackground, dragable, setDragable, models } =
+  const { background, setBackground, dragable, setDragable } =
     useContext(Live2DContext)
   const { handleSubmit, control } = useForm<FormDataBackground>({
     resolver: joiResolver(schemaBackground),
@@ -173,13 +174,6 @@ export function EtcConfig() {
       </form>
 
       <Switch checked={dragable} onChange={setDragable} label={'Dragable'} />
-      <Pane
-        display="flex"
-        justifyContent="start"
-        gap={5}
-        width="100%"
-        marginTop={20}
-      ></Pane>
     </>
   )
 }

@@ -56,7 +56,7 @@ export const SimpleFileUpload = ({
       div.addEventListener('drop', handleDrop)
     }
     if (file) {
-      fileRef.current.addEventListener('change', onChange)
+      file.addEventListener('change', onChange)
     }
     return () => {
       if (div) {
@@ -69,6 +69,7 @@ export const SimpleFileUpload = ({
         file.removeEventListener('change', onChange)
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const openFile = useCallback(() => {
