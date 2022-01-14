@@ -21,7 +21,7 @@ export const CardExpCard = () => {
 
   useEffect(() => {
     axios
-      .get('https://asset.d4dj.info/Master/CardExpMaster.json')
+      .get('https://asset.d4dj.info/jp/Master/CardExpMaster.json')
       .then((res) => setExpData(res.data))
   }, [])
 

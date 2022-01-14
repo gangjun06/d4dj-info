@@ -43,7 +43,7 @@ export const UserExpCard = () => {
 
   useEffect(() => {
     axios
-      .get('https://asset.d4dj.info/Master/UserExpMaster.json')
+      .get('https://asset.d4dj.info/jp/Master/UserExpMaster.json')
       .then((res) => setExpData(res.data))
   }, [])
 

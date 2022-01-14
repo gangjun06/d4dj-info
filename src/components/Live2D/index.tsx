@@ -67,7 +67,7 @@ function Live2DViewContent({ urlData }: props) {
 
           const models: any[] = []
           for (const item of data) {
-            const url = `https://asset.d4dj.info/AssetBundles/Live2D/${item.model}/${item.model}.model3.json`
+            const url = `https://asset.d4dj.info/jp/AssetBundles/Live2D/${item.model}/${item.model}.model3.json`
             const model: any = await Live2DModel.from(url, {})
             models.push(model)
             model.x = item.x * app.renderer.width

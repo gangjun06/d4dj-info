@@ -22,7 +22,7 @@ export const SkillExpCard = () => {
 
   useEffect(() => {
     axios
-      .get('https://asset.d4dj.info/Master/SkillExpMaster.json')
+      .get('https://asset.d4dj.info/jp/Master/SkillExpMaster.json')
       .then((res) => setExpData(res.data))
   }, [])
 

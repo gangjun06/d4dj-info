@@ -40,4 +40,4 @@ export const setModelData = (
 }
 
 export const getModelUrl = (model: string) =>
-  `https://asset.d4dj.info/AssetBundles/Live2D/${model}/${model}.model3.json`
+  `https://asset.d4dj.info/jp/AssetBundles/Live2D/${model}/${model}.model3.json`

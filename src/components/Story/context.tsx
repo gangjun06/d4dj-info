@@ -32,7 +32,7 @@ type ContextType = {
 
 const defaultState: ContextType = {
   background:
-    'https://asset.d4dj.info/adv/ondemand/background/bg_adv_10012.jpg',
+    'https://asset.d4dj.info/jp/adv/ondemand/background/bg_adv_10012.jpg',
   setBackground: () => {},
   setApp: () => {},
   loadStoryData: () => {},
@@ -73,7 +73,7 @@ function StoryProvider({ children }: { children: React.ReactElement }) {
 
   const playMusic = (data: string, volume?: number) => {
     if (musicRef.current) {
-      musicRef.current.src = `https://asset.d4dj.info/plain/adv/ondemand/bgm/${data}.mp3`
+      musicRef.current.src = `https://asset.d4dj.info/jp/plain/adv/ondemand/bgm/${data}.mp3`
       musicRef.current.loop = true
       if (volume) {
         musicRef.current.volume = volume / 100
@@ -87,7 +87,7 @@ function StoryProvider({ children }: { children: React.ReactElement }) {
 
   const setBackground = (name: string) => {
     setBackgroundState(
-      `https://asset.d4dj.info/adv/ondemand/background/${
+      `https://asset.d4dj.info/jp/adv/ondemand/background/${
         name === 'default' ? 'bg_adv_10012' : backgroundTable.get(name) || name
       }.jpg`
     )
@@ -96,7 +96,7 @@ function StoryProvider({ children }: { children: React.ReactElement }) {
   const playSE = useCallback(
     async (name: string) => {
       if (seRef.current) {
-        seRef.current.src = `https://asset.d4dj.info/plain/adv/se/AdvSE-${name}.mp3`
+        seRef.current.src = `https://asset.d4dj.info/jp/plain/adv/se/AdvSE-${name}.mp3`
         seRef.current.loop = false
         await seRef.current.play()
       }
@@ -106,7 +106,7 @@ function StoryProvider({ children }: { children: React.ReactElement }) {
 
   useEffect(() => {
     axios
-      .get('https://asset.d4dj.info/adv/settings/background_table.txt')
+      .get('https://asset.d4dj.info/jp/adv/settings/background_table.txt')
       .then((res) => {
         const map = new Map<string, string>()
         ;(res.data as string).split('\n').forEach((item) => {

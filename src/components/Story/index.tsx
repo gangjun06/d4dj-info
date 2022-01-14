@@ -166,7 +166,7 @@ function StoryViewContent({ data, next }: props) {
             try {
               if (musicRef.current) {
                 if (voiceName.startsWith('vo_')) {
-                  voiceName = `https://asset.d4dj.info/plain/adv/ondemand/voice/sce_${/\d+(?=_)/.exec(
+                  voiceName = `https://asset.d4dj.info/jp/plain/adv/ondemand/voice/sce_${/\d+(?=_)/.exec(
                     voiceName
                   )}-${voiceName}.mp3`
                 }
@@ -242,7 +242,7 @@ function StoryViewContent({ data, next }: props) {
     if (openFileName)
       (async () => {
         const res = await axios.get(
-          `https://asset.d4dj.info/adv/ondemand/scenario/sce_${openFileName}.sce`
+          `https://asset.d4dj.info/jp/adv/ondemand/scenario/sce_${openFileName}.sce`
         )
         loadStoryData(res.data)
       })()
