@@ -32,8 +32,6 @@ export const setModelData = (
   model.x = getPosition(position as any, width)
   model.y = 0.7 * height
 
-  model.rotation = Math.PI
-  model.skew.x = Math.PI
   model.scale.set(height > 640 ? 0.35 : 0.2)
   model.anchor.set(0.5, 0.5)
   return model

@@ -72,8 +72,6 @@ function Live2DViewContent({ urlData }: props) {
             models.push(model)
             model.x = item.x * app.renderer.width
             model.y = item.y * app.renderer.height
-            model.rotation = Math.PI
-            model.skew.x = Math.PI
             model.scale.set(item.scale, item.scale)
             model.anchor.set(0.5, 0.5)
 

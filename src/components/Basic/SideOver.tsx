@@ -13,6 +13,7 @@ type props = {
   asForm?: boolean
   onSubmit?: FormEventHandler<HTMLFormElement>
   customOverlay?: string
+  unmount?: boolean
 }
 
 export const SideOver = ({
@@ -25,6 +26,7 @@ export const SideOver = ({
   onSubmit,
   footerClassName,
   customOverlay,
+  unmount = true,
 }: props) => {
   const Content = ({ children }: { children: ReactNode }) => {
     const className =
@@ -39,11 +41,12 @@ export const SideOver = ({
     return <div className={className}>{children}</div>
   }
   return (
-    <Transition.Root show={open} as={Fragment}>
+    <Transition.Root show={open} as={Fragment} unmount={unmount}>
       <Dialog
         as="div"
         className="fixed z-30 inset-0 overflow-hidden"
         onClose={onClose}
+        unmount={unmount}
       >
         <div className="absolute inset-0 overflow-hidden">
           <Transition.Child
@@ -54,6 +57,7 @@ export const SideOver = ({
             leave="ease-in-out duration-500"
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
+            unmount={unmount}
           >
             <Dialog.Overlay
               className={classNames(
@@ -71,6 +75,7 @@ export const SideOver = ({
               leave="transform transition ease-in-out duration-500 sm:duration-700"
               leaveFrom="translate-x-0"
               leaveTo="translate-x-full"
+              unmount={unmount}
             >
               <div className="relative w-screen max-w-md">
                 <Transition.Child

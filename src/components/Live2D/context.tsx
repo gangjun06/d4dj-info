@@ -36,7 +36,6 @@ function Live2DProvider({ children }: { children: React.ReactElement }) {
   const [app, setApp] = useState<PIXI.Application>()
   const [configIndex, setConfigIndex] = React.useState<number>(0)
 
-  // return <Live2DContext.provider>{children}</Live2DContext.provider>;
   return (
     <Live2DContext.Provider
       value={{

@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/client'
 import { joiResolver } from '@hookform/resolvers/joi'
 import Joi from 'joi'
 import { Live2DModel } from 'pixi-live2d-display'
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { pad } from 'utils'
@@ -28,13 +28,19 @@ export function ConfigSection() {
 
 export function AddModel() {
   const { app, setModels, dragable: dragableState } = useContext(Live2DContext)
-  const { control, handleSubmit } = useForm<FormData>({
-    defaultValues: {
-      model: '011',
-      type: 'live2d_chara_',
-      id: '0001',
-    },
-  })
+  const { control, handleSubmit, setValue, getValues } = useForm<FormData>({})
+
+  useEffect(() => {
+    try {
+      const item = JSON.parse(localStorage.getItem('live2d-setting') || '')
+      setValue('model', item.model as string)
+      setValue('type', item.type as string)
+      setValue('id', item.id as string)
+    } catch (e) {}
+    return () => {
+      localStorage.setItem('live2d-setting', JSON.stringify(getValues()))
+    }
+  }, [getValues, setValue])
 
   const { data } = useQuery<GetCharacterListRes>(GET_CHARACTER_LIST)
 
@@ -46,8 +52,6 @@ export function AddModel() {
 
       model.x = 0.5 * app.renderer.width
       model.y = 0.4 * app.renderer.height
-      model.rotation = Math.PI
-      model.skew.x = Math.PI
       model.scale.set(0.25, 0.25)
       model.anchor.set(0.5, 0.5)
 
