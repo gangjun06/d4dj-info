@@ -180,7 +180,7 @@ const SideNav = ({
 }
 
 type props = {
-  children: ReactNode
+  children?: ReactNode
   breadCrumbs?: breadCrumbs[]
   title: string
   titleSide?: ReactNode

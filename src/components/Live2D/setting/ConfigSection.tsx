@@ -1,6 +1,4 @@
-import { GetCharacterListRes, GET_CHARACTER_LIST } from '@/apollo/gql'
 import { FormBlock, Input, Select, Switch } from '@/components/Form'
-import { useQuery } from '@apollo/client'
 import { joiResolver } from '@hookform/resolvers/joi'
 import Joi from 'joi'
 import { Live2DModel } from 'pixi-live2d-display'
@@ -42,7 +40,7 @@ export function AddModel() {
     }
   }, [getValues, setValue])
 
-  const { data } = useQuery<GetCharacterListRes>(GET_CHARACTER_LIST)
+  const data: any = {}
 
   const onSubmit = async ({ model: modelStr, type, id }: FormData) => {
     if (!app) return
@@ -79,7 +77,7 @@ export function AddModel() {
             name="model"
             data={
               data
-                ? data.character.map((item) => ({
+                ? data.character.map((item: any) => ({
                     id: pad(item.id, 3),
                     name: item.fullNameEnglish || item.firstNameEnglish,
                     img: `adv/ondemand/chara_icon/adv_icon_${pad(

@@ -3,10 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "cross-env PORT=5000 next dev",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "codegen": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
     "@apollo/client": "^3.4.16",
@@ -29,7 +30,7 @@
     "daisyui": "^1.16.0",
     "date-fns": "^2.25.0",
     "date-fns-timezone": "^0.1.4",
-    "graphql": "^15.6.1",
+    "graphql": "^16.3.0",
     "joi": "^17.4.2",
     "lodash": "^4.17.21",
     "next": "11.0.1",
@@ -55,6 +56,7 @@
     "yarn": "^1.22.17"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "2.6.2",
     "@next/eslint-plugin-next": "^12.0.7",
     "@types/react": "17.0.16",
     "@typescript-eslint/eslint-plugin": "^5.7.0",
@@ -69,6 +71,10 @@
     "postcss": "^8.3.8",
     "prettier": "^2.3.2",
     "tailwindcss": "^3.0.7",
-    "typescript": "4.3.5"
+    "typescript": "4.3.5",
+    "@graphql-codegen/typescript-react-apollo": "3.2.8",
+    "@graphql-codegen/typescript": "2.4.5",
+    "@graphql-codegen/typescript-operations": "2.3.2",
+    "@graphql-codegen/introspection": "2.1.1"
   }
 }

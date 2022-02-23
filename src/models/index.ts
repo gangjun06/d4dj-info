@@ -1,5 +1,0 @@
-export * from './character'
-export * from './episode'
-export * from './event'
-export * from './music'
-export * from './story'
