@@ -1,4 +1,5 @@
 import { SettingContext, SettingProvider } from '@/components/Setting'
+import { BreadCrumbs, BreadCrumbsData } from '@/components/UI'
 import { NextSeo } from 'next-seo'
 import useTransition from 'next-translate/useTranslation'
 import Link from 'next/link'
@@ -181,7 +182,7 @@ const SideNav = ({
 
 type props = {
   children?: ReactNode
-  breadCrumbs?: breadCrumbs[]
+  breadCrumbs?: BreadCrumbsData[]
   title: string
   titleSide?: ReactNode
   mainContentStyle?: CSSProperties
@@ -244,18 +245,8 @@ export default function MainLayout({
           >
             <div className="mx-auto w-full px-8 py-5 md:pb-5 pb-24">
               {breadCrumbs && (
-                <div className="text-sm breadcrumbs mt-2">
-                  <ul>
-                    {breadCrumbs.map((item, index) => (
-                      <li key={index}>
-                        {item.link === '' ? (
-                          <p>{item.name}</p>
-                        ) : (
-                          <Link href={item.link}>{item.name}</Link>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
+                <div className="mt-2">
+                  <BreadCrumbs data={breadCrumbs} />
                 </div>
               )}
               <div className="flex items-center justify-between mb-5 ">

@@ -27,7 +27,6 @@
     "chart.js": "^3.6.0",
     "classnames": "^2.3.1",
     "cross-env": "^7.0.3",
-    "daisyui": "^1.16.0",
     "date-fns": "^2.25.0",
     "date-fns-timezone": "^0.1.4",
     "graphql": "^16.3.0",
@@ -57,6 +56,10 @@
   },
   "devDependencies": {
     "@graphql-codegen/cli": "2.6.2",
+    "@graphql-codegen/introspection": "2.1.1",
+    "@graphql-codegen/typescript": "2.4.5",
+    "@graphql-codegen/typescript-operations": "2.3.2",
+    "@graphql-codegen/typescript-react-apollo": "3.2.8",
     "@next/eslint-plugin-next": "^12.0.7",
     "@types/react": "17.0.16",
     "@typescript-eslint/eslint-plugin": "^5.7.0",
@@ -71,10 +74,6 @@
     "postcss": "^8.3.8",
     "prettier": "^2.3.2",
     "tailwindcss": "^3.0.7",
-    "typescript": "4.3.5",
-    "@graphql-codegen/typescript-react-apollo": "3.2.8",
-    "@graphql-codegen/typescript": "2.4.5",
-    "@graphql-codegen/typescript-operations": "2.3.2",
-    "@graphql-codegen/introspection": "2.1.1"
+    "typescript": "4.3.5"
   }
 }

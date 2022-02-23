@@ -9,7 +9,7 @@ import {
 } from 'react'
 import { useForm } from 'react-hook-form'
 import { Modal } from './Basic'
-import { FormBlock, Radio } from './Form'
+import { Button, FormBlock, Radio } from './Form'
 
 export const SettingContext = createContext<
   [boolean, Dispatch<SetStateAction<boolean>>] | null
@@ -34,9 +34,18 @@ export const SettingProvider = ({ children }: { children: ReactNode }) => {
     setState(false)
   })
 
+  const onClose = () => {
+    setState(false)
+  }
+
   return (
     <SettingContext.Provider value={[state, setState]}>
-      <Modal show={state}>
+      <Modal
+        show={state}
+        onClose={onClose}
+        title={'Settings'}
+        actions={<Button onClick={onSubmit}>{t('common:save')}</Button>}
+      >
         <FormBlock label={t('common:language')}>
           <Radio
             control={control}
@@ -47,11 +56,6 @@ export const SettingProvider = ({ children }: { children: ReactNode }) => {
             ]}
           />
         </FormBlock>
-        <div className="modal-action">
-          <button className="btn btn-primary" onClick={onSubmit}>
-            {t('common:save')}
-          </button>
-        </div>
       </Modal>
       {children}
     </SettingContext.Provider>
