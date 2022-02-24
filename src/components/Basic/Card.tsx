@@ -19,31 +19,33 @@ const Card = ({
   bodyStyle?: React.CSSProperties
   link?: string | UrlObject
 }) => {
+  const cardClass = `px-8 py-8 shadow ${className} bg-white rounded-xl`
+
   const InnerContent = () => (
-    <div className="card-body bg-base-100">
+    <>
       {title && (
         <div className="flex items-center justify-between">
-          <h2 className="card-title">{title}</h2>
+          <h2 className="font-semibold mb-3 text-xl">{title}</h2>
           {right && right}
         </div>
       )}
       <div style={bodyStyle} className={`h-full ${bodyClassName}`}>
         {children}
       </div>
-    </div>
+    </>
   )
 
   if (link) {
     return (
       <Link href={link} passHref>
-        <a className={`card shadow ${className}`}>
+        <a className={cardClass}>
           <InnerContent />
         </a>
       </Link>
     )
   }
   return (
-    <div className={`card shadow ${className}`}>
+    <div className={cardClass}>
       <InnerContent />
     </div>
   )

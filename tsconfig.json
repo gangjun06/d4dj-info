@@ -17,6 +17,7 @@
     "paths": {
       "@/assets/*": ["assets/*"],
       "@/components/*": ["components/*"],
+      "@/generated/*": ["generated/*"],
       "@/apollo/*": ["apollo/*"]
     }
   },

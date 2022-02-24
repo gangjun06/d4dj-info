@@ -6824,20 +6824,24 @@ export type UnitsQueryVariables = Exact<{
 }>;
 
 
-export type UnitsQuery = { __typename?: 'Query', units?: { __typename?: 'UnitEntityResponseCollection', data: Array<{ __typename?: 'UnitEntity', attributes?: { __typename?: 'Unit', name?: string | null, characters?: { __typename?: 'CharacterRelationResponseCollection', data: Array<{ __typename?: 'CharacterEntity', attributes?: { __typename?: 'Character', firstName?: string | null, fullName?: string | null } | null }> } | null } | null }> } | null };
+export type UnitsQuery = { __typename?: 'Query', units?: { __typename?: 'UnitEntityResponseCollection', data: Array<{ __typename?: 'UnitEntity', id?: string | null, attributes?: { __typename?: 'Unit', name?: string | null, masterID?: number | null, characters?: { __typename?: 'CharacterRelationResponseCollection', data: Array<{ __typename?: 'CharacterEntity', id?: string | null, attributes?: { __typename?: 'Character', fullNameEnglish?: string | null, firstNameEnglish?: string | null, masterID?: number | null } | null }> } | null } | null }> } | null };
 
 
 export const UnitsDocument = gql`
     query Units($locale: I18NLocaleCode) {
   units(locale: $locale) {
     data {
+      id
       attributes {
         name
+        masterID
         characters {
           data {
+            id
             attributes {
-              firstName
-              fullName
+              fullNameEnglish
+              firstNameEnglish
+              masterID
             }
           }
         }

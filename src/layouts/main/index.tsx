@@ -35,11 +35,6 @@ const NavbarGroup = ({
   )
 }
 
-type breadCrumbs = {
-  name: string
-  link: string
-}
-
 const SideNav = ({
   isOpen,
   showTitle,
@@ -245,7 +240,7 @@ export default function MainLayout({
           >
             <div className="mx-auto w-full px-8 py-5 md:pb-5 pb-24">
               {breadCrumbs && (
-                <div className="mt-2">
+                <div className="mt-4 mb-2">
                   <BreadCrumbs data={breadCrumbs} />
                 </div>
               )}

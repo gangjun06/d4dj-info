@@ -16,7 +16,7 @@ export const BreadCrumbs = ({ data }: props) => {
       {data.map((item, index) => (
         <Fragment key={index}>
           {index !== 0 && (
-            <span className="border-t border-r w-2 h-2 transform rotate-45 border-gray-500 cursor-default mr-1" />
+            <span className="border-t border-r w-1.5 h-1.5 transform rotate-45 border-gray-500 cursor-default mr-0.5" />
           )}
           {item.link !== '' ? (
             <Link href={item.link} passHref>

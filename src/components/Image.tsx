@@ -1,37 +1,36 @@
-import { GachaCategory } from 'models'
 import Image from 'next/image'
 import React, { useState } from 'react'
 import { myLoader, pad } from 'utils'
 
-const canUseBanner = (category: GachaCategory) =>
-  category !== GachaCategory.Tutorial && category !== GachaCategory.Birthday
+// const canUseBanner = (category: GachaCategory) =>
+//   category !== GachaCategory.Tutorial && category !== GachaCategory.Birthday
 
-export const GachaIcon = ({
-  category,
-  id,
-}: {
-  category: GachaCategory
-  id: number
-}) => {
-  const useBanner = canUseBanner(category)
-  const [src, setSrc] = useState<string>(
-    useBanner
-      ? `ondemand/banner/banner_gacha_${pad(id, id < 10 ? 4 : 5)}.png`
-      : `ondemand/gacha/top/banner/${id}.png`
-  )
-  return (
-    <Image
-      loader={myLoader}
-      src={src}
-      width={src === 'fallback.png' ? 128 : useBanner ? 612 : 324}
-      alt={`gacha-${id}`}
-      height={src === 'fallback.png' ? 128 : useBanner ? 200 : 172}
-      onError={() => {
-        setSrc('fallback.png')
-      }}
-    />
-  )
-}
+// export const GachaIcon = ({
+//   category,
+//   id,
+// }: {
+//   category: GachaCategory
+//   id: number
+// }) => {
+//   const useBanner = canUseBanner(category)
+//   const [src, setSrc] = useState<string>(
+//     useBanner
+//       ? `ondemand/banner/banner_gacha_${pad(id, id < 10 ? 4 : 5)}.png`
+//       : `ondemand/gacha/top/banner/${id}.png`
+//   )
+//   return (
+//     <Image
+//       loader={myLoader}
+//       src={src}
+//       width={src === 'fallback.png' ? 128 : useBanner ? 612 : 324}
+//       alt={`gacha-${id}`}
+//       height={src === 'fallback.png' ? 128 : useBanner ? 200 : 172}
+//       onError={() => {
+//         setSrc('fallback.png')
+//       }}
+//     />
+//   )
+// }
 
 export const CardIcon = ({ id, rarity }: { id: number; rarity: number }) => {
   const [src, setSrc] = useState<string>(
