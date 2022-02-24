@@ -1,4 +1,4 @@
-import { SettingContext, SettingProvider } from '@/components/Setting'
+import { SettingContext } from '@/components/Setting'
 import { BreadCrumbs, BreadCrumbsData } from '@/components/UI'
 import { NextSeo } from 'next-seo'
 import useTransition from 'next-translate/useTranslation'
@@ -46,7 +46,7 @@ const SideNav = ({
 }) => {
   const router = useRouter()
   const { t } = useTransition('')
-  const [, setShow] = useContext(SettingContext)!
+  const { openSetting } = useContext(SettingContext)!
 
   const NavItem = ({
     label,
@@ -164,7 +164,7 @@ const SideNav = ({
           </div>
           <div
             className="text-gray-200 flex items-center gap-x-2 cursor-pointer modal-button"
-            onClick={() => setShow(true)}
+            onClick={openSetting}
           >
             <HiOutlineCog className="w-5 h-5" />
             {t('common:setting')}
@@ -206,7 +206,7 @@ export default function MainLayout({
       {disableLayout ? (
         <>{children}</>
       ) : (
-        <SettingProvider>
+        <>
           <nav className="lg:hidden py-6 px-6 bg-gray-800">
             <div className="flex items-center justify-between">
               <Link href="/" passHref>
@@ -251,7 +251,7 @@ export default function MainLayout({
               {children}
             </div>
           </div>
-        </SettingProvider>
+        </>
       )}
     </>
   )

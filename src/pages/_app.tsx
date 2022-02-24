@@ -1,4 +1,5 @@
 import '@/assets/styles.css'
+import { SettingProvider } from '@/components/Setting'
 import { ApolloProvider } from '@apollo/client'
 import { client } from 'lib/apollo'
 import setLanguage from 'next-translate/setLanguage'
@@ -33,9 +34,11 @@ function MyApp({ Component, pageProps }: AppProps) {
         </Head>
       </Head>
       <ApolloProvider client={client}>
-        <NextNProgress color={'#6366f1'} />
-        <ToastContainer position="top-center" />
-        <Component {...pageProps} />
+        <SettingProvider>
+          <NextNProgress color={'#6366f1'} />
+          <ToastContainer position="top-center" />
+          <Component {...pageProps} />
+        </SettingProvider>
       </ApolloProvider>
     </>
   )
