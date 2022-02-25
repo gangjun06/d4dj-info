@@ -6854,7 +6854,7 @@ export type CardsQueryVariables = Exact<{
 }>;
 
 
-export type CardsQuery = { __typename?: 'Query', cards?: { __typename?: 'CardEntityResponseCollection', meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number, page: number, pageCount: number } }, data: Array<{ __typename?: 'CardEntity', attributes?: { __typename?: 'Card', rarity?: number | null, masterID?: number | null, cardName?: string | null, attribute?: number | null } | null }> } | null };
+export type CardsQuery = { __typename?: 'Query', cards?: { __typename?: 'CardEntityResponseCollection', meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number, page: number, pageCount: number } }, data: Array<{ __typename?: 'CardEntity', attributes?: { __typename?: 'Card', rarity?: number | null, masterID?: number | null, cardName?: string | null, attribute?: number | null, character?: { __typename?: 'CharacterEntityResponse', data?: { __typename?: 'CharacterEntity', attributes?: { __typename?: 'Character', unit?: { __typename?: 'UnitEntityResponse', data?: { __typename?: 'UnitEntity', attributes?: { __typename?: 'Unit', masterID?: number | null } | null } | null } | null } | null } | null } | null } | null }> } | null };
 
 export type CharacterQueryVariables = Exact<{
   filters?: InputMaybe<CharacterFiltersInput>;
@@ -6939,6 +6939,19 @@ export const CardsDocument = gql`
         masterID
         cardName
         attribute
+        character {
+          data {
+            attributes {
+              unit {
+                data {
+                  attributes {
+                    masterID
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
   }

@@ -15,13 +15,15 @@ const CardItem = ({
       bodyClassName="flex justify-center items-center flex-col"
       link={`/game/card/${data.masterID}`}
     >
-      <CardIcon id={data.masterID!} rarity={data.rarity!} />
-      <div className="flex flex-row gap-x-2 my-2">
-        <div className="badge badge-outline badge-md">
-          {t(`card:rarity.${data.rarity}`)}
-        </div>
-        <div className="badge badge-outline badge-md">{data.attribute}</div>
-      </div>
+      <CardIcon
+        id={data.masterID!}
+        rarity={data.rarity!}
+        attribute={data.attribute!}
+        unit={
+          data.character!.data!.attributes!.unit!.data?.attributes!.masterID ||
+          50
+        }
+      />
       {data.cardName}
     </Card>
   )

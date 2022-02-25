@@ -83,7 +83,6 @@ export default function CardList() {
   })
 
   const fetchData = async () => {
-    console.log((data?.cards?.meta.pagination.page || 1) + 1)
     await fetchMore({
       variables: {
         ...reqData,

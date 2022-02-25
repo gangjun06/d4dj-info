@@ -13,13 +13,13 @@ export enum Attribute {
 }
 
 export enum Unit {
-  HappyAround = 1,
-  PeakyPkey = 2,
-  PhotonMaiden = 3,
-  Merm4id = 4,
-  Rondo = 5,
-  LyricalLily = 6,
-  Etc = 50,
+  HA = 1,
+  PP = 2,
+  PM = 3,
+  MMD = 4,
+  LND = 5,
+  LL = 6,
+  Common = 50,
 }
 
 export enum Rarity {

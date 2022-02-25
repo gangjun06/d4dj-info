@@ -11,8 +11,6 @@ export const client = new ApolloClient({
           cards: {
             keyArgs: false,
             merge(existing = { data: [] }, incoming, {}) {
-              console.info(existing)
-              console.info(incoming)
               return {
                 ...incoming,
                 data: [...existing.data, ...incoming.data],

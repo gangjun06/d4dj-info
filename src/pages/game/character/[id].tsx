@@ -1,6 +1,6 @@
 import { Card, Disclosure, Table, TableBody } from '@/components/Basic'
 import { CardItem } from '@/components/Elements'
-import { CharacterIcon } from '@/components/Image'
+import { CharacterIcon, Image } from '@/components/Image'
 import {
   CharacterDocument,
   CharacterQuery,
@@ -10,10 +10,9 @@ import { client } from '@/lib/apollo'
 import MainLayout from 'layouts/main'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import useTransition from 'next-translate/useTranslation'
-import Image from 'next/image'
 import React from 'react'
 import { ValuesType } from 'utility-types'
-import { loadRegion, myLoader, pad } from 'utils'
+import { GetURLType, loadRegion, pad } from 'utils'
 import { createLive2DShare } from 'utils/live2d'
 
 export default function CardDetail({
@@ -89,11 +88,11 @@ export default function CardDetail({
               <Disclosure title={t('character:illustrations.livestart')}>
                 <div className="flex-center">
                   <Image
-                    loader={myLoader}
-                    src={`LiveStartCutin/${pad(
+                    urlType={GetURLType.CharaLiveStart}
+                    parameter={[
                       character.unit!.data?.attributes?.masterID || 0,
-                      2
-                    )}/LiveStartChara${pad(character.masterID!, 3)}.png`}
+                      character.masterID,
+                    ]}
                     width={3200}
                     height={270}
                     alt={`live start cutin image`}
@@ -103,58 +102,48 @@ export default function CardDetail({
               <Disclosure title={t('character:illustrations.rankheader')}>
                 <div className="flex-center">
                   <Image
-                    loader={myLoader}
-                    src={`ondemand/character/character_rank_header_${pad(
-                      character.masterID!,
-                      3
-                    )}.png`}
+                    urlType={GetURLType.CharaRankHeader}
+                    parameter={[character.masterID]}
                     width={429}
                     height={154}
                     alt={`rank header`}
                   />
                 </div>
               </Disclosure>
-              <Disclosure title={t('character:illustrations.gacha_silhouette')}>
-                <div className="flex-center bg-gray-500 relative h-48">
-                  <Image
-                    loader={myLoader}
-                    src={`ondemand/character/gacha_silhouette_${pad(
-                      character.masterID!,
-                      3
-                    )}.png`}
-                    layout="fill"
-                    objectFit="contain"
-                    alt={`gacha silhouette image`}
-                  />
-                </div>
-              </Disclosure>
               <Disclosure title={t('character:illustrations.profile')}>
                 <div className="flex-center">
                   <Image
-                    loader={myLoader}
-                    src={`ondemand/character_profile/character_profile_${pad(
-                      character.masterID!,
-                      3
-                    )}.jpg`}
+                    urlType={GetURLType.CharaProfile}
+                    parameter={[character.masterID]}
                     width={2478}
                     height={1440}
-                    alt={`transparent image`}
+                    alt={`chara profile`}
                   />
                 </div>
               </Disclosure>
-              <Disclosure title={t('character:illustrations.standup')}>
-                <div className="flex-center relative h-96">
-                  <Image
-                    loader={myLoader}
-                    src={`ondemand/character/character_stand_up_${pad(
-                      character.masterID!,
-                      3
-                    )}.png`}
-                    layout="fill"
-                    objectFit="contain"
-                    alt={`stand up image`}
-                  />
-                </div>
+              <Disclosure
+                title={t('character:illustrations.gacha_silhouette')}
+                className="bg-gray-500 h-48"
+              >
+                <Image
+                  auto
+                  urlType={GetURLType.CharaSilhouette}
+                  parameter={[character.masterID]}
+                  alt={`gacha silhouette image`}
+                />
+              </Disclosure>
+              <Disclosure
+                title={t('character:illustrations.standup')}
+                className="h-72"
+              >
+                <Image
+                  src={`jp/ondemand/character/character_stand_up_${pad(
+                    character.masterID!,
+                    3
+                  )}.png`}
+                  auto
+                  alt={`stand up image`}
+                />
               </Disclosure>
             </Card>
             {/* {character.characterEpisode!.length !== 0 && (
@@ -184,7 +173,15 @@ export default function CardDetail({
             <div className="col-span-1 md:col-span-3">
               <div className="grid-1">
                 {character.cards!.data!.map((item, index) => (
-                  <CardItem key={index} data={item.attributes!} />
+                  <CardItem
+                    key={index}
+                    data={{
+                      ...item.attributes!,
+                      character: {
+                        data: { attributes: { ...character, cards: null } },
+                      },
+                    }}
+                  />
                 ))}
               </div>
             </div>

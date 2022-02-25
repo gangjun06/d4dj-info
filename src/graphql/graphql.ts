@@ -50,6 +50,19 @@ export const GET_CARDS = gql`
           masterID
           cardName
           attribute
+          character {
+            data {
+              attributes {
+                unit {
+                  data {
+                    attributes {
+                      masterID
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }

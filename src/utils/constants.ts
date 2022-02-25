@@ -45,25 +45,25 @@ export const AttributeCheckbox: CheckboxListType<Attribute> = (
 export const UnitCheckbox: CheckboxListType<Unit> = (t: Translate) => [
   {
     label: t('common:unit.ha'),
-    value: Unit.HappyAround,
+    value: Unit.HA,
   },
   {
     label: t('common:unit.pp'),
-    value: Unit.PeakyPkey,
+    value: Unit.PP,
   },
-  { label: t('common:unit.pm'), value: Unit.PhotonMaiden },
-  { label: t('common:unit.m4'), value: Unit.Merm4id },
+  { label: t('common:unit.pm'), value: Unit.PM },
+  { label: t('common:unit.m4'), value: Unit.MMD },
   {
     label: t('common:unit.ro'),
-    value: Unit.Rondo,
+    value: Unit.LND,
   },
   {
     label: t('common:unit.li'),
-    value: Unit.LyricalLily,
+    value: Unit.LL,
   },
   {
     label: t('common:unit.etc'),
-    value: Unit.Etc,
+    value: Unit.Common,
   },
 ]
 
@@ -119,5 +119,3 @@ export const UnitCheckbox: CheckboxListType<Unit> = (t: Translate) => [
 //     value: CardSort.DebutOrder,
 //   },
 // ]
-
-export const JUST_EXPORT = '아 리펙토링 귀찮다.. 코드 괜히 건드림'
