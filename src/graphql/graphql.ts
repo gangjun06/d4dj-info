@@ -24,6 +24,38 @@ export const GET_UNITS = gql`
   }
 `
 
+export const GET_CARDS = gql`
+  query Cards(
+    $cardsFilters: CardFiltersInput
+    $cardsPagination: PaginationArg
+    $sort: [String]
+    $cardsLocale: I18NLocaleCode
+  ) {
+    cards(
+      filters: $cardsFilters
+      pagination: $cardsPagination
+      sort: $sort
+      locale: $cardsLocale
+    ) {
+      meta {
+        pagination {
+          total
+          page
+          pageCount
+        }
+      }
+      data {
+        attributes {
+          rarity
+          masterID
+          cardName
+          attribute
+        }
+      }
+    }
+  }
+`
+
 export const GET_CHARACTER = gql`
   query Character(
     $filters: CharacterFiltersInput

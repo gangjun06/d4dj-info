@@ -1,7 +1,7 @@
 import { Control, Controller } from 'react-hook-form'
 
 type props = {
-  list: { label: string; value: string }[]
+  list: { label: string; value: any }[]
   control: Control<any, object>
   name: string
 }

@@ -7,7 +7,19 @@ export const client = new ApolloClient({
   cache: new InMemoryCache({
     typePolicies: {
       Query: {
-        fields: {},
+        fields: {
+          cards: {
+            keyArgs: false,
+            merge(existing = { data: [] }, incoming, {}) {
+              console.info(existing)
+              console.info(incoming)
+              return {
+                ...incoming,
+                data: [...existing.data, ...incoming.data],
+              }
+            },
+          },
+        },
       },
     },
   }),

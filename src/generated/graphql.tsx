@@ -6846,6 +6846,16 @@ export type UnitsQueryVariables = Exact<{
 
 export type UnitsQuery = { __typename?: 'Query', units?: { __typename?: 'UnitEntityResponseCollection', data: Array<{ __typename?: 'UnitEntity', id?: string | null, attributes?: { __typename?: 'Unit', name?: string | null, masterID?: number | null, characters?: { __typename?: 'CharacterRelationResponseCollection', data: Array<{ __typename?: 'CharacterEntity', id?: string | null, attributes?: { __typename?: 'Character', fullNameEnglish?: string | null, firstNameEnglish?: string | null, masterID?: number | null } | null }> } | null } | null }> } | null };
 
+export type CardsQueryVariables = Exact<{
+  cardsFilters?: InputMaybe<CardFiltersInput>;
+  cardsPagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>> | InputMaybe<Scalars['String']>>;
+  cardsLocale?: InputMaybe<Scalars['I18NLocaleCode']>;
+}>;
+
+
+export type CardsQuery = { __typename?: 'Query', cards?: { __typename?: 'CardEntityResponseCollection', meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number, page: number, pageCount: number } }, data: Array<{ __typename?: 'CardEntity', attributes?: { __typename?: 'Card', rarity?: number | null, masterID?: number | null, cardName?: string | null, attribute?: number | null } | null }> } | null };
+
 export type CharacterQueryVariables = Exact<{
   filters?: InputMaybe<CharacterFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
@@ -6908,6 +6918,63 @@ export function useUnitsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Unit
 export type UnitsQueryHookResult = ReturnType<typeof useUnitsQuery>;
 export type UnitsLazyQueryHookResult = ReturnType<typeof useUnitsLazyQuery>;
 export type UnitsQueryResult = Apollo.QueryResult<UnitsQuery, UnitsQueryVariables>;
+export const CardsDocument = gql`
+    query Cards($cardsFilters: CardFiltersInput, $cardsPagination: PaginationArg, $sort: [String], $cardsLocale: I18NLocaleCode) {
+  cards(
+    filters: $cardsFilters
+    pagination: $cardsPagination
+    sort: $sort
+    locale: $cardsLocale
+  ) {
+    meta {
+      pagination {
+        total
+        page
+        pageCount
+      }
+    }
+    data {
+      attributes {
+        rarity
+        masterID
+        cardName
+        attribute
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useCardsQuery__
+ *
+ * To run a query within a React component, call `useCardsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCardsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCardsQuery({
+ *   variables: {
+ *      cardsFilters: // value for 'cardsFilters'
+ *      cardsPagination: // value for 'cardsPagination'
+ *      sort: // value for 'sort'
+ *      cardsLocale: // value for 'cardsLocale'
+ *   },
+ * });
+ */
+export function useCardsQuery(baseOptions?: Apollo.QueryHookOptions<CardsQuery, CardsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CardsQuery, CardsQueryVariables>(CardsDocument, options);
+      }
+export function useCardsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CardsQuery, CardsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CardsQuery, CardsQueryVariables>(CardsDocument, options);
+        }
+export type CardsQueryHookResult = ReturnType<typeof useCardsQuery>;
+export type CardsLazyQueryHookResult = ReturnType<typeof useCardsLazyQuery>;
+export type CardsQueryResult = Apollo.QueryResult<CardsQuery, CardsQueryVariables>;
 export const CharacterDocument = gql`
     query Character($filters: CharacterFiltersInput, $pagination: PaginationArg, $locale: I18NLocaleCode, $cardsPagination2: PaginationArg) {
   characters(filters: $filters, pagination: $pagination, locale: $locale) {
