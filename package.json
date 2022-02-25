@@ -54,6 +54,7 @@
     "react-virtualized": "^9.22.3",
     "reactstrap": "^8.9.0",
     "simplebar-react": "^2.3.4",
+    "utility-types": "^3.10.0",
     "yarn": "^1.22.17"
   },
   "devDependencies": {

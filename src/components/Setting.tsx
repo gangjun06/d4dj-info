@@ -10,6 +10,7 @@ import {
   useState,
 } from 'react'
 import { useForm } from 'react-hook-form'
+import { loadRegion } from 'utils'
 import { Modal } from './Basic'
 import { Button, FormBlock, Radio } from './Form'
 
@@ -29,19 +30,9 @@ type FormData = {
   region: string
 }
 
-const loadCookie = (): Region => {
-  const region = Cookies.get('region')
-  const index = Object.keys(Region).findIndex((item) => item === region)
-  if (index !== -1) {
-    return region as Region
-  }
-  Cookies.set('region', Region.Japan)
-  return Region.Japan
-}
-
 export const SettingProvider = ({ children }: { children: ReactNode }) => {
   const [show, setShow] = useState<boolean>(false)
-  const [region, setRegion] = useState<Region>(() => loadCookie())
+  const [region, setRegion] = useState<Region>(() => loadRegion())
   const { t, lang } = useTransition()
 
   const { handleSubmit, control } = useForm<FormData>({

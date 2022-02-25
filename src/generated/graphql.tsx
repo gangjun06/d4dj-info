@@ -167,7 +167,7 @@ export type BooleanFilterInput = {
 
 export type Card = {
   __typename?: 'Card';
-  attribute?: Maybe<AttributeEntityResponse>;
+  attribute?: Maybe<Scalars['Int']>;
   cardIllustCenterDistanceX?: Maybe<Scalars['JSON']>;
   cardIllustHeadDistanceY?: Maybe<Scalars['JSON']>;
   cardName?: Maybe<Scalars['String']>;
@@ -223,7 +223,7 @@ export type CardEntityResponseCollection = {
 
 export type CardFiltersInput = {
   and?: InputMaybe<Array<InputMaybe<CardFiltersInput>>>;
-  attribute?: InputMaybe<AttributeFiltersInput>;
+  attribute?: InputMaybe<IntFilterInput>;
   cardIllustCenterDistanceX?: InputMaybe<JsonFilterInput>;
   cardIllustHeadDistanceY?: InputMaybe<JsonFilterInput>;
   cardName?: InputMaybe<StringFilterInput>;
@@ -249,7 +249,7 @@ export type CardFiltersInput = {
 };
 
 export type CardInput = {
-  attribute?: InputMaybe<Scalars['ID']>;
+  attribute?: InputMaybe<Scalars['Int']>;
   cardIllustCenterDistanceX?: InputMaybe<Scalars['JSON']>;
   cardIllustHeadDistanceY?: InputMaybe<Scalars['JSON']>;
   cardName?: InputMaybe<Scalars['String']>;
@@ -2302,11 +2302,19 @@ export type Honor = {
   duplicateStockAmounts?: Maybe<Scalars['JSON']>;
   duplicateStockIds?: Maybe<Scalars['JSON']>;
   effectType?: Maybe<Scalars['Int']>;
+  locale?: Maybe<Scalars['String']>;
+  localizations?: Maybe<HonorRelationResponseCollection>;
   masterID?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
-  publishedAt?: Maybe<Scalars['DateTime']>;
   type?: Maybe<Enum_Honor_Type>;
   updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+
+export type HonorLocalizationsArgs = {
+  filters?: InputMaybe<HonorFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type HonorEntity = {
@@ -2335,11 +2343,12 @@ export type HonorFiltersInput = {
   duplicateStockIds?: InputMaybe<JsonFilterInput>;
   effectType?: InputMaybe<IntFilterInput>;
   id?: InputMaybe<IdFilterInput>;
+  locale?: InputMaybe<StringFilterInput>;
+  localizations?: InputMaybe<HonorFiltersInput>;
   masterID?: InputMaybe<IntFilterInput>;
   name?: InputMaybe<StringFilterInput>;
   not?: InputMaybe<HonorFiltersInput>;
   or?: InputMaybe<Array<InputMaybe<HonorFiltersInput>>>;
-  publishedAt?: InputMaybe<DateTimeFilterInput>;
   type?: InputMaybe<StringFilterInput>;
   updatedAt?: InputMaybe<DateTimeFilterInput>;
 };
@@ -2352,8 +2361,12 @@ export type HonorInput = {
   effectType?: InputMaybe<Scalars['Int']>;
   masterID?: InputMaybe<Scalars['Int']>;
   name?: InputMaybe<Scalars['String']>;
-  publishedAt?: InputMaybe<Scalars['DateTime']>;
   type?: InputMaybe<Enum_Honor_Type>;
+};
+
+export type HonorRelationResponseCollection = {
+  __typename?: 'HonorRelationResponseCollection';
+  data: Array<HonorEntity>;
 };
 
 export type I18NLocale = {
@@ -3135,6 +3148,7 @@ export type Mutation = {
   createGacha?: Maybe<GachaEntityResponse>;
   createGachaLocalization?: Maybe<GachaEntityResponse>;
   createHonor?: Maybe<HonorEntityResponse>;
+  createHonorLocalization?: Maybe<HonorEntityResponse>;
   createLive2DUiChat?: Maybe<Live2DUiChatEntityResponse>;
   createLive2DUiChatLocalization?: Maybe<Live2DUiChatEntityResponse>;
   createLiveResultEpisode?: Maybe<LiveResultEpisodeEntityResponse>;
@@ -3562,6 +3576,14 @@ export type MutationCreateGachaLocalizationArgs = {
 
 export type MutationCreateHonorArgs = {
   data: HonorInput;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
+export type MutationCreateHonorLocalizationArgs = {
+  data?: InputMaybe<HonorInput>;
+  id?: InputMaybe<Scalars['ID']>;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
@@ -4001,6 +4023,7 @@ export type MutationDeleteGachaArgs = {
 
 export type MutationDeleteHonorArgs = {
   id: Scalars['ID'];
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
@@ -4346,6 +4369,7 @@ export type MutationUpdateGachaArgs = {
 export type MutationUpdateHonorArgs = {
   data: HonorInput;
   id: Scalars['ID'];
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
@@ -4860,11 +4884,6 @@ export type PassiveSkillRelationResponseCollection = {
   data: Array<PassiveSkillEntity>;
 };
 
-export enum PublicationState {
-  Live = 'LIVE',
-  Preview = 'PREVIEW'
-}
-
 export type Query = {
   __typename?: 'Query';
   assistOptionPreset?: Maybe<AssistOptionPresetEntityResponse>;
@@ -5249,13 +5268,14 @@ export type QueryGachasArgs = {
 
 export type QueryHonorArgs = {
   id?: InputMaybe<Scalars['ID']>;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
 export type QueryHonorsArgs = {
   filters?: InputMaybe<HonorFiltersInput>;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
   pagination?: InputMaybe<PaginationArg>;
-  publicationState?: InputMaybe<PublicationState>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
@@ -6826,6 +6846,16 @@ export type UnitsQueryVariables = Exact<{
 
 export type UnitsQuery = { __typename?: 'Query', units?: { __typename?: 'UnitEntityResponseCollection', data: Array<{ __typename?: 'UnitEntity', id?: string | null, attributes?: { __typename?: 'Unit', name?: string | null, masterID?: number | null, characters?: { __typename?: 'CharacterRelationResponseCollection', data: Array<{ __typename?: 'CharacterEntity', id?: string | null, attributes?: { __typename?: 'Character', fullNameEnglish?: string | null, firstNameEnglish?: string | null, masterID?: number | null } | null }> } | null } | null }> } | null };
 
+export type CharacterQueryVariables = Exact<{
+  filters?: InputMaybe<CharacterFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+  cardsPagination2?: InputMaybe<PaginationArg>;
+}>;
+
+
+export type CharacterQuery = { __typename?: 'Query', characters?: { __typename?: 'CharacterEntityResponseCollection', data: Array<{ __typename?: 'CharacterEntity', attributes?: { __typename?: 'Character', fullName?: string | null, firstName?: string | null, firstNameEnglish?: string | null, fullNameEnglish?: string | null, colorCode?: string | null, masterID?: number | null, unit?: { __typename?: 'UnitEntityResponse', data?: { __typename?: 'UnitEntity', attributes?: { __typename?: 'Unit', masterID?: number | null, name?: string | null } | null } | null } | null, cards?: { __typename?: 'CardRelationResponseCollection', data: Array<{ __typename?: 'CardEntity', id?: string | null, attributes?: { __typename?: 'Card', cardName?: string | null, rarity?: number | null, attribute?: number | null, masterID?: number | null } | null }> } | null } | null }> } | null };
+
 
 export const UnitsDocument = gql`
     query Units($locale: I18NLocaleCode) {
@@ -6878,3 +6908,69 @@ export function useUnitsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Unit
 export type UnitsQueryHookResult = ReturnType<typeof useUnitsQuery>;
 export type UnitsLazyQueryHookResult = ReturnType<typeof useUnitsLazyQuery>;
 export type UnitsQueryResult = Apollo.QueryResult<UnitsQuery, UnitsQueryVariables>;
+export const CharacterDocument = gql`
+    query Character($filters: CharacterFiltersInput, $pagination: PaginationArg, $locale: I18NLocaleCode, $cardsPagination2: PaginationArg) {
+  characters(filters: $filters, pagination: $pagination, locale: $locale) {
+    data {
+      attributes {
+        fullName
+        firstName
+        firstNameEnglish
+        fullNameEnglish
+        colorCode
+        unit {
+          data {
+            attributes {
+              masterID
+              name
+            }
+          }
+        }
+        cards(pagination: $cardsPagination2) {
+          data {
+            id
+            attributes {
+              cardName
+              rarity
+              attribute
+              masterID
+            }
+          }
+        }
+        masterID
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useCharacterQuery__
+ *
+ * To run a query within a React component, call `useCharacterQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCharacterQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCharacterQuery({
+ *   variables: {
+ *      filters: // value for 'filters'
+ *      pagination: // value for 'pagination'
+ *      locale: // value for 'locale'
+ *      cardsPagination2: // value for 'cardsPagination2'
+ *   },
+ * });
+ */
+export function useCharacterQuery(baseOptions?: Apollo.QueryHookOptions<CharacterQuery, CharacterQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CharacterQuery, CharacterQueryVariables>(CharacterDocument, options);
+      }
+export function useCharacterLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CharacterQuery, CharacterQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CharacterQuery, CharacterQueryVariables>(CharacterDocument, options);
+        }
+export type CharacterQueryHookResult = ReturnType<typeof useCharacterQuery>;
+export type CharacterLazyQueryHookResult = ReturnType<typeof useCharacterLazyQuery>;
+export type CharacterQueryResult = Apollo.QueryResult<CharacterQuery, CharacterQueryVariables>;

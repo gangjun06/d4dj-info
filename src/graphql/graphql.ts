@@ -23,3 +23,44 @@ export const GET_UNITS = gql`
     }
   }
 `
+
+export const GET_CHARACTER = gql`
+  query Character(
+    $filters: CharacterFiltersInput
+    $pagination: PaginationArg
+    $locale: I18NLocaleCode
+    $cardsPagination2: PaginationArg
+  ) {
+    characters(filters: $filters, pagination: $pagination, locale: $locale) {
+      data {
+        attributes {
+          fullName
+          firstName
+          firstNameEnglish
+          fullNameEnglish
+          colorCode
+          unit {
+            data {
+              attributes {
+                masterID
+                name
+              }
+            }
+          }
+          cards(pagination: $cardsPagination2) {
+            data {
+              id
+              attributes {
+                cardName
+                rarity
+                attribute
+                masterID
+              }
+            }
+          }
+          masterID
+        }
+      }
+    }
+  }
+`

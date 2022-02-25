@@ -19,7 +19,8 @@
       "@/components/*": ["components/*"],
       "@/generated/*": ["generated/*"],
       "@/apollo/*": ["apollo/*"],
-      "@/models/*": ["models/*"]
+      "@/models/*": ["models/*"],
+      "@/lib/*": ["lib/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "public/f-adblock.js"],

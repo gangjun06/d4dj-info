@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie'
+import { Region } from '../models'
 import { pad } from './num'
 
 export * from './array'
@@ -6,6 +8,16 @@ export * from './image'
 export * from './num'
 export * from './time'
 export * from './useDelayUnmount'
+
+export const loadRegion = (): Region => {
+  const region = Cookies.get('region')
+  const index = Object.keys(Region).findIndex((item) => item === region)
+  if (index !== -1) {
+    return region as Region
+  }
+  Cookies.set('region', Region.Japan)
+  return Region.Japan
+}
 
 export enum GetURLType {
   Live2DModelURL,
