@@ -47,9 +47,9 @@ export default function Character() {
                 }
               >
                 <div className="flex justify-around flex-wrap">
-                  {attributes.characters?.data.map(({ attributes }) => (
+                  {attributes.characters?.data.map(({ id, attributes }) => (
                     <Link
-                      href={`/game/character/${attributes!.masterID}`}
+                      href={`/game/character/${id}`}
                       passHref
                       key={attributes!.masterID!}
                     >

@@ -11,7 +11,6 @@ import MainLayout from 'layouts/main'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import useTransition from 'next-translate/useTranslation'
 import React from 'react'
-import { ValuesType } from 'utility-types'
 import { GetURLType, loadRegion, pad } from 'utils'
 import { createLive2DShare } from 'utils/live2d'
 
@@ -176,9 +175,12 @@ export default function CardDetail({
                   <CardItem
                     key={index}
                     data={{
-                      ...item.attributes!,
-                      character: {
-                        data: { attributes: { ...character, cards: null } },
+                      id: item.id,
+                      attributes: {
+                        character: {
+                          data: { attributes: { ...character } },
+                        },
+                        ...item.attributes,
                       },
                     }}
                   />
@@ -194,7 +196,7 @@ export default function CardDetail({
 
 export const getServerSideProps: GetServerSideProps<{
   character: NonNullable<
-    ValuesType<NonNullable<CharacterQuery['characters']>['data']>['attributes']
+    NonNullable<NonNullable<CharacterQuery['character']>['data']>['attributes']
   >
 }> = async (context) => {
   const id = context.query.id
@@ -209,26 +211,21 @@ export const getServerSideProps: GetServerSideProps<{
   const { data } = await client.query<CharacterQuery, CharacterQueryVariables>({
     query: CharacterDocument,
     variables: {
-      locale: region,
-      pagination: {
-        limit: 1,
+      cardsPagination: {
+        limit: 100,
       },
-      filters: {
-        masterID: {
-          eq: parseInt(id as string),
-        },
-      },
+      characterId: id,
     },
     fetchPolicy: 'no-cache',
   })
 
-  if (!data?.characters?.data.length) {
+  if (!data?.character?.data) {
     return { notFound: true }
   }
 
   return {
     props: {
-      character: data.characters!.data[0].attributes!,
+      character: data.character!.data.attributes!,
     },
   }
 }

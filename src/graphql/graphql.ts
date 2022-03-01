@@ -39,12 +39,12 @@ export const GET_CARDS = gql`
     ) {
       meta {
         pagination {
-          total
           page
           pageCount
         }
       }
       data {
+        id
         attributes {
           rarity
           masterID
@@ -55,6 +55,7 @@ export const GET_CARDS = gql`
               attributes {
                 unit {
                   data {
+                    id
                     attributes {
                       masterID
                     }
@@ -69,14 +70,70 @@ export const GET_CARDS = gql`
   }
 `
 
+export const GET_CARD = gql`
+  query Card($cardId: ID, $locale: I18NLocaleCode) {
+    card(id: $cardId, locale: $locale) {
+      data {
+        id
+        attributes {
+          masterID
+          attribute
+          cardName
+          rarity
+          skillName
+          gachaMessage
+          debutOrder
+          startDate
+          endDate
+          maxParameters {
+            id
+            heart
+            technique
+            physical
+          }
+          character {
+            data {
+              attributes {
+                fullNameEnglish
+                firstNameEnglish
+                unit {
+                  data {
+                    attributes {
+                      masterID
+                      name
+                    }
+                  }
+                }
+              }
+            }
+          }
+          skill {
+            data {
+              attributes {
+                masterID
+                minRecoveryValue
+                maxRecoveryValue
+                comboSupportCount
+                scoreUpRate
+                minSeconds
+                maxSeconds
+                perfectScoreUpRate
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`
+
 export const GET_CHARACTER = gql`
   query Character(
-    $filters: CharacterFiltersInput
-    $pagination: PaginationArg
+    $characterId: ID
     $locale: I18NLocaleCode
-    $cardsPagination2: PaginationArg
+    $cardsPagination: PaginationArg
   ) {
-    characters(filters: $filters, pagination: $pagination, locale: $locale) {
+    character(id: $characterId, locale: $locale) {
       data {
         attributes {
           fullName
@@ -92,7 +149,7 @@ export const GET_CHARACTER = gql`
               }
             }
           }
-          cards(pagination: $cardsPagination2) {
+          cards(pagination: $cardsPagination) {
             data {
               id
               attributes {

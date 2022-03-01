@@ -67,7 +67,13 @@ export default function CardList() {
           },
           {
             or: cleanArrayWithInt(data.unit)!.map((item) => ({
-              rarity: { eq: item },
+              character: {
+                unit: {
+                  masterID: {
+                    eq: item,
+                  },
+                },
+              },
             })),
           },
         ],
@@ -83,6 +89,7 @@ export default function CardList() {
   })
 
   const fetchData = async () => {
+    console.log('FetchMore!')
     await fetchMore({
       variables: {
         ...reqData,
@@ -153,12 +160,13 @@ export default function CardList() {
           <Radio name="orderBy" control={control} list={CardOrderRadio(t)} />
         </FormBlock> */}
       </SideOver>
+
       <WaitQuery loading={loading} error={error}>
         <InfinityScroll
           dataLength={(data?.cards?.data || []).length || 0}
           next={fetchData}
           hasMore={
-            (data?.cards?.meta.pagination.page || 0) <=
+            (data?.cards?.meta.pagination.page || 0) <
             (data?.cards?.meta.pagination.pageCount || 0)
           }
           scrollableTarget="mainContent"
@@ -167,7 +175,7 @@ export default function CardList() {
         >
           <div className="grid-1">
             {data?.cards?.data.map((item, index) => (
-              <CardItem key={index} data={item.attributes!} />
+              <CardItem key={index} data={item} />
             ))}
           </div>
         </InfinityScroll>

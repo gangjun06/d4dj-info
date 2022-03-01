@@ -8,7 +8,7 @@ export const Table = ({ children }: { children: ReactNode }) => (
 )
 
 export type TableBodyInput = {
-  name?: string
+  name?: string | null
   link?: string
   onClick?: () => void
 }
@@ -18,7 +18,7 @@ export const TableBody = ({
   data,
 }: {
   children?: ReactNode
-  data?: (TableBodyInput | string | number | undefined)[][]
+  data?: (TableBodyInput | string | number | undefined | null)[][]
 }) => {
   if (children) {
     return <tbody>{children}</tbody>
@@ -31,7 +31,7 @@ export const TableBody = ({
           <tr key={i}>
             {item.map((item, j) => (
               <td key={j}>
-                {typeof item === 'object' ? (
+                {item && typeof item === 'object' ? (
                   item.onClick ? (
                     <div className="link link-primary" onClick={item.onClick}>
                       {item.name || 'X'}

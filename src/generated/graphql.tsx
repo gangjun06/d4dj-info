@@ -6854,17 +6854,24 @@ export type CardsQueryVariables = Exact<{
 }>;
 
 
-export type CardsQuery = { __typename?: 'Query', cards?: { __typename?: 'CardEntityResponseCollection', meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number, page: number, pageCount: number } }, data: Array<{ __typename?: 'CardEntity', attributes?: { __typename?: 'Card', rarity?: number | null, masterID?: number | null, cardName?: string | null, attribute?: number | null, character?: { __typename?: 'CharacterEntityResponse', data?: { __typename?: 'CharacterEntity', attributes?: { __typename?: 'Character', unit?: { __typename?: 'UnitEntityResponse', data?: { __typename?: 'UnitEntity', attributes?: { __typename?: 'Unit', masterID?: number | null } | null } | null } | null } | null } | null } | null } | null }> } | null };
+export type CardsQuery = { __typename?: 'Query', cards?: { __typename?: 'CardEntityResponseCollection', meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', page: number, pageCount: number } }, data: Array<{ __typename?: 'CardEntity', id?: string | null, attributes?: { __typename?: 'Card', rarity?: number | null, masterID?: number | null, cardName?: string | null, attribute?: number | null, character?: { __typename?: 'CharacterEntityResponse', data?: { __typename?: 'CharacterEntity', attributes?: { __typename?: 'Character', unit?: { __typename?: 'UnitEntityResponse', data?: { __typename?: 'UnitEntity', id?: string | null, attributes?: { __typename?: 'Unit', masterID?: number | null } | null } | null } | null } | null } | null } | null } | null }> } | null };
 
-export type CharacterQueryVariables = Exact<{
-  filters?: InputMaybe<CharacterFiltersInput>;
-  pagination?: InputMaybe<PaginationArg>;
+export type CardQueryVariables = Exact<{
+  cardId?: InputMaybe<Scalars['ID']>;
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-  cardsPagination2?: InputMaybe<PaginationArg>;
 }>;
 
 
-export type CharacterQuery = { __typename?: 'Query', characters?: { __typename?: 'CharacterEntityResponseCollection', data: Array<{ __typename?: 'CharacterEntity', attributes?: { __typename?: 'Character', fullName?: string | null, firstName?: string | null, firstNameEnglish?: string | null, fullNameEnglish?: string | null, colorCode?: string | null, masterID?: number | null, unit?: { __typename?: 'UnitEntityResponse', data?: { __typename?: 'UnitEntity', attributes?: { __typename?: 'Unit', masterID?: number | null, name?: string | null } | null } | null } | null, cards?: { __typename?: 'CardRelationResponseCollection', data: Array<{ __typename?: 'CardEntity', id?: string | null, attributes?: { __typename?: 'Card', cardName?: string | null, rarity?: number | null, attribute?: number | null, masterID?: number | null } | null }> } | null } | null }> } | null };
+export type CardQuery = { __typename?: 'Query', card?: { __typename?: 'CardEntityResponse', data?: { __typename?: 'CardEntity', id?: string | null, attributes?: { __typename?: 'Card', masterID?: number | null, attribute?: number | null, cardName?: string | null, rarity?: number | null, skillName?: string | null, gachaMessage?: string | null, debutOrder?: number | null, startDate?: any | null, endDate?: any | null, maxParameters?: { __typename?: 'ComponentCharacterMaxParameters', id: string, heart?: number | null, technique?: number | null, physical?: number | null } | null, character?: { __typename?: 'CharacterEntityResponse', data?: { __typename?: 'CharacterEntity', attributes?: { __typename?: 'Character', fullNameEnglish?: string | null, firstNameEnglish?: string | null, unit?: { __typename?: 'UnitEntityResponse', data?: { __typename?: 'UnitEntity', attributes?: { __typename?: 'Unit', masterID?: number | null, name?: string | null } | null } | null } | null } | null } | null } | null, skill?: { __typename?: 'SkillEntityResponse', data?: { __typename?: 'SkillEntity', attributes?: { __typename?: 'Skill', masterID?: number | null, minRecoveryValue?: number | null, maxRecoveryValue?: number | null, comboSupportCount?: number | null, scoreUpRate?: number | null, minSeconds?: number | null, maxSeconds?: number | null, perfectScoreUpRate?: number | null } | null } | null } | null } | null } | null } | null };
+
+export type CharacterQueryVariables = Exact<{
+  characterId?: InputMaybe<Scalars['ID']>;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+  cardsPagination?: InputMaybe<PaginationArg>;
+}>;
+
+
+export type CharacterQuery = { __typename?: 'Query', character?: { __typename?: 'CharacterEntityResponse', data?: { __typename?: 'CharacterEntity', attributes?: { __typename?: 'Character', fullName?: string | null, firstName?: string | null, firstNameEnglish?: string | null, fullNameEnglish?: string | null, colorCode?: string | null, masterID?: number | null, unit?: { __typename?: 'UnitEntityResponse', data?: { __typename?: 'UnitEntity', attributes?: { __typename?: 'Unit', masterID?: number | null, name?: string | null } | null } | null } | null, cards?: { __typename?: 'CardRelationResponseCollection', data: Array<{ __typename?: 'CardEntity', id?: string | null, attributes?: { __typename?: 'Card', cardName?: string | null, rarity?: number | null, attribute?: number | null, masterID?: number | null } | null }> } | null } | null } | null } | null };
 
 
 export const UnitsDocument = gql`
@@ -6928,12 +6935,12 @@ export const CardsDocument = gql`
   ) {
     meta {
       pagination {
-        total
         page
         pageCount
       }
     }
     data {
+      id
       attributes {
         rarity
         masterID
@@ -6944,6 +6951,7 @@ export const CardsDocument = gql`
             attributes {
               unit {
                 data {
+                  id
                   attributes {
                     masterID
                   }
@@ -6988,9 +6996,94 @@ export function useCardsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Card
 export type CardsQueryHookResult = ReturnType<typeof useCardsQuery>;
 export type CardsLazyQueryHookResult = ReturnType<typeof useCardsLazyQuery>;
 export type CardsQueryResult = Apollo.QueryResult<CardsQuery, CardsQueryVariables>;
+export const CardDocument = gql`
+    query Card($cardId: ID, $locale: I18NLocaleCode) {
+  card(id: $cardId, locale: $locale) {
+    data {
+      id
+      attributes {
+        masterID
+        attribute
+        cardName
+        rarity
+        skillName
+        gachaMessage
+        debutOrder
+        startDate
+        endDate
+        maxParameters {
+          id
+          heart
+          technique
+          physical
+        }
+        character {
+          data {
+            attributes {
+              fullNameEnglish
+              firstNameEnglish
+              unit {
+                data {
+                  attributes {
+                    masterID
+                    name
+                  }
+                }
+              }
+            }
+          }
+        }
+        skill {
+          data {
+            attributes {
+              masterID
+              minRecoveryValue
+              maxRecoveryValue
+              comboSupportCount
+              scoreUpRate
+              minSeconds
+              maxSeconds
+              perfectScoreUpRate
+            }
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useCardQuery__
+ *
+ * To run a query within a React component, call `useCardQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCardQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCardQuery({
+ *   variables: {
+ *      cardId: // value for 'cardId'
+ *      locale: // value for 'locale'
+ *   },
+ * });
+ */
+export function useCardQuery(baseOptions?: Apollo.QueryHookOptions<CardQuery, CardQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CardQuery, CardQueryVariables>(CardDocument, options);
+      }
+export function useCardLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CardQuery, CardQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CardQuery, CardQueryVariables>(CardDocument, options);
+        }
+export type CardQueryHookResult = ReturnType<typeof useCardQuery>;
+export type CardLazyQueryHookResult = ReturnType<typeof useCardLazyQuery>;
+export type CardQueryResult = Apollo.QueryResult<CardQuery, CardQueryVariables>;
 export const CharacterDocument = gql`
-    query Character($filters: CharacterFiltersInput, $pagination: PaginationArg, $locale: I18NLocaleCode, $cardsPagination2: PaginationArg) {
-  characters(filters: $filters, pagination: $pagination, locale: $locale) {
+    query Character($characterId: ID, $locale: I18NLocaleCode, $cardsPagination: PaginationArg) {
+  character(id: $characterId, locale: $locale) {
     data {
       attributes {
         fullName
@@ -7006,7 +7099,7 @@ export const CharacterDocument = gql`
             }
           }
         }
-        cards(pagination: $cardsPagination2) {
+        cards(pagination: $cardsPagination) {
           data {
             id
             attributes {
@@ -7036,10 +7129,9 @@ export const CharacterDocument = gql`
  * @example
  * const { data, loading, error } = useCharacterQuery({
  *   variables: {
- *      filters: // value for 'filters'
- *      pagination: // value for 'pagination'
+ *      characterId: // value for 'characterId'
  *      locale: // value for 'locale'
- *      cardsPagination2: // value for 'cardsPagination2'
+ *      cardsPagination: // value for 'cardsPagination'
  *   },
  * });
  */
