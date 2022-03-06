@@ -1,13 +1,13 @@
 import NextImage from 'next/image'
 import React, { ComponentProps, useState } from 'react'
-import { getURL, GetURLType, myLoader, pad } from 'utils'
+import { getAlt, getURL, GetURLType, myLoader, pad } from 'utils'
 import { useSetting } from './Setting'
 
 type ImageProps = {
   src?: string
   width?: number
   height?: number
-  alt: string
+  alt?: string
   urlType?: GetURLType
   parameter?: any[]
   layout?: 'fixed' | 'fill' | 'intrinsic' | 'responsive'
@@ -37,6 +37,10 @@ export const ImageWithFallback = (
       {...props}
       src={srcData}
       width={srcData === 'fallback.png' ? fallback.width || width : width}
+      alt={
+        props.alt ||
+        getAlt({ type: props.urlType!, parameter: props.parameter })
+      }
       height={
         srcData === 'fallback.png'
           ? fallback.height || height || width
@@ -62,6 +66,10 @@ export const Image = (props: ImageProps) => {
           type: props.urlType!,
           parameter: props.parameter,
         })
+      }
+      alt={
+        props.alt ||
+        getAlt({ type: props.urlType!, parameter: props.parameter })
       }
     />
   )
@@ -195,7 +203,7 @@ export const CardIcon = ({
           width={128}
           alt={'card-icon'}
           urlType={GetURLType.CardIcon}
-          parameter={[id, rarity]}
+          parameter={[id, rarity > 2 ? '1' : '0']}
         />
       </div>
     </div>

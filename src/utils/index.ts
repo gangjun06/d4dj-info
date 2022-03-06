@@ -27,49 +27,96 @@ export enum GetURLType {
   CharaSilhouette,
   CharaProfile,
   CardIcon,
+  CardBigIcon,
+  CardStandUp,
   CardFrameIcon,
   CardAttributeIcon,
   CardUnitIcon,
   CardRarityIcon,
+  CardSD,
+  CardTransparent,
+  CardIllust,
 }
 
 const urlList: {
-  [key in GetURLType]: string | ((p: any[]) => string)
+  [key in GetURLType]: [string, string] | ((p: any[]) => [string, string?])
 } = {
-  [GetURLType.Live2DModelURL]: (p: any[]) =>
+  [GetURLType.Live2DModelURL]: (p: any[]) => [
     `AssetBundles/Live2D/${p[0]}/${p[0]}.model3.json`,
+  ],
   // ID
-  [GetURLType.CharaIcon]: (p: any[]) =>
+  [GetURLType.CharaIcon]: (p: any[]) => [
     `adv/ondemand/chara_icon/adv_icon_${pad(p[0], 3)}.png`,
+    `Character Icon ${p[0]}`,
+  ],
   // Attribute, Character
-  [GetURLType.CharaLiveStart]: (p: any[]) =>
+  [GetURLType.CharaLiveStart]: (p: any[]) => [
     `LiveStartCutin/${pad(p[0] || 0, 2)}/LiveStartChara${pad(p[1], 3)}.png`,
+    `live start cutin ${p[0]}-${p[1]}`,
+  ],
   // Character
-  [GetURLType.CharaRankHeader]: (p: any[]) =>
+  [GetURLType.CharaRankHeader]: (p: any[]) => [
     `ondemand/character/character_rank_header_${pad(p[0], 3)}.png`,
+    `rank header ${p[0]}`,
+  ],
   // Character
-  [GetURLType.CharaProfile]: (p: any[]) =>
+  [GetURLType.CharaProfile]: (p: any[]) => [
     `ondemand/character_profile/character_profile_${pad(p[0], 3)}.jpg`,
+    `character profile ${p[0]}`,
+  ],
   // Character
-  [GetURLType.CharaSilhouette]: (p: any[]) =>
+  [GetURLType.CharaSilhouette]: (p: any[]) => [
     `ondemand/character/gacha_silhouette_${pad(p[0], 3)}.png`,
-  // CardID, Card Rarity
-  [GetURLType.CardIcon]: (p: any[]) =>
-    `ondemand/card_icon/card_icon_${pad(p[0], 9)}_${p[1] > 2 ? '1' : '0'}.jpg`,
+    `gacha silhouette ${p[0]}`,
+  ],
+  // CardID, 0/1
+  [GetURLType.CardIcon]: (p: any[]) => [
+    `ondemand/card_icon/card_icon_${pad(p[0], 9)}_${p[1]}.jpg`,
+    `Card Icon ${p[0]}-${p[1]}`,
+  ],
+  // CardID, 0/1
+  [GetURLType.CardBigIcon]: (p: any[]) => [
+    `ondemand/card_bigIcon/card_bigIcon_${pad(p[0], 9)}_${p[1]}.jpg`,
+    `Card Big Icon ${p[0]}-${p[1]}`,
+  ],
+  // CardID, 0/1
+  [GetURLType.CardStandUp]: (p: any[]) => [
+    `ondemand/character/character_stand_up_${pad(p[0], 3)}.png`,
+    `Card Stand Up ${p[0]}`,
+  ],
   // Rarity, Attribute
-  [GetURLType.CardFrameIcon]: (p: any[]) =>
+  [GetURLType.CardFrameIcon]: (p: any[]) => [
     `game/Frame_${p[0]}${
       p[0] === 1 ? `_${Attribute[p[1] as Attribute]}` : ''
     }.png`,
+  ],
   // Attribute
-  [GetURLType.CardAttributeIcon]: (p: any[]) =>
+  [GetURLType.CardAttributeIcon]: (p: any[]) => [
     `game/Type_${Attribute[p[0] as Attribute]}.png`,
+  ],
   // Unit
-  [GetURLType.CardUnitIcon]: (p: any[]) =>
+  [GetURLType.CardUnitIcon]: (p: any[]) => [
     `game/Unit_${Unit[p[0] as Unit]}.png`,
+  ],
   // Rarity
-  [GetURLType.CardRarityIcon]: (p: any[]) =>
+  [GetURLType.CardRarityIcon]: (p: any[]) => [
     `game/Rarity${p[0] > 4 ? '_Sp' : ''}_Evolution.png`,
+  ],
+  // cardID, ImageID
+  [GetURLType.CardSD]: (p: any[]) => [
+    `ondemand/sd_card_chara/sd_card_chara_${pad(p[0], 9)}_${p[1]}.png`,
+    `sd_card_chara ${p[0]}`,
+  ],
+  // cardID, 0/1
+  [GetURLType.CardTransparent]: (p: any[]) => [
+    `AssetBundles/images/card_chara_transparent_${pad(p[0], 9)}_${p[1]}.png`,
+    `card illust ${p[0]}-${p[1]}`,
+  ],
+  // cardID, 0/1
+  [GetURLType.CardIllust]: (p: any[]) => [
+    `ondemand/card_chara/card_chara_${pad(p[0], 9)}_${p[1]}.jpg`,
+    `card illust ${p[0]}-${p[1]}`,
+  ],
 }
 
 export const getURL = ({
@@ -85,10 +132,10 @@ export const getURL = ({
 }) => {
   const target = urlList[type]
   let result = ''
-  if (typeof target === 'string') {
-    result = target
+  if (typeof target === 'object') {
+    result = target[0]
   } else {
-    result = target(parameter!)
+    result = target(parameter!)[0]
   }
 
   if (fullURL) {
@@ -97,4 +144,19 @@ export const getURL = ({
     }${result}`
   }
   return `${result.startsWith('game') ? '' : `${server}/`}${result}`
+}
+
+export const getAlt = ({
+  type,
+  parameter,
+}: {
+  type: GetURLType
+  parameter?: any[]
+}) => {
+  const target = urlList[type]
+  if (typeof target === 'object') {
+    return target[1] || '.'
+  } else {
+    return target(parameter!)[1] || '.'
+  }
 }

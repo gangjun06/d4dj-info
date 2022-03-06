@@ -10,7 +10,6 @@ export const formatTime = (time: number | Date) =>
 
 export const formatTimeDetail = (time: string) => {
   const parsed = parseISO(time)
-  console.log(parsed.getTime())
   if (parsed.getTime() > 4000000000000) {
     return 'X'
   }

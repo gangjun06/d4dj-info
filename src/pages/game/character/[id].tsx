@@ -84,41 +84,41 @@ export default function CardDetail({
         {character.masterID! < 700 && (
           <div className="col-span-1 md:col-span-2">
             <Card title={t('character:illustrations.name')}>
-              <Disclosure title={t('character:illustrations.livestart')}>
-                <div className="flex-center">
-                  <Image
-                    urlType={GetURLType.CharaLiveStart}
-                    parameter={[
-                      character.unit!.data?.attributes?.masterID || 0,
-                      character.masterID,
-                    ]}
-                    width={3200}
-                    height={270}
-                    alt={`live start cutin image`}
-                  />
-                </div>
+              <Disclosure
+                title={t('character:illustrations.livestart')}
+                className="flex-center"
+              >
+                <Image
+                  urlType={GetURLType.CharaLiveStart}
+                  parameter={[
+                    character.unit!.data?.attributes?.masterID || 0,
+                    character.masterID,
+                  ]}
+                  width={3200}
+                  height={270}
+                />
               </Disclosure>
-              <Disclosure title={t('character:illustrations.rankheader')}>
-                <div className="flex-center">
-                  <Image
-                    urlType={GetURLType.CharaRankHeader}
-                    parameter={[character.masterID]}
-                    width={429}
-                    height={154}
-                    alt={`rank header`}
-                  />
-                </div>
+              <Disclosure
+                title={t('character:illustrations.rankheader')}
+                className="flex-center"
+              >
+                <Image
+                  urlType={GetURLType.CharaRankHeader}
+                  parameter={[character.masterID]}
+                  width={429}
+                  height={154}
+                />
               </Disclosure>
-              <Disclosure title={t('character:illustrations.profile')}>
-                <div className="flex-center">
-                  <Image
-                    urlType={GetURLType.CharaProfile}
-                    parameter={[character.masterID]}
-                    width={2478}
-                    height={1440}
-                    alt={`chara profile`}
-                  />
-                </div>
+              <Disclosure
+                title={t('character:illustrations.profile')}
+                className="flex-center"
+              >
+                <Image
+                  urlType={GetURLType.CharaProfile}
+                  parameter={[character.masterID]}
+                  width={2478}
+                  height={1440}
+                />
               </Disclosure>
               <Disclosure
                 title={t('character:illustrations.gacha_silhouette')}
@@ -128,7 +128,6 @@ export default function CardDetail({
                   auto
                   urlType={GetURLType.CharaSilhouette}
                   parameter={[character.masterID]}
-                  alt={`gacha silhouette image`}
                 />
               </Disclosure>
               <Disclosure
@@ -136,12 +135,9 @@ export default function CardDetail({
                 className="h-72"
               >
                 <Image
-                  src={`jp/ondemand/character/character_stand_up_${pad(
-                    character.masterID!,
-                    3
-                  )}.png`}
+                  urlType={GetURLType.CardStandUp}
+                  parameter={[character.masterID]}
                   auto
-                  alt={`stand up image`}
                 />
               </Disclosure>
             </Card>

@@ -1,10 +1,10 @@
 import { SideOver } from '@/components/Basic'
 import { CardItem } from '@/components/Elements'
-import { Checkbox, FormBlock } from '@/components/Form'
+import { Checkbox, FormBlock, Radio } from '@/components/Form'
 import { useSetting } from '@/components/Setting'
 import { WaitQuery } from '@/components/Util'
 import { CardsQueryVariables, useCardsQuery } from '@/generated/graphql'
-import { Attribute, Rarity, Unit } from '@/models/index'
+import { Attribute, CardSort, Rarity, Unit } from '@/models/index'
 import MainLayout from 'layouts/main'
 // import { Attribute } from 'models'
 import useTransition from 'next-translate/useTranslation'
@@ -15,6 +15,7 @@ import InfinityScroll from 'react-infinite-scroll-component'
 import { cleanArrayWithInt } from 'utils'
 import {
   AttributeCheckbox,
+  CardOrderRadio,
   CardRearityCheckbox,
   UnitCheckbox,
 } from 'utils/constants'
@@ -23,15 +24,15 @@ type FilterData = {
   attribute: Attribute[]
   cardRearity: Rarity[]
   unit: Unit[]
-  order: 'asc' | 'desc'
-  orderBy: ''
+  sort: 'asc' | 'desc'
+  sortBy: CardSort
 }
 
 export default function CardList() {
   const { t } = useTransition('')
   const { region } = useSetting()
   const { handleSubmit, control, setValue } = useForm<FilterData>({
-    defaultValues: { order: 'asc', orderBy: '' },
+    defaultValues: { sort: 'asc', sortBy: CardSort.ID },
   })
   const [reqData, setReqData] = useState<CardsQueryVariables>({
     cardsLocale: region,
@@ -44,8 +45,8 @@ export default function CardList() {
 
   const openFilterSideOver = useCallback(() => setOpenFilter(true), [])
   const closeFilterSideOver = useCallback(() => setOpenFilter(false), [])
-  const setOrderDesc = useCallback(() => setValue('order', 'desc'), [setValue])
-  const setOrderAsc = useCallback(() => setValue('order', 'asc'), [setValue])
+  const setOrderDesc = useCallback(() => setValue('sort', 'desc'), [setValue])
+  const setOrderAsc = useCallback(() => setValue('sort', 'asc'), [setValue])
 
   const { data, loading, error, refetch, fetchMore } = useCardsQuery({
     variables: reqData,
@@ -83,13 +84,13 @@ export default function CardList() {
         pageSize: 30,
         page: 1,
       },
+      sort: [`${data.sortBy}:${data.sort}`],
     }
     setReqData(reqData)
     await refetch(reqData)
   })
 
   const fetchData = async () => {
-    console.log('FetchMore!')
     await fetchMore({
       variables: {
         ...reqData,
@@ -156,9 +157,9 @@ export default function CardList() {
         <FormBlock label={t('common:unit.name')}>
           <Checkbox name="unit" control={control} list={UnitCheckbox(t)} />
         </FormBlock>
-        {/* <FormBlock label={t('common:sort_name')}>
-          <Radio name="orderBy" control={control} list={CardOrderRadio(t)} />
-        </FormBlock> */}
+        <FormBlock label={t('common:sort_name')}>
+          <Radio name="sortBy" control={control} list={CardOrderRadio(t)} />
+        </FormBlock>
       </SideOver>
 
       <WaitQuery loading={loading} error={error}>

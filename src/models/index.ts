@@ -29,3 +29,8 @@ export enum Rarity {
   Four = 4,
   Special = 7,
 }
+
+export enum CardSort {
+  ID = 'masterID',
+  Name = 'cardName',
+}

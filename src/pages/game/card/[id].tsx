@@ -1,5 +1,5 @@
-import { Card, Modal, Table, TableBody } from '@/components/Basic'
-import { CardIcon } from '@/components/Image'
+import { Card, Disclosure, Modal, Table, TableBody } from '@/components/Basic'
+import { CardIcon, Image } from '@/components/Image'
 import {
   CardDocument,
   CardQuery,
@@ -10,7 +10,7 @@ import MainLayout from 'layouts/main'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import useTransition from 'next-translate/useTranslation'
 import { useState } from 'react'
-import { formatTimeDetail, pad } from 'utils'
+import { formatTimeDetail, GetURLType, pad } from 'utils'
 import { createLive2DShare } from 'utils/live2d'
 
 export default function CardDetail({
@@ -112,7 +112,114 @@ export default function CardDetail({
         </div>
         <div className="col-span-1 md:col-span-2">
           <Card title={t('card:illustrations.name')}>
-            <></>
+            {card.rarity! > 2 && (
+              <Disclosure
+                title={t('card:illustrations.sd')}
+                className="flex items-center justify-center flex-wrap"
+              >
+                {['00', '01', '02', '10', '11', '12'].map((item) => (
+                  <div className="h-72 w-48 relative" key={item}>
+                    <Image
+                      urlType={GetURLType.CardSD}
+                      parameter={[card.masterID, item]}
+                      auto
+                    />
+                  </div>
+                ))}
+              </Disclosure>
+            )}
+            <Disclosure
+              title={t('card:illustrations.transparent')}
+              className="flex-center"
+            >
+              <Image
+                urlType={GetURLType.CardTransparent}
+                parameter={[card.masterID, 0]}
+                width={920}
+                height={770}
+              />
+            </Disclosure>
+            {card.rarity! > 2 && (
+              <Disclosure
+                title={t('card:illustrations.transparent1')}
+                className="flex-center"
+              >
+                <Image
+                  urlType={GetURLType.CardTransparent}
+                  parameter={[card.masterID, 1]}
+                  width={920}
+                  height={770}
+                />
+              </Disclosure>
+            )}
+            {card.rarity !== 7 && (
+              <Disclosure
+                title={t('card:illustrations.illustration')}
+                className="flex-center"
+              >
+                <Image
+                  urlType={GetURLType.CardIllust}
+                  parameter={[card.masterID, 0]}
+                  width={764}
+                  height={508}
+                />
+              </Disclosure>
+            )}
+            {card.rarity! > 2 && (
+              <Disclosure
+                title={t('card:illustrations.illustration1')}
+                className="flex-center"
+              >
+                <Image
+                  urlType={GetURLType.CardIllust}
+                  parameter={[card.masterID, 1]}
+                  width={764}
+                  height={508}
+                />
+              </Disclosure>
+            )}
+            <Disclosure
+              title={t('card:illustrations.icon')}
+              className="flex-center gap-x-1"
+            >
+              {card.rarity !== 7 && (
+                <Image
+                  urlType={GetURLType.CardIcon}
+                  parameter={[card.masterID, 0]}
+                  width={258}
+                  height={258}
+                />
+              )}
+              {card.rarity! > 2 && (
+                <Image
+                  urlType={GetURLType.CardIcon}
+                  parameter={[card.masterID, 1]}
+                  width={258}
+                  height={258}
+                />
+              )}
+            </Disclosure>
+            <Disclosure
+              title={t('card:illustrations.big_icon')}
+              className="flex-center w-full gap-x-1"
+            >
+              {card.rarity !== 7 && (
+                <Image
+                  urlType={GetURLType.CardBigIcon}
+                  parameter={[card.masterID, 0]}
+                  width={344}
+                  height={426}
+                />
+              )}
+              {card.rarity! > 2 && (
+                <Image
+                  urlType={GetURLType.CardBigIcon}
+                  parameter={[card.masterID, 1]}
+                  width={344}
+                  height={426}
+                />
+              )}
+            </Disclosure>
           </Card>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { Attribute, Unit } from 'models'
+import { Attribute, CardSort, Unit } from 'models'
 import { Translate } from 'next-translate'
 
 export type CheckboxListType<T = string> = (t: Translate) => {
@@ -105,17 +105,13 @@ export const UnitCheckbox: CheckboxListType<Unit> = (t: Translate) => [
 //   },
 // ]
 
-// export const CardOrderRadio: CheckboxListType = (t: Translate) => [
-//   {
-//     label: t('common:sort.id'),
-//     value: CardSort.ID,
-//   },
-//   {
-//     label: t('common:sort.name'),
-//     value: CardSort.Name,
-//   },
-//   {
-//     label: t('common:sort.debut_order'),
-//     value: CardSort.DebutOrder,
-//   },
-// ]
+export const CardOrderRadio: CheckboxListType<CardSort> = (t: Translate) => [
+  {
+    label: t('common:sort.id'),
+    value: CardSort.ID,
+  },
+  {
+    label: t('common:sort.name'),
+    value: CardSort.Name,
+  },
+]
