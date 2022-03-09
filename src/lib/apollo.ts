@@ -1,4 +1,14 @@
-import { ApolloClient, InMemoryCache } from '@apollo/client'
+import { ApolloClient, FieldPolicy, InMemoryCache } from '@apollo/client'
+
+const concatPagination: FieldPolicy = {
+  keyArgs: false,
+  merge(existing = { data: [] }, incoming: any, {}) {
+    return {
+      ...incoming,
+      data: [...existing.data, ...incoming.data],
+    }
+  },
+}
 
 export const client = new ApolloClient({
   uri: process.env.NEXT_PUBLIC_BACKEND_URL + '/graphql',
@@ -8,15 +18,9 @@ export const client = new ApolloClient({
     typePolicies: {
       Query: {
         fields: {
-          cards: {
-            keyArgs: false,
-            merge(existing = { data: [] }, incoming, {}) {
-              return {
-                ...incoming,
-                data: [...existing.data, ...incoming.data],
-              }
-            },
-          },
+          cards: concatPagination,
+          musics: concatPagination,
+          events: concatPagination,
         },
       },
     },

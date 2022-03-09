@@ -1,6 +1,6 @@
 export const cleanArray = (data: any[]) => {
   const filtered = data.filter((item) => item !== undefined)
-  return filtered.length ? filtered : undefined
+  return filtered.length ? filtered : []
 }
 
 export const cleanArrayWithInt = (data: any[]) => {

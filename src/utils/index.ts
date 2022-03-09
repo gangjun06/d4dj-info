@@ -36,6 +36,8 @@ export enum GetURLType {
   CardSD,
   CardTransparent,
   CardIllust,
+  MusicJacket,
+  EventTitleLogo,
 }
 
 const urlList: {
@@ -117,6 +119,16 @@ const urlList: {
     `ondemand/card_chara/card_chara_${pad(p[0], 9)}_${p[1]}.jpg`,
     `card illust ${p[0]}-${p[1]}`,
   ],
+  // musicID
+  [GetURLType.MusicJacket]: (p: any[]) => [
+    `music_jacket/music_jacket_${pad(p[0], 7)}.jpg`,
+    `music jacket ${p[0]}`,
+  ],
+  // eventID
+  [GetURLType.EventTitleLogo]: (p: any[]) => [
+    `ondemand/event/event_${p[0]}/title_logo.png`,
+    `event title logo ${p[0]}`,
+  ],
 }
 
 export const getURL = ({
@@ -159,4 +171,22 @@ export const getAlt = ({
   } else {
     return target(parameter!)[1] || '.'
   }
+}
+
+export const generateFilter = <T>(data: {
+  [key: string]: string[] | number[]
+}): T => {
+  return {
+    and: Object.keys(data).map((key) => ({
+      or: data[key].map((item) =>
+        key.split('.').reduceRight(
+          //@ts-ignore
+          (obj, next) => ({
+            [next]: obj,
+          }),
+          { eq: item }
+        )
+      ),
+    })),
+  } as unknown as T
 }

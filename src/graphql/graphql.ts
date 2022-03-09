@@ -166,3 +166,84 @@ export const GET_CHARACTER = gql`
     }
   }
 `
+
+export const GET_MUSICS = gql`
+  query Musics(
+    $locale: I18NLocaleCode
+    $sort: [String]
+    $pagination: PaginationArg
+    $filters: MusicFiltersInput
+  ) {
+    musics(
+      locale: $locale
+      sort: $sort
+      pagination: $pagination
+      filters: $filters
+    ) {
+      data {
+        id
+        attributes {
+          name
+          composer
+          masterID
+          category
+          musicBpm
+          unit {
+            data {
+              attributes {
+                name
+              }
+            }
+          }
+          charts {
+            data {
+              id
+              attributes {
+                level
+              }
+            }
+          }
+        }
+      }
+      meta {
+        pagination {
+          page
+          pageCount
+        }
+      }
+    }
+  }
+`
+
+export const GET_EVENTS = gql`
+  query Events(
+    $filters: EventFiltersInput
+    $pagination: PaginationArg
+    $sort: [String]
+    $locale: I18NLocaleCode
+  ) {
+    events(
+      filters: $filters
+      pagination: $pagination
+      sort: $sort
+      locale: $locale
+    ) {
+      data {
+        id
+        attributes {
+          masterID
+          name
+          type
+          startDate
+          endDate
+        }
+      }
+      meta {
+        pagination {
+          page
+          pageCount
+        }
+      }
+    }
+  }
+`

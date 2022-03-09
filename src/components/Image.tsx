@@ -1,6 +1,6 @@
 import NextImage from 'next/image'
 import React, { ComponentProps, useState } from 'react'
-import { getAlt, getURL, GetURLType, myLoader, pad } from 'utils'
+import { getAlt, getURL, GetURLType, myLoader } from 'utils'
 import { useSetting } from './Setting'
 
 type ImageProps = {
@@ -36,18 +36,18 @@ export const ImageWithFallback = (
     <ImageBase
       {...props}
       src={srcData}
-      width={srcData === 'fallback.png' ? fallback.width || width : width}
+      width={srcData === 'jp/fallback.png' ? fallback.width || width : width}
       alt={
         props.alt ||
         getAlt({ type: props.urlType!, parameter: props.parameter })
       }
       height={
-        srcData === 'fallback.png'
+        srcData === 'jp/fallback.png'
           ? fallback.height || height || width
           : height || width
       }
       onError={() => {
-        setSrcData('fallback.png')
+        setSrcData('jp/fallback.png')
       }}
     />
   )
@@ -211,15 +211,12 @@ export const CardIcon = ({
 }
 
 export const EventIcon = ({ id }: { id: number }) => {
-  const [src, setSrc] = useState<string>(
-    `ondemand/event/event_${id}/title_logo.png`
-  )
   return (
     <ImageWithFallback
-      src={src}
-      width={src === 'fallback.png' ? 128 : 350}
-      alt={`event-${id}`}
-      height={src === 'fallback.png' ? 128 : 200}
+      width={350}
+      height={200}
+      urlType={GetURLType.EventTitleLogo}
+      parameter={[id]}
     />
   )
 }
@@ -237,15 +234,12 @@ export const CharacterIcon = ({ id, alt }: { id: number; alt: string }) => {
 }
 
 const MusicIconContent = ({ id }: { id: number }) => {
-  const [src, setSrc] = useState<string>(
-    `music_jacket/music_jacket_${pad(id, 7)}.jpg`
-  )
   return (
     <ImageWithFallback
-      src={src}
       width={128}
-      alt={`image jacket`}
       height={128}
+      urlType={GetURLType.MusicJacket}
+      parameter={[id]}
     />
   )
 }

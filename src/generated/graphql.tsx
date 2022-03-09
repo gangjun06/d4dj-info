@@ -385,7 +385,7 @@ export type Chart = {
   locale?: Maybe<Scalars['String']>;
   localizations?: Maybe<ChartRelationResponseCollection>;
   masterID?: Maybe<Scalars['Int']>;
-  music?: Maybe<MusicGameEntityResponse>;
+  music?: Maybe<MusicEntityResponse>;
   updatedAt?: Maybe<Scalars['DateTime']>;
 };
 
@@ -557,7 +557,7 @@ export type ChartFiltersInput = {
   locale?: InputMaybe<StringFilterInput>;
   localizations?: InputMaybe<ChartFiltersInput>;
   masterID?: InputMaybe<IntFilterInput>;
-  music?: InputMaybe<MusicGameFiltersInput>;
+  music?: InputMaybe<MusicFiltersInput>;
   not?: InputMaybe<ChartFiltersInput>;
   or?: InputMaybe<Array<InputMaybe<ChartFiltersInput>>>;
   updatedAt?: InputMaybe<DateTimeFilterInput>;
@@ -1242,7 +1242,7 @@ export enum Enum_Missiongroup_Category {
   Tutorial = 'Tutorial'
 }
 
-export enum Enum_Musicgame_Category {
+export enum Enum_Music_Category {
   Collabo = 'Collabo',
   Cover = 'Cover',
   Game = 'Game',
@@ -1622,7 +1622,7 @@ export type EventMedleySetlist = {
   endDate?: Maybe<Scalars['DateTime']>;
   locale?: Maybe<Scalars['String']>;
   localizations?: Maybe<EventMedleySetlistRelationResponseCollection>;
-  musics?: Maybe<MusicGameRelationResponseCollection>;
+  musics?: Maybe<MusicRelationResponseCollection>;
   name?: Maybe<Scalars['String']>;
   order?: Maybe<Scalars['Int']>;
   requiredPoint?: Maybe<Scalars['Int']>;
@@ -1640,7 +1640,7 @@ export type EventMedleySetlistLocalizationsArgs = {
 
 
 export type EventMedleySetlistMusicsArgs = {
-  filters?: InputMaybe<MusicGameFiltersInput>;
+  filters?: InputMaybe<MusicFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
@@ -1678,7 +1678,7 @@ export type EventMedleySetlistFiltersInput = {
   id?: InputMaybe<IdFilterInput>;
   locale?: InputMaybe<StringFilterInput>;
   localizations?: InputMaybe<EventMedleySetlistFiltersInput>;
-  musics?: InputMaybe<MusicGameFiltersInput>;
+  musics?: InputMaybe<MusicFiltersInput>;
   name?: InputMaybe<StringFilterInput>;
   not?: InputMaybe<EventMedleySetlistFiltersInput>;
   or?: InputMaybe<Array<InputMaybe<EventMedleySetlistFiltersInput>>>;
@@ -2292,7 +2292,7 @@ export type GachaRelationResponseCollection = {
   data: Array<GachaEntity>;
 };
 
-export type GenericMorph = AssistOptionPreset | Attribute | Card | Character | Chart | ChartAchieve | ChartDesigner | ClubItem | ClubItemDetail | ClubItemSpot | ComponentCharacterCharacters | ComponentCharacterMaxParameters | ComponentEpisodeCharacterEpisode | ComponentEpisodeEvent | ComponentEpisodeUnitEpisode | ComponentGameCondition | ComponentGameLoginBonusItem | ComponentGameRandomStock | ComponentMusicChartNoteCount | ComponentMusicMusicMix | ComponentMusicTrends | Episode | Event | EventAggregationBase | EventMedleySetlist | EventPointReward | EventRankingReward | EventSpecificBonus | Exchange | ExchangeItem | Gacha | Honor | I18NLocale | Live2DUiChat | LiveResultEpisode | LoginBonus | MissionDetail | MissionGroup | MissionPanel | MusicGame | OptionPreset | ParameterBonus | PassiveSkill | PassiveSkillDescription | PassiveSkillExp | QuestBlock | QuestClubDeck | QuestDeck | QuestMap | Rarity | Reward | Skill | Stamp | Stock | StockViewCategory | Unit | UploadFile | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
+export type GenericMorph = AssistOptionPreset | Attribute | Card | Character | Chart | ChartAchieve | ChartDesigner | ClubItem | ClubItemDetail | ClubItemSpot | ComponentCharacterCharacters | ComponentCharacterMaxParameters | ComponentEpisodeCharacterEpisode | ComponentEpisodeEvent | ComponentEpisodeUnitEpisode | ComponentGameCondition | ComponentGameLoginBonusItem | ComponentGameRandomStock | ComponentMusicChartNoteCount | ComponentMusicMusicMix | ComponentMusicTrends | Episode | Event | EventAggregationBase | EventMedleySetlist | EventPointReward | EventRankingReward | EventSpecificBonus | Exchange | ExchangeItem | Gacha | Honor | I18NLocale | Live2DUiChat | LiveResultEpisode | LoginBonus | MissionDetail | MissionGroup | MissionPanel | Music | OptionPreset | ParameterBonus | PassiveSkill | PassiveSkillDescription | PassiveSkillExp | QuestBlock | QuestClubDeck | QuestDeck | QuestMap | Rarity | Reward | Skill | Stamp | Stock | StockViewCategory | Unit | UploadFile | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
 
 export type Honor = {
   __typename?: 'Honor';
@@ -2975,11 +2975,11 @@ export type MissionPanelRelationResponseCollection = {
   data: Array<MissionPanelEntity>;
 };
 
-export type MusicGame = {
-  __typename?: 'MusicGame';
+export type Music = {
+  __typename?: 'Music';
   arranger?: Maybe<Scalars['String']>;
   canFairUse?: Maybe<Scalars['Boolean']>;
-  category?: Maybe<Enum_Musicgame_Category>;
+  category?: Maybe<Enum_Music_Category>;
   charts?: Maybe<ChartRelationResponseCollection>;
   composer?: Maybe<Scalars['String']>;
   createdAt?: Maybe<Scalars['DateTime']>;
@@ -2989,7 +2989,7 @@ export type MusicGame = {
   hasMovie?: Maybe<Scalars['Boolean']>;
   isHidden?: Maybe<Scalars['Boolean']>;
   locale?: Maybe<Scalars['String']>;
-  localizations?: Maybe<MusicGameRelationResponseCollection>;
+  localizations?: Maybe<MusicRelationResponseCollection>;
   lyrist?: Maybe<Scalars['String']>;
   masterID?: Maybe<Scalars['Int']>;
   musicBpm?: Maybe<Scalars['Float']>;
@@ -3006,45 +3006,45 @@ export type MusicGame = {
 };
 
 
-export type MusicGameChartsArgs = {
+export type MusicChartsArgs = {
   filters?: InputMaybe<ChartFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 
-export type MusicGameLocalizationsArgs = {
-  filters?: InputMaybe<MusicGameFiltersInput>;
+export type MusicLocalizationsArgs = {
+  filters?: InputMaybe<MusicFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 
-export type MusicGameMusicMixArgs = {
+export type MusicMusicMixArgs = {
   filters?: InputMaybe<ComponentMusicMusicMixFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
-export type MusicGameEntity = {
-  __typename?: 'MusicGameEntity';
-  attributes?: Maybe<MusicGame>;
+export type MusicEntity = {
+  __typename?: 'MusicEntity';
+  attributes?: Maybe<Music>;
   id?: Maybe<Scalars['ID']>;
 };
 
-export type MusicGameEntityResponse = {
-  __typename?: 'MusicGameEntityResponse';
-  data?: Maybe<MusicGameEntity>;
+export type MusicEntityResponse = {
+  __typename?: 'MusicEntityResponse';
+  data?: Maybe<MusicEntity>;
 };
 
-export type MusicGameEntityResponseCollection = {
-  __typename?: 'MusicGameEntityResponseCollection';
-  data: Array<MusicGameEntity>;
+export type MusicEntityResponseCollection = {
+  __typename?: 'MusicEntityResponseCollection';
+  data: Array<MusicEntity>;
   meta: ResponseCollectionMeta;
 };
 
-export type MusicGameFiltersInput = {
-  and?: InputMaybe<Array<InputMaybe<MusicGameFiltersInput>>>;
+export type MusicFiltersInput = {
+  and?: InputMaybe<Array<InputMaybe<MusicFiltersInput>>>;
   arranger?: InputMaybe<StringFilterInput>;
   canFairUse?: InputMaybe<BooleanFilterInput>;
   category?: InputMaybe<StringFilterInput>;
@@ -3058,14 +3058,14 @@ export type MusicGameFiltersInput = {
   id?: InputMaybe<IdFilterInput>;
   isHidden?: InputMaybe<BooleanFilterInput>;
   locale?: InputMaybe<StringFilterInput>;
-  localizations?: InputMaybe<MusicGameFiltersInput>;
+  localizations?: InputMaybe<MusicFiltersInput>;
   lyrist?: InputMaybe<StringFilterInput>;
   masterID?: InputMaybe<IntFilterInput>;
   musicBpm?: InputMaybe<FloatFilterInput>;
   name?: InputMaybe<StringFilterInput>;
-  not?: InputMaybe<MusicGameFiltersInput>;
+  not?: InputMaybe<MusicFiltersInput>;
   openKey?: InputMaybe<IntFilterInput>;
-  or?: InputMaybe<Array<InputMaybe<MusicGameFiltersInput>>>;
+  or?: InputMaybe<Array<InputMaybe<MusicFiltersInput>>>;
   purchaseBonuses?: InputMaybe<JsonFilterInput>;
   readName?: InputMaybe<StringFilterInput>;
   specialUnitName?: InputMaybe<StringFilterInput>;
@@ -3075,10 +3075,10 @@ export type MusicGameFiltersInput = {
   updatedAt?: InputMaybe<DateTimeFilterInput>;
 };
 
-export type MusicGameInput = {
+export type MusicInput = {
   arranger?: InputMaybe<Scalars['String']>;
   canFairUse?: InputMaybe<Scalars['Boolean']>;
-  category?: InputMaybe<Enum_Musicgame_Category>;
+  category?: InputMaybe<Enum_Music_Category>;
   charts?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   composer?: InputMaybe<Scalars['String']>;
   defaultOrder?: InputMaybe<Scalars['Int']>;
@@ -3100,9 +3100,9 @@ export type MusicGameInput = {
   unused?: InputMaybe<Scalars['Boolean']>;
 };
 
-export type MusicGameRelationResponseCollection = {
-  __typename?: 'MusicGameRelationResponseCollection';
-  data: Array<MusicGameEntity>;
+export type MusicRelationResponseCollection = {
+  __typename?: 'MusicRelationResponseCollection';
+  data: Array<MusicEntity>;
 };
 
 export type Mutation = {
@@ -3161,8 +3161,8 @@ export type Mutation = {
   createMissionGroupLocalization?: Maybe<MissionGroupEntityResponse>;
   createMissionPanel?: Maybe<MissionPanelEntityResponse>;
   createMissionPanelLocalization?: Maybe<MissionPanelEntityResponse>;
-  createMusicGame?: Maybe<MusicGameEntityResponse>;
-  createMusicGameLocalization?: Maybe<MusicGameEntityResponse>;
+  createMusic?: Maybe<MusicEntityResponse>;
+  createMusicLocalization?: Maybe<MusicEntityResponse>;
   createOptionPreset?: Maybe<OptionPresetEntityResponse>;
   createOptionPresetLocalization?: Maybe<OptionPresetEntityResponse>;
   createParameterBonus?: Maybe<ParameterBonusEntityResponse>;
@@ -3227,7 +3227,7 @@ export type Mutation = {
   deleteMissionDetail?: Maybe<MissionDetailEntityResponse>;
   deleteMissionGroup?: Maybe<MissionGroupEntityResponse>;
   deleteMissionPanel?: Maybe<MissionPanelEntityResponse>;
-  deleteMusicGame?: Maybe<MusicGameEntityResponse>;
+  deleteMusic?: Maybe<MusicEntityResponse>;
   deleteOptionPreset?: Maybe<OptionPresetEntityResponse>;
   deleteParameterBonus?: Maybe<ParameterBonusEntityResponse>;
   deletePassiveSkill?: Maybe<PassiveSkillEntityResponse>;
@@ -3288,7 +3288,7 @@ export type Mutation = {
   updateMissionDetail?: Maybe<MissionDetailEntityResponse>;
   updateMissionGroup?: Maybe<MissionGroupEntityResponse>;
   updateMissionPanel?: Maybe<MissionPanelEntityResponse>;
-  updateMusicGame?: Maybe<MusicGameEntityResponse>;
+  updateMusic?: Maybe<MusicEntityResponse>;
   updateOptionPreset?: Maybe<OptionPresetEntityResponse>;
   updateParameterBonus?: Maybe<ParameterBonusEntityResponse>;
   updatePassiveSkill?: Maybe<PassiveSkillEntityResponse>;
@@ -3665,14 +3665,14 @@ export type MutationCreateMissionPanelLocalizationArgs = {
 };
 
 
-export type MutationCreateMusicGameArgs = {
-  data: MusicGameInput;
+export type MutationCreateMusicArgs = {
+  data: MusicInput;
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type MutationCreateMusicGameLocalizationArgs = {
-  data?: InputMaybe<MusicGameInput>;
+export type MutationCreateMusicLocalizationArgs = {
+  data?: InputMaybe<MusicInput>;
   id?: InputMaybe<Scalars['ID']>;
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
@@ -4063,7 +4063,7 @@ export type MutationDeleteMissionPanelArgs = {
 };
 
 
-export type MutationDeleteMusicGameArgs = {
+export type MutationDeleteMusicArgs = {
   id: Scalars['ID'];
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
@@ -4415,8 +4415,8 @@ export type MutationUpdateMissionPanelArgs = {
 };
 
 
-export type MutationUpdateMusicGameArgs = {
-  data: MusicGameInput;
+export type MutationUpdateMusicArgs = {
+  data: MusicInput;
   id: Scalars['ID'];
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
@@ -4943,8 +4943,8 @@ export type Query = {
   missionGroups?: Maybe<MissionGroupEntityResponseCollection>;
   missionPanel?: Maybe<MissionPanelEntityResponse>;
   missionPanels?: Maybe<MissionPanelEntityResponseCollection>;
-  musicGame?: Maybe<MusicGameEntityResponse>;
-  musicGames?: Maybe<MusicGameEntityResponseCollection>;
+  music?: Maybe<MusicEntityResponse>;
+  musics?: Maybe<MusicEntityResponseCollection>;
   optionPreset?: Maybe<OptionPresetEntityResponse>;
   optionPresets?: Maybe<OptionPresetEntityResponseCollection>;
   parameterBonus?: Maybe<ParameterBonusEntityResponse>;
@@ -5376,14 +5376,14 @@ export type QueryMissionPanelsArgs = {
 };
 
 
-export type QueryMusicGameArgs = {
+export type QueryMusicArgs = {
   id?: InputMaybe<Scalars['ID']>;
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type QueryMusicGamesArgs = {
-  filters?: InputMaybe<MusicGameFiltersInput>;
+export type QueryMusicsArgs = {
+  filters?: InputMaybe<MusicFiltersInput>;
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
@@ -6453,7 +6453,7 @@ export type Unit = {
   localizations?: Maybe<UnitRelationResponseCollection>;
   mainColorCode?: Maybe<Scalars['String']>;
   masterID?: Maybe<Scalars['Int']>;
-  musicGames?: Maybe<MusicGameRelationResponseCollection>;
+  musics?: Maybe<MusicRelationResponseCollection>;
   name?: Maybe<Scalars['String']>;
   shortName?: Maybe<Scalars['String']>;
   subColorCode?: Maybe<Scalars['String']>;
@@ -6484,8 +6484,8 @@ export type UnitLocalizationsArgs = {
 };
 
 
-export type UnitMusicGamesArgs = {
-  filters?: InputMaybe<MusicGameFiltersInput>;
+export type UnitMusicsArgs = {
+  filters?: InputMaybe<MusicFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
@@ -6517,7 +6517,7 @@ export type UnitFiltersInput = {
   localizations?: InputMaybe<UnitFiltersInput>;
   mainColorCode?: InputMaybe<StringFilterInput>;
   masterID?: InputMaybe<IntFilterInput>;
-  musicGames?: InputMaybe<MusicGameFiltersInput>;
+  musics?: InputMaybe<MusicFiltersInput>;
   name?: InputMaybe<StringFilterInput>;
   not?: InputMaybe<UnitFiltersInput>;
   or?: InputMaybe<Array<InputMaybe<UnitFiltersInput>>>;
@@ -6534,7 +6534,7 @@ export type UnitInput = {
   episode?: InputMaybe<Array<InputMaybe<ComponentEpisodeUnitEpisodeInput>>>;
   mainColorCode?: InputMaybe<Scalars['String']>;
   masterID?: InputMaybe<Scalars['Int']>;
-  musicGames?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  musics?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   name?: InputMaybe<Scalars['String']>;
   shortName?: InputMaybe<Scalars['String']>;
   subColorCode?: InputMaybe<Scalars['String']>;
@@ -6873,6 +6873,26 @@ export type CharacterQueryVariables = Exact<{
 
 export type CharacterQuery = { __typename?: 'Query', character?: { __typename?: 'CharacterEntityResponse', data?: { __typename?: 'CharacterEntity', attributes?: { __typename?: 'Character', fullName?: string | null, firstName?: string | null, firstNameEnglish?: string | null, fullNameEnglish?: string | null, colorCode?: string | null, masterID?: number | null, unit?: { __typename?: 'UnitEntityResponse', data?: { __typename?: 'UnitEntity', attributes?: { __typename?: 'Unit', masterID?: number | null, name?: string | null } | null } | null } | null, cards?: { __typename?: 'CardRelationResponseCollection', data: Array<{ __typename?: 'CardEntity', id?: string | null, attributes?: { __typename?: 'Card', cardName?: string | null, rarity?: number | null, attribute?: number | null, masterID?: number | null } | null }> } | null } | null } | null } | null };
 
+export type MusicsQueryVariables = Exact<{
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>> | InputMaybe<Scalars['String']>>;
+  pagination?: InputMaybe<PaginationArg>;
+  filters?: InputMaybe<MusicFiltersInput>;
+}>;
+
+
+export type MusicsQuery = { __typename?: 'Query', musics?: { __typename?: 'MusicEntityResponseCollection', data: Array<{ __typename?: 'MusicEntity', id?: string | null, attributes?: { __typename?: 'Music', name?: string | null, composer?: string | null, masterID?: number | null, category?: Enum_Music_Category | null, musicBpm?: number | null, unit?: { __typename?: 'UnitEntityResponse', data?: { __typename?: 'UnitEntity', attributes?: { __typename?: 'Unit', name?: string | null } | null } | null } | null, charts?: { __typename?: 'ChartRelationResponseCollection', data: Array<{ __typename?: 'ChartEntity', id?: string | null, attributes?: { __typename?: 'Chart', level?: number | null } | null }> } | null } | null }>, meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', page: number, pageCount: number } } } | null };
+
+export type EventsQueryVariables = Exact<{
+  filters?: InputMaybe<EventFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>> | InputMaybe<Scalars['String']>>;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+}>;
+
+
+export type EventsQuery = { __typename?: 'Query', events?: { __typename?: 'EventEntityResponseCollection', data: Array<{ __typename?: 'EventEntity', id?: string | null, attributes?: { __typename?: 'Event', masterID?: number | null, name?: string | null, type?: Enum_Event_Type | null, startDate?: any | null, endDate?: any | null } | null }>, meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', page: number, pageCount: number } } } | null };
+
 
 export const UnitsDocument = gql`
     query Units($locale: I18NLocaleCode) {
@@ -7146,3 +7166,124 @@ export function useCharacterLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 export type CharacterQueryHookResult = ReturnType<typeof useCharacterQuery>;
 export type CharacterLazyQueryHookResult = ReturnType<typeof useCharacterLazyQuery>;
 export type CharacterQueryResult = Apollo.QueryResult<CharacterQuery, CharacterQueryVariables>;
+export const MusicsDocument = gql`
+    query Musics($locale: I18NLocaleCode, $sort: [String], $pagination: PaginationArg, $filters: MusicFiltersInput) {
+  musics(locale: $locale, sort: $sort, pagination: $pagination, filters: $filters) {
+    data {
+      id
+      attributes {
+        name
+        composer
+        masterID
+        category
+        musicBpm
+        unit {
+          data {
+            attributes {
+              name
+            }
+          }
+        }
+        charts {
+          data {
+            id
+            attributes {
+              level
+            }
+          }
+        }
+      }
+    }
+    meta {
+      pagination {
+        page
+        pageCount
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useMusicsQuery__
+ *
+ * To run a query within a React component, call `useMusicsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMusicsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMusicsQuery({
+ *   variables: {
+ *      locale: // value for 'locale'
+ *      sort: // value for 'sort'
+ *      pagination: // value for 'pagination'
+ *      filters: // value for 'filters'
+ *   },
+ * });
+ */
+export function useMusicsQuery(baseOptions?: Apollo.QueryHookOptions<MusicsQuery, MusicsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MusicsQuery, MusicsQueryVariables>(MusicsDocument, options);
+      }
+export function useMusicsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MusicsQuery, MusicsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MusicsQuery, MusicsQueryVariables>(MusicsDocument, options);
+        }
+export type MusicsQueryHookResult = ReturnType<typeof useMusicsQuery>;
+export type MusicsLazyQueryHookResult = ReturnType<typeof useMusicsLazyQuery>;
+export type MusicsQueryResult = Apollo.QueryResult<MusicsQuery, MusicsQueryVariables>;
+export const EventsDocument = gql`
+    query Events($filters: EventFiltersInput, $pagination: PaginationArg, $sort: [String], $locale: I18NLocaleCode) {
+  events(filters: $filters, pagination: $pagination, sort: $sort, locale: $locale) {
+    data {
+      id
+      attributes {
+        masterID
+        name
+        type
+        startDate
+        endDate
+      }
+    }
+    meta {
+      pagination {
+        page
+        pageCount
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useEventsQuery__
+ *
+ * To run a query within a React component, call `useEventsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useEventsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useEventsQuery({
+ *   variables: {
+ *      filters: // value for 'filters'
+ *      pagination: // value for 'pagination'
+ *      sort: // value for 'sort'
+ *      locale: // value for 'locale'
+ *   },
+ * });
+ */
+export function useEventsQuery(baseOptions?: Apollo.QueryHookOptions<EventsQuery, EventsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<EventsQuery, EventsQueryVariables>(EventsDocument, options);
+      }
+export function useEventsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<EventsQuery, EventsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<EventsQuery, EventsQueryVariables>(EventsDocument, options);
+        }
+export type EventsQueryHookResult = ReturnType<typeof useEventsQuery>;
+export type EventsLazyQueryHookResult = ReturnType<typeof useEventsLazyQuery>;
+export type EventsQueryResult = Apollo.QueryResult<EventsQuery, EventsQueryVariables>;

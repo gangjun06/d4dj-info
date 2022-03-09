@@ -34,3 +34,19 @@ export enum CardSort {
   ID = 'masterID',
   Name = 'cardName',
 }
+
+export enum MusicSort {
+  ID = 'masterID',
+  Name = 'name',
+  DefaultOrder = 'defaultOrder',
+  StartDate = 'StartDate',
+  BPM = 'musicBpm',
+}
+
+export enum MusicCategory {
+  Instrumental = 'Instrumental',
+  Original = 'Original',
+  Cover = 'Cover',
+  Game = 'Game',
+  Collabo = 'Collabo',
+}

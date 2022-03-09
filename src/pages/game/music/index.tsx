@@ -1,46 +1,43 @@
 import { SideOver } from '@/components/Basic'
-import { CardItem } from '@/components/Elements'
+import { MusicItem } from '@/components/Elements'
 import { Checkbox, FormBlock, Radio } from '@/components/Form'
 import { useSetting } from '@/components/Setting'
 import { WaitQuery } from '@/components/Util'
 import {
   CardFiltersInput,
-  CardsQueryVariables,
-  useCardsQuery,
+  MusicsQueryVariables,
+  useMusicsQuery,
 } from '@/generated/graphql'
-import { Attribute, CardSort, Rarity, Unit } from '@/models/index'
+import { MusicCategory, MusicSort, Unit } from '@/models/index'
 import MainLayout from 'layouts/main'
-// import { Attribute } from 'models'
 import useTransition from 'next-translate/useTranslation'
 import { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { HiOutlineFilter } from 'react-icons/hi'
 import InfinityScroll from 'react-infinite-scroll-component'
-import { cleanArrayWithInt, generateFilter } from 'utils'
+import { cleanArray, cleanArrayWithInt, generateFilter } from 'utils'
 import {
-  AttributeCheckbox,
-  CardOrderRadio,
-  CardRearityCheckbox,
+  MusicCategoryCheckbox,
+  MusicSortRadio,
   UnitCheckbox,
 } from 'utils/constants'
 
 type FilterData = {
-  attribute: Attribute[]
-  cardRearity: Rarity[]
+  category: MusicCategory[]
   unit: Unit[]
   sort: 'asc' | 'desc'
-  sortBy: CardSort
+  sortBy: MusicSort
 }
 
-export default function CardList() {
+export default function MusicList() {
   const { t } = useTransition('')
   const { region } = useSetting()
   const { handleSubmit, control, setValue } = useForm<FilterData>({
-    defaultValues: { sort: 'asc', sortBy: CardSort.ID },
+    defaultValues: { sort: 'asc', sortBy: MusicSort.ID },
   })
-  const [reqData, setReqData] = useState<CardsQueryVariables>({
-    cardsLocale: region,
-    cardsPagination: {
+  const [reqData, setReqData] = useState<MusicsQueryVariables>({
+    locale: region,
+    pagination: {
       pageSize: 30,
       page: 1,
     },
@@ -52,19 +49,18 @@ export default function CardList() {
   const setOrderDesc = useCallback(() => setValue('sort', 'desc'), [setValue])
   const setOrderAsc = useCallback(() => setValue('sort', 'asc'), [setValue])
 
-  const { data, loading, error, refetch, fetchMore } = useCardsQuery({
+  const { data, loading, error, refetch, fetchMore } = useMusicsQuery({
     variables: reqData,
   })
 
   const onSubmit = handleSubmit(async (data) => {
-    const reqData: CardsQueryVariables = {
-      cardsFilters: generateFilter<CardFiltersInput>({
-        attribute: cleanArrayWithInt(data.attribute),
-        rarity: cleanArrayWithInt(data.cardRearity),
-        'character.unit.masterID': cleanArrayWithInt(data.unit),
+    const reqData: MusicsQueryVariables = {
+      filters: generateFilter<CardFiltersInput>({
+        category: cleanArray(data.category),
+        'unit.masterID': cleanArrayWithInt(data.unit),
       }),
-      cardsLocale: region,
-      cardsPagination: {
+      locale: region,
+      pagination: {
         pageSize: 30,
         page: 1,
       },
@@ -78,9 +74,9 @@ export default function CardList() {
     await fetchMore({
       variables: {
         ...reqData,
-        cardsPagination: {
-          ...(reqData ? reqData.cardsPagination : {}),
-          page: (data?.cards?.meta.pagination.page || 1) + 1,
+        pagination: {
+          ...(reqData ? reqData.pagination : {}),
+          page: (data?.musics?.meta.pagination.page || 1) + 1,
         },
       },
     })
@@ -90,9 +86,9 @@ export default function CardList() {
     <MainLayout
       breadCrumbs={[
         { name: t('nav:game.name'), link: '' },
-        { name: t('nav:game.card'), link: '/game/card' },
+        { name: t('nav:game.music'), link: '' },
       ]}
-      title={t('nav:game.card')}
+      title={t('nav:game.music')}
       titleSide={
         <button className="btn btn-primary btn-sm" onClick={openFilterSideOver}>
           <HiOutlineFilter size={22} />
@@ -124,43 +120,36 @@ export default function CardList() {
           </>
         }
       >
-        <FormBlock label={t('common:attribute.name')}>
+        <FormBlock label={t('category')}>
           <Checkbox
-            name="attribute"
+            name="category"
             control={control}
-            list={AttributeCheckbox(t)}
-          />
-        </FormBlock>
-        <FormBlock label={t('card:rarity.name')}>
-          <Checkbox
-            name="cardRearity"
-            control={control}
-            list={CardRearityCheckbox(t)}
+            list={MusicCategoryCheckbox(t)}
           />
         </FormBlock>
         <FormBlock label={t('common:unit.name')}>
           <Checkbox name="unit" control={control} list={UnitCheckbox(t)} />
         </FormBlock>
         <FormBlock label={t('common:sort_name')}>
-          <Radio name="sortBy" control={control} list={CardOrderRadio(t)} />
+          <Radio name="sortBy" control={control} list={MusicSortRadio(t)} />
         </FormBlock>
       </SideOver>
 
       <WaitQuery loading={loading} error={error}>
         <InfinityScroll
-          dataLength={(data?.cards?.data || []).length || 0}
+          dataLength={(data?.musics?.data || []).length || 0}
           next={fetchData}
           hasMore={
-            (data?.cards?.meta.pagination.page || 0) <
-            (data?.cards?.meta.pagination.pageCount || 0)
+            (data?.musics?.meta.pagination.page || 0) <
+            (data?.musics?.meta.pagination.pageCount || 0)
           }
           scrollableTarget="mainContent"
           endMessage={<div className="my-2"></div>}
           loader={<div>Loading..</div>}
         >
           <div className="grid-1">
-            {data?.cards?.data.map((item, index) => (
-              <CardItem key={index} data={item} />
+            {data?.musics?.data.map((item) => (
+              <MusicItem key={item.id} data={item} />
             ))}
           </div>
         </InfinityScroll>
