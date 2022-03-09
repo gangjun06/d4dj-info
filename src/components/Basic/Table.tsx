@@ -1,24 +1,44 @@
 import Link from 'next/link'
 import { ReactNode } from 'react'
 
-export const Table = ({ children }: { children: ReactNode }) => (
-  <table className="table w-full mt-3 table-compact overflow-x-scroll relative">
-    {children}
-  </table>
-)
+export const Table = ({
+  children,
+  className,
+}: {
+  children: ReactNode
+  className?: string
+}) => {
+  console.log(typeof children)
+  return (
+    <table
+      className={`table w-full table-compact overflow-x-scroll relative ${
+        className || ''
+      }`}
+    >
+      {children}
+    </table>
+  )
+}
 
 export type TableBodyInput = {
   name?: string | null
   link?: string
   onClick?: () => void
 }
+export type TableBodyDataType = (
+  | TableBodyInput
+  | string
+  | number
+  | undefined
+  | null
+)[][]
 
 export const TableBody = ({
   children,
   data,
 }: {
   children?: ReactNode
-  data?: (TableBodyInput | string | number | undefined | null)[][]
+  data?: TableBodyDataType
 }) => {
   if (children) {
     return <tbody>{children}</tbody>

@@ -386,6 +386,7 @@ export type Chart = {
   localizations?: Maybe<ChartRelationResponseCollection>;
   masterID?: Maybe<Scalars['Int']>;
   music?: Maybe<MusicEntityResponse>;
+  trends?: Maybe<ComponentMusicTrends>;
   updatedAt?: Maybe<Scalars['DateTime']>;
 };
 
@@ -571,6 +572,7 @@ export type ChartInput = {
   level?: InputMaybe<Scalars['Float']>;
   masterID?: InputMaybe<Scalars['Int']>;
   music?: InputMaybe<Scalars['ID']>;
+  trends?: InputMaybe<ComponentMusicTrendsInput>;
 };
 
 export type ChartRelationResponseCollection = {
@@ -1061,6 +1063,15 @@ export type ComponentMusicTrends = {
   notes?: Maybe<Scalars['Float']>;
   scratch?: Maybe<Scalars['Float']>;
   technique?: Maybe<Scalars['Float']>;
+};
+
+export type ComponentMusicTrendsInput = {
+  danger?: InputMaybe<Scalars['Float']>;
+  effect?: InputMaybe<Scalars['Float']>;
+  id?: InputMaybe<Scalars['ID']>;
+  notes?: InputMaybe<Scalars['Float']>;
+  scratch?: InputMaybe<Scalars['Float']>;
+  technique?: InputMaybe<Scalars['Float']>;
 };
 
 export type DateTimeFilterInput = {
@@ -6893,6 +6904,13 @@ export type EventsQueryVariables = Exact<{
 
 export type EventsQuery = { __typename?: 'Query', events?: { __typename?: 'EventEntityResponseCollection', data: Array<{ __typename?: 'EventEntity', id?: string | null, attributes?: { __typename?: 'Event', masterID?: number | null, name?: string | null, type?: Enum_Event_Type | null, startDate?: any | null, endDate?: any | null } | null }>, meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', page: number, pageCount: number } } } | null };
 
+export type MusicQueryVariables = Exact<{
+  musicId?: InputMaybe<Scalars['ID']>;
+}>;
+
+
+export type MusicQuery = { __typename?: 'Query', music?: { __typename?: 'MusicEntityResponse', data?: { __typename?: 'MusicEntity', id?: string | null, attributes?: { __typename?: 'Music', name?: string | null, readName?: string | null, lyrist?: string | null, composer?: string | null, arranger?: string | null, specialUnitName?: string | null, category?: Enum_Music_Category | null, musicBpm?: number | null, openKey?: number | null, isHidden?: boolean | null, hasMovie?: boolean | null, excludeChallenge?: boolean | null, canFairUse?: boolean | null, startDate?: any | null, endDate?: any | null, masterID?: number | null, unused?: boolean | null, unit?: { __typename?: 'UnitEntityResponse', data?: { __typename?: 'UnitEntity', attributes?: { __typename?: 'Unit', name?: string | null } | null } | null } | null, musicMix?: Array<{ __typename?: 'ComponentMusicMusicMix', section?: Enum_Componentmusicmusicmix_Section | null, startTime?: number | null, startTimeBpm?: number | null, endTime?: number | null, endTimeBpm?: number | null, enableLongMixStart?: boolean | null, enableLongMixEnd?: boolean | null, id: string } | null> | null, charts?: { __typename?: 'ChartRelationResponseCollection', data: Array<{ __typename?: 'ChartEntity', id?: string | null, attributes?: { __typename?: 'Chart', difficulty?: Enum_Chart_Difficulty | null, level?: number | null, masterID?: number | null, achieveId?: number | null, chartNoteCount?: Array<{ __typename?: 'ComponentMusicChartNoteCount', section?: Enum_Componentmusicchartnotecount_Section | null, count?: number | null, id: string } | null> | null, designer?: { __typename?: 'ChartDesignerEntityResponse', data?: { __typename?: 'ChartDesignerEntity', attributes?: { __typename?: 'ChartDesigner', name?: string | null } | null } | null } | null, trends?: { __typename?: 'ComponentMusicTrends', danger?: number | null, notes?: number | null, scratch?: number | null, effect?: number | null, technique?: number | null } | null } | null }> } | null } | null } | null } | null };
+
 
 export const UnitsDocument = gql`
     query Units($locale: I18NLocaleCode) {
@@ -7287,3 +7305,106 @@ export function useEventsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Eve
 export type EventsQueryHookResult = ReturnType<typeof useEventsQuery>;
 export type EventsLazyQueryHookResult = ReturnType<typeof useEventsLazyQuery>;
 export type EventsQueryResult = Apollo.QueryResult<EventsQuery, EventsQueryVariables>;
+export const MusicDocument = gql`
+    query Music($musicId: ID) {
+  music(id: $musicId) {
+    data {
+      id
+      attributes {
+        name
+        readName
+        lyrist
+        composer
+        arranger
+        specialUnitName
+        category
+        musicBpm
+        openKey
+        isHidden
+        hasMovie
+        excludeChallenge
+        canFairUse
+        startDate
+        endDate
+        masterID
+        unused
+        unit {
+          data {
+            attributes {
+              name
+            }
+          }
+        }
+        musicMix {
+          section
+          startTime
+          startTimeBpm
+          endTime
+          endTimeBpm
+          enableLongMixStart
+          enableLongMixEnd
+          id
+        }
+        charts {
+          data {
+            id
+            attributes {
+              difficulty
+              level
+              chartNoteCount {
+                section
+                count
+                id
+              }
+              masterID
+              designer {
+                data {
+                  attributes {
+                    name
+                  }
+                }
+              }
+              trends {
+                danger
+                notes
+                scratch
+                effect
+                technique
+              }
+              achieveId
+            }
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useMusicQuery__
+ *
+ * To run a query within a React component, call `useMusicQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMusicQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMusicQuery({
+ *   variables: {
+ *      musicId: // value for 'musicId'
+ *   },
+ * });
+ */
+export function useMusicQuery(baseOptions?: Apollo.QueryHookOptions<MusicQuery, MusicQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MusicQuery, MusicQueryVariables>(MusicDocument, options);
+      }
+export function useMusicLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MusicQuery, MusicQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MusicQuery, MusicQueryVariables>(MusicDocument, options);
+        }
+export type MusicQueryHookResult = ReturnType<typeof useMusicQuery>;
+export type MusicLazyQueryHookResult = ReturnType<typeof useMusicLazyQuery>;
+export type MusicQueryResult = Apollo.QueryResult<MusicQuery, MusicQueryVariables>;

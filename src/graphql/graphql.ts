@@ -247,3 +247,79 @@ export const GET_EVENTS = gql`
     }
   }
 `
+
+export const GET_MUSIC = gql`
+  query Music($musicId: ID) {
+    music(id: $musicId) {
+      data {
+        id
+        attributes {
+          name
+          readName
+          lyrist
+          composer
+          arranger
+          specialUnitName
+          category
+          musicBpm
+          openKey
+          isHidden
+          hasMovie
+          excludeChallenge
+          canFairUse
+          startDate
+          endDate
+          masterID
+          unused
+          unit {
+            data {
+              attributes {
+                name
+              }
+            }
+          }
+          musicMix {
+            section
+            startTime
+            startTimeBpm
+            endTime
+            endTimeBpm
+            enableLongMixStart
+            enableLongMixEnd
+            id
+          }
+          charts {
+            data {
+              id
+              attributes {
+                difficulty
+                level
+                chartNoteCount {
+                  section
+                  count
+                  id
+                }
+                masterID
+                designer {
+                  data {
+                    attributes {
+                      name
+                    }
+                  }
+                }
+                trends {
+                  danger
+                  notes
+                  scratch
+                  effect
+                  technique
+                }
+                achieveId
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`
