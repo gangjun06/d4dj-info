@@ -6938,6 +6938,23 @@ export type GachaQueryVariables = Exact<{
 
 export type GachaQuery = { __typename?: 'Query', gacha?: { __typename?: 'GachaEntityResponse', data?: { __typename?: 'GachaEntity', id?: string | null, attributes?: { __typename?: 'Gacha', type?: Enum_Gacha_Type | null, summary?: string | null, masterID?: number | null, startDate?: any | null, endDate?: any | null, note?: string | null, detail?: string | null, category?: Enum_Gacha_Category | null, name?: string | null, localizations?: { __typename?: 'GachaRelationResponseCollection', data: Array<{ __typename?: 'GachaEntity', id?: string | null, attributes?: { __typename?: 'Gacha', locale?: string | null } | null }> } | null, pickUpCards?: { __typename?: 'CardRelationResponseCollection', data: Array<{ __typename?: 'CardEntity', id?: string | null, attributes?: { __typename?: 'Card', cardName?: string | null, rarity?: number | null, attribute?: number | null, masterID?: number | null } | null }> } | null } | null } | null } | null };
 
+export type StampsQueryVariables = Exact<{
+  filters?: InputMaybe<StampFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>> | InputMaybe<Scalars['String']>>;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+}>;
+
+
+export type StampsQuery = { __typename?: 'Query', stamps?: { __typename?: 'StampEntityResponseCollection', meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', page: number, total: number, pageCount: number } }, data: Array<{ __typename?: 'StampEntity', id?: string | null, attributes?: { __typename?: 'Stamp', masterID?: number | null, category?: Enum_Stamp_Category | null, name?: string | null, hasVoice?: boolean | null } | null }> } | null };
+
+export type StampQueryVariables = Exact<{
+  stampId?: InputMaybe<Scalars['ID']>;
+}>;
+
+
+export type StampQuery = { __typename?: 'Query', stamp?: { __typename?: 'StampEntityResponse', data?: { __typename?: 'StampEntity', id?: string | null, attributes?: { __typename?: 'Stamp', masterID?: number | null, category?: Enum_Stamp_Category | null, name?: string | null, description?: string | null, hasVoice?: boolean | null, localizations?: { __typename?: 'StampRelationResponseCollection', data: Array<{ __typename?: 'StampEntity', attributes?: { __typename?: 'Stamp', locale?: string | null } | null }> } | null } | null } | null } | null };
+
 
 export const UnitsDocument = gql`
     query Units($locale: I18NLocaleCode) {
@@ -7556,3 +7573,107 @@ export function useGachaLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Gach
 export type GachaQueryHookResult = ReturnType<typeof useGachaQuery>;
 export type GachaLazyQueryHookResult = ReturnType<typeof useGachaLazyQuery>;
 export type GachaQueryResult = Apollo.QueryResult<GachaQuery, GachaQueryVariables>;
+export const StampsDocument = gql`
+    query Stamps($filters: StampFiltersInput, $pagination: PaginationArg, $sort: [String], $locale: I18NLocaleCode) {
+  stamps(filters: $filters, pagination: $pagination, sort: $sort, locale: $locale) {
+    meta {
+      pagination {
+        page
+        total
+        pageCount
+      }
+    }
+    data {
+      id
+      attributes {
+        masterID
+        category
+        name
+        hasVoice
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useStampsQuery__
+ *
+ * To run a query within a React component, call `useStampsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useStampsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useStampsQuery({
+ *   variables: {
+ *      filters: // value for 'filters'
+ *      pagination: // value for 'pagination'
+ *      sort: // value for 'sort'
+ *      locale: // value for 'locale'
+ *   },
+ * });
+ */
+export function useStampsQuery(baseOptions?: Apollo.QueryHookOptions<StampsQuery, StampsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<StampsQuery, StampsQueryVariables>(StampsDocument, options);
+      }
+export function useStampsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<StampsQuery, StampsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<StampsQuery, StampsQueryVariables>(StampsDocument, options);
+        }
+export type StampsQueryHookResult = ReturnType<typeof useStampsQuery>;
+export type StampsLazyQueryHookResult = ReturnType<typeof useStampsLazyQuery>;
+export type StampsQueryResult = Apollo.QueryResult<StampsQuery, StampsQueryVariables>;
+export const StampDocument = gql`
+    query Stamp($stampId: ID) {
+  stamp(id: $stampId) {
+    data {
+      id
+      attributes {
+        masterID
+        category
+        name
+        description
+        hasVoice
+        localizations {
+          data {
+            attributes {
+              locale
+            }
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useStampQuery__
+ *
+ * To run a query within a React component, call `useStampQuery` and pass it any options that fit your needs.
+ * When your component renders, `useStampQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useStampQuery({
+ *   variables: {
+ *      stampId: // value for 'stampId'
+ *   },
+ * });
+ */
+export function useStampQuery(baseOptions?: Apollo.QueryHookOptions<StampQuery, StampQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<StampQuery, StampQueryVariables>(StampDocument, options);
+      }
+export function useStampLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<StampQuery, StampQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<StampQuery, StampQueryVariables>(StampDocument, options);
+        }
+export type StampQueryHookResult = ReturnType<typeof useStampQuery>;
+export type StampLazyQueryHookResult = ReturnType<typeof useStampLazyQuery>;
+export type StampQueryResult = Apollo.QueryResult<StampQuery, StampQueryVariables>;

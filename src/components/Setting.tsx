@@ -89,7 +89,7 @@ export const SettingProvider = ({ children }: { children: ReactNode }) => {
             ]}
           />
         </FormBlock>
-        <FormBlock label={t('common:Region')}>
+        <FormBlock label={t('common:region')}>
           <Radio
             control={control}
             name="region"

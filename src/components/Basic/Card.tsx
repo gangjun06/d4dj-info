@@ -10,6 +10,7 @@ const Card = ({
   bodyClassName = '',
   bodyStyle,
   link,
+  onClick = () => {},
 }: {
   children: ReactNode
   right?: ReactNode
@@ -18,6 +19,7 @@ const Card = ({
   bodyClassName?: string
   bodyStyle?: React.CSSProperties
   link?: string | UrlObject
+  onClick?: () => void
 }) => {
   const cardClass = `px-8 py-8 shadow-sm ${className} bg-white rounded-lg overflow-hidden border`
 
@@ -45,7 +47,7 @@ const Card = ({
     )
   }
   return (
-    <div className={cardClass}>
+    <div className={cardClass} onClick={onClick}>
       <InnerContent />
     </div>
   )

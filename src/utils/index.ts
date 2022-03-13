@@ -40,6 +40,7 @@ export enum GetURLType {
   EventTitleLogo,
   GachaBanner,
   GachaTopBanner,
+  Stamp,
 }
 
 const urlList: {
@@ -141,6 +142,11 @@ const urlList: {
     `ondemand/gacha/top/banner/${p[0]}.png`,
     `gacha banner ${p[0]}`,
   ],
+  // stampID
+  [GetURLType.Stamp]: (p: any[]) => [
+    `ondemand/stamp/stamp_${pad(p[0], 5)}.png`,
+    `stamp ${p[0]}`,
+  ],
 }
 
 export const getURL = ({
@@ -185,9 +191,12 @@ export const getAlt = ({
   }
 }
 
-export const generateFilter = <T>(data: {
-  [key: string]: string[] | number[]
-}): T => {
+export const generateFilter = <T>(
+  data: {
+    [key: string]: string[] | number[]
+  },
+  ...etc: any
+): T => {
   return {
     and: Object.keys(data).map((key) => ({
       or: data[key].map((item) =>
@@ -199,6 +208,7 @@ export const generateFilter = <T>(data: {
           { eq: item }
         )
       ),
+      ...etc,
     })),
   } as unknown as T
 }

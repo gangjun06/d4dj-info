@@ -397,3 +397,60 @@ export const GET_GACHA = gql`
     }
   }
 `
+
+export const GET_STAMPS = gql`
+  query Stamps(
+    $filters: StampFiltersInput
+    $pagination: PaginationArg
+    $sort: [String]
+    $locale: I18NLocaleCode
+  ) {
+    stamps(
+      filters: $filters
+      pagination: $pagination
+      sort: $sort
+      locale: $locale
+    ) {
+      meta {
+        pagination {
+          page
+          total
+          pageCount
+        }
+      }
+      data {
+        id
+        attributes {
+          masterID
+          category
+          name
+          hasVoice
+        }
+      }
+    }
+  }
+`
+
+export const GET_STAMP = gql`
+  query Stamp($stampId: ID) {
+    stamp(id: $stampId) {
+      data {
+        id
+        attributes {
+          masterID
+          category
+          name
+          description
+          hasVoice
+          localizations {
+            data {
+              attributes {
+                locale
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`

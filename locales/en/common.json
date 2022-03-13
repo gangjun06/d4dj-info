@@ -41,5 +41,10 @@
   "download": "Download",
   "region": "Region",
   "end_date": "End Date",
-  "type": "Type"
+  "type": "Type",
+  "categories": {
+    "collabo": "Collabo",
+    "common": "Common",
+    "rare": "Rare"
+  }
 }

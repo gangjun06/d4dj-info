@@ -243,6 +243,16 @@ export const CharacterIcon = ({ id, alt }: { id: number; alt: string }) => {
     />
   )
 }
+export const StampIcon = ({ id }: { id: number }) => {
+  return (
+    <ImageWithFallback
+      urlType={GetURLType.Stamp}
+      parameter={[id]}
+      width={128}
+      height={128}
+    />
+  )
+}
 
 const MusicIconContent = ({ id }: { id: number }) => {
   return (

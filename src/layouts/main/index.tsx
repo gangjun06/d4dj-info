@@ -156,6 +156,11 @@ const SideNav = ({
                 link="/game/gallery"
               /> */}
               <NavItem
+                label={t('nav:game.stamp')}
+                Icon={HiDotsCircleHorizontal}
+                link="/game/stamp"
+              />
+              <NavItem
                 label={t('nav:game.etc.name')}
                 Icon={HiDotsCircleHorizontal}
                 link="/game/etc"

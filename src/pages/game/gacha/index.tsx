@@ -24,7 +24,7 @@ type FilterData = {
   sort: 'asc' | 'desc'
 }
 
-export default function EventList() {
+export default function GachaList() {
   const { t } = useTransition('')
   const { region } = useSetting()
   const { handleSubmit, control, setValue } = useForm<FilterData>({
