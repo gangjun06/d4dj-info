@@ -11,7 +11,7 @@ import MainLayout from 'layouts/main'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import useTransition from 'next-translate/useTranslation'
 import React from 'react'
-import { GetURLType, loadRegion, pad } from 'utils'
+import { GetURLType, pad } from 'utils'
 import { createLive2DShare } from 'utils/live2d'
 
 export default function CardDetail({
@@ -201,8 +201,6 @@ export const getServerSideProps: GetServerSideProps<{
       notFound: true,
     }
   }
-
-  const region = loadRegion()
 
   const { data } = await client.query<CharacterQuery, CharacterQueryVariables>({
     query: CharacterDocument,

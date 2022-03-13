@@ -1,4 +1,4 @@
-import { Enum_Event_Type } from '@/generated/graphql'
+import { Enum_Event_Type, Enum_Gacha_Category } from '@/generated/graphql'
 import { Attribute, CardSort, MusicCategory, MusicSort, Unit } from 'models'
 import { Translate } from 'next-translate'
 
@@ -149,3 +149,12 @@ export const CardOrderRadio: CheckboxListType<CardSort> = (t: Translate) => [
     value: CardSort.Name,
   },
 ]
+
+const generateFromEnum = (t: Translate, tKey: string, value: any) =>
+  Object.keys(value).map((item) => ({
+    label: t(`${tKey}${item.toLowerCase()}`),
+    value: item,
+  }))
+
+export const GachaCategoryCheckbox: CheckboxListType = (t: Translate) =>
+  generateFromEnum(t, 'gacha:categories.', Enum_Gacha_Category)

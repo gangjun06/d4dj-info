@@ -472,13 +472,20 @@ export type ChartAchieveRelationResponseCollection = {
 
 export type ChartDesigner = {
   __typename?: 'ChartDesigner';
-  chart?: Maybe<ChartEntityResponse>;
+  charts?: Maybe<ChartRelationResponseCollection>;
   createdAt?: Maybe<Scalars['DateTime']>;
   locale?: Maybe<Scalars['String']>;
   localizations?: Maybe<ChartDesignerRelationResponseCollection>;
   masterID?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
   updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+
+export type ChartDesignerChartsArgs = {
+  filters?: InputMaybe<ChartFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 
@@ -507,7 +514,7 @@ export type ChartDesignerEntityResponseCollection = {
 
 export type ChartDesignerFiltersInput = {
   and?: InputMaybe<Array<InputMaybe<ChartDesignerFiltersInput>>>;
-  chart?: InputMaybe<ChartFiltersInput>;
+  charts?: InputMaybe<ChartFiltersInput>;
   createdAt?: InputMaybe<DateTimeFilterInput>;
   id?: InputMaybe<IdFilterInput>;
   locale?: InputMaybe<StringFilterInput>;
@@ -520,7 +527,7 @@ export type ChartDesignerFiltersInput = {
 };
 
 export type ChartDesignerInput = {
-  chart?: InputMaybe<Scalars['ID']>;
+  charts?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   masterID?: InputMaybe<Scalars['Int']>;
   name?: InputMaybe<Scalars['String']>;
 };
@@ -2194,6 +2201,7 @@ export type Gacha = {
   localizations?: Maybe<GachaRelationResponseCollection>;
   loginTriggerMinutes?: Maybe<Scalars['Int']>;
   masterID?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
   note?: Maybe<Scalars['String']>;
   otherCardDate?: Maybe<Scalars['DateTime']>;
   pickUpCards?: Maybe<CardRelationResponseCollection>;
@@ -2256,6 +2264,7 @@ export type GachaFiltersInput = {
   localizations?: InputMaybe<GachaFiltersInput>;
   loginTriggerMinutes?: InputMaybe<IntFilterInput>;
   masterID?: InputMaybe<IntFilterInput>;
+  name?: InputMaybe<StringFilterInput>;
   not?: InputMaybe<GachaFiltersInput>;
   note?: InputMaybe<StringFilterInput>;
   or?: InputMaybe<Array<InputMaybe<GachaFiltersInput>>>;
@@ -2284,6 +2293,7 @@ export type GachaInput = {
   hasSpecificBg?: InputMaybe<Scalars['Boolean']>;
   loginTriggerMinutes?: InputMaybe<Scalars['Int']>;
   masterID?: InputMaybe<Scalars['Int']>;
+  name?: InputMaybe<Scalars['String']>;
   note?: InputMaybe<Scalars['String']>;
   otherCardDate?: InputMaybe<Scalars['DateTime']>;
   pickUpCards?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
@@ -6911,6 +6921,23 @@ export type MusicQueryVariables = Exact<{
 
 export type MusicQuery = { __typename?: 'Query', music?: { __typename?: 'MusicEntityResponse', data?: { __typename?: 'MusicEntity', id?: string | null, attributes?: { __typename?: 'Music', name?: string | null, readName?: string | null, lyrist?: string | null, composer?: string | null, arranger?: string | null, specialUnitName?: string | null, category?: Enum_Music_Category | null, musicBpm?: number | null, openKey?: number | null, isHidden?: boolean | null, hasMovie?: boolean | null, excludeChallenge?: boolean | null, canFairUse?: boolean | null, startDate?: any | null, endDate?: any | null, masterID?: number | null, unused?: boolean | null, unit?: { __typename?: 'UnitEntityResponse', data?: { __typename?: 'UnitEntity', attributes?: { __typename?: 'Unit', name?: string | null } | null } | null } | null, musicMix?: Array<{ __typename?: 'ComponentMusicMusicMix', section?: Enum_Componentmusicmusicmix_Section | null, startTime?: number | null, startTimeBpm?: number | null, endTime?: number | null, endTimeBpm?: number | null, enableLongMixStart?: boolean | null, enableLongMixEnd?: boolean | null, id: string } | null> | null, charts?: { __typename?: 'ChartRelationResponseCollection', data: Array<{ __typename?: 'ChartEntity', id?: string | null, attributes?: { __typename?: 'Chart', difficulty?: Enum_Chart_Difficulty | null, level?: number | null, masterID?: number | null, achieveId?: number | null, chartNoteCount?: Array<{ __typename?: 'ComponentMusicChartNoteCount', section?: Enum_Componentmusicchartnotecount_Section | null, count?: number | null, id: string } | null> | null, designer?: { __typename?: 'ChartDesignerEntityResponse', data?: { __typename?: 'ChartDesignerEntity', attributes?: { __typename?: 'ChartDesigner', name?: string | null } | null } | null } | null, trends?: { __typename?: 'ComponentMusicTrends', danger?: number | null, notes?: number | null, scratch?: number | null, effect?: number | null, technique?: number | null } | null } | null }> } | null } | null } | null } | null };
 
+export type GachasQueryVariables = Exact<{
+  filters?: InputMaybe<GachaFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>> | InputMaybe<Scalars['String']>>;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+}>;
+
+
+export type GachasQuery = { __typename?: 'Query', gachas?: { __typename?: 'GachaEntityResponseCollection', meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', page: number, pageCount: number, total: number } }, data: Array<{ __typename?: 'GachaEntity', id?: string | null, attributes?: { __typename?: 'Gacha', masterID?: number | null, startDate?: any | null, endDate?: any | null, category?: Enum_Gacha_Category | null, name?: string | null } | null }> } | null };
+
+export type GachaQueryVariables = Exact<{
+  gachaId?: InputMaybe<Scalars['ID']>;
+}>;
+
+
+export type GachaQuery = { __typename?: 'Query', gacha?: { __typename?: 'GachaEntityResponse', data?: { __typename?: 'GachaEntity', id?: string | null, attributes?: { __typename?: 'Gacha', type?: Enum_Gacha_Type | null, summary?: string | null, masterID?: number | null, startDate?: any | null, endDate?: any | null, note?: string | null, detail?: string | null, category?: Enum_Gacha_Category | null, name?: string | null, localizations?: { __typename?: 'GachaRelationResponseCollection', data: Array<{ __typename?: 'GachaEntity', id?: string | null, attributes?: { __typename?: 'Gacha', locale?: string | null } | null }> } | null, pickUpCards?: { __typename?: 'CardRelationResponseCollection', data: Array<{ __typename?: 'CardEntity', id?: string | null, attributes?: { __typename?: 'Card', cardName?: string | null, rarity?: number | null, attribute?: number | null, masterID?: number | null } | null }> } | null } | null } | null } | null };
+
 
 export const UnitsDocument = gql`
     query Units($locale: I18NLocaleCode) {
@@ -7408,3 +7435,124 @@ export function useMusicLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Musi
 export type MusicQueryHookResult = ReturnType<typeof useMusicQuery>;
 export type MusicLazyQueryHookResult = ReturnType<typeof useMusicLazyQuery>;
 export type MusicQueryResult = Apollo.QueryResult<MusicQuery, MusicQueryVariables>;
+export const GachasDocument = gql`
+    query Gachas($filters: GachaFiltersInput, $pagination: PaginationArg, $sort: [String], $locale: I18NLocaleCode) {
+  gachas(filters: $filters, pagination: $pagination, sort: $sort, locale: $locale) {
+    meta {
+      pagination {
+        page
+        pageCount
+        total
+      }
+    }
+    data {
+      id
+      attributes {
+        masterID
+        startDate
+        endDate
+        category
+        name
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGachasQuery__
+ *
+ * To run a query within a React component, call `useGachasQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGachasQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGachasQuery({
+ *   variables: {
+ *      filters: // value for 'filters'
+ *      pagination: // value for 'pagination'
+ *      sort: // value for 'sort'
+ *      locale: // value for 'locale'
+ *   },
+ * });
+ */
+export function useGachasQuery(baseOptions?: Apollo.QueryHookOptions<GachasQuery, GachasQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GachasQuery, GachasQueryVariables>(GachasDocument, options);
+      }
+export function useGachasLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GachasQuery, GachasQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GachasQuery, GachasQueryVariables>(GachasDocument, options);
+        }
+export type GachasQueryHookResult = ReturnType<typeof useGachasQuery>;
+export type GachasLazyQueryHookResult = ReturnType<typeof useGachasLazyQuery>;
+export type GachasQueryResult = Apollo.QueryResult<GachasQuery, GachasQueryVariables>;
+export const GachaDocument = gql`
+    query Gacha($gachaId: ID) {
+  gacha(id: $gachaId) {
+    data {
+      id
+      attributes {
+        localizations {
+          data {
+            id
+            attributes {
+              locale
+            }
+          }
+        }
+        type
+        pickUpCards {
+          data {
+            attributes {
+              cardName
+              rarity
+              attribute
+              masterID
+            }
+            id
+          }
+        }
+        summary
+        masterID
+        startDate
+        endDate
+        note
+        detail
+        category
+        name
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGachaQuery__
+ *
+ * To run a query within a React component, call `useGachaQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGachaQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGachaQuery({
+ *   variables: {
+ *      gachaId: // value for 'gachaId'
+ *   },
+ * });
+ */
+export function useGachaQuery(baseOptions?: Apollo.QueryHookOptions<GachaQuery, GachaQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GachaQuery, GachaQueryVariables>(GachaDocument, options);
+      }
+export function useGachaLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GachaQuery, GachaQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GachaQuery, GachaQueryVariables>(GachaDocument, options);
+        }
+export type GachaQueryHookResult = ReturnType<typeof useGachaQuery>;
+export type GachaLazyQueryHookResult = ReturnType<typeof useGachaLazyQuery>;
+export type GachaQueryResult = Apollo.QueryResult<GachaQuery, GachaQueryVariables>;

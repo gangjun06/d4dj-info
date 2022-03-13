@@ -1,5 +1,14 @@
 {
   "category": "Category",
+  "categories": {
+    "normal": "Normal",
+    "tutorial": "Tutorial",
+    "event": "Event",
+    "birthday": "Birthday",
+    "startdash": "StartDash",
+    "revival": "Revival",
+    "special": "Special"
+  },
   "descriptions": "Descriptions",
   "detail": "Detail",
   "enddate": "End Date",

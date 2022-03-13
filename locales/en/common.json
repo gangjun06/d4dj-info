@@ -40,5 +40,6 @@
   "sort": "Sort",
   "download": "Download",
   "region": "Region",
-  "end_date": "End Date"
+  "end_date": "End Date",
+  "type": "Type"
 }

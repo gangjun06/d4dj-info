@@ -8,7 +8,6 @@ export const Table = ({
   children: ReactNode
   className?: string
 }) => {
-  console.log(typeof children)
   return (
     <table
       className={`table-auto border-collapse w-full overflow-x-scroll relative ${

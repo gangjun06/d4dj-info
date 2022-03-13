@@ -38,6 +38,8 @@ export enum GetURLType {
   CardIllust,
   MusicJacket,
   EventTitleLogo,
+  GachaBanner,
+  GachaTopBanner,
 }
 
 const urlList: {
@@ -128,6 +130,16 @@ const urlList: {
   [GetURLType.EventTitleLogo]: (p: any[]) => [
     `ondemand/event/event_${p[0]}/title_logo.png`,
     `event title logo ${p[0]}`,
+  ],
+  // gachaID
+  [GetURLType.GachaBanner]: (p: any[]) => [
+    `ondemand/banner/banner_gacha_${pad(p[0], p[0] < 10 ? 4 : 5)}.png`,
+    `gacha banner ${p[0]}`,
+  ],
+  // gachaID
+  [GetURLType.GachaTopBanner]: (p: any[]) => [
+    `ondemand/gacha/top/banner/${p[0]}.png`,
+    `gacha banner ${p[0]}`,
   ],
 }
 

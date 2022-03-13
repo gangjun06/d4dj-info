@@ -21,6 +21,7 @@ export const client = new ApolloClient({
           cards: concatPagination,
           musics: concatPagination,
           events: concatPagination,
+          gachas: concatPagination,
         },
       },
     },

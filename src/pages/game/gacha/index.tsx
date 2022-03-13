@@ -1,14 +1,14 @@
 import { SideOver } from '@/components/Basic'
-import { EventItem } from '@/components/Elements'
+import { GachaItem } from '@/components/Elements'
 import { Checkbox, FormBlock } from '@/components/Form'
 import { useSetting } from '@/components/Setting'
 import { WaitQuery } from '@/components/Util'
 import {
   CardFiltersInput,
-  Enum_Event_Type,
-  EventsQueryVariables,
+  Enum_Gacha_Category,
+  GachasQueryVariables,
   MusicsQueryVariables,
-  useEventsQuery,
+  useGachasQuery,
 } from '@/generated/graphql'
 import MainLayout from 'layouts/main'
 import useTransition from 'next-translate/useTranslation'
@@ -17,10 +17,10 @@ import { useForm } from 'react-hook-form'
 import { HiOutlineFilter } from 'react-icons/hi'
 import InfinityScroll from 'react-infinite-scroll-component'
 import { cleanArray, generateFilter } from 'utils'
-import { EventTypeCheckbox } from 'utils/constants'
+import { GachaCategoryCheckbox } from 'utils/constants'
 
 type FilterData = {
-  category: Enum_Event_Type[]
+  category: Enum_Gacha_Category[]
   sort: 'asc' | 'desc'
 }
 
@@ -30,13 +30,13 @@ export default function EventList() {
   const { handleSubmit, control, setValue } = useForm<FilterData>({
     defaultValues: { sort: 'desc' },
   })
-  const [reqData, setReqData] = useState<EventsQueryVariables>({
+  const [reqData, setReqData] = useState<GachasQueryVariables>({
     locale: region,
     pagination: {
       pageSize: 30,
       page: 1,
     },
-    sort: ['masterID:desc'],
+    sort: ['startDate:desc'],
   })
   const [openFilter, setOpenFilter] = useState<boolean>(false)
 
@@ -45,21 +45,21 @@ export default function EventList() {
   const setOrderDesc = useCallback(() => setValue('sort', 'desc'), [setValue])
   const setOrderAsc = useCallback(() => setValue('sort', 'asc'), [setValue])
 
-  const { data, loading, error, refetch, fetchMore } = useEventsQuery({
+  const { data, loading, error, refetch, fetchMore } = useGachasQuery({
     variables: reqData,
   })
 
   const onSubmit = handleSubmit(async (data) => {
     const reqData: MusicsQueryVariables = {
       filters: generateFilter<CardFiltersInput>({
-        type: cleanArray(data.category),
+        category: cleanArray(data.category),
       }),
       locale: region,
       pagination: {
         pageSize: 30,
         page: 1,
       },
-      sort: [`masterID:${data.sort}`],
+      sort: [`startDate:${data.sort}`],
     }
     setReqData(reqData)
     await refetch(reqData)
@@ -71,7 +71,7 @@ export default function EventList() {
         ...reqData,
         pagination: {
           ...(reqData ? reqData.pagination : {}),
-          page: (data?.events?.meta.pagination.page || 1) + 1,
+          page: (data?.gachas?.meta.pagination.page || 1) + 1,
         },
       },
     })
@@ -81,9 +81,9 @@ export default function EventList() {
     <MainLayout
       breadCrumbs={[
         { name: t('nav:game.name'), link: '' },
-        { name: t('nav:game.event.name'), link: '' },
+        { name: t('nav:game.gacha'), link: '' },
       ]}
-      title={t('nav:game.event')}
+      title={t('nav:game.gacha')}
       titleSide={
         <button className="btn" onClick={openFilterSideOver}>
           <HiOutlineFilter size={22} />
@@ -111,26 +111,26 @@ export default function EventList() {
           <Checkbox
             name="category"
             control={control}
-            list={EventTypeCheckbox(t)}
+            list={GachaCategoryCheckbox(t)}
           />
         </FormBlock>
       </SideOver>
 
       <WaitQuery loading={loading} error={error}>
         <InfinityScroll
-          dataLength={(data?.events?.data || []).length || 0}
+          dataLength={(data?.gachas?.data || []).length || 0}
           next={fetchData}
           hasMore={
-            (data?.events?.meta.pagination.page || 0) <
-            (data?.events?.meta.pagination.pageCount || 0)
+            (data?.gachas?.meta.pagination.page || 0) <
+            (data?.gachas?.meta.pagination.pageCount || 0)
           }
           scrollableTarget="mainContent"
           endMessage={<div className="my-2"></div>}
           loader={<div>Loading..</div>}
         >
           <div className="grid-1">
-            {data?.events?.data.map((item) => (
-              <EventItem key={item.id} data={item} />
+            {data?.gachas?.data.map((item) => (
+              <GachaItem key={item.id} data={item} />
             ))}
           </div>
         </InfinityScroll>

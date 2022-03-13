@@ -1,5 +1,6 @@
+import { Enum_Gacha_Category } from '@/generated/graphql'
 import NextImage from 'next/image'
-import React, { ComponentProps, useState } from 'react'
+import React, { ComponentProps, useMemo, useState } from 'react'
 import { classNames, getAlt, getURL, GetURLType, myLoader } from 'utils'
 import { useSetting } from './Setting'
 
@@ -22,7 +23,14 @@ export const ImageWithFallback = (
     fallback?: { width?: number; height?: number }
   }
 ) => {
-  const { src, width, height, urlType, parameter = [], fallback = {} } = props
+  const {
+    src,
+    width,
+    height,
+    urlType,
+    parameter = [],
+    fallback = { width: 128, height: 128 },
+  } = props
   const { region } = useSetting()
   const [srcData, setSrcData] = useState<string>(
     src ||
@@ -122,36 +130,37 @@ export const ImageBase = ({
     />
   )
 }
+const canUseBanner = (category: Enum_Gacha_Category) =>
+  category !== Enum_Gacha_Category.Tutorial &&
+  category !== Enum_Gacha_Category.Birthday &&
+  category !== Enum_Gacha_Category.Revival
 
-// const canUseBanner = (category: GachaCategory) =>
-//   category !== GachaCategory.Tutorial && category !== GachaCategory.Birthday
-
-// export const GachaIcon = ({
-//   category,
-//   id,
-// }: {
-//   category: GachaCategory
-//   id: number
-// }) => {
-//   const useBanner = canUseBanner(category)
-//   const [src, setSrc] = useState<string>(
-//     useBanner
-//       ? `ondemand/banner/banner_gacha_${pad(id, id < 10 ? 4 : 5)}.png`
-//       : `ondemand/gacha/top/banner/${id}.png`
-//   )
-//   return (
-//     <Image
-//       loader={myLoader}
-//       src={src}
-//       width={src === 'fallback.png' ? 128 : useBanner ? 612 : 324}
-//       alt={`gacha-${id}`}
-//       height={src === 'fallback.png' ? 128 : useBanner ? 200 : 172}
-//       onError={() => {
-//         setSrc('fallback.png')
-//       }}
-//     />
-//   )
-// }
+export const GachaIcon = ({
+  category,
+  id,
+}: {
+  category: Enum_Gacha_Category
+  id: number
+}) => {
+  const useBanner = useMemo(() => canUseBanner(category), [category])
+  if (useBanner)
+    return (
+      <ImageWithFallback
+        width={612}
+        height={200}
+        urlType={GetURLType.GachaBanner}
+        parameter={[id]}
+      />
+    )
+  return (
+    <ImageWithFallback
+      width={324}
+      height={172}
+      urlType={GetURLType.GachaTopBanner}
+      parameter={[id]}
+    />
+  )
+}
 
 export const CardIcon = ({
   id,

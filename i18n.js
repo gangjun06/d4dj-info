@@ -5,6 +5,7 @@ module.exports = {
     '*': ['common', 'nav'],
     '/': ['index'],
     '/game/character/[id]': ['character', 'card'],
+    '/game/gacha': ['gacha'],
     '/game/gacha/[id]': ['gacha', 'card'],
     '/game/card': ['card'],
     '/game/card/[id]': ['card'],

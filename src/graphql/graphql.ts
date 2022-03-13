@@ -323,3 +323,77 @@ export const GET_MUSIC = gql`
     }
   }
 `
+
+export const GET_GACHAS = gql`
+  query Gachas(
+    $filters: GachaFiltersInput
+    $pagination: PaginationArg
+    $sort: [String]
+    $locale: I18NLocaleCode
+  ) {
+    gachas(
+      filters: $filters
+      pagination: $pagination
+      sort: $sort
+      locale: $locale
+    ) {
+      meta {
+        pagination {
+          page
+          pageCount
+          total
+        }
+      }
+      data {
+        id
+        attributes {
+          masterID
+          startDate
+          endDate
+          category
+          name
+        }
+      }
+    }
+  }
+`
+
+export const GET_GACHA = gql`
+  query Gacha($gachaId: ID) {
+    gacha(id: $gachaId) {
+      data {
+        id
+        attributes {
+          localizations {
+            data {
+              id
+              attributes {
+                locale
+              }
+            }
+          }
+          type
+          pickUpCards {
+            data {
+              attributes {
+                cardName
+                rarity
+                attribute
+                masterID
+              }
+              id
+            }
+          }
+          summary
+          masterID
+          startDate
+          endDate
+          note
+          detail
+          category
+          name
+        }
+      }
+    }
+  }
+`
