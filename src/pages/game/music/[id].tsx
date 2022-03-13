@@ -39,14 +39,14 @@ const MusicDetailCard = ({ music }: { music: MusicEntity }) => {
       <Table>
         <TableBody
           data={[
-            [t('music:id'), data.masterID],
+            [t('common:id'), data.masterID],
             [t('music:composer'), data.composer],
             [t('music:lyrist'), data.lyrist],
             [t('music:arranger'), data.arranger],
             [t('music:bpm'), data.musicBpm],
-            [t('music:startdate'), formatTimeDetail(data.startDate)],
-            [t('music:enddate'), formatTimeDetail(data.endDate)],
-            [t('music:unit'), data.unit?.data?.attributes?.name],
+            [t('common:start_date'), formatTimeDetail(data.startDate)],
+            [t('common:end_date'), formatTimeDetail(data.endDate)],
+            [t('common:unit'), data.unit?.data?.attributes?.name],
           ]}
         />
       </Table>
@@ -80,7 +80,7 @@ export default function CardDetail({
           <MusicDetailCardMemo music={music} />
         </div>
         <div className="col-span-1 md:col-span-2 gap-y-4 grid grid-flow-row">
-          <Card title={t('Medly')}>
+          <Card title={t('music:medly')}>
             <Tab.Group>
               <Tab.List>
                 {data.musicMix?.map((data) => (
@@ -92,7 +92,15 @@ export default function CardDetail({
                   <Tab.Panel key={item!.id}>
                     <Table>
                       <TableBody
-                        data={[[t('music:chart_designer'), item?.section]]}
+                        data={[
+                          [t('music:section'), item?.section],
+                          [t('music:start_time'), item?.startTime],
+                          [t('music:start_time_bpm'), item?.startTimeBpm],
+                          [t('music:end_time'), item?.endTime],
+                          [t('music:end_time_bpm'), item?.endTimeBpm],
+                          [t('music:long_mix_start'), item?.enableLongMixStart],
+                          [t('music:long_mix_end'), item?.enableLongMixEnd],
+                        ]}
                       />
                     </Table>
                   </Tab.Panel>
@@ -100,7 +108,7 @@ export default function CardDetail({
               </Tab.Panels>
             </Tab.Group>
           </Card>
-          <Card title={t('charts')}>
+          <Card title={t('music:chart_info')}>
             <Tab.Group>
               <Tab.List>
                 {charts?.map(({ id, attributes: data }) => (

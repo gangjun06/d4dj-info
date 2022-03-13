@@ -52,7 +52,7 @@ export default function CardDetail({
             <Table>
               <TableBody
                 data={[
-                  [t('character:id'), character.masterID!],
+                  [t('common:id'), character.masterID!],
                   [t('character:color_code'), character.colorCode!],
                   [t('character:firstname'), character.firstName!],
                   [t('character:firstname_eng'), character.firstNameEnglish!],

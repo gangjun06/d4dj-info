@@ -1,16 +1,16 @@
 {
-  "level": "레벨",
-  "exp": "경험치",
-  "maxFriend": "최대친구",
-  "userExp": "유저 경험치",
-  "unitExp": "유닛 경험치",
   "cardExp": "카드 경험치",
-  "skillExp": "스킬 경험치",
-  "reqExp": "필요 경험치",
-  "reqGame": "필요 판수",
+  "clickGuide": "ⓘ 버튼을 눌러 정보를 확인하세요.",
   "curLevel": "현재 레벨",
   "curLevelPercent": "현재 래벨 퍼센트",
+  "exp": "경험치",
   "expPerPlay": "판당 경험치",
+  "level": "레벨",
+  "maxFriend": "최대친구",
+  "reqExp": "필요 경험치",
+  "reqGame": "필요 판수",
+  "skillExp": "스킬 경험치",
   "targetLevel": "목표 레벨",
-  "clickGuide": "ⓘ 버튼을 눌러 정보를 확인하세요."
+  "unitExp": "유닛 경험치",
+  "userExp": "유저 경험치"
 }

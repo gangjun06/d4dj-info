@@ -1,15 +1,15 @@
 {
+  "episode_characters": "에피소드 캐릭터",
   "id": "ID",
+  "illustrations": {
+    "background": "배경",
+    "banner_event": "이벤트 배너",
+    "banner_event_notice": "이벤트 공지 베너",
+    "name": "일러스트들"
+  },
   "info": "이벤트 정보",
-  "result_announcement_date": "결과 공지 날짜",
   "rank_fix_start_date": "순위 고정 시작 날짜",
   "reception_close_date": "이벤트 종료 날짜",
-  "story_unlock_date": "스토리 해금 날짜",
-  "illustrations": {
-    "name": "일러스트들",
-    "background": "배경",
-    "banner_event_notice": "이벤트 공지 베너",
-    "banner_event": "이벤트 배너"
-  },
-  "episode_characters": "에피소드 캐릭터"
+  "result_announcement_date": "결과 공지 날짜",
+  "story_unlock_date": "스토리 해금 날짜"
 }

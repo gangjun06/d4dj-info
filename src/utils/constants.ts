@@ -118,15 +118,15 @@ export const EventTypeCheckbox: CheckboxListType<Enum_Event_Type> = (
 
 export const MusicSortRadio: CheckboxListType<MusicSort> = (t: Translate) => [
   {
-    label: t('common:sort.id'),
+    label: t('common:id'),
     value: MusicSort.ID,
   },
   {
-    label: t('common:sort.name'),
+    label: t('common:name'),
     value: MusicSort.Name,
   },
   {
-    label: t('common:sort.default_order'),
+    label: t('common:default_order'),
     value: MusicSort.DefaultOrder,
   },
   {
@@ -134,18 +134,18 @@ export const MusicSortRadio: CheckboxListType<MusicSort> = (t: Translate) => [
     value: MusicSort.StartDate,
   },
   {
-    label: t('common:bpm'),
+    label: t('music:bpm'),
     value: MusicSort.BPM,
   },
 ]
 
 export const CardOrderRadio: CheckboxListType<CardSort> = (t: Translate) => [
   {
-    label: t('common:sort.id'),
+    label: t('common:id'),
     value: CardSort.ID,
   },
   {
-    label: t('common:sort.name'),
+    label: t('common:name'),
     value: CardSort.Name,
   },
 ]

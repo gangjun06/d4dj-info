@@ -31,6 +31,7 @@ export type TableBodyDataType = (
   | number
   | undefined
   | null
+  | boolean
 )[][]
 
 export const TableBody = ({
@@ -62,7 +63,13 @@ export const TableBody = ({
                     </Link>
                   )
                 ) : (
-                  <>{item || 'X'}</>
+                  <>
+                    {typeof item === 'boolean'
+                      ? item
+                        ? 'O'
+                        : 'X'
+                      : item || 'X'}
+                  </>
                 )}
               </td>
             ))}

@@ -1,40 +1,40 @@
 {
-  "info": "카드 정보",
+  "enddate": "삭제일",
   "id": "카드 ID",
-  "skill_name": "스킬 이름",
+  "illustrations": {
+    "big_icon": "큰 아이콘",
+    "icon": "아이콘",
+    "illustration": "일러스트",
+    "illustration1": "일러스트 - 1",
+    "name": "일러스트",
+    "sd": "SD",
+    "transparent": "투명",
+    "transparent1": "투명 - 1"
+  },
+  "info": "카드 정보",
   "parameter": {
     "heart": "하트",
-    "technique": "테크닉",
     "physical": "피지컬",
+    "technique": "테크닉",
     "total": "종합력"
   },
-  "skill": {
-    "id": "스킬ID",
-    "minRecovery": "최소 회복",
-    "maxRecovery": "최대 회복",
-    "minSeconds": "최소 시간",
-    "maxSeconds": "최대 시간",
-    "scoreUpRate": "스코어업 퍼센트",
-    "perfectScoreUpRate": "퍼펙스 스코어업 퍼센트"
-  },
-  "startdate": "추가일",
-  "enddate": "삭제일",
   "rarity": {
-    "name": "희귀도",
     "1": "⭐",
     "2": "⭐⭐",
     "3": "⭐⭐⭐",
     "4": "⭐⭐⭐⭐",
-    "7": "🌟🌟🌟🌟"
+    "7": "🌟🌟🌟🌟",
+    "name": "희귀도"
   },
-  "illustrations": {
-    "name": "일러스트",
-    "illustration": "일러스트",
-    "illustration1": "일러스트 - 1",
-    "icon": "아이콘",
-    "big_icon": "큰 아이콘",
-    "sd": "SD",
-    "transparent": "투명",
-    "transparent1": "투명 - 1"
-  }
+  "skill": {
+    "id": "스킬ID",
+    "maxRecovery": "최대 회복",
+    "maxSeconds": "최대 시간",
+    "minRecovery": "최소 회복",
+    "minSeconds": "최소 시간",
+    "perfectScoreUpRate": "퍼펙스 스코어업 퍼센트",
+    "scoreUpRate": "스코어업 퍼센트"
+  },
+  "skill_name": "스킬 이름",
+  "startdate": "추가일"
 }

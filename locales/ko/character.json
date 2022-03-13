@@ -1,18 +1,18 @@
 {
-  "id": "ID",
-  "info": "캐릭터 정보",
+  "card_list": "카드 목록",
   "color_code": "색상코드",
   "firstname": "성",
   "firstname_eng": "성 (영어)",
   "fullname": "전체이름",
   "fullname_eng": "전체이름 (영어)",
+  "id": "ID",
   "illustrations": {
-    "name": "일러스트들",
+    "gacha_silhouette": "가챠 실루엣",
     "livestart": "라이브 시작",
+    "name": "일러스트들",
     "profile": "프로필",
-    "standup": "일어선 모습",
     "rankheader": "랭크 헤더",
-    "gacha_silhouette": "가챠 실루엣"
+    "standup": "일어선 모습"
   },
-  "card_list": "카드 목록"
+  "info": "캐릭터 정보"
 }

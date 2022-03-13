@@ -1,4 +1,11 @@
 {
+  "id": "ID",
+  "name": "Name",
+  "default_order": "Default Order",
+  "debut_order": "Debut Order",
+  "start_date": "Start Date",
+  "default": "Default",
+  "category": "Category",
   "title": "D4DJ.Info",
   "filter": "Filter",
   "search": "Search",
@@ -30,12 +37,6 @@
   "adblock": "Please Turn off the Adblock\nThis website doesn't have ad\nAd blocking plugins interfere with resource loading",
   "rotate": "Please rotate the screen horizontally\nand refresh",
   "data_alert": "Because it brings a lot of data, we recommend using Wi-Fi.",
-  "sort_name": "Sort",
-  "sort": {
-    "id": "ID",
-    "name": "Name",
-    "default_order": "Default Order",
-    "debut_order": "Debut Order"
-  },
+  "sort": "Sort",
   "download": "Download"
 }

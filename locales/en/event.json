@@ -1,15 +1,15 @@
 {
+  "episode_characters": "Episode Characters",
   "id": "ID",
+  "illustrations": {
+    "background": "Background",
+    "banner_event": "Banner Event",
+    "banner_event_notice": "Banner Event Notice",
+    "name": "Illustrations"
+  },
   "info": "Event Info",
-  "result_announcement_date": "Result Announcement Date",
   "rank_fix_start_date": "Rank Fix Start Date",
   "reception_close_date": "Reception Close Date",
-  "story_unlock_date": "Story Unlock Date",
-  "illustrations": {
-    "name": "Illustrations",
-    "background": "Background",
-    "banner_event_notice": "Banner Event Notice",
-    "banner_event": "Banner Event"
-  },
-  "episode_characters": "Episode Characters"
+  "result_announcement_date": "Result Announcement Date",
+  "story_unlock_date": "Story Unlock Date"
 }

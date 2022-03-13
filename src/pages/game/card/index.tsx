@@ -141,7 +141,7 @@ export default function CardList() {
         <FormBlock label={t('common:unit.name')}>
           <Checkbox name="unit" control={control} list={UnitCheckbox(t)} />
         </FormBlock>
-        <FormBlock label={t('common:sort_name')}>
+        <FormBlock label={t('common:sort')}>
           <Radio name="sortBy" control={control} list={CardOrderRadio(t)} />
         </FormBlock>
       </SideOver>

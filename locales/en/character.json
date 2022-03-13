@@ -1,18 +1,17 @@
 {
-  "id": "ID",
-  "info": "Character Info",
+  "card_list": "Card List",
   "color_code": "Color Code",
   "firstname": "First Name",
   "firstname_eng": "First Name English",
   "fullname": "Full Name",
   "fullname_eng": "Full Name English",
   "illustrations": {
-    "name": "Illustrations",
+    "gacha_silhouette": "Gacha Iilhouette",
     "livestart": "Live Start",
+    "name": "Illustrations",
     "profile": "Profile",
-    "standup": "Stand up",
     "rankheader": "Rank header",
-    "gacha_silhouette": "Gacha Iilhouette"
+    "standup": "Stand up"
   },
-  "card_list": "Card List"
+  "info": "Character Info"
 }

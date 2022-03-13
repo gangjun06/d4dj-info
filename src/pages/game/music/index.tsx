@@ -120,7 +120,7 @@ export default function MusicList() {
           </>
         }
       >
-        <FormBlock label={t('category')}>
+        <FormBlock label={t('common:category')}>
           <Checkbox
             name="category"
             control={control}
@@ -130,7 +130,7 @@ export default function MusicList() {
         <FormBlock label={t('common:unit.name')}>
           <Checkbox name="unit" control={control} list={UnitCheckbox(t)} />
         </FormBlock>
-        <FormBlock label={t('common:sort_name')}>
+        <FormBlock label={t('common:sort')}>
           <Radio name="sortBy" control={control} list={MusicSortRadio(t)} />
         </FormBlock>
       </SideOver>
