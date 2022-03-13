@@ -87,12 +87,12 @@ const SideNav = ({
     <div className="navbar-menu relative">
       {isOpen && (
         <div
-          className="fixed top-0 left-0 bottom-0 flex flex-col bg-black bg-opacity-30 w-full h-full z-40 cursor-pointer lg:hidden"
+          className="fixed top-0 left-0 bottom-0 flex flex-col bg-black bg-opacity-30 w-full h-full z-10 cursor-pointer lg:hidden"
           onClick={() => onClose()}
         />
       )}
       <nav
-        className={`fixed top-0 left-0 bottom-0 flex flex-col w-3/4 lg:w-72 sm:max-w-xs pt-6 pb-4 bg-gray-800 overflow-y-auto z-40 transition-transform lg:transition-none transform ${
+        className={`fixed top-0 left-0 bottom-0 flex flex-col w-3/4 lg:w-72 sm:max-w-xs pt-6 pb-4 bg-gray-800 overflow-y-auto z-10 transition-transform lg:transition-none transform ${
           !isOpen ? '-translate-x-full lg:translate-x-0z' : ''
         }`}
       >

@@ -1,13 +1,28 @@
+import { useMemo } from 'react'
+import { classNames } from 'utils'
+
 type props = {
   children: string
-  onClick: () => void
+  onClick?: () => void
+  type?: 'Default' | 'Primary'
+  className?: string
 }
 
-export function Button({ children, onClick }: props) {
+export function Button({
+  className,
+  children,
+  onClick = () => {},
+  type = 'Default',
+}: props) {
+  const btnClass = useMemo(() => {
+    if (type === 'Primary') return 'btn-primary'
+    if (type === 'Default') return 'btn'
+  }, [type])
+
   return (
     <button
       type="button"
-      className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+      className={classNames(btnClass, className)}
       onClick={onClick}
     >
       {children}

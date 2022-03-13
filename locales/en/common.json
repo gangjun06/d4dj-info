@@ -38,5 +38,7 @@
   "rotate": "Please rotate the screen horizontally\nand refresh",
   "data_alert": "Because it brings a lot of data, we recommend using Wi-Fi.",
   "sort": "Sort",
-  "download": "Download"
+  "download": "Download",
+  "region": "Region",
+  "end_date": "End Date"
 }

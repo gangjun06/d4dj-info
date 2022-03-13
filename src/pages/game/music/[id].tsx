@@ -24,11 +24,9 @@ const MusicDetailCard = ({ music }: { music: MusicEntity }) => {
       bodyClassName="flex justify-center flex-col items-center"
     >
       <MusicIcon id={data.masterID!} />
-      <div className="flex flex-row gap-x-2 mt-2">
+      <div className="badge mt-2">
         {data.charts?.data.map(({ attributes, id }) => (
-          <div className="badge badge-outline badge-md" key={id}>
-            {attributes?.level}
-          </div>
+          <div key={id}>{attributes?.level}</div>
         ))}
       </div>
       <div className="mt-2">{data.name}</div>
@@ -46,7 +44,6 @@ const MusicDetailCard = ({ music }: { music: MusicEntity }) => {
             [t('music:bpm'), data.musicBpm],
             [t('common:start_date'), formatTimeDetail(data.startDate)],
             [t('common:end_date'), formatTimeDetail(data.endDate)],
-            [t('common:unit'), data.unit?.data?.attributes?.name],
           ]}
         />
       </Table>
@@ -80,34 +77,39 @@ export default function CardDetail({
           <MusicDetailCardMemo music={music} />
         </div>
         <div className="col-span-1 md:col-span-2 gap-y-4 grid grid-flow-row">
-          <Card title={t('music:medly')}>
-            <Tab.Group>
-              <Tab.List>
-                {data.musicMix?.map((data) => (
-                  <Tab.Item key={data!.id}>{data?.section}</Tab.Item>
-                ))}
-              </Tab.List>
-              <Tab.Panels>
-                {data.musicMix?.map((item) => (
-                  <Tab.Panel key={item!.id}>
-                    <Table>
-                      <TableBody
-                        data={[
-                          [t('music:section'), item?.section],
-                          [t('music:start_time'), item?.startTime],
-                          [t('music:start_time_bpm'), item?.startTimeBpm],
-                          [t('music:end_time'), item?.endTime],
-                          [t('music:end_time_bpm'), item?.endTimeBpm],
-                          [t('music:long_mix_start'), item?.enableLongMixStart],
-                          [t('music:long_mix_end'), item?.enableLongMixEnd],
-                        ]}
-                      />
-                    </Table>
-                  </Tab.Panel>
-                ))}
-              </Tab.Panels>
-            </Tab.Group>
-          </Card>
+          {(data.musicMix?.length || 0) > 0 && (
+            <Card title={t('music:medly')}>
+              <Tab.Group>
+                <Tab.List>
+                  {data.musicMix?.map((data) => (
+                    <Tab.Item key={data!.id}>{data?.section}</Tab.Item>
+                  ))}
+                </Tab.List>
+                <Tab.Panels>
+                  {data.musicMix?.map((item) => (
+                    <Tab.Panel key={item!.id}>
+                      <Table>
+                        <TableBody
+                          data={[
+                            [t('music:section'), item?.section],
+                            [t('music:start_time'), item?.startTime],
+                            [t('music:start_time_bpm'), item?.startTimeBpm],
+                            [t('music:end_time'), item?.endTime],
+                            [t('music:end_time_bpm'), item?.endTimeBpm],
+                            [
+                              t('music:long_mix_start'),
+                              item?.enableLongMixStart,
+                            ],
+                            [t('music:long_mix_end'), item?.enableLongMixEnd],
+                          ]}
+                        />
+                      </Table>
+                    </Tab.Panel>
+                  ))}
+                </Tab.Panels>
+              </Tab.Group>
+            </Card>
+          )}
           <Card title={t('music:chart_info')}>
             <Tab.Group>
               <Tab.List>
@@ -120,7 +122,7 @@ export default function CardDetail({
               <Tab.Panels>
                 {charts?.map(({ id, attributes: chart }) => (
                   <Tab.Panel key={id}>
-                    <Table>
+                    <Table className="mb-2">
                       <TableBody
                         data={[
                           [

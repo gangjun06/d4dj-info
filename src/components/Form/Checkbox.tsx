@@ -15,12 +15,11 @@ export function Checkbox({ name, control, list }: props) {
           control={control}
           name={`${name}[${index}]`}
           render={({ field }) => (
-            <label className="cursor-pointer label">
+            <label className="cursor-pointer py-1">
               <span className="label-text mr-2">{item.label}</span>
               <input
                 {...field}
                 type="checkbox"
-                className="checkbox"
                 value={undefined}
                 checked={field.value === item.value}
                 onChange={(event) => {

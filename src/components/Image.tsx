@@ -1,12 +1,13 @@
 import NextImage from 'next/image'
 import React, { ComponentProps, useState } from 'react'
-import { getAlt, getURL, GetURLType, myLoader } from 'utils'
+import { classNames, getAlt, getURL, GetURLType, myLoader } from 'utils'
 import { useSetting } from './Setting'
 
 type ImageProps = {
   src?: string
   width?: number
   height?: number
+  className?: string
   alt?: string
   urlType?: GetURLType
   parameter?: any[]
@@ -84,11 +85,12 @@ export const ImageBase = ({
   objectFit,
   auto,
   onError,
+  className,
 }: ImageProps) => {
   if (auto) {
     return (
       <div
-        className="flex-center relative"
+        className={classNames('flex-center relative', className)}
         style={{ width: '100% !important', height: '100% !important' }}
       >
         {/*@ts-ignore*/}
@@ -116,6 +118,7 @@ export const ImageBase = ({
       layout={layout}
       objectFit={objectFit}
       onError={onError}
+      className={className}
     />
   )
 }
@@ -198,14 +201,13 @@ export const CardIcon = ({
           />
         ))}
       </div>
-      <div className="">
-        <ImageWithFallback
-          width={128}
-          alt={'card-icon'}
-          urlType={GetURLType.CardIcon}
-          parameter={[id, rarity > 2 ? '1' : '0']}
-        />
-      </div>
+      <ImageWithFallback
+        width={128}
+        alt={'card-icon'}
+        urlType={GetURLType.CardIcon}
+        className="rounded-2xl"
+        parameter={[id, rarity > 2 ? '1' : '0']}
+      />
     </div>
   )
 }

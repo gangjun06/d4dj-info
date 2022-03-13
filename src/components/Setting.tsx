@@ -72,7 +72,12 @@ export const SettingProvider = ({ children }: { children: ReactNode }) => {
         show={show}
         onClose={onClose}
         title={'Settings'}
-        actions={<Button onClick={onSubmit}>{t('common:save')}</Button>}
+        showCloseBtn
+        actions={
+          <Button type="Primary" onClick={onSubmit}>
+            {t('common:save')}
+          </Button>
+        }
       >
         <FormBlock label={t('common:language')}>
           <Radio
@@ -84,7 +89,7 @@ export const SettingProvider = ({ children }: { children: ReactNode }) => {
             ]}
           />
         </FormBlock>
-        <FormBlock label={t('region')}>
+        <FormBlock label={t('common:Region')}>
           <Radio
             control={control}
             name="region"

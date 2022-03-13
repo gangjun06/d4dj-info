@@ -81,11 +81,11 @@ export default function EventList() {
     <MainLayout
       breadCrumbs={[
         { name: t('nav:game.name'), link: '' },
-        { name: t('nav:game.event'), link: '' },
+        { name: t('nav:game.event.name'), link: '' },
       ]}
       title={t('nav:game.music')}
       titleSide={
-        <button className="btn btn-primary btn-sm" onClick={openFilterSideOver}>
+        <button className="btn" onClick={openFilterSideOver}>
           <HiOutlineFilter size={22} />
         </button>
       }
@@ -98,18 +98,10 @@ export default function EventList() {
         onSubmit={onSubmit}
         footer={
           <>
-            <button
-              className="btn btn-sm btn-primary btn-outline"
-              type="submit"
-              onClick={setOrderAsc}
-            >
+            <button className="btn-primary" type="submit" onClick={setOrderAsc}>
               {t('common:search')}
             </button>
-            <button
-              className="btn btn-sm btn-outline"
-              onClick={setOrderDesc}
-              type="submit"
-            >
+            <button className="btn" onClick={setOrderDesc} type="submit">
               {t('common:search_desc')}
             </button>
           </>

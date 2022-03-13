@@ -72,7 +72,7 @@ export default function CardDetail({
             <Table>
               <TableBody
                 data={[
-                  [t('card:id'), card.masterID],
+                  [t('common:id'), card.masterID],
                   [
                     t('card:skill_name'),
                     { name: card.skillName, onClick: () => setShowSkill(true) },

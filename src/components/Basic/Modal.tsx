@@ -1,16 +1,17 @@
 import { Dialog, Transition } from '@headlessui/react'
 import useTranslation from 'next-translate/useTranslation'
-import { Fragment, useCallback, useEffect, useState } from 'react'
-import { useDelayUnmount } from 'utils'
+import { Fragment, ReactNode, useCallback, useEffect, useState } from 'react'
+import { Button } from '../Form'
 
 type props = {
   show: boolean
   onClose?: () => void
   showCloseBtn?: boolean
-  children: React.ReactNode
+  children: ReactNode
   title?: string
   tempModal?: string
-  actions?: React.ReactNode
+  actions?: ReactNode
+  icon?: ReactNode
 }
 
 export const Modal = ({
@@ -20,15 +21,15 @@ export const Modal = ({
   showCloseBtn = false,
   onClose,
   actions,
+  icon,
 }: props) => {
-  const [, display] = useDelayUnmount('', show, 250)
   const { t } = useTranslation()
 
   return (
     <Transition appear show={show} as={Fragment}>
       <Dialog
         as="div"
-        className="fixed inset-0 z-10 overflow-y-auto"
+        className="fixed inset-0 z-30 overflow-y-auto"
         onClose={() => onClose && onClose()}
       >
         <div className="min-h-screen px-4 text-center">
@@ -41,10 +42,9 @@ export const Modal = ({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Dialog.Overlay className="fixed inset-0" />
+            <Dialog.Overlay className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
           </Transition.Child>
 
-          {/* This element is to trick the browser into centering the modal contents. */}
           <span
             className="inline-block h-screen align-middle"
             aria-hidden="true"
@@ -60,16 +60,34 @@ export const Modal = ({
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
-              <Dialog.Title
-                as="h3"
-                className="text-lg font-medium leading-6 text-gray-900"
-              >
-                {title}
-              </Dialog.Title>
-              <div className="mt-2">{children}</div>
+            <div className="relative inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+              <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div className="sm:flex sm:items-start">
+                  {icon && (
+                    <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                      {icon}
+                    </div>
+                  )}
+                  <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                    <Dialog.Title
+                      as="h3"
+                      className="text-lg leading-6 font-medium text-gray-900"
+                    >
+                      {title}
+                    </Dialog.Title>
+                    <div className="mt-2">
+                      <p className="text-sm text-gray-500">{children}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-              <div className="mt-4">{actions}</div>
+              <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse gap-x-2">
+                {actions}
+                {showCloseBtn && (
+                  <Button onClick={onClose}>{t('common:close')}</Button>
+                )}
+              </div>
             </div>
           </Transition.Child>
         </div>

@@ -11,11 +11,9 @@ export function FormBlock({
 }) {
   return (
     <div
-      className={`block text-sm font-medium text-gray-700 my-2 ${
-        className || ''
-      }`}
+      className={`text-sm font-medium text-gray-700 my-2 ${className || ''}`}
     >
-      <div className="mb-1">{label}</div>
+      <div className="mb-1 font-bold">{label}</div>
       {children}
     </div>
   )

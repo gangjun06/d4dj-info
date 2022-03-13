@@ -19,7 +19,7 @@ const Card = ({
   bodyStyle?: React.CSSProperties
   link?: string | UrlObject
 }) => {
-  const cardClass = `px-8 py-8 shadow ${className} bg-white rounded-xl`
+  const cardClass = `px-8 py-8 shadow-sm ${className} bg-white rounded-lg overflow-hidden border`
 
   const InnerContent = () => (
     <>

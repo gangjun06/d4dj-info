@@ -11,7 +11,7 @@ export const Table = ({
   console.log(typeof children)
   return (
     <table
-      className={`table w-full table-compact overflow-x-scroll relative ${
+      className={`table-auto border-collapse w-full overflow-x-scroll relative ${
         className || ''
       }`}
     >

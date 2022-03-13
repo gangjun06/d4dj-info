@@ -39,7 +39,7 @@ export function ChartViewer({
 
   return (
     <>
-      <div className="overflow-x-scroll">
+      <div className="overflow-x-scroll" style={{ width: 'inherit' }}>
         <canvas ref={ref} height="750px"></canvas>
       </div>
       <div className="flex flex-wrap gap-y-3 mt-2 items-center justify-between">

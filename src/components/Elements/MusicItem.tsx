@@ -13,9 +13,9 @@ const MusicItem = ({ data: { attributes, id } }: { data: MusicEntity }) => {
       link={`/game/music/${id}`}
     >
       <MusicIcon id={data.masterID!} />
-      <div className="flex flex-row gap-x-2 mt-2">
-        {data.charts?.data?.map(({ attributes, id }, index) => (
-          <div className="badge badge-outline badge-md" key={id}>
+      <div className="mt-2 badge">
+        {data.charts?.data?.map(({ attributes, id }) => (
+          <div className="" key={id}>
             {attributes?.level}
           </div>
         ))}
