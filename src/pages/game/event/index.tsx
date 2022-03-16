@@ -7,16 +7,16 @@ import {
   CardFiltersInput,
   Enum_Event_Type,
   EventsQueryVariables,
-  MusicsQueryVariables,
-  useEventsQuery,
+  useEventsLazyQuery,
 } from '@/generated/graphql'
 import MainLayout from 'layouts/main'
 import useTransition from 'next-translate/useTranslation'
-import { useCallback, useState } from 'react'
+import { useRouter } from 'next/router'
+import { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { HiOutlineFilter } from 'react-icons/hi'
 import InfinityScroll from 'react-infinite-scroll-component'
-import { cleanArray, generateFilter } from 'utils'
+import { cleanArray, generateFilter, parseFilterQuery } from 'utils'
 import { EventTypeCheckbox } from 'utils/constants'
 
 type FilterData = {
@@ -27,6 +27,7 @@ type FilterData = {
 export default function EventList() {
   const { t } = useTransition('')
   const { region } = useSetting()
+  const router = useRouter()
   const { handleSubmit, control, setValue } = useForm<FilterData>({
     defaultValues: { sort: 'desc' },
   })
@@ -45,23 +46,45 @@ export default function EventList() {
   const setOrderDesc = useCallback(() => setValue('sort', 'desc'), [setValue])
   const setOrderAsc = useCallback(() => setValue('sort', 'asc'), [setValue])
 
-  const { data, loading, error, refetch, fetchMore } = useEventsQuery({
-    variables: reqData,
-  })
+  const [loadEvents, { data, loading, error, refetch, fetchMore }] =
+    useEventsLazyQuery({
+      variables: reqData,
+    })
+
+  const setReqDataWithFilter = useCallback(
+    (data: FilterData) => {
+      data.category = cleanArray(data.category)
+      const reqData: EventsQueryVariables = {
+        filters: generateFilter<CardFiltersInput>({
+          type: cleanArray(data.category),
+        }),
+        locale: region,
+        pagination: {
+          pageSize: 30,
+          page: 1,
+        },
+        sort: [`masterID:${data.sort}`],
+      }
+      setReqData(reqData)
+    },
+    [region]
+  )
+
+  useEffect(() => {
+    const parsed = parseFilterQuery(router.query)
+    if (parsed) setReqDataWithFilter(parsed)
+    loadEvents()
+  }, [loadEvents, router.query, setReqDataWithFilter])
 
   const onSubmit = handleSubmit(async (data) => {
-    const reqData: MusicsQueryVariables = {
-      filters: generateFilter<CardFiltersInput>({
-        type: cleanArray(data.category),
-      }),
-      locale: region,
-      pagination: {
-        pageSize: 30,
-        page: 1,
-      },
-      sort: [`masterID:${data.sort}`],
-    }
-    setReqData(reqData)
+    setReqDataWithFilter(data)
+    router.push(
+      //@ts-ignore
+      `/game/event?${new URLSearchParams(data).toString()}`,
+      undefined,
+      { shallow: true }
+    )
+
     await refetch(reqData)
   })
 

@@ -3,7 +3,6 @@ module.exports = {
   defaultLocale: 'en',
   pages: {
     '*': ['common', 'nav'],
-    '/': ['index'],
     '/game/character/[id]': ['character', 'card'],
     '/game/gacha': ['gacha'],
     '/game/gacha/[id]': ['gacha', 'card'],

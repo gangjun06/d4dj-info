@@ -5,7 +5,6 @@ import { Card } from '../Basic'
 import { MusicIcon } from '../Image'
 
 const MusicItem = ({ data: { attributes, id } }: { data: MusicEntity }) => {
-  console.log(attributes)
   const { t } = useTranslation()
   const data = attributes!
   return (

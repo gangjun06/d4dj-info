@@ -6,16 +6,22 @@ import { WaitQuery } from '@/components/Util'
 import {
   CardFiltersInput,
   MusicsQueryVariables,
-  useMusicsQuery,
+  useMusicsLazyQuery,
 } from '@/generated/graphql'
 import { MusicCategory, MusicSort, Unit } from '@/models/index'
 import MainLayout from 'layouts/main'
 import useTransition from 'next-translate/useTranslation'
-import { useCallback, useState } from 'react'
+import { useRouter } from 'next/router'
+import { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { HiOutlineFilter } from 'react-icons/hi'
 import InfinityScroll from 'react-infinite-scroll-component'
-import { cleanArray, cleanArrayWithInt, generateFilter } from 'utils'
+import {
+  cleanArray,
+  cleanArrayWithInt,
+  generateFilter,
+  parseFilterQuery,
+} from 'utils'
 import {
   MusicCategoryCheckbox,
   MusicSortRadio,
@@ -32,6 +38,8 @@ type FilterData = {
 export default function MusicList() {
   const { t } = useTransition('')
   const { region } = useSetting()
+  const router = useRouter()
+
   const { handleSubmit, control, setValue } = useForm<FilterData>({
     defaultValues: { sort: 'asc', sortBy: MusicSort.ID },
   })
@@ -49,24 +57,47 @@ export default function MusicList() {
   const setOrderDesc = useCallback(() => setValue('sort', 'desc'), [setValue])
   const setOrderAsc = useCallback(() => setValue('sort', 'asc'), [setValue])
 
-  const { data, loading, error, refetch, fetchMore } = useMusicsQuery({
-    variables: reqData,
-  })
+  const [loadMusics, { data, loading, error, refetch, fetchMore }] =
+    useMusicsLazyQuery({
+      variables: reqData,
+    })
+
+  const setReqDataWithFilter = useCallback(
+    (data: FilterData) => {
+      data.category = cleanArray(data.category)
+      data.unit = cleanArrayWithInt(data.unit)
+      const reqData: MusicsQueryVariables = {
+        filters: generateFilter<CardFiltersInput>({
+          category: data.category,
+          'unit.masterID': data.unit,
+        }),
+        locale: region,
+        pagination: {
+          pageSize: 30,
+          page: 1,
+        },
+        sort: [`${data.sortBy}:${data.sort}`],
+      }
+      setReqData(reqData)
+    },
+    [region]
+  )
+
+  useEffect(() => {
+    const parsed = parseFilterQuery(router.query)
+    if (parsed) setReqDataWithFilter(parsed)
+    loadMusics()
+  }, [loadMusics, router.query, setReqDataWithFilter])
 
   const onSubmit = handleSubmit(async (data) => {
-    const reqData: MusicsQueryVariables = {
-      filters: generateFilter<CardFiltersInput>({
-        category: cleanArray(data.category),
-        'unit.masterID': cleanArrayWithInt(data.unit),
-      }),
-      locale: region,
-      pagination: {
-        pageSize: 30,
-        page: 1,
-      },
-      sort: [`${data.sortBy}:${data.sort}`],
-    }
-    setReqData(reqData)
+    setReqDataWithFilter(data)
+
+    router.push(
+      //@ts-ignore
+      `/game/music?${new URLSearchParams(data).toString()}`,
+      undefined,
+      { shallow: true }
+    )
     await refetch(reqData)
   })
 

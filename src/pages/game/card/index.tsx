@@ -6,17 +6,18 @@ import { WaitQuery } from '@/components/Util'
 import {
   CardFiltersInput,
   CardsQueryVariables,
-  useCardsQuery,
+  useCardsLazyQuery,
 } from '@/generated/graphql'
 import { Attribute, CardSort, Rarity, Unit } from '@/models/index'
 import MainLayout from 'layouts/main'
 // import { Attribute } from 'models'
 import useTransition from 'next-translate/useTranslation'
-import { useCallback, useState } from 'react'
+import { useRouter } from 'next/router'
+import { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { HiOutlineFilter } from 'react-icons/hi'
 import InfinityScroll from 'react-infinite-scroll-component'
-import { cleanArrayWithInt, generateFilter } from 'utils'
+import { cleanArrayWithInt, generateFilter, parseFilterQuery } from 'utils'
 import {
   AttributeCheckbox,
   CardOrderRadio,
@@ -35,6 +36,7 @@ type FilterData = {
 export default function CardList() {
   const { t } = useTransition('')
   const { region } = useSetting()
+  const router = useRouter()
   const { handleSubmit, control, setValue } = useForm<FilterData>({
     defaultValues: { sort: 'asc', sortBy: CardSort.ID },
   })
@@ -52,25 +54,48 @@ export default function CardList() {
   const setOrderDesc = useCallback(() => setValue('sort', 'desc'), [setValue])
   const setOrderAsc = useCallback(() => setValue('sort', 'asc'), [setValue])
 
-  const { data, loading, error, refetch, fetchMore } = useCardsQuery({
-    variables: reqData,
-  })
+  const [loadCards, { data, loading, error, refetch, fetchMore }] =
+    useCardsLazyQuery({
+      variables: reqData,
+    })
+
+  const setReqDataWithFilter = useCallback(
+    (data: FilterData) => {
+      data.attribute = cleanArrayWithInt(data.attribute)
+      data.cardRearity = cleanArrayWithInt(data.cardRearity)
+      data.unit = cleanArrayWithInt(data.unit)
+      const reqData: CardsQueryVariables = {
+        cardsFilters: generateFilter<CardFiltersInput>({
+          attribute: data.attribute,
+          rarity: data.cardRearity,
+          'character.unit.masterID': data.unit,
+        }),
+        cardsLocale: region,
+        cardsPagination: {
+          pageSize: 30,
+          page: 1,
+        },
+        sort: [`${data.sortBy}:${data.sort}`],
+      }
+      setReqData(reqData)
+    },
+    [region]
+  )
+
+  useEffect(() => {
+    const parsed = parseFilterQuery(router.query)
+    if (parsed) setReqDataWithFilter(parsed)
+    loadCards()
+  }, [loadCards, router.query, setReqDataWithFilter])
 
   const onSubmit = handleSubmit(async (data) => {
-    const reqData: CardsQueryVariables = {
-      cardsFilters: generateFilter<CardFiltersInput>({
-        attribute: cleanArrayWithInt(data.attribute),
-        rarity: cleanArrayWithInt(data.cardRearity),
-        'character.unit.masterID': cleanArrayWithInt(data.unit),
-      }),
-      cardsLocale: region,
-      cardsPagination: {
-        pageSize: 30,
-        page: 1,
-      },
-      sort: [`${data.sortBy}:${data.sort}`],
-    }
-    setReqData(reqData)
+    setReqDataWithFilter(data)
+    router.push(
+      //@ts-ignore
+      `/game/card?${new URLSearchParams(data).toString()}`,
+      undefined,
+      { shallow: true }
+    )
     await refetch(reqData)
   })
 

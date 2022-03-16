@@ -4,19 +4,20 @@ import { Checkbox, FormBlock } from '@/components/Form'
 import { useSetting } from '@/components/Setting'
 import { WaitQuery } from '@/components/Util'
 import {
-  CardFiltersInput,
   Enum_Gacha_Category,
+  GachaFiltersInput,
   GachasQueryVariables,
   MusicsQueryVariables,
-  useGachasQuery,
+  useGachasLazyQuery,
 } from '@/generated/graphql'
 import MainLayout from 'layouts/main'
 import useTransition from 'next-translate/useTranslation'
-import { useCallback, useState } from 'react'
+import { useRouter } from 'next/router'
+import { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { HiOutlineFilter } from 'react-icons/hi'
 import InfinityScroll from 'react-infinite-scroll-component'
-import { cleanArray, generateFilter } from 'utils'
+import { cleanArray, generateFilter, parseFilterQuery } from 'utils'
 import { GachaCategoryCheckbox } from 'utils/constants'
 
 type FilterData = {
@@ -27,6 +28,7 @@ type FilterData = {
 export default function GachaList() {
   const { t } = useTransition('')
   const { region } = useSetting()
+  const router = useRouter()
   const { handleSubmit, control, setValue } = useForm<FilterData>({
     defaultValues: { sort: 'desc' },
   })
@@ -45,23 +47,44 @@ export default function GachaList() {
   const setOrderDesc = useCallback(() => setValue('sort', 'desc'), [setValue])
   const setOrderAsc = useCallback(() => setValue('sort', 'asc'), [setValue])
 
-  const { data, loading, error, refetch, fetchMore } = useGachasQuery({
-    variables: reqData,
-  })
+  const [loadGachas, { data, loading, error, refetch, fetchMore }] =
+    useGachasLazyQuery({
+      variables: reqData,
+    })
+
+  const setReqDataWithFilter = useCallback(
+    (data: FilterData) => {
+      data.category = cleanArray(data.category)
+      const reqData: MusicsQueryVariables = {
+        filters: generateFilter<GachaFiltersInput>({
+          category: data.category,
+        }),
+        locale: region,
+        pagination: {
+          pageSize: 30,
+          page: 1,
+        },
+        sort: [`startDate:${data.sort}`],
+      }
+      setReqData(reqData)
+    },
+    [region]
+  )
+
+  useEffect(() => {
+    const parsed = parseFilterQuery(router.query)
+    if (parsed) setReqDataWithFilter(parsed)
+    loadGachas()
+  }, [loadGachas, router.query, setReqDataWithFilter])
 
   const onSubmit = handleSubmit(async (data) => {
-    const reqData: MusicsQueryVariables = {
-      filters: generateFilter<CardFiltersInput>({
-        category: cleanArray(data.category),
-      }),
-      locale: region,
-      pagination: {
-        pageSize: 30,
-        page: 1,
-      },
-      sort: [`startDate:${data.sort}`],
-    }
-    setReqData(reqData)
+    setReqDataWithFilter(data)
+    router.push(
+      //@ts-ignore
+      `/game/gacha?${new URLSearchParams(data).toString()}`,
+      undefined,
+      { shallow: true }
+    )
     await refetch(reqData)
   })
 
@@ -107,7 +130,7 @@ export default function GachaList() {
           </>
         }
       >
-        <FormBlock label={t('category')}>
+        <FormBlock label={t('common:category')}>
           <Checkbox
             name="category"
             control={control}

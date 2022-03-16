@@ -212,3 +212,22 @@ export const generateFilter = <T>(
     })),
   } as unknown as T
 }
+
+export const parseFilterQuery = (query: any) => {
+  const newData: any = {}
+  const keys = Object.keys(query)
+  if (keys.length < 1) {
+    return null
+  }
+  keys.forEach((key) => {
+    const data = query[key]
+    if (key === 'sort' || key === 'sortBy') {
+      newData[key] = data
+    } else {
+      if (typeof data === 'string' && data !== '') {
+        newData[key] = data.split(',')
+      }
+    }
+  })
+  return newData
+}

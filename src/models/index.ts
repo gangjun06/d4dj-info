@@ -39,7 +39,7 @@ export enum MusicSort {
   ID = 'masterID',
   Name = 'name',
   DefaultOrder = 'defaultOrder',
-  StartDate = 'StartDate',
+  StartDate = 'startDate',
   BPM = 'musicBpm',
 }
 
