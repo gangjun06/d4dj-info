@@ -11,7 +11,10 @@ export * from './useDelayUnmount'
 
 export const loadRegion = (): Region => {
   const region = Cookies.get('region')
-  const index = Object.keys(Region).findIndex((item) => item === region)
+  const index = Object.keys(Region).findIndex(
+    //@ts-ignore
+    (item) => Region[item as any] === region
+  )
   if (index !== -1) {
     return region as Region
   }
@@ -38,6 +41,9 @@ export enum GetURLType {
   CardIllust,
   MusicJacket,
   EventTitleLogo,
+  EventBackground,
+  EventBanner,
+  EventBannerNotice,
   GachaBanner,
   GachaTopBanner,
   Stamp,
@@ -131,6 +137,21 @@ const urlList: {
   [GetURLType.EventTitleLogo]: (p: any[]) => [
     `ondemand/event/event_${p[0]}/title_logo.png`,
     `event title logo ${p[0]}`,
+  ],
+  // eventID
+  [GetURLType.EventBackground]: (p: any[]) => [
+    `ondemand/event/event_${p[0]}/background.jpg`,
+    `event background ${p[0]}`,
+  ],
+  // eventID
+  [GetURLType.EventBanner]: (p: any[]) => [
+    `ondemand/event/event_${p[0]}/banner_event.png`,
+    `event banner event ${p[0]}`,
+  ],
+  // eventID
+  [GetURLType.EventBannerNotice]: (p: any[]) => [
+    `ondemand/event/event_${p[0]}/banner_event_notice.png`,
+    `event banner notice ${p[0]}`,
   ],
   // gachaID
   [GetURLType.GachaBanner]: (p: any[]) => [

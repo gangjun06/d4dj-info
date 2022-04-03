@@ -6914,6 +6914,13 @@ export type EventsQueryVariables = Exact<{
 
 export type EventsQuery = { __typename?: 'Query', events?: { __typename?: 'EventEntityResponseCollection', data: Array<{ __typename?: 'EventEntity', id?: string | null, attributes?: { __typename?: 'Event', masterID?: number | null, name?: string | null, type?: Enum_Event_Type | null, startDate?: any | null, endDate?: any | null } | null }>, meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', page: number, pageCount: number } } } | null };
 
+export type EventQueryVariables = Exact<{
+  eventId?: InputMaybe<Scalars['ID']>;
+}>;
+
+
+export type EventQuery = { __typename?: 'Query', event?: { __typename?: 'EventEntityResponse', data?: { __typename?: 'EventEntity', id?: string | null, attributes?: { __typename?: 'Event', type?: Enum_Event_Type | null, masterID?: number | null, name?: string | null, startDate?: any | null, receptionCloseDate?: any | null, rankFixStartDate?: any | null, endDate?: any | null, resultAnnouncementDate?: any | null, isD4FesStory?: boolean | null, entryBonusStockAmount?: number | null, stockAmountPerUse?: number | null, storyUnlockDate?: any | null, showExchangeButton?: boolean | null, showMissionButton?: boolean | null, topPrefabPath?: string | null, bgmPath?: string | null, createdAt?: any | null, updatedAt?: any | null, localizations?: { __typename?: 'EventRelationResponseCollection', data: Array<{ __typename?: 'EventEntity', id?: string | null, attributes?: { __typename?: 'Event', locale?: string | null } | null }> } | null } | null } | null } | null };
+
 export type MusicQueryVariables = Exact<{
   musicId?: InputMaybe<Scalars['ID']>;
 }>;
@@ -6954,6 +6961,13 @@ export type StampQueryVariables = Exact<{
 
 
 export type StampQuery = { __typename?: 'Query', stamp?: { __typename?: 'StampEntityResponse', data?: { __typename?: 'StampEntity', id?: string | null, attributes?: { __typename?: 'Stamp', masterID?: number | null, category?: Enum_Stamp_Category | null, name?: string | null, description?: string | null, hasVoice?: boolean | null, localizations?: { __typename?: 'StampRelationResponseCollection', data: Array<{ __typename?: 'StampEntity', attributes?: { __typename?: 'Stamp', locale?: string | null } | null }> } | null } | null } | null } | null };
+
+export type CharacterNamesQueryVariables = Exact<{
+  pagination?: InputMaybe<PaginationArg>;
+}>;
+
+
+export type CharacterNamesQuery = { __typename?: 'Query', characters?: { __typename?: 'CharacterEntityResponseCollection', data: Array<{ __typename?: 'CharacterEntity', attributes?: { __typename?: 'Character', fullNameEnglish?: string | null, firstNameEnglish?: string | null, masterID?: number | null } | null }> } | null };
 
 
 export const UnitsDocument = gql`
@@ -7349,6 +7363,71 @@ export function useEventsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Eve
 export type EventsQueryHookResult = ReturnType<typeof useEventsQuery>;
 export type EventsLazyQueryHookResult = ReturnType<typeof useEventsLazyQuery>;
 export type EventsQueryResult = Apollo.QueryResult<EventsQuery, EventsQueryVariables>;
+export const EventDocument = gql`
+    query Event($eventId: ID) {
+  event(id: $eventId) {
+    data {
+      id
+      attributes {
+        type
+        masterID
+        name
+        startDate
+        receptionCloseDate
+        rankFixStartDate
+        endDate
+        resultAnnouncementDate
+        isD4FesStory
+        entryBonusStockAmount
+        stockAmountPerUse
+        storyUnlockDate
+        showExchangeButton
+        showMissionButton
+        topPrefabPath
+        bgmPath
+        createdAt
+        updatedAt
+        localizations {
+          data {
+            id
+            attributes {
+              locale
+            }
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useEventQuery__
+ *
+ * To run a query within a React component, call `useEventQuery` and pass it any options that fit your needs.
+ * When your component renders, `useEventQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useEventQuery({
+ *   variables: {
+ *      eventId: // value for 'eventId'
+ *   },
+ * });
+ */
+export function useEventQuery(baseOptions?: Apollo.QueryHookOptions<EventQuery, EventQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<EventQuery, EventQueryVariables>(EventDocument, options);
+      }
+export function useEventLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<EventQuery, EventQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<EventQuery, EventQueryVariables>(EventDocument, options);
+        }
+export type EventQueryHookResult = ReturnType<typeof useEventQuery>;
+export type EventLazyQueryHookResult = ReturnType<typeof useEventLazyQuery>;
+export type EventQueryResult = Apollo.QueryResult<EventQuery, EventQueryVariables>;
 export const MusicDocument = gql`
     query Music($musicId: ID) {
   music(id: $musicId) {
@@ -7677,3 +7756,44 @@ export function useStampLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Stam
 export type StampQueryHookResult = ReturnType<typeof useStampQuery>;
 export type StampLazyQueryHookResult = ReturnType<typeof useStampLazyQuery>;
 export type StampQueryResult = Apollo.QueryResult<StampQuery, StampQueryVariables>;
+export const CharacterNamesDocument = gql`
+    query CharacterNames($pagination: PaginationArg) {
+  characters(pagination: $pagination) {
+    data {
+      attributes {
+        fullNameEnglish
+        firstNameEnglish
+        masterID
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useCharacterNamesQuery__
+ *
+ * To run a query within a React component, call `useCharacterNamesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCharacterNamesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCharacterNamesQuery({
+ *   variables: {
+ *      pagination: // value for 'pagination'
+ *   },
+ * });
+ */
+export function useCharacterNamesQuery(baseOptions?: Apollo.QueryHookOptions<CharacterNamesQuery, CharacterNamesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CharacterNamesQuery, CharacterNamesQueryVariables>(CharacterNamesDocument, options);
+      }
+export function useCharacterNamesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CharacterNamesQuery, CharacterNamesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CharacterNamesQuery, CharacterNamesQueryVariables>(CharacterNamesDocument, options);
+        }
+export type CharacterNamesQueryHookResult = ReturnType<typeof useCharacterNamesQuery>;
+export type CharacterNamesLazyQueryHookResult = ReturnType<typeof useCharacterNamesLazyQuery>;
+export type CharacterNamesQueryResult = Apollo.QueryResult<CharacterNamesQuery, CharacterNamesQueryVariables>;

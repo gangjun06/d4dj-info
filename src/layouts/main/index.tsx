@@ -57,7 +57,9 @@ const SideNav = ({
     link: string
     Icon: IconType
   }) => {
-    let isFocus = router.pathname.startsWith(link)
+    let isFocus =
+      router.pathname.startsWith(link) ||
+      (link === '/game/etc' && router.pathname.startsWith('/game/stamp'))
     if (link === '/' && router.pathname != '/') isFocus = false
     return (
       <li>
@@ -155,11 +157,6 @@ const SideNav = ({
                 Icon={HiOutlinePhotograph}
                 link="/game/gallery"
               /> */}
-              <NavItem
-                label={t('nav:game.stamp')}
-                Icon={HiDotsCircleHorizontal}
-                link="/game/stamp"
-              />
               <NavItem
                 label={t('nav:game.etc.name')}
                 Icon={HiDotsCircleHorizontal}

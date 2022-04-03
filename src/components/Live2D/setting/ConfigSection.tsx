@@ -1,4 +1,5 @@
 import { FormBlock, Input, Select, Switch } from '@/components/Form'
+import { useCharacterNamesQuery } from '@/generated/graphql'
 import { joiResolver } from '@hookform/resolvers/joi'
 import Joi from 'joi'
 import { Live2DModel } from 'pixi-live2d-display'
@@ -40,7 +41,7 @@ export function AddModel() {
     }
   }, [getValues, setValue])
 
-  const data: any = {}
+  const { data } = useCharacterNamesQuery()
 
   const onSubmit = async ({ model: modelStr, type, id }: FormData) => {
     if (!app) return
@@ -77,11 +78,14 @@ export function AddModel() {
             name="model"
             data={
               data
-                ? data.character.map((item: any) => ({
-                    id: pad(item.id, 3),
-                    name: item.fullNameEnglish || item.firstNameEnglish,
+                ? data.characters?.data.map(({ attributes }) => ({
+                    id: pad(attributes?.masterID as number, 3),
+                    name:
+                      attributes?.fullNameEnglish ||
+                      attributes?.firstNameEnglish ||
+                      '',
                     img: `adv/ondemand/chara_icon/adv_icon_${pad(
-                      item.id,
+                      attributes?.masterID as number,
                       3
                     )}.png`,
                   }))

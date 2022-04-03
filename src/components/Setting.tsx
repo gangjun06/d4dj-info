@@ -45,6 +45,7 @@ export const SettingProvider = ({ children }: { children: ReactNode }) => {
   const onSubmit = handleSubmit((data) => {
     setLanguage(data.lang)
     localStorage.setItem('lang', data.lang)
+    setRegionStore(data.region as Region)
     setShow(false)
   })
 

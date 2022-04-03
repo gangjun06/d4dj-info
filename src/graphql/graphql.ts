@@ -248,6 +248,44 @@ export const GET_EVENTS = gql`
   }
 `
 
+export const GET_EVENT = gql`
+  query Event($eventId: ID) {
+    event(id: $eventId) {
+      data {
+        id
+        attributes {
+          type
+          masterID
+          name
+          startDate
+          receptionCloseDate
+          rankFixStartDate
+          endDate
+          resultAnnouncementDate
+          isD4FesStory
+          entryBonusStockAmount
+          stockAmountPerUse
+          storyUnlockDate
+          showExchangeButton
+          showMissionButton
+          topPrefabPath
+          bgmPath
+          createdAt
+          updatedAt
+          localizations {
+            data {
+              id
+              attributes {
+                locale
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`
+
 export const GET_MUSIC = gql`
   query Music($musicId: ID) {
     music(id: $musicId) {
@@ -449,6 +487,20 @@ export const GET_STAMP = gql`
               }
             }
           }
+        }
+      }
+    }
+  }
+`
+
+export const GET_CHARACTER_NAMES = gql`
+  query CharacterNames($pagination: PaginationArg) {
+    characters(pagination: $pagination) {
+      data {
+        attributes {
+          fullNameEnglish
+          firstNameEnglish
+          masterID
         }
       }
     }

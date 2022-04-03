@@ -106,7 +106,7 @@ export default function EventList() {
         { name: t('nav:game.name'), link: '' },
         { name: t('nav:game.event.name'), link: '' },
       ]}
-      title={t('nav:game.event')}
+      title={t('nav:game.event.name')}
       titleSide={
         <button className="btn" onClick={openFilterSideOver}>
           <HiOutlineFilter size={22} />
