@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { classNames } from 'utils'
 
 type props = {
-  children: string
+  children: React.ReactNode
   onClick?: () => void
   type?: 'Default' | 'Primary'
   className?: string
