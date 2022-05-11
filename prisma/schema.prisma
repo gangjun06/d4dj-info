@@ -1,3 +1,4 @@
+
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
@@ -6,6 +7,1948 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "postgres"
   url      = env("DATABASE_URL")
 }
+model HelpMaster {
+  id Int @id
+  categoryId Int
+  title String
+  imageUrl String
+  content String
+  locale Locale
+  category HelpCategoryMaster @relation(fields: [categoryId], references: [id])
+}
+
+model UserExpMaster {
+  id Int @id @default(autoincrement())
+  level Int
+  totalExp Int
+  recoveryVoltage Int
+  maxFriendCount Int
+  deckSupportCardNum Int
+  adjustEventToken String
+  firebaseEventName String
+  locale Locale
+}
+
+model UnitExpMaster {
+  id Int @id @default(autoincrement())
+  level Int
+  totalExp Int
+  locale Locale
+}
+
+model ParameterLevelMaster {
+  id Int @id @default(autoincrement())
+  level Int
+  needsCharacterRank Int
+  effectValue Float
+  totalExp Int
+  locale Locale
+}
+
+model AchievementMaster {
+  id Int @id
+  groupId Int
+  sequence Int
+  title String
+  description String
+  conditionId Int
+  conditionValues Int[]
+  eventType EventType
+  isHidden Boolean
+  notifyType AchievementNotifyType
+  locale Locale
+  rewards RewardMaster[] @relation("AchievementMaster_Rewards")
+}
+
+model AssistOptionPresetMaster {
+  id Int @id
+  name String
+  statusCode Int
+  locale Locale
+}
+
+model BingoCardMaster {
+  id Int @id
+  minCardNumber Int
+  lotNumberNeedPoint Int
+  rewardPhaseId Int
+  cardImageIDs Int[]
+  cardType BingoCardType
+  locale Locale
+}
+
+model CardDisplayMaster {
+  id Int @id
+  groupId Int
+  cardId Int
+  cardType CardIllustType
+  rate Int
+  locale Locale
+  card CardMaster @relation(fields: [cardId], references: [id])
+}
+
+model CardMaster {
+  id Int @id
+  rarityId Int
+  cardName String
+  attributeId Int
+  characterId Int
+  skillName String
+  passiveSkillId Int
+  maxParameters Int[]
+  gachaMessage String
+  clothCardId Int
+  debutOrder Int
+  cardIllustHeadDistanceY Float[]
+  cardIllustCenterDistanceX Float[]
+  startDate DateTime
+  endDate DateTime
+  gachaCardAttribute Int
+  locale Locale
+  cardDisplays CardDisplayMaster[]
+  rarity RarityMaster @relation(fields: [rarityId], references: [id])
+  attribute AttributeMaster @relation(fields: [attributeId], references: [id])
+  character CharacterMaster @relation(fields: [characterId], references: [id])
+  passiveSkill PassiveSkillMaster @relation(fields: [passiveSkillId], references: [id])
+  gachaPickUpCards GachaMaster[] @relation("GachaMaster_PickUpCards")
+  gachaSelectBonusCards GachaMaster[] @relation("GachaMaster_SelectBonusCards")
+  gachaHomeAnimationCards GachaMaster[] @relation("GachaMaster_HomeAnimationCards")
+  boxGachas BoxGachaMaster[]
+  questDecks QuestDeckMaster[]
+}
+
+model ChampionshipLeagueMaster {
+  id Int @id
+  championshipId Int
+  name String
+  colorCode String
+  locale Locale
+  championship ChampionshipMaster @relation(fields: [championshipId], references: [id])
+  setlists ChampionshipSetlistMaster[]
+}
+
+model ChampionshipMaster {
+  id Int @id
+  name String
+  conditionsId Int[]
+  summary String
+  leagueSummary String
+  schedule String
+  entryDescription String
+  uRL String
+  entryURL String
+  startDate DateTime
+  endDate DateTime
+  maxPassNumber Int
+  canEntry Boolean
+  maxRankingNumber Int
+  displayStartDate DateTime
+  locale Locale
+  leagues ChampionshipLeagueMaster[]
+}
+
+model CharacterMaster {
+  id Int @id
+  fullName String
+  firstName String
+  firstNameEnglish String
+  unitId Int
+  profileAnswers String[]
+  fullNameEnglish String
+  colorCode String
+  locale Locale
+  cards CardMaster[]
+  unit UnitMaster @relation(fields: [unitId], references: [id])
+  live2DUIChats Live2DUIChatMaster[]
+  liveResultEpisodes LiveResultEpisodeMaster[] @relation("LiveResultEpisodeMaster_Characters")
+  mapEvents MapEventMaster[] @relation("MapEventMaster_Characters")
+}
+
+model CharacterRankRewardMaster {
+  id Int @id
+  characterId Int
+  characterRank Int
+  category RewardCategory
+  rewardId Int
+  amount Int
+  startDate DateTime
+  endDate DateTime
+  locale Locale
+}
+
+model ChargeLimitMaster {
+  id Int @id @default(autoincrement())
+  age Int
+  chageLimitYen Int
+  locale Locale
+}
+
+model ChartMaster {
+  id Int @id
+  musicId Int
+  difficulty ChartDifficulty
+  level Float
+  achieveId Int
+  trends Float[]
+  overrideLevel String
+  designerId Int
+  locale Locale
+  music MusicMaster @relation(fields: [musicId], references: [id])
+  designer ChartDesignerMaster @relation(fields: [designerId], references: [id])
+  questBlocks QuestBlockMaster[]
+}
+
+model ClubItemDetailMaster {
+  id Int @id
+  level Int
+  targetType ClubItemTargetType
+  targetId Int
+  effectValue Float
+  conditionsId Int[]
+  requiredStockId1 Int
+  requiredAmount1 Int
+  requiredStockId2 Int
+  requiredAmount2 Int
+  requiredStockId3 Int
+  requiredAmount3 Int
+  requiredStockId4 Int
+  requiredAmount4 Int
+  requiredStockId5 Int
+  requiredAmount5 Int
+  locale Locale
+}
+
+model ClubItemMaster {
+  id Int @id
+  groupId Int
+  name String
+  description String
+  spotId Int
+  detailId Int
+  categoryId Int
+  conditionCardId Int
+  startDate DateTime
+  endDate DateTime
+  duplicateId Int
+  searchWords String
+  locale Locale
+  spot ClubItemSpotMaster @relation(fields: [spotId], references: [id])
+  category ClubItemCategoryMaster @relation(fields: [categoryId], references: [id])
+  questClubDecks QuestClubDeckMaster[]
+}
+
+model ConditionMaster {
+  id Int @id
+  category ConditionCategory
+  value Int[]
+  locale Locale
+  episodes EpisodeMaster[] @relation("EpisodeMaster_Conditions")
+}
+
+model EpisodeMaster {
+  category EpisodeCategory
+  id Int @id
+  title String
+  summary String
+  startDate DateTime
+  endDate DateTime
+  hasVoice Boolean
+  locale Locale
+  conditions ConditionMaster[] @relation("EpisodeMaster_Conditions")
+  rewards RewardMaster[] @relation("EpisodeMaster_Rewards")
+}
+
+model EventMaster {
+  id Int @id
+  name String
+  type EventType
+  startDate DateTime
+  receptionCloseDate DateTime
+  rankFixStartDate DateTime
+  resultAnnouncementDate DateTime
+  endDate DateTime
+  stockId Int
+  entryBonusStockAmount Int
+  stockAmountPerUse Int
+  episodeCharacters Int[]
+  storyUnlockDate DateTime
+  showExchangeButton Boolean
+  exchangeShopId Int
+  topPrefabPath String
+  showMissionButton Boolean
+  bGMPath String
+  episodeType EventEpisodeType
+  boxGachaId Int
+  locale Locale
+  aggregations EventAggregationBaseMaster[]
+  eventSpecificBonuses EventSpecificBonusMaster[]
+  episodes EventEpisodeMaster[]
+}
+
+model EventAggregationBaseMaster {
+  id Int @id
+  eventId Int
+  aggregationType EventAggregationType
+  pointTypeName String
+  pointTypeIconName String
+  eventPointRewardTemplateId Int
+  eventRankingRewardTemplateId Int
+  locale Locale
+  event EventMaster @relation(fields: [eventId], references: [id])
+  eventMedleySetlists EventMedleySetlistMaster[]
+}
+
+model EventPointRewardMaster {
+  id Int @id
+  requiredPoint Int
+  category RewardCategory
+  rewardId Int
+  amount Int
+  locale Locale
+}
+
+model EventSpecificBonusMaster {
+  id Int @id @default(autoincrement())
+  eventId Int
+  characterIds Int[]
+  attributeId Int
+  characterMatchPointBonusValue Int
+  attributeMatchPointBonusValue Int
+  allMatchPointBonusValue Int
+  characterMatchParameterBonusId Int
+  eventPointParameterBonusId Int
+  eventPointParameterBonusRate Int
+  locale Locale
+  event EventMaster @relation(fields: [eventId], references: [id])
+  characterMatchParameterBonus ParameterBonusMaster @relation(fields: [characterMatchParameterBonusId], references: [id])
+}
+
+model ExchangeItemMaster {
+  id Int @id
+  exchangeId Int
+  rewardCategory RewardCategory
+  rewardId Int
+  rewardAmount Int
+  exchangeCount Int
+  resetType DateSelectCategory
+  resetValue Int
+  recommend Boolean
+  startDate DateTime
+  endDate DateTime
+  requiredStockId1 Int
+  requiredAmount1 Int
+  requiredStockId2 Int
+  requiredAmount2 Int
+  requiredStockId3 Int
+  requiredAmount3 Int
+  requiredStockId4 Int
+  requiredAmount4 Int
+  prerequisiteItems Int[]
+  locale Locale
+  exchange ExchangeMaster @relation(fields: [exchangeId], references: [id])
+}
+
+model ExchangeMaster {
+  id Int @id
+  name String
+  isTabVisible Boolean
+  isPollingPlace Boolean
+  categoryName String
+  order Int
+  isSecret Boolean
+  secretName String
+  deliveryEffectId Int
+  deliveryDate DateTime
+  showPollingGauge Boolean
+  gaugeColorCodes String[]
+  locale Locale
+  items ExchangeItemMaster[]
+}
+
+model GachaMaster {
+  id Int @id
+  name String
+  tableIds Int[]
+  gachaTypeName String
+  summaryId Int
+  hasSpecificBg Boolean
+  startDate DateTime
+  endDate DateTime
+  detailId Int
+  noteId Int
+  loginTriggerMinutes Int
+  showHomeAnimation Boolean
+  hasPickUpDuplicateBonus Boolean
+  gachaCardAttribute Int
+  ascendingSortId Int
+  category GachaCategory
+  selectBonusMaxValue Int
+  pickUpDuplicateBonusStockIds Int[]
+  pickUpDuplicateBonusStockAmounts Int[]
+  type GachaType
+  stepLoopCount Int
+  otherCardDate DateTime
+  pickUpLevelMax Boolean
+  shareCashBackRate Int
+  randomBonusMaxValue Int
+  randomBonusStockId Int
+  locale Locale
+  tableRates GachaTableRateMaster[] @relation("GachaMaster_TableRates")
+  pickUpCards CardMaster[] @relation("GachaMaster_PickUpCards")
+  summary GachaSummaryWordMaster @relation(fields: [summaryId], references: [id])
+  detail GachaExplanationWordMaster @relation(fields: [detailId], references: [id])
+  note GachaNotesWordMaster @relation(fields: [noteId], references: [id])
+  selectBonusCards CardMaster[] @relation("GachaMaster_SelectBonusCards")
+  selectBonusRewards RewardMaster[] @relation("GachaMaster_SelectBonusRewards")
+  homeAnimationCards CardMaster[] @relation("GachaMaster_HomeAnimationCards")
+  draws GachaDrawMaster[]
+}
+
+model GachaRouletteMaster {
+  id Int @id
+  type GachaRouletteType
+  targetId Int
+  effectValue Int
+  drawLimit Int
+  locale Locale
+  gachaDraws GachaDrawMaster[] @relation("GachaDrawMaster_RouletteTargets")
+}
+
+model HonorMaster {
+  id Int @id
+  type HonorType
+  name String
+  description String
+  effectType Int
+  conditionCardId Int
+  duplicateId Int
+  locale Locale
+}
+
+model UnitEpisodeMaster {
+  id Int @id
+  backgroundId Int
+  season Int
+  unitId Int
+  chapterNumber Int
+  locale Locale
+  unit UnitMaster @relation(fields: [unitId], references: [id])
+}
+
+model CharacterEpisodeMaster {
+  id Int @id
+  backgroundId Int
+  characterId Int
+  chapterNumber Int
+  locale Locale
+}
+
+model EventEpisodeMaster {
+  id Int @id
+  backgroundId Int
+  eventId Int
+  chapterNumber Int
+  locale Locale
+  event EventMaster @relation(fields: [eventId], references: [id])
+}
+
+model Live2DUIChatMaster {
+  id Int @id
+  categories Live2DUIChatCategory
+  characterId Int
+  clothId Int
+  message String
+  motion String
+  startDate DateTime
+  endDate DateTime
+  locale Locale
+  character CharacterMaster @relation(fields: [characterId], references: [id])
+}
+
+model LiveCutinMaster {
+  id Int @id
+  characterId1 Int
+  text1 String
+  motion1 String
+  characterId2 Int
+  text2 String
+  motion2 String
+  characterId3 Int
+  text3 String
+  motion3 String
+  conditionsId Int[]
+  startDate DateTime
+  endDate DateTime
+  locale Locale
+}
+
+model LiveSEPackMaster {
+  id Int @id
+  name String
+  summary String
+  category LiveSEPackCategory
+  startDate DateTime
+  endDate DateTime
+  locale Locale
+}
+
+model LoginBonusItemMaster {
+  id Int @id @default(autoincrement())
+  loginBonusId Int
+  sequence Int
+  positions Int[]
+  locale Locale
+  loginBonus LoginBonusMaster @relation(fields: [loginBonusId], references: [id])
+}
+
+model MapMaster {
+  id Int @id
+  name String
+  positionX Int
+  positionY Int
+  conditionsId Int[]
+  bGM String
+  characterScale Float
+  startDate DateTime
+  endDate DateTime
+  aDVBackgroundId Int
+  forceDefaultMap Boolean
+  hideMapId Int
+  locale Locale
+  mapMobs MapMobMaster[]
+  mapObjectSpots MapObjectSpotMaster[]
+  questBlocks QuestBlockMaster[]
+  mapEvents MapEventMaster[]
+}
+
+model MapMobMaster {
+  id Int @id
+  mapId Int
+  positionX Int
+  positionY Int
+  motion Int
+  direction Int
+  skin Int
+  movingPattern MobMovingPattern
+  movingDuration Float
+  delaySeconds Float
+  wayPoint1X Int
+  wayPoint1Y Int
+  wayPoint2X Int
+  wayPoint2Y Int
+  wayPoint3X Int
+  wayPoint3Y Int
+  wayPoint4X Int
+  wayPoint4Y Int
+  wayPoint5X Int
+  wayPoint5Y Int
+  characterId Int
+  startDate DateTime
+  endDate DateTime
+  locale Locale
+  map MapMaster @relation(fields: [mapId], references: [id])
+}
+
+model MapObjectMaster {
+  id Int @id
+  spotId Int
+  fileName String
+  randomWeight Int
+  startDate DateTime
+  endDate DateTime
+  buttonText1 String
+  buttonHref1 String
+  buttonText2 String
+  buttonHref2 String
+  buttonText3 String
+  buttonHref3 String
+  locale Locale
+  spot MapObjectSpotMaster @relation(fields: [spotId], references: [id])
+}
+
+model MapObjectSpotMaster {
+  id Int @id
+  mapId Int
+  positionX Int
+  positionY Int
+  objectType MapObjectType
+  locale Locale
+  mapObjects MapObjectMaster[]
+  map MapMaster @relation(fields: [mapId], references: [id])
+}
+
+model MapSpotMaster {
+  id Int @id @default(autoincrement())
+  mapId Int
+  spotId Int
+  position1X Int
+  position1Y Int
+  position2X Int
+  position2Y Int
+  position3X Int
+  position3Y Int
+  position4X Int
+  position4Y Int
+  position5X Int
+  position5Y Int
+  startDate DateTime
+  endDate DateTime
+  locale Locale
+}
+
+model MileageMaster {
+  id Int @id @default(autoincrement())
+  rank MileageRank
+  needMilePoint Int
+  locale Locale
+}
+
+model MissionDetailMaster {
+  id Int @id
+  panelId Int
+  sequence Int
+  title String
+  description String
+  conditionId Int
+  conditionValues Int[]
+  homePriority Int
+  notifyType AchievementNotifyType
+  locale Locale
+  panel MissionPanelMaster @relation(fields: [panelId], references: [id])
+  rewards RewardMaster[] @relation("MissionDetailMaster_Rewards")
+}
+
+model MissionGroupMaster {
+  id Int @id
+  category MissionCategory
+  name String
+  startDate DateTime
+  endDate DateTime
+  resetType DateSelectCategory
+  resetValue Int
+  subscriptionId Int
+  locale Locale
+  panels MissionPanelMaster[]
+}
+
+model MobBodyVariantMaster {
+  id Int @id
+  skin Int
+  spineId Int
+  locale Locale
+}
+
+model MultiRoomMaster {
+  id Int @id
+  roomType MultiRoomType
+  type LiveType
+  name String
+  description String
+  minimumDeckPower Int
+  multiplier Float
+  forceAssistOff Boolean
+  isRaidRoom Boolean
+  locale Locale
+}
+
+model MusicMaster {
+  id Int @id
+  name String
+  readName String
+  lyrist String
+  composer String
+  arranger String
+  specialUnitName String
+  category MusicCategory
+  unitId Int
+  defaultOrder Int
+  musicBpm Float
+  openKey Int
+  sectionTrend ChartSectionType
+  startDate DateTime
+  endDate DateTime
+  hasMovie Boolean
+  isHidden Boolean
+  excludeChallenge Boolean
+  canFairUse Boolean
+  unlockDate DateTime
+  locale Locale
+  charts ChartMaster[]
+  unit UnitMaster @relation(fields: [unitId], references: [id])
+  purchaseBonuses RewardMaster[] @relation("MusicMaster_PurchaseBonuses")
+  musicMixes MusicMixMaster[]
+  djSimulatorSetlistMusics DJSimulatorSetlistMusicMaster[]
+  towerStages TowerStageMaster[] @relation("TowerStageMaster_Musics")
+}
+
+model QuestBlockMaster {
+  id Int @id
+  mapId Int
+  order Int
+  chartId Int
+  chartSection ChartSectionType
+  deckId Int
+  clubDeckId Int
+  conditionType QuestConditionType
+  conditionValue Int
+  clubFormationId Int
+  deckPower Int
+  name String
+  locale Locale
+  map MapMaster @relation(fields: [mapId], references: [id])
+  chart ChartMaster @relation(fields: [chartId], references: [id])
+  firstRewards RewardMaster[] @relation("QuestBlockMaster_FirstRewards")
+  loopRewards RewardMaster[] @relation("QuestBlockMaster_LoopRewards")
+}
+
+model QuestMapMaster {
+  id Int @id
+  name String
+  startDate DateTime
+  endDate DateTime
+  maxPlayableCount Int
+  bGM String
+  backgroundPrefabFileName String
+  recoveryStockId Int
+  recoveryStockAmount Int
+  locale Locale
+}
+
+model RaidBossHpBonusDetailMaster {
+  id Int @id
+  bonusId Int
+  category RewardCategory
+  rewardId Int
+  rewardAmount Int
+  locale Locale
+}
+
+model RaidBossMaster {
+  id Int @id @default(autoincrement())
+  aggregationId Int
+  roomId Int
+  eventId Int
+  name String
+  hp Float
+  startDate DateTime
+  endDate DateTime
+  specificBonusCharacterIds Int[]
+  characterMatchParameterBonusId Int
+  useRandomUnitImage Boolean
+  bonusCardIds Int[]
+  cardMatchParameterBonusesId Int[]
+  dailyRewardMultipliers Int[]
+  overrideImageNumber Int
+  locale Locale
+}
+
+model RaidSpecialBossMaster {
+  id Int @id @default(autoincrement())
+  groupId Int
+  bossIds Int[]
+  eventId Int
+  bossLoopType BossLoopType
+  locale Locale
+}
+
+model SkillMaster {
+  id Int @id
+  minRecoveryValue Int
+  maxRecoveryValue Int
+  comboSupportCount Int
+  scoreUpRate Int
+  minSeconds Float
+  maxSeconds Float
+  perfectScoreUpRate Int
+  locale Locale
+}
+
+model StampMaster {
+  id Int @id
+  category StampCategory
+  name String
+  description String
+  hasVoice Boolean
+  duplicateId Int
+  locale Locale
+}
+
+model StockMaster {
+  id Int @id
+  name String
+  category StockCategory
+  viewCategoryId Int
+  summary String
+  attributeId Int
+  rarity Int
+  exp Int
+  buffCharacterId Int
+  recoveryAmount Int
+  consumeAmount Int
+  maxAmount Int
+  startDate DateTime
+  endDate DateTime
+  isAppropriateSales Boolean
+  locale Locale
+  viewCategory StockViewCategoryMaster @relation(fields: [viewCategoryId], references: [id])
+  boxGachas BoxGachaMaster[]
+  cardStackItems CardStackItemMaster[]
+  gachaDraws GachaDrawMaster[]
+  chartAchieveRewards ChartAchieveMaster[]
+  limitBreakItems LimitBreakItemMaster[]
+}
+
+model UnitMaster {
+  id Int @id
+  name String
+  canTraining Boolean
+  summaries String[]
+  mainColorCode String
+  subColorCode String
+  shortName String
+  initDeckCharacterIds Int[]
+  locale Locale
+  characters CharacterMaster[]
+  episodes UnitEpisodeMaster[]
+  musics MusicMaster[]
+}
+
+model MusicMixMaster {
+  id Int @id @default(autoincrement())
+  musicId Int
+  section ChartSectionType
+  startTime Float
+  startTimeBpm Float
+  endTime Float
+  endTimeBpm Float
+  enableLongMixStart Boolean
+  enableLongMixEnd Boolean
+  locale Locale
+  music MusicMaster @relation(fields: [musicId], references: [id])
+}
+
+model BoxGachaMaster {
+  id Int @id
+  name String
+  tableIds Int[]
+  jackpotTableId Int
+  startDate DateTime
+  endDate DateTime
+  stockId Int
+  stockAmount Int
+  cardId Int
+  locale Locale
+  stock StockMaster @relation(fields: [stockId], references: [id])
+  card CardMaster @relation(fields: [cardId], references: [id])
+}
+
+model BoxGachaTableMaster {
+  id Int @id
+  tableId Int
+  category RewardCategory
+  rewardId Int
+  rewardAmount Int
+  maxCount Int
+  ascendingSortId Int
+  locale Locale
+}
+
+model CampaignButtonMaster {
+  id Int @id
+  command String
+  startDate DateTime
+  endDate DateTime
+  text String
+  imageFileName String
+  displayLocation CampaignButtonDisplayLocation
+  locale Locale
+}
+
+model CampaignMaster {
+  id Int @id @default(autoincrement())
+  category CampaignCategory
+  rate Float
+  startDate DateTime
+  endDate DateTime
+  locale Locale
+}
+
+model TitleDisplayMaster {
+  id Int @id @default(autoincrement())
+  cardDisplayGroupId Int
+  startDate DateTime
+  endDate DateTime
+  titleBGMCueId Int
+  titleVoiceCueName String
+  titleVoiceCueName2 String
+  locale Locale
+}
+
+model AttributeMaster {
+  id Int @id
+  name String
+  locale Locale
+  cards CardMaster[]
+  limitBreakItems LimitBreakItemMaster[]
+}
+
+model CardExpMaster {
+  id Int @id @default(autoincrement())
+  level Int
+  totalExp Int
+  locale Locale
+}
+
+model CardStackItemMaster {
+  id Int @id
+  stackCount Int
+  attributeId Int
+  characterId Int
+  rarityId Int
+  stockId Int
+  amount Int
+  locale Locale
+  stock StockMaster @relation(fields: [stockId], references: [id])
+}
+
+model PassiveSkillDescriptionMaster {
+  id Int @id @default(autoincrement())
+  type PassiveSkillType
+  description String
+  locale Locale
+}
+
+model PassiveSkillMaster {
+  id Int @id
+  type PassiveSkillType
+  minValue Float
+  maxValue Float
+  subValue Float
+  bonusCharacterId Int
+  locale Locale
+  cards CardMaster[]
+}
+
+model RarityMaster {
+  id Int @id
+  maxLevels Int[]
+  maxLevelParameterRates Float[]
+  limitBreakBonuses Int[]
+  sealAmount Int
+  cardStackBonuses Int[]
+  locale Locale
+  cards CardMaster[]
+  limitBreakItems LimitBreakItemMaster[]
+}
+
+model SkillExpMaster {
+  id Int @id @default(autoincrement())
+  level Int
+  rarityId Int
+  totalExp Int
+  locale Locale
+}
+
+model ChampionshipSetlistMaster {
+  id Int @id
+  leagueId Int
+  name String
+  dayLimit Int
+  charts Int[]
+  locale Locale
+  league ChampionshipLeagueMaster @relation(fields: [leagueId], references: [id])
+}
+
+model ClothMaster {
+  id Int @id
+  clothName String
+  characterId Int
+  clothDescription String
+  debutOrder Int
+  startDate DateTime
+  endDate DateTime
+  requiredStockId Int
+  requiredAmount Int
+  locale Locale
+}
+
+model ClubItemCategoryMaster {
+  id Int @id
+  name String
+  locale Locale
+  items ClubItemMaster[]
+}
+
+model ClubItemSpotMaster {
+  id Int @id
+  name String
+  catgory ClubItemSpotCategory
+  locale Locale
+  items ClubItemMaster[]
+  questClubDecks QuestClubDeckMaster[]
+}
+
+model CommonValueMaster {
+  id CommonValueType @id
+  value Int
+  locale Locale
+}
+
+model OverrideCommonTextMaster {
+  id Int @id
+  text String
+  locale Locale
+}
+
+model DJSimulatorSetlistMaster {
+  id Int @id
+  name String
+  startDate DateTime
+  endDate DateTime
+  locale Locale
+  musics DJSimulatorSetlistMusicMaster[]
+}
+
+model DJSimulatorSetlistMusicMaster {
+  id Int @id @default(autoincrement())
+  setlistId Int
+  order Int
+  musicId Int
+  section ChartSectionType
+  locale Locale
+  setlist DJSimulatorSetlistMaster @relation(fields: [setlistId], references: [id])
+  music MusicMaster @relation(fields: [musicId], references: [id])
+}
+
+model LiveResultEpisodeMaster {
+  id Int @id
+  locale Locale
+  characters CharacterMaster[] @relation("LiveResultEpisodeMaster_Characters")
+}
+
+model BingoRewardMaster {
+  id Int @id
+  rewardPhaseId Int
+  category BingoRewardCategory
+  maxCount Int
+  rewardCategory RewardCategory
+  rewardId Int
+  rewardAmount Int
+  locale Locale
+}
+
+model EventAggregationTermMaster {
+  id Int @id @default(autoincrement())
+  aggregationId Int
+  startDate DateTime
+  receptionCloseDate DateTime
+  rankFixStartDate DateTime
+  resultAnnouncementDate DateTime
+  locale Locale
+}
+
+model EventPointRewardTemplateMaster {
+  id Int @id
+  templateId Int
+  requiredPoint Int
+  category RewardCategory
+  rewardId Int
+  amount Int
+  locale Locale
+}
+
+model EventRankingRewardMaster {
+  id Int @id
+  lowestRanking Int
+  highestRanking Int
+  category RewardCategory
+  rewardId Int
+  amount Int
+  locale Locale
+}
+
+model EventRankingRewardTemplateMaster {
+  id Int @id
+  templateId Int
+  lowestRanking Int
+  highestRanking Int
+  category RewardCategory
+  rewardId Int
+  amount Int
+  locale Locale
+}
+
+model ParameterBonusMaster {
+  id Int @id
+  targetId Int
+  value Int
+  locale Locale
+  eventSpecificBonuses EventSpecificBonusMaster[]
+  eventMedleySetlists EventMedleySetlistMaster[]
+}
+
+model EventMedleySetlistMaster {
+  id Int @id @default(autoincrement())
+  aggregationId Int
+  name String
+  musicIds Int[]
+  requiredPoint Int
+  startDate DateTime
+  endDate DateTime
+  order Int
+  specificBonusCharacterIds Int[]
+  characterMatchParameterBonusId Int
+  locale Locale
+  aggregation EventAggregationBaseMaster @relation(fields: [aggregationId], references: [id])
+  characterMatchParameterBonus ParameterBonusMaster @relation(fields: [characterMatchParameterBonusId], references: [id])
+}
+
+model PokerCharacterHandMaster {
+  id Int @id
+  name String
+  coinAmount Int
+  characterIds Int[]
+  locale Locale
+}
+
+model PokerCoinMultiplierMaster {
+  id Int @id @default(autoincrement())
+  hand PokerHandCategory
+  multiplier Float
+  locale Locale
+}
+
+model RaidBossHpBonusMaster {
+  id Int @id
+  aggregationId Int
+  hp Float
+  name String
+  locale Locale
+}
+
+model SlotBonusTimeMaster {
+  id Int @id @default(autoincrement())
+  eventId Int
+  extendCount Int
+  pointRate Int
+  ownedBonusCardPointRate Int
+  extraTrainingPointRate Int
+  extendTime Int
+  ownedBonusCardExtendTime Int
+  extraTrainingExtendTime Int
+  stockId Int
+  stockAmount Int
+  locale Locale
+}
+
+model SlotEffectMaster {
+  id Int @id
+  effectId Int
+  phase SlotEffectPhase
+  normalRate Int
+  chanceTimeRate Int
+  toChanceRate Int
+  locale Locale
+}
+
+model SlotRewardMaster {
+  id Int @id
+  stockId Int
+  amount Int
+  normalRate Int
+  chanceTimeRate Int
+  effectId Int
+  cardId Int
+  stampId Int
+  locale Locale
+}
+
+model SlotSpecficBonusMaster {
+  id Int @id @default(autoincrement())
+  eventId Int
+  bonusCardIds Int[]
+  locale Locale
+}
+
+model AuditionGachaResetMaster {
+  id Int @id @default(autoincrement())
+  gachaDrawId Int
+  stockId Int
+  stockAmount Int
+  locale Locale
+}
+
+model GachaBonusMaster {
+  id Int @id @default(autoincrement())
+  gachaId Int
+  isMain Boolean
+  maxValue Int
+  tableRateId Int
+  tableIds Int[]
+  text String
+  locale Locale
+  tableRate GachaTableRateMaster @relation(fields: [tableRateId], references: [id])
+}
+
+model GachaDrawMaster {
+  id Int @id
+  gachaId Int
+  drawAmounts Int[]
+  stockId Int
+  stockAmount Int
+  drawLimit Int
+  isResetLimitEveryday Boolean
+  rouletteRates Int[]
+  bonusStockIds Int[]
+  bonusStockAmounts Int[]
+  locale Locale
+  gacha GachaMaster @relation(fields: [gachaId], references: [id])
+  stock StockMaster @relation(fields: [stockId], references: [id])
+  rouletteTargets GachaRouletteMaster[] @relation("GachaDrawMaster_RouletteTargets")
+}
+
+model GachaExplanationWordMaster {
+  id Int @id
+  text String
+  locale Locale
+  gacha GachaMaster[]
+}
+
+model GachaNotesWordMaster {
+  id Int @id
+  text String
+  locale Locale
+  gacha GachaMaster[]
+}
+
+model GachaSummaryWordMaster {
+  id Int @id
+  text String
+  locale Locale
+  gacha GachaMaster[]
+}
+
+model GachaTableMaster {
+  id Int @id
+  tableId Int
+  cardId Int
+  rate Int
+  locale Locale
+}
+
+model GachaTableRateMaster {
+  id Int @id
+  rates Int[]
+  rarityIds Int[]
+  tabName String
+  description String
+  locale Locale
+  gacha GachaMaster[] @relation("GachaMaster_TableRates")
+  gachaBonuses GachaBonusMaster[]
+}
+
+model HelpCategoryMaster {
+  id Int @id
+  name String
+  locale Locale
+  helps HelpMaster[]
+}
+
+model ChartAchieveMaster {
+  id Int @id
+  type ChartAchieveType
+  value Int
+  rewardStockId Int
+  rewardAmount Int
+  locale Locale
+  rewardStock StockMaster @relation(fields: [rewardStockId], references: [id])
+}
+
+model LiveSEMaster {
+  id Int @id
+  category LiveSECategory
+  name String
+  isPreset Boolean
+  locale Locale
+}
+
+model LiveSEPackPurchaseMaster {
+  id Int @id
+  startDate DateTime
+  endDate DateTime
+  requiredStockId Int
+  requiredAmount Int
+  locale Locale
+}
+
+model EventLoginBonusItemMaster {
+  id Int @id @default(autoincrement())
+  loginBonusId Int
+  eventId Int
+  sequence Int
+  locale Locale
+  loginBonus LoginBonusMaster @relation(fields: [loginBonusId], references: [id])
+  rewards RewardMaster[] @relation("EventLoginBonusItemMaster_Rewards")
+}
+
+model LoginBonusMaster {
+  id Int @id
+  type LoginBonusType
+  title String
+  order Int
+  loop Boolean
+  startDate DateTime
+  endDate DateTime
+  positionId Int
+  subscriptionId Int
+  backgroundImage String
+  foregroundImage String
+  datePositions Int[]
+  limitDays Int
+  comebackDays Int
+  locale Locale
+  items LoginBonusItemMaster[]
+  eventLoginBonusItems EventLoginBonusItemMaster[]
+}
+
+model LoginBonusPositionTemplateMaster {
+  id Int @id
+  sequence Int
+  positions Int[]
+  locale Locale
+}
+
+model MapEventMaster {
+  id Int @id
+  mapId Int
+  motions Int[]
+  directions Int[]
+  skins Int[]
+  eventType MapEventType
+  locale Locale
+  map MapMaster @relation(fields: [mapId], references: [id])
+  characters CharacterMaster[] @relation("MapEventMaster_Characters")
+}
+
+model CommandMaster {
+  id Int @id
+  title String
+  command String
+  locale Locale
+}
+
+model MissionPanelMaster {
+  id Int @id
+  groupId Int
+  bannerGroup Int
+  step Int
+  name String
+  locale Locale
+  details MissionDetailMaster[]
+  group MissionGroupMaster @relation(fields: [groupId], references: [id])
+  allCompleteRewards RewardMaster[] @relation("MissionPanelMaster_AllCompleteRewards")
+}
+
+model ChartDesignerMaster {
+  id Int @id
+  name String
+  locale Locale
+  charts ChartMaster[]
+}
+
+model ChartLessonMaster {
+  id Int @id @default(autoincrement())
+  chartId Int
+  measureIndex Int
+  text String
+  imagePaths String[]
+  locale Locale
+}
+
+model HiddenMusicMixDetailMaster {
+  id Int @id @default(autoincrement())
+  mixId Int
+  order Int
+  startTime Float
+  startTimeBpm Float
+  endTime Float
+  endTimeBpm Float
+  enableLongMixStart Boolean
+  enableLongMixEnd Boolean
+  locale Locale
+  mix HiddenMusicMixMaster @relation(fields: [mixId], references: [id])
+}
+
+model HiddenMusicMixMaster {
+  id Int @id
+  triggerMusicIds Int[]
+  locale Locale
+  details HiddenMusicMixDetailMaster[]
+}
+
+model TutorialMusicMaster {
+  id Int @id
+  order Int
+  startDate DateTime
+  endDate DateTime
+  locale Locale
+}
+
+model ChartNoteCountMaster {
+  id Int @id @default(autoincrement())
+  chartId Int
+  section ChartSectionType
+  count Int
+  locale Locale
+}
+
+model HiddenMusicMixNoteCountMaster {
+  id Int @id
+  order Int
+  difficulty ChartDifficulty
+  count Int
+  locale Locale
+}
+
+model MusicRecommendMaster {
+  id Int @id
+  description String
+  isClientOnly Boolean
+  isChooseAbsolutely Boolean
+  isInsurance Boolean
+  locale Locale
+}
+
+model OptionPresetMaster {
+  id Int @id
+  name String
+  description String
+  data String
+  isSelectable Boolean
+  dataDescription String
+  locale Locale
+}
+
+model TowerMaster {
+  id Int @id
+  name String
+  category String
+  availableCharacterIds Int[]
+  availableAttributeIds Int[]
+  bonusCharacterIds Int[]
+  bonusAttributeIds Int[]
+  bonusCardIds Int[]
+  startDate DateTime
+  endDate DateTime
+  locale Locale
+  towerStages TowerStageMaster[]
+}
+
+model RewardMaster {
+  id Int @id
+  category RewardCategory
+  rewardId Int
+  amount Int
+  locale Locale
+  achievements AchievementMaster[] @relation("AchievementMaster_Rewards")
+  episodes EpisodeMaster[] @relation("EpisodeMaster_Rewards")
+  gacha GachaMaster[] @relation("GachaMaster_SelectBonusRewards")
+  missionDetails MissionDetailMaster[] @relation("MissionDetailMaster_Rewards")
+  musics MusicMaster[] @relation("MusicMaster_PurchaseBonuses")
+  questFirstRewards QuestBlockMaster[] @relation("QuestBlockMaster_FirstRewards")
+  questLoopRewards QuestBlockMaster[] @relation("QuestBlockMaster_LoopRewards")
+  eventLoginBonusItems EventLoginBonusItemMaster[] @relation("EventLoginBonusItemMaster_Rewards")
+  missionPanels MissionPanelMaster[] @relation("MissionPanelMaster_AllCompleteRewards")
+  towerStages TowerStageMaster[] @relation("TowerStageMaster_Rewards")
+}
+
+model TowerStageMaster {
+  id Int @id @default(autoincrement())
+  towerId Int
+  order Int
+  name String
+  targetScore Int
+  locale Locale
+  tower TowerMaster @relation(fields: [towerId], references: [id])
+  musics MusicMaster[] @relation("TowerStageMaster_Musics")
+  rewards RewardMaster[] @relation("TowerStageMaster_Rewards")
+}
+
+model QuestClubDeckMaster {
+  id Int @id
+  spotId Int
+  itemId Int
+  effectIndex Int
+  locale Locale
+  spot ClubItemSpotMaster @relation(fields: [spotId], references: [id])
+  item ClubItemMaster @relation(fields: [itemId], references: [id])
+}
+
+model QuestDeckMaster {
+  id Int @id
+  order Int
+  cardId Int
+  illustType CardIllustType
+  locale Locale
+  card CardMaster @relation(fields: [cardId], references: [id])
+}
+
+model CardAffectionRewardMaster {
+  id Int @id
+  attributeId Int
+  characterId Int
+  rarityId Int
+  affection Int
+  isNoEpisodeOnly Boolean
+  category RewardCategory
+  rewardId Int
+  amount Int
+  locale Locale
+}
+
+model LimitBreakItemMaster {
+  id Int @id
+  rarityId Int
+  attributeId Int
+  limitBreakCount Int
+  stockId Int
+  amount Int
+  locale Locale
+  rarity RarityMaster @relation(fields: [rarityId], references: [id])
+  attribute AttributeMaster @relation(fields: [attributeId], references: [id])
+  stock StockMaster @relation(fields: [stockId], references: [id])
+}
+
+model RandomStockMaster {
+  id Int @id
+  originalStockId Int
+  stockId Int
+  amount Int
+  rate Int
+  locale Locale
+}
+
+model StockViewCategoryMaster {
+  id Int @id
+  name String
+  locale Locale
+  stocks StockMaster[]
+}
+
+model VoltageRecoverMaster {
+  id Int @id
+  minRecoveredCount Int
+  diamondAmount Int
+  voltageRecoverAmount Int
+  locale Locale
+}
+
+model TrumpMaster {
+  suit TrumpSuit
+  id Int @id
+  imageId Int
+  pose Int
+  locale Locale
+}
+
+enum CampaignButtonDisplayLocation {
+  Home
+  Club
+  Story
+}
+
+enum CampaignCategory {
+  Mileage
+  RaidUserExp
+  RaidUnitExp
+}
+
+enum CardIllustType {
+  Normal
+  LimitBreak
+  MaxLimitBreak
+}
+
+enum PassiveSkillType {
+  None
+  FeverBonus
+  FeverSupport
+  ScoreUpWithDamage
+  AutoScoreUp
+  SupportableScoreUp
+  SupportableSkillLonger
+}
+
+enum ClubItemSpotCategory {
+  Club
+  DJ
+  Stage
+  Ceiling
+}
+
+enum ClubItemTargetType {
+  None
+  Unit
+  Attribute
+  Parameter
+  Character
+  All
+}
+
+enum CommonValueType {
+  LiveSECount
+  LiveNoteDesignCount
+  LiveTapEffectCount
+  LiveSliderLineCount
+  LiveSliderArrowCount
+  LiveContinueDiamondAmount
+  LiveBoostMultiplier
+  GameLogicHours
+  LikeEachTakeCount
+  DJBoothGuestBookLatestListCount
+  FriendRequestMaxCount
+  PresentReceivedDayCount
+  FavoriteStampMaxCount
+  HonorMaxCount
+  DJBoothSetlistMaxCount
+  DJBoothGuestBookSetlistCount
+  DJBoothGuestBookHighScoreListCount
+  DJBoothSetlistLivePassMaxCount
+  DJBoothSetlistActiveLivePassMaxCount
+  NicknameMaxLength
+  CommentMaxLength
+  CardDeckNameMaxLength
+  ClubDeckNameMaxLength
+  DJBoothSetlistTitleMaxLength
+  MusicFavoriteDeckNameMaxLength
+  DJBoothCommentMaxLength
+  LiveSEPresetNameMaxLength
+  VoltageMaxAllowCount
+  ConvertedRewardHelpId
+  PrivateRoomCommentMaxLength
+  RaidEventHpMode
+  RaidEventSpecialBossHpMode
+  ClubOrderCharaShadow
+  ClubOrderDJChara
+  ClubOrderDJBooth
+  ClubOrderOtherChara
+  ClubOrderFrontChara
+  MusicTagMaxCount
+  MusicTagNameMaxLenght
+  MusicTagNeedLevel
+  MusicRecommendCount
+  EventSlotExtendableBonusTimeSeconds
+}
+
+enum ConditionCategory {
+  None
+  UserLevel
+  UnitLevel
+  ClubItem
+  Story
+  EventPoint
+  CharacterRank
+  Unreleased
+}
+
+enum EpisodeCategory {
+  Unit
+  Event
+  Card
+  LiveResult
+  Map
+  Character
+  Tutorial
+}
+
+enum BingoCardType {
+  Normal
+  Special
+}
+
+enum BingoRewardCategory {
+  Bingo
+  Hit
+  Complete
+}
+
+enum EventAggregationType {
+  MainAddPoint
+  Highscore
+  EngineSpecific
+  DailyAddPoint
+  CommonAddPoint
+  None
+}
+
+enum EventEpisodeType {
+  Normal
+  D4Fes1
+  D4Fes2
+}
+
+enum EventType {
+  None
+  Bingo
+  Medley
+  Poker
+  Raid
+  Slot
+}
+
+enum PokerHandCategory {
+  RoyalStraightFlush
+  StraightFlush
+  FourOfAKind
+  FullHouse
+  Flush
+  Straight
+  ThreeOfAKind
+  TwoPair
+  OnePair
+  HighCard
+}
+
+enum BossLoopType {
+  Loop
+  FinalLoop
+}
+
+enum SlotEffectPhase {
+  None
+  SD
+  Reach
+  Stamp
+  UnitLogo
+  FlavorText
+  Shutdown
+  Card
+}
+
+enum DateSelectCategory {
+  None
+  Daily
+  Weekly
+  Monthly
+}
+
+enum GachaCategory {
+  Normal
+  Tutorial
+  Event
+  Birthday
+  StartDash
+  Revival
+  Special
+}
+
+enum GachaRouletteType {
+  PickUpUp
+  RarityUp
+  StockPresent
+}
+
+enum GachaType {
+  Normal
+  StepUp
+  Audition
+}
+
+enum HonorType {
+  Common
+  Mission
+  Character
+  Event
+  D4Pass
+}
+
+enum Live2DUIChatCategory {
+  MenuCommon
+  LoginBonus
+  Mission
+  BoxGacha
+  BoxGachaDraw
+  BoxGachaJackpot
+  Training
+  BoxGachaReset
+}
+
+enum ChartAchieveType {
+  Score
+  Combo
+  ClearCount
+}
+
+enum LiveType {
+  Single
+  Medley
+  SingleBattle
+}
+
+enum MultiRoomType {
+  Free
+  Beginner
+  Veteran
+  Master
+}
+
+enum LiveSECategory {
+  None
+  Tap1
+  Tap2
+  SliderFlick
+  Scratch
+  TapEmpty
+  ScratchEmpty
+  LongLoop
+}
+
+enum LiveSEPackCategory {
+  SoundEffect
+  CharacterVoice
+  Collabo
+}
+
+enum LoginBonusType {
+  Common
+  Campaign
+  Subscription
+  VipBronze
+  VipSilver
+  VipGold
+  VipPlatinum
+  EventBingo
+  EventMedley
+  EventPoker
+  EventRaid
+  EventSlot
+}
+
+enum MapEventType {
+  Normal
+  Special
+  Birthday
+}
+
+enum MapObjectType {
+  Prefab
+  Image
+  Movie
+}
+
+enum MobMovingPattern {
+  Fixed
+  OneWay
+  Loop
+}
+
+enum AchievementNotifyType {
+  Default
+  PokerHand
+  BingoCard
+  Slot
+}
+
+enum MissionCategory {
+  Achievement
+  Tutorial
+  Chart
+  TimeLimited
+}
+
+enum ChartDifficulty {
+  None
+  Easy
+  Normal
+  Hard
+  Expert
+}
+
+enum ChartSectionType {
+  Full
+  Begin
+  Middle
+  End
+  DJSimulator
+}
+
+enum MusicCategory {
+  None
+  Original
+  Cover
+  Game
+  Instrumental
+  Collabo
+}
+
+enum MileageRank {
+  Normal
+  Bronze
+  Silver
+  Gold
+  Platinum
+}
+
+enum QuestConditionType {
+  Hp
+  MaxCombo
+  GreatCount
+  GoodCount
+  BadCount
+  MissCount
+  Score
+}
+
+enum StampCategory {
+  Common
+  Rare
+  Collabo
+}
+
+enum RewardCategory {
+  Stock
+  Card
+  ClubItem
+  Music
+  Stamp
+  Honor
+  Episode
+  Movie
+  DuplicateCard
+  EventPoint
+  LiveSEPack
+}
+
+enum StockCategory {
+  Diamond
+  Fragment
+  Exp
+  SkillExp
+  LimitBreak
+  VoltageRecovery
+  Boost
+  MusicShop
+  Event
+  GachaTicket
+  Random
+  ParameterLevelUp
+  CardStack
+  Other
+}
+
+enum TrumpSuit {
+  Club
+  Diamond
+  Heart
+  Spade
+}
+
+
+enum Locale {
+  en
+  ja
+}
+

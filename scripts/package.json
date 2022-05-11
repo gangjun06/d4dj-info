@@ -1,0 +1,11 @@
+{
+  "name": "scripts",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "prisma-generate": "npx tsc --outDir dist && node dist/main.js --generate"
+  },
+  "dependencies": {
+    "typescript": "^4.6.3"
+  }
+}
