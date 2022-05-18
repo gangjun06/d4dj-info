@@ -1,11 +1,20 @@
 export type ResultType = {
   name: string
   type: 'Master' | 'Enum'
-  extra: string[]
-  fields: {
-    key: string
-    value: string
-    extra?: string
+  fields: Field[]
+}
+
+export type Field = {
+  key: string
+  value: string
+  extra?: Extra[]
+}
+
+export type Extra = {
+  name: string
+  parameters?: {
+    key?: string
+    value: string | string[]
   }[]
 }
 

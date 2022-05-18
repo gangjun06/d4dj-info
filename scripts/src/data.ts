@@ -1,4 +1,22 @@
-import { ModelSetting } from './types.js'
+import { ModelSetting } from './types/index.js'
+
+export const prismaBase = `
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgres"
+  url      = env("DATABASE_URL")
+}
+`
+
+export const prismaExtra = `
+enum Region {
+  en
+  jp
+}
+`
 
 export const modelSetting: { [key: string]: ModelSetting } = {
   AchievementMaster: {
@@ -10,7 +28,7 @@ export const modelSetting: { [key: string]: ModelSetting } = {
         type: 'ManyToMany',
       },
       {
-        key: 'command',
+        key: 'commandMaster',
         ref: 'CommandMaster',
         refField: 'achievements',
         type: 'OneToMany',
@@ -96,6 +114,46 @@ export const modelSetting: { [key: string]: ModelSetting } = {
       },
     ],
   },
+  CardStackItemMaster: {
+    fields: [
+      {
+        key: 'stock',
+        ref: 'StockMaster',
+        refField: 'cardStackItems',
+        type: 'OneToMany',
+      },
+    ],
+  },
+  ChampionshipLeagueMaster: {
+    fields: [
+      {
+        key: 'championship',
+        ref: 'ChampionshipMaster',
+        refField: 'leagues',
+        type: 'OneToMany',
+      },
+    ],
+  },
+  ChampionshipSetlistMaster: {
+    fields: [
+      {
+        key: 'league',
+        ref: 'ChampionshipLeagueMaster',
+        refField: 'setlists',
+        type: 'OneToMany',
+      },
+    ],
+  },
+  CharacterMaster: {
+    fields: [
+      {
+        key: 'unit',
+        ref: 'UnitMaster',
+        refField: 'characters',
+        type: 'OneToMany',
+      },
+    ],
+  },
   ChartAchieveMaster: {
     fields: [
       {
@@ -165,6 +223,42 @@ export const modelSetting: { [key: string]: ModelSetting } = {
     ],
     id: ['setlistId', 'order'],
   },
+  EpisodeMaster: {
+    fields: [
+      {
+        key: 'conditions',
+        ref: 'ConditionMaster',
+        refField: 'episodes',
+        type: 'ManyToMany',
+      },
+      {
+        key: 'rewards',
+        ref: 'RewardMaster',
+        refField: 'episodes',
+        type: 'ManyToMany',
+      },
+    ],
+  },
+  EventAggregationBaseMaster: {
+    fields: [
+      {
+        key: 'event',
+        ref: 'EventMaster',
+        refField: 'aggregations',
+        type: 'OneToMany',
+      },
+    ],
+  },
+  EventEpisodeMaster: {
+    fields: [
+      {
+        key: 'event',
+        ref: 'EventMaster',
+        refField: 'episodes',
+        type: 'OneToMany',
+      },
+    ], // TODO: CustomField
+  },
   EventLoginBonusItemMaster: {
     fields: [
       {
@@ -182,6 +276,73 @@ export const modelSetting: { [key: string]: ModelSetting } = {
     ],
     id: ['loginBonusId', 'eventId', 'sequence'],
   },
+  EventMedleySetlistMaster: {
+    fields: [
+      {
+        key: 'aggregation',
+        ref: 'EventAggregationBaseMaster',
+        refField: 'eventMedleySetlists',
+        type: 'OneToMany',
+      },
+      {
+        key: 'characterMatchParameterBonus',
+        ref: 'ParameterBonusMaster',
+        refField: 'eventMedleySetlists',
+        type: 'OneToMany',
+      },
+    ],
+  },
+  EventPointRewardMaster: {
+    fields: [
+      {
+        key: 'Aggregation',
+        ref: 'EventAggregationBaseMaster',
+        refField: 'eventPointRewards',
+        type: 'OneToMany',
+      },
+    ],
+  },
+  EventRankingRewardMaster: {
+    fields: [
+      {
+        key: 'Aggregation',
+        ref: 'EventAggregationBaseMaster',
+        refField: 'eventRankingRewards',
+        type: 'OneToMany',
+      },
+    ],
+  },
+  EventSpecificBonusMaster: {
+    fields: [
+      {
+        key: 'event',
+        ref: 'EventMaster',
+        refField: 'eventSpecificBonuses',
+        type: 'OneToMany',
+      },
+      {
+        key: [
+          'characterMatchParameterBonus',
+          'AttributeMatchParameterBonus',
+          'AllMatchParameterBonus',
+        ],
+        ref: 'ParameterBonusMaster',
+        refField: 'eventSpecificBonuses',
+        type: 'OneToMany',
+      },
+    ],
+    id: ['eventId'],
+  },
+  ExchangeItemMaster: {
+    fields: [
+      {
+        key: 'exchange',
+        ref: 'ExchangeMaster',
+        refField: 'items',
+        type: 'OneToMany',
+      },
+    ],
+  },
   GachaBonusMaster: {
     fields: [
       {
@@ -192,6 +353,28 @@ export const modelSetting: { [key: string]: ModelSetting } = {
       },
     ],
     id: ['gachaId', 'isMain'],
+  },
+  GachaDrawMaster: {
+    fields: [
+      {
+        key: 'gacha',
+        ref: 'GachaMaster',
+        refField: 'draws',
+        type: 'OneToMany',
+      },
+      {
+        key: 'stock',
+        ref: 'StockMaster',
+        refField: 'gachaDraws',
+        type: 'OneToMany',
+      },
+      {
+        key: 'rouletteTargets',
+        ref: 'GachaRouletteMaster',
+        refField: 'gachaDraws',
+        type: 'ManyToMany',
+      },
+    ],
   },
   GachaMaster: {
     fields: [
@@ -279,6 +462,36 @@ export const modelSetting: { [key: string]: ModelSetting } = {
       },
     ],
   },
+  Live2DUIChatMaster: {
+    fields: [
+      {
+        key: 'character',
+        ref: 'CharacterMaster',
+        refField: 'live2DUIChats',
+        type: 'OneToMany',
+      },
+    ],
+  },
+  LiveResultEpisodeMaster: {
+    fields: [
+      {
+        key: 'characters',
+        ref: 'CharacterMaster',
+        refField: 'liveResultEpisodes',
+        type: 'ManyToMany',
+      },
+    ],
+  },
+  LiveSEMaster: {
+    fields: [
+      {
+        key: 'liveSEMaster',
+        ref: 'LiveSEPackMaster',
+        refField: 'liveSEs',
+        type: 'OneToMany',
+      },
+    ],
+  },
   LoginBonusItemMaster: {
     fields: [
       {
@@ -292,6 +505,58 @@ export const modelSetting: { [key: string]: ModelSetting } = {
   },
   LoginBonusPositionTemplateMaster: {
     id: ['id', 'sequence'],
+  },
+  MapEventMaster: {
+    fields: [
+      {
+        key: 'map',
+        ref: 'MapMaster',
+        refField: 'mapEvents',
+        type: 'OneToMany',
+      },
+      {
+        key: 'characters',
+        ref: 'CharacterMaster',
+        refField: 'mapEvents',
+        type: 'ManyToMany',
+      },
+    ],
+  },
+  MapMobMaster: {
+    fields: [
+      {
+        key: 'map',
+        ref: 'MapMaster',
+        refField: 'mapMobs',
+        type: 'OneToMany',
+      },
+    ],
+  },
+  MapObjectMaster: {
+    fields: [
+      {
+        key: 'spot',
+        ref: 'MapObjectSpotMaster',
+        refField: 'mapObjects',
+        type: 'OneToMany',
+      },
+    ],
+  },
+  MapObjectSpotMaster: {
+    fields: [
+      {
+        key: 'map',
+        ref: 'MapMaster',
+        refField: 'mapObjectSpots',
+        type: 'OneToMany',
+      },
+    ],
+  },
+  MapSpotMaster: {
+    id: ['mapId', 'spotId'],
+  },
+  MileageMaster: {
+    id: ['rank'],
   },
   MissionDetailMaster: {
     fields: [
@@ -308,7 +573,7 @@ export const modelSetting: { [key: string]: ModelSetting } = {
         type: 'ManyToMany',
       },
       {
-        key: 'command',
+        key: 'commandMaster',
         ref: 'CommandMaster',
         refField: 'missionDetails',
         type: 'OneToMany',
@@ -348,7 +613,6 @@ export const modelSetting: { [key: string]: ModelSetting } = {
     ],
   },
   MusicMixMaster: {
-    id: ['musicId', 'secton'],
     fields: [
       {
         key: 'music',
@@ -357,9 +621,13 @@ export const modelSetting: { [key: string]: ModelSetting } = {
         type: 'OneToMany',
       },
     ],
+    id: ['musicId', 'secton'],
   },
   ParameterLevelMaster: {
     id: ['level'],
+  },
+  PassiveSkillExpMaster: {
+    id: ['level', 'rarityId'],
   },
   PassiveSkillMaster: {
     id: ['level'],
@@ -399,7 +667,6 @@ export const modelSetting: { [key: string]: ModelSetting } = {
     ],
   },
   QuestClubDeckMaster: {
-    id: ['id', 'spotId'],
     fields: [
       {
         key: 'spot',
@@ -414,9 +681,9 @@ export const modelSetting: { [key: string]: ModelSetting } = {
         type: 'OneToMany',
       },
     ],
+    id: ['id', 'spotId'],
   },
   QuestDeckMaster: {
-    id: ['id', 'order'],
     fields: [
       {
         key: 'card',
@@ -425,6 +692,7 @@ export const modelSetting: { [key: string]: ModelSetting } = {
         type: 'OneToMany',
       },
     ],
+    id: ['id', 'order'],
   },
   SkillExpMaster: {
     id: ['level', 'rarityId'],
@@ -443,7 +711,6 @@ export const modelSetting: { [key: string]: ModelSetting } = {
     fields: [],
   },
   TowerStageMaster: {
-    id: ['towerId', 'order'],
     fields: [
       {
         key: 'tower',
@@ -464,6 +731,7 @@ export const modelSetting: { [key: string]: ModelSetting } = {
         type: 'ManyToMany',
       },
     ],
+    id: ['towerId', 'order'],
   },
   TrumpMaster: {
     id: ['suit', 'id'],
@@ -483,256 +751,5 @@ export const modelSetting: { [key: string]: ModelSetting } = {
   },
   UserExpMaster: {
     id: ['level'],
-  },
-  MapSpotMaster: {
-    id: ['mapId', 'spotId'],
-  },
-  PassiveSkillExpMaster: {
-    id: ['level', 'rarityId'],
-  },
-  CardStackItemMaster: {
-    fields: [
-      {
-        key: 'stock',
-        ref: 'StockMaster',
-        refField: 'cardStackItems',
-        type: 'OneToMany',
-      },
-    ],
-  },
-  CharacterMaster: {
-    fields: [
-      {
-        key: 'unit',
-        ref: 'UnitMaster',
-        refField: 'characters',
-        type: 'OneToMany',
-      },
-    ],
-  },
-  EpisodeMaster: {
-    fields: [
-      {
-        key: 'conditions',
-        ref: 'ConditionMaster',
-        refField: 'episodes',
-        type: 'ManyToMany',
-      },
-      {
-        key: 'rewards',
-        ref: 'RewardMaster',
-        refField: 'episodes',
-        type: 'ManyToMany',
-      },
-    ],
-  },
-  EventMedleySetlistMaster: {
-    fields: [
-      {
-        key: 'aggregation',
-        ref: 'EventAggregationBaseMaster',
-        refField: 'eventMedleySetlists',
-        type: 'OneToMany',
-      },
-      {
-        key: 'characterMatchParameterBonus',
-        ref: 'ParameterBonusMaster',
-        refField: 'eventMedleySetlists',
-        type: 'OneToMany',
-      },
-    ],
-  },
-  EventEpisodeMaster: {
-    fields: [
-      {
-        key: 'event',
-        ref: 'EventMaster',
-        type: 'OneToMany',
-        refField: 'episodes',
-      },
-    ],
-    // TODO: CustomField
-  },
-  EventAggregationBaseMaster: {
-    fields: [
-      {
-        key: 'event',
-        ref: 'EventMaster',
-        type: 'OneToMany',
-        refField: 'aggregations',
-      },
-    ],
-  },
-  LiveSEMaster: {
-    fields: [
-      {
-        key: 'liveSEMaster',
-        ref: 'LiveSEPackMaster',
-        type: 'OneToMany',
-        refField: 'liveSEs',
-      },
-    ],
-  },
-  MapMobMaster: {
-    fields: [
-      {
-        key: 'map',
-        ref: 'MapMaster',
-        refField: 'mapMobs',
-        type: 'OneToMany',
-      },
-    ],
-  },
-  MileageMaster: {
-    id: ['rank'],
-  },
-  EventPointRewardMaster: {
-    fields: [
-      {
-        key: 'Aggregation',
-        ref: 'EventAggregationBaseMaster',
-        refField: 'eventPointRewards',
-        type: 'OneToMany',
-      },
-    ],
-  },
-  EventRankingRewardMaster: {
-    fields: [
-      {
-        key: 'Aggregation',
-        ref: 'EventAggregationBaseMaster',
-        refField: 'eventRankingRewards',
-        type: 'OneToMany',
-      },
-    ],
-  },
-  EventSpecificBonusMaster: {
-    id: ['eventId'],
-    fields: [
-      {
-        key: 'event',
-        ref: 'EventMaster',
-        refField: 'eventSpecificBonuses',
-        type: 'OneToMany',
-      },
-      {
-        key: [
-          'characterMatchParameterBonus',
-          'AttributeMatchParameterBonus',
-          'AllMatchParameterBonus',
-        ],
-        ref: 'ParameterBonusMaster',
-        refField: 'eventSpecificBonuses',
-        type: 'OneToMany',
-      },
-    ],
-  },
-  ExchangeItemMaster: {
-    fields: [
-      {
-        key: 'exchange',
-        ref: 'ExchangeMaster',
-        refField: 'items',
-        type: 'OneToMany',
-      },
-    ],
-  },
-  GachaDrawMaster: {
-    fields: [
-      {
-        key: 'gacha',
-        ref: 'GachaMaster',
-        refField: 'draws',
-        type: 'OneToMany',
-      },
-      {
-        key: 'stock',
-        ref: 'StockMaster',
-        refField: 'gachaDraws',
-        type: 'OneToMany',
-      },
-      {
-        key: 'rouletteTargets',
-        ref: 'GachaRouletteMaster',
-        refField: 'gachaDraws',
-        type: 'ManyToMany',
-      },
-    ],
-  },
-  Live2DUIChatMaster: {
-    fields: [
-      {
-        key: 'character',
-        ref: 'CharacterMaster',
-        refField: 'live2DUIChats',
-        type: 'OneToMany',
-      },
-    ],
-  },
-  MapEventMaster: {
-    fields: [
-      {
-        key: 'map',
-        ref: 'MapMaster',
-        refField: 'mapEvents',
-        type: 'OneToMany',
-      },
-      {
-        key: 'characters',
-        ref: 'CharacterMaster',
-        refField: 'mapEvents',
-        type: 'ManyToMany',
-      },
-    ],
-  },
-  LiveResultEpisodeMaster: {
-    fields: [
-      {
-        key: 'characters',
-        ref: 'CharacterMaster',
-        refField: 'liveResultEpisodes',
-        type: 'ManyToMany',
-      },
-    ],
-  },
-  ChampionshipLeagueMaster: {
-    fields: [
-      {
-        key: 'championship',
-        ref: 'ChampionshipMaster',
-        refField: 'leagues',
-        type: 'OneToMany',
-      },
-    ],
-  },
-  ChampionshipSetlistMaster: {
-    fields: [
-      {
-        key: 'league',
-        ref: 'ChampionshipLeagueMaster',
-        refField: 'setlists',
-        type: 'OneToMany',
-      },
-    ],
-  },
-  MapObjectMaster: {
-    fields: [
-      {
-        key: 'spot',
-        ref: 'MapObjectSpotMaster',
-        refField: 'mapObjects',
-        type: 'OneToMany',
-      },
-    ],
-  },
-  MapObjectSpotMaster: {
-    fields: [
-      {
-        key: 'map',
-        ref: 'MapMaster',
-        refField: 'mapObjectSpots',
-        type: 'OneToMany',
-      },
-    ],
   },
 }
