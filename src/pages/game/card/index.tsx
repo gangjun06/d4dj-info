@@ -17,7 +17,12 @@ import { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { HiOutlineFilter } from 'react-icons/hi'
 import InfinityScroll from 'react-infinite-scroll-component'
-import { cleanArrayWithInt, generateFilter, parseFilterQuery } from 'utils'
+import {
+  cleanArrayWithInt,
+  cleanForm,
+  generateFilter,
+  parseFilterQuery,
+} from 'utils'
 import {
   AttributeCheckbox,
   CardOrderRadio,
@@ -37,7 +42,7 @@ export default function CardList() {
   const { t } = useTransition('')
   const { region } = useSetting()
   const router = useRouter()
-  const { handleSubmit, control, setValue } = useForm<FilterData>({
+  const { handleSubmit, control, setValue, register } = useForm<FilterData>({
     defaultValues: { sort: 'asc', sortBy: CardSort.ID },
   })
   const [reqData, setReqData] = useState<CardsQueryVariables>({
@@ -89,7 +94,9 @@ export default function CardList() {
   }, [loadCards, router.query, setReqDataWithFilter])
 
   const onSubmit = handleSubmit(async (data) => {
-    setReqDataWithFilter(data)
+    cleanForm(data)
+    console.log(data)
+    // setReqDataWithFilter(data)
     router.push(
       //@ts-ignore
       `/game/card?${new URLSearchParams(data).toString()}`,
@@ -144,22 +151,22 @@ export default function CardList() {
         <FormBlock label={t('common:attribute.name')}>
           <Checkbox
             name="attribute"
-            control={control}
+            register={register}
             list={AttributeCheckbox(t)}
           />
         </FormBlock>
         <FormBlock label={t('card:rarity.name')}>
           <Checkbox
             name="cardRearity"
-            control={control}
+            register={register}
             list={CardRearityCheckbox(t)}
           />
         </FormBlock>
         <FormBlock label={t('common:unit.name')}>
-          <Checkbox name="unit" control={control} list={UnitCheckbox(t)} />
+          <Checkbox name="unit" register={register} list={UnitCheckbox(t)} />
         </FormBlock>
         <FormBlock label={t('common:sort')}>
-          <Radio name="sortBy" control={control} list={CardOrderRadio(t)} />
+          <Radio name="sortBy" register={register} list={CardOrderRadio(t)} />
         </FormBlock>
       </SideOver>
 

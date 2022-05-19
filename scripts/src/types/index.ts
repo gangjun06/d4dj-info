@@ -7,6 +7,7 @@ export type ResultType = {
 export type Field = {
   key: string
   value: string
+  note?: string
   extra?: Extra[]
 }
 

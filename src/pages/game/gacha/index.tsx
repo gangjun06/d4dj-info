@@ -29,7 +29,7 @@ export default function GachaList() {
   const { t } = useTransition('')
   const { region } = useSetting()
   const router = useRouter()
-  const { handleSubmit, control, setValue } = useForm<FilterData>({
+  const { handleSubmit, control, setValue, register } = useForm<FilterData>({
     defaultValues: { sort: 'desc' },
   })
   const [reqData, setReqData] = useState<GachasQueryVariables>({
@@ -133,7 +133,7 @@ export default function GachaList() {
         <FormBlock label={t('common:category')}>
           <Checkbox
             name="category"
-            control={control}
+            register={register}
             list={GachaCategoryCheckbox(t)}
           />
         </FormBlock>

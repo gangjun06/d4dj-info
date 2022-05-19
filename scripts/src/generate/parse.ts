@@ -5,6 +5,7 @@ import { Field, ResultType } from '../types/index.js'
 import {
   EnumMemberRegex,
   EnumRegex,
+  formatText,
   MasterRegex,
   TypeRegex,
   upperFirst,
@@ -19,8 +20,7 @@ const nameConverter = (
   { modelName }: { modelName: string; type: string }
 ): [converted: string | null, extra: { type: string } | null] => {
   const setting = modelSetting[modelName]
-  name = name.replace(/__/g, '')
-  name = name[0].toLowerCase() + name.slice(1)
+  name = formatText(name)
   if (name === 'id') {
     return ['masterId', null]
   } else if (name.endsWith('PrimaryKey')) {
@@ -51,6 +51,7 @@ const nameConverter = (
       extraFields[modelName].push({
         key: fieldName,
         value: `${ref}[]`,
+        note: 'origin',
         extra: [
           {
             name: 'relation',
@@ -73,6 +74,7 @@ const nameConverter = (
       extraFields[modelName].push({
         key: fieldName,
         value: `${ref}`,
+        note: 'origin',
         extra: [
           {
             name: 'relation',
@@ -94,6 +96,7 @@ const nameConverter = (
       extraFields[modelName].push({
         key: fieldName,
         value: `${ref}`,
+        note: 'origin',
         extra: [
           {
             name: 'relation',

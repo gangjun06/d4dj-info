@@ -4,20 +4,11 @@ import fs from 'fs'
 import path from 'path'
 import { modelSetting } from '../data.js'
 import { ResultType } from '../types/index.js'
-import { lowerFirst, upperFirst } from '../utils.js'
+import { formatText, lowerFirst, upperFirst } from '../utils.js'
 
 const __dirname = path.resolve()
 
 const prisma = new PrismaClient()
-
-const formatText = (str: string): string => {
-  str = str.replace(/__/gi, '')
-  const match = str.match(/^\b[A-Z]+/)
-  if (match) {
-    return str.replace(/^\b[A-Z]+/, match[0].toLowerCase())
-  }
-  return str
-}
 
 const fetchMaster = async (region: string, name: string) => {
   const url = `https://asset.d4dj.info/${region}/Master/${name}.json`
@@ -84,10 +75,17 @@ const parseTarget = async (region: string, name: string) => {
     })
     return
   }
-  for (const data of createData) {
-    await prisma[lowerFirst(name) as 'characterMaster'].create({
-      data,
-    })
+
+  const chunkSize = 13
+  for (let i = 0; i < createData.length; i += chunkSize) {
+    const chunk = createData.slice(i, i + chunkSize)
+    await Promise.all(
+      chunk.map((data: any) =>
+        prisma[lowerFirst(name) as 'characterMaster'].create({
+          data,
+        })
+      )
+    )
   }
 }
 
@@ -106,7 +104,7 @@ export const parse = async (name?: string) => {
   if (name) {
     const d = data.find((d) => d.name === name)
     if (d) {
-      parseTarget(region, d.name)
+      await parseTarget(region, d.name)
     }
     return
   }
@@ -120,7 +118,7 @@ export const parse = async (name?: string) => {
     if (reculsive) {
       const fields = dataObj[name].fields
       for (const item of fields) {
-        if (!item.extra) continue
+        if (!item.extra || item.note !== 'origin') continue
 
         for (const item2 of item.extra) {
           if (item2.name === 'relation') {
@@ -136,6 +134,7 @@ export const parse = async (name?: string) => {
   }
 
   const preParse = ['RewardMaster', 'ConditionMaster']
+  // const preParse = []
   for (const item of preParse) {
     await parseReculsive(item, false)
   }

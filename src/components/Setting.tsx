@@ -35,7 +35,7 @@ export const SettingProvider = ({ children }: { children: ReactNode }) => {
   const [region, setRegion] = useState<Region>(() => loadRegion())
   const { t, lang } = useTransition()
 
-  const { handleSubmit, control } = useForm<FormData>({
+  const { handleSubmit, control, register } = useForm<FormData>({
     defaultValues: {
       lang,
       region,
@@ -82,7 +82,7 @@ export const SettingProvider = ({ children }: { children: ReactNode }) => {
       >
         <FormBlock label={t('common:language')}>
           <Radio
-            control={control}
+            register={register}
             name="lang"
             list={[
               { label: 'Korean', value: 'ko' },
@@ -92,7 +92,7 @@ export const SettingProvider = ({ children }: { children: ReactNode }) => {
         </FormBlock>
         <FormBlock label={t('common:region')}>
           <Radio
-            control={control}
+            register={register}
             name="region"
             list={(Object.keys(Region) as Array<keyof typeof Region>).map(
               (key) => ({ label: key, value: Region[key] })

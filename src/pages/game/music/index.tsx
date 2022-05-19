@@ -40,7 +40,7 @@ export default function MusicList() {
   const { region } = useSetting()
   const router = useRouter()
 
-  const { handleSubmit, control, setValue } = useForm<FilterData>({
+  const { handleSubmit, control, setValue, register } = useForm<FilterData>({
     defaultValues: { sort: 'asc', sortBy: MusicSort.ID },
   })
   const [reqData, setReqData] = useState<MusicsQueryVariables>({
@@ -146,15 +146,15 @@ export default function MusicList() {
         <FormBlock label={t('common:category')}>
           <Checkbox
             name="category"
-            control={control}
+            register={register}
             list={MusicCategoryCheckbox(t)}
           />
         </FormBlock>
         <FormBlock label={t('common:unit.name')}>
-          <Checkbox name="unit" control={control} list={UnitCheckbox(t)} />
+          <Checkbox name="unit" register={register} list={UnitCheckbox(t)} />
         </FormBlock>
         <FormBlock label={t('common:sort')}>
-          <Radio name="sortBy" control={control} list={MusicSortRadio(t)} />
+          <Radio name="sortBy" register={register} list={MusicSortRadio(t)} />
         </FormBlock>
       </SideOver>
 

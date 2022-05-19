@@ -1,17 +1,10 @@
-import { Card, Disclosure, Modal, Table, TableBody } from '@/components/Basic'
-import { CardIcon, Image } from '@/components/Image'
-import {
-  CardDocument,
-  CardQuery,
-  CardQueryVariables,
-} from '@/generated/graphql'
-import { client } from '@/lib/apollo'
+import { Card, Modal, Table } from '@/components/Basic'
+import prisma from '@/lib/prisma'
+import { CardMaster, CharacterMaster } from '@prisma/client'
 import MainLayout from 'layouts/main'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import useTransition from 'next-translate/useTranslation'
 import { useState } from 'react'
-import { formatTimeDetail, GetURLType, pad } from 'utils'
-import { createLive2DShare } from 'utils/live2d'
 
 export default function CardDetail({
   card,
@@ -20,9 +13,9 @@ export default function CardDetail({
   const [showSkill, setShowSkill] = useState<boolean>(false)
 
   const maxParameters = card.maxParameters!
-  const character = card.character?.data?.attributes || {}
-  const unit = character?.unit?.data?.attributes || { name: 'X', masterID: 50 }
-  const skill = card.skill?.data?.attributes || {}
+  // const character = card.character?.data?.attributes || {}
+  // const unit = character?.unit?.data?.attributes || { name: 'X', masterID: 50 }
+  // const skill = card.skill?.data?.attributes || {}
 
   return (
     <MainLayout
@@ -32,12 +25,12 @@ export default function CardDetail({
         { name: t('nav:game.card_detail'), link: `` },
       ]}
       title={`${card.cardName} (${
-        character?.fullNameEnglish || character?.firstNameEnglish
+        card.character?.fullNameEnglish || card.character?.firstNameEnglish
       })`}
     >
       <Modal show={showSkill} onClose={() => setShowSkill(false)} showCloseBtn>
         <Table>
-          <TableBody
+          {/* <TableBody
             data={[
               [t('card:skill.id'), skill.masterID],
               [t('card:skill_name'), card.skillName],
@@ -49,7 +42,7 @@ export default function CardDetail({
               [t('card:skill.comboSupportCount'), skill.comboSupportCount],
               [t('card:skill.perfectScoreUpRate'), skill.perfectScoreUpRate],
             ]}
-          />
+          /> */}
         </Table>
       </Modal>
       <div className="grid-2">
@@ -58,19 +51,20 @@ export default function CardDetail({
             title={t('card:info')}
             bodyClassName="flex justify-center flex-col items-center"
           >
-            <CardIcon
-              id={card.masterID!}
-              rarity={card.rarity!}
-              attribute={card.attribute!}
+            {/* <CardIcon
+              id={card.masterId}
+              rarity={parseInt(card.rarityId.slice(-1, 3))}
+              attribute={card.attributeId}
               unit={unit.masterID!}
-            />
+            /> */}
             <div className="mt-2">{card.cardName}</div>
             <div className="text-gray-600">
-              {character.fullNameEnglish || character.firstNameEnglish} -{' '}
-              {unit.name}
+              {card.character.fullNameEnglish ||
+                card.character.firstNameEnglish}{' '}
+              - {/* {unit.name} */}
             </div>
             <Table>
-              <TableBody
+              {/* <TableBody
                 data={[
                   [t('common:id'), card.masterID],
                   [
@@ -106,12 +100,12 @@ export default function CardDetail({
                       ]
                     : [],
                 ]}
-              />
+              /> */}
             </Table>
           </Card>
         </div>
         <div className="col-span-1 md:col-span-2">
-          <Card title={t('card:illustrations.name')}>
+          {/* <Card title={t('card:illustrations.name')}>
             {card.rarity! > 2 && (
               <Disclosure
                 title={t('card:illustrations.sd')}
@@ -220,7 +214,7 @@ export default function CardDetail({
                 />
               )}
             </Disclosure>
-          </Card>
+          </Card> */}
         </div>
       </div>
     </MainLayout>
@@ -228,9 +222,7 @@ export default function CardDetail({
 }
 
 export const getServerSideProps: GetServerSideProps<{
-  card: NonNullable<
-    NonNullable<NonNullable<CardQuery['card']>['data']>['attributes']
-  >
+  card: CardMaster & { character: CharacterMaster }
 }> = async (context) => {
   const id = context.query.id
   if (typeof id !== 'string') {
@@ -239,20 +231,22 @@ export const getServerSideProps: GetServerSideProps<{
     }
   }
 
-  const { data } = await client.query<CardQuery, CardQueryVariables>({
-    query: CardDocument,
-    variables: {
-      cardId: id,
+  const data = await prisma?.cardMaster.findUnique({
+    where: {
+      id,
+    },
+    select: {
+      character: true,
     },
   })
 
-  if (!data.card?.data) {
+  if (!data) {
     return { notFound: true }
   }
 
   return {
     props: {
-      card: data.card.data.attributes!,
+      card: data as any,
     },
   }
 }

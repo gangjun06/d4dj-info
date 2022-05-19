@@ -28,7 +28,7 @@ export default function EventList() {
   const { t } = useTransition('')
   const { region } = useSetting()
   const router = useRouter()
-  const { handleSubmit, control, setValue } = useForm<FilterData>({
+  const { handleSubmit, register, setValue } = useForm<FilterData>({
     defaultValues: { sort: 'desc' },
   })
   const [reqData, setReqData] = useState<EventsQueryVariables>({
@@ -133,7 +133,7 @@ export default function EventList() {
         <FormBlock label={t('category')}>
           <Checkbox
             name="category"
-            control={control}
+            register={register}
             list={EventTypeCheckbox(t)}
           />
         </FormBlock>

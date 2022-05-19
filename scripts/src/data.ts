@@ -101,7 +101,7 @@ export const modelSetting: { [key: string]: ModelSetting } = {
         type: 'OneToMany',
       },
       {
-        key: 'skill',
+        key: 'skillParameter',
         ref: 'SkillMaster',
         refField: 'cards',
         type: 'OneToMany',
@@ -134,6 +134,16 @@ export const modelSetting: { [key: string]: ModelSetting } = {
       },
     ],
   },
+  ChampionshipMaster: {
+    fields: [
+      {
+        key: 'conditions',
+        ref: 'ConditionMaster',
+        refField: 'championships',
+        type: 'ManyToMany',
+      },
+    ],
+  },
   ChampionshipSetlistMaster: {
     fields: [
       {
@@ -153,6 +163,9 @@ export const modelSetting: { [key: string]: ModelSetting } = {
         type: 'OneToMany',
       },
     ],
+  },
+  ChargeLimitMaster: {
+    id: ['age'],
   },
   ChartAchieveMaster: {
     fields: [
@@ -187,8 +200,16 @@ export const modelSetting: { [key: string]: ModelSetting } = {
   ChartNoteCountMaster: {
     id: ['chartId', 'section'],
   },
-  ClubitemDetailMaster: {
+  ClubItemDetailMaster: {
     id: ['id', 'level'],
+    fields: [
+      {
+        key: 'conditions',
+        ref: 'ConditionMaster',
+        refField: 'clubItemDetails',
+        type: 'ManyToMany',
+      },
+    ],
   },
   ClubItemMaster: {
     fields: [
@@ -224,6 +245,7 @@ export const modelSetting: { [key: string]: ModelSetting } = {
     id: ['setlistId', 'order'],
   },
   EpisodeMaster: {
+    id: ['category', 'id'],
     fields: [
       {
         key: 'conditions',
@@ -295,7 +317,7 @@ export const modelSetting: { [key: string]: ModelSetting } = {
   EventPointRewardMaster: {
     fields: [
       {
-        key: 'Aggregation',
+        key: 'aggregation',
         ref: 'EventAggregationBaseMaster',
         refField: 'eventPointRewards',
         type: 'OneToMany',
@@ -305,7 +327,7 @@ export const modelSetting: { [key: string]: ModelSetting } = {
   EventRankingRewardMaster: {
     fields: [
       {
-        key: 'Aggregation',
+        key: 'aggregation',
         ref: 'EventAggregationBaseMaster',
         refField: 'eventRankingRewards',
         type: 'OneToMany',
@@ -522,6 +544,16 @@ export const modelSetting: { [key: string]: ModelSetting } = {
       },
     ],
   },
+  MapMaster: {
+    fields: [
+      {
+        key: 'conditions',
+        ref: 'ConditionMaster',
+        refField: 'maps',
+        type: 'ManyToMany',
+      },
+    ],
+  },
   MapMobMaster: {
     fields: [
       {
@@ -628,9 +660,6 @@ export const modelSetting: { [key: string]: ModelSetting } = {
   },
   PassiveSkillExpMaster: {
     id: ['level', 'rarityId'],
-  },
-  PassiveSkillMaster: {
-    id: ['level'],
   },
   QuestBlockMaster: {
     fields: [
