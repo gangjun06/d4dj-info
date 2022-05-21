@@ -1,5 +1,12 @@
 import Cookies from 'js-cookie'
-import { Attribute, Region, Unit } from '../models'
+import { NextApiRequest, NextApiResponse } from 'next'
+import {
+  Attribute,
+  FindListOptionSet,
+  FindListType,
+  Region,
+  Unit,
+} from '../models'
 import { pad } from './num'
 
 export * from './array'
@@ -254,3 +261,88 @@ export const parseFilterQuery = (query: any) => {
 }
 
 export const convertID = (id: string) => id.slice(0, -3)
+
+export const badRequest = (res: NextApiResponse) =>
+  res.status(400).json({ msg: 'Bad Request' })
+
+export const getPagination = (
+  cursor: string | undefined,
+  pageSize: number
+) => ({
+  ...(cursor
+    ? {
+        cursor: { id: cursor },
+      }
+    : {}),
+  take: pageSize,
+  skip: 1,
+})
+
+export const convertListReq = (
+  req: NextApiRequest,
+  option: FindListOptionSet<any>
+): { where: any; sortBy: any; region: string; pagination: any } => {
+  const { cursor, sort, sortBy } = req.query
+  const filterData = {
+    ...req.query,
+  }
+  delete filterData['cursor']
+  delete filterData['sort']
+  delete filterData['sortBy']
+  delete filterData['region']
+
+  const region = (req.query.region as Region) ?? 'jp'
+  let where = {}
+  let sortByData = {}
+
+  for (const key in filterData) {
+    const field = option.fields[key.replace('[]', '')]
+    let queryData = req.query[key]
+    if (!field) throw new Error('Bad Request')
+    if (field.type === FindListType.Checkbox) {
+      if (!Array.isArray(queryData)) queryData = [queryData]
+      // Filter query has correct option value
+      if (
+        queryData.filter(
+          (d) => field.options.findIndex(({ value }) => value === d) < 0
+        ).length
+      )
+        throw new Error('Bad Request')
+
+      where = {
+        ...where,
+        ...(field.customOptionHandler
+          ? field.customOptionHandler(queryData, region)
+          : {}),
+      }
+    }
+  }
+
+  if (
+    Array.isArray(region) ||
+    Array.isArray(cursor) ||
+    Array.isArray(sort) ||
+    Array.isArray(sortBy)
+  )
+    throw new Error('Bad Request')
+
+  sortByData = {
+    [sortBy || option.sort.default]: sort,
+  }
+
+  return {
+    where: {
+      where: {
+        region: {
+          equals: region,
+        },
+        ...where,
+      },
+    },
+    sortBy: {
+      orderBy: sortByData,
+    },
+    pagination: getPagination(cursor, 30),
+    region,
+  }
+}

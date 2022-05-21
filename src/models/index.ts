@@ -1,3 +1,5 @@
+import { ReactElement } from 'react'
+
 export enum Region {
   // 'Korea' = 'ko-KR',
   'Global' = 'en',
@@ -69,17 +71,28 @@ export enum FindListType {
   Input = 'input',
 }
 
+export type SimpleImage = {
+  src: string
+  width: string
+  height: string
+}
+
 export type FindListOption = {
   type: FindListType
   label: string
   name: string
-  options: { label: string; value: string }[]
+  options: { label?: string; value: string; component?: ReactElement }[]
   customOptionHandler?: (value: string[], region: string) => any
 }
 
 export type FindListOptionSet<T> = {
   url: string
   fields: { [key: string]: FindListOption }
+  sort: {
+    default: string
+    options: { label?: string; value: string; component?: ReactElement }[]
+    customOptionHandler?: (value: string[], region: string) => any
+  }
 }
 
 export type FindListReturn<T> = {

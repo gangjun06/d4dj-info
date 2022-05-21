@@ -184,12 +184,7 @@ export const CardIcon = ({
         />
       </div>
       <div className="absolute top-1 right-1 z-10">
-        <Image
-          width={28}
-          alt={'attribute'}
-          urlType={GetURLType.CardAttributeIcon}
-          parameter={[attribute]}
-        />
+        <CardAttributeIcon attribute={attribute} />
       </div>
       <div className="absolute top-1 left-1 z-10">
         <Image
@@ -200,15 +195,7 @@ export const CardIcon = ({
         />
       </div>
       <div className="absolute bottom-2.5 left-1 z-10 flex flex-col">
-        {Array.from(Array(rarity > 4 ? 4 : rarity).keys()).map((_, index) => (
-          <Image
-            key={index}
-            width={20}
-            alt={'rarity'}
-            urlType={GetURLType.CardRarityIcon}
-            parameter={[rarity]}
-          />
-        ))}
+        <CardRarityIcon rarity={rarity} />
       </div>
       <ImageWithFallback
         width={128}
@@ -218,6 +205,33 @@ export const CardIcon = ({
         parameter={[id, rarity > 2 ? '1' : '0']}
       />
     </div>
+  )
+}
+
+export const CardAttributeIcon = ({ attribute }: { attribute: number }) => {
+  return (
+    <Image
+      width={28}
+      alt={'attribute'}
+      urlType={GetURLType.CardAttributeIcon}
+      parameter={[attribute]}
+    />
+  )
+}
+
+export const CardRarityIcon = ({ rarity }: { rarity: number }) => {
+  return (
+    <>
+      {Array.from(Array(rarity > 4 ? 4 : rarity).keys()).map((_, index) => (
+        <Image
+          key={index}
+          width={20}
+          alt={'rarity'}
+          urlType={GetURLType.CardRarityIcon}
+          parameter={[rarity]}
+        />
+      ))}
+    </>
   )
 }
 
@@ -243,6 +257,18 @@ export const CharacterIcon = ({ id, alt }: { id: number; alt: string }) => {
     />
   )
 }
+
+export const UnitIcon = ({ unit }: { unit: number }) => {
+  return (
+    <Image
+      width={28}
+      alt={'unit'}
+      urlType={GetURLType.CardUnitIcon}
+      parameter={[unit]}
+    />
+  )
+}
+
 export const StampIcon = ({ id }: { id: number }) => {
   return (
     <ImageWithFallback
