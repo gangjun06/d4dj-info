@@ -20,6 +20,21 @@ enum Region {
 `
 
 export const modelSetting: { [key: string]: ModelSetting } = {
+  AuditionGachaResetMaster: {
+    id: ['__GachaDrawPrimaryKey__'],
+    fields: {
+      gachaDraw: {
+        ref: 'GachaDrawMaster',
+        refField: 'auditionGachaReset',
+        type: OneToMany,
+      },
+      stock: {
+        ref: 'StockMaster',
+        refField: 'auditionGachaReset',
+        type: OneToMany,
+      },
+    },
+  },
   AchievementMaster: {
     fields: {
       rewards: {
@@ -100,6 +115,58 @@ export const modelSetting: { [key: string]: ModelSetting } = {
         ref: 'PassiveSkillMaster',
         refField: 'cards',
         type: OneToMany,
+      },
+    },
+  },
+  SlotBonusTimeMaster: {
+    id: ['__EventPrimaryKey__', 'ExtendCount'],
+    fields: {
+      event: {
+        ref: 'EventMaster',
+        refField: 'slotBonusTimes',
+        type: OneToMany,
+      },
+      stock: {
+        ref: 'StockMaster',
+        refField: 'slotBonusTimes',
+        type: OneToMany,
+      },
+    },
+  },
+  SlotRewardMaster: {
+    fields: {
+      stock: {
+        ref: 'StockMaster',
+        refField: 'slotRewards',
+        type: OneToMany,
+      },
+    },
+  },
+  SlotSpecificBonusMaster: {
+    fields: {
+      event: {
+        ref: 'EventMaster',
+        refField: 'slotSpecificBonus',
+        type: OneToMany,
+      },
+    },
+  },
+  RaidBossMaster: {
+    fields: {
+      aggregation: {
+        ref: 'EventAggregationBaseMaster',
+        refField: 'raidBoss',
+        type: OneToMany,
+      },
+      characterMatchParameterBonus: {
+        ref: 'ParameterBonusMaster',
+        refField: 'raidBossChara',
+        type: ManyToMany,
+      },
+      cardMatchParameterBonuses: {
+        ref: 'ParameterBonusMaster',
+        refField: 'raidBossCard',
+        type: ManyToMany,
       },
     },
   },

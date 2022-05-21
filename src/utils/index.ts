@@ -252,3 +252,5 @@ export const parseFilterQuery = (query: any) => {
   })
   return newData
 }
+
+export const convertID = (id: string) => id.slice(0, -3)

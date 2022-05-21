@@ -77,7 +77,11 @@ export type FindListOption = {
   customOptionHandler?: (value: string[], region: string) => any
 }
 
-export type FindListOptionSet = {
+export type FindListOptionSet<T> = {
   url: string
   fields: { [key: string]: FindListOption }
+}
+
+export type FindListReturn<T> = {
+  data: T
 }

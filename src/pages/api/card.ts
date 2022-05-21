@@ -1,6 +1,11 @@
 import prisma from '@/lib/prisma'
-import { FindListOptionSet, FindListType, HttpMethod } from '@/types/index'
-import type { CardMaster, Region } from '@prisma/client'
+import {
+  FindListOptionSet,
+  FindListReturn,
+  FindListType,
+  HttpMethod,
+} from '@/types/index'
+import type { CardMaster, CharacterMaster, Region } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 const card = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -23,7 +28,7 @@ const getPagination = (cursor: string | undefined, pageSize: number) => ({
   skip: 1,
 })
 
-export const CardOptions: FindListOptionSet = {
+export const CardOptions: FindListOptionSet<AllCardsItem> = {
   url: '/api/card',
   fields: {
     rarity: {
@@ -55,14 +60,18 @@ export const CardOptions: FindListOptionSet = {
   },
 }
 
-export interface AllCards {
-  cards: CardMaster[]
+export type AllCardsItem = CardMaster & {
+  character: CharacterMaster & {
+    unit: {
+      id: string
+    }
+  }
 }
 
 export async function getCards(
   req: NextApiRequest,
   res: NextApiResponse
-): Promise<void | NextApiResponse<AllCards>> {
+): Promise<void | NextApiResponse<FindListReturn<AllCardsItem>>> {
   const { cursor, region } = req.query
   if (Array.isArray(region) || Array.isArray(cursor))
     return res.status(400).json({ msg: 'Bad Request' })
@@ -75,12 +84,19 @@ export async function getCards(
       },
     },
     include: {
-      _count: true,
-      character: true,
+      character: {
+        include: {
+          unit: {
+            select: {
+              id: true,
+            },
+          },
+        },
+      },
     },
   })
 
-  return res.json({ cards: data })
+  return res.json({ data })
 }
 
 export default card

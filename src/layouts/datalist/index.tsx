@@ -12,8 +12,8 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import { cleanForm } from 'utils'
 
 interface props<T> extends MainProps {
-  option: FindListOptionSet
-  children?: (data: any) => ReactElement
+  option: FindListOptionSet<T>
+  children: (props: { data: T }) => ReactElement
 }
 
 const FormItemBuilder = ({
@@ -66,12 +66,13 @@ const FormItemBuilder = ({
 export const DataListLayout = <T,>({
   title,
   breadCrumbs,
+  children,
   option,
 }: props<T>) => {
   const router = useRouter()
   const { t } = useTransition('')
 
-  const { handleSubmit, control, setValue, register } = useForm<any>({
+  const { handleSubmit, setValue, register } = useForm<any>({
     defaultValues: { sort: 'asc' },
   })
 
@@ -99,21 +100,19 @@ export const DataListLayout = <T,>({
 
   useEffect(() => {
     const fetch = async () => {
-      const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_URL}/${option.url}`
-      )
-      setData(res.data.cards)
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_URL}${option.url}`)
+      setData(res.data.data)
     }
     fetch()
   }, [option.url])
 
   const fetchData = async () => {
-    const res = await axios.get(`/${option.url}`, {
+    const res = await axios.get(`${process.env.NEXT_PUBLIC_URL}${option.url}`, {
       params: {
         cursor: (data[data.length - 1] as any).id,
       },
     })
-    setData(res.data)
+    setData((d) => d.concat(res.data.data))
   }
 
   return (
@@ -160,11 +159,7 @@ export const DataListLayout = <T,>({
         dataLength={data.length}
         endMessage={<div className="my-2"></div>}
       >
-        <div className="grid-1">
-          {(data as any).map((item: any, index: number) => (
-            <div key={index}>{item.name}</div>
-          ))}
-        </div>
+        <div className="grid-1">{data.map((data) => children({ data }))}</div>
       </InfiniteScroll>
     </MainLayout>
   )
