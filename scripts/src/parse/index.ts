@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import { Prisma, PrismaClient } from '@prisma/client'
 import axios from 'axios'
 import fs from 'fs'
 import path from 'path'
@@ -11,7 +11,7 @@ const __dirname = path.resolve()
 const prisma = new PrismaClient()
 
 const fetchMaster = async (region: string, name: string) => {
-  const url = `https://asset.d4dj.info/${region}/Master/${name}.json`
+  const url = `https://cdn.d4dj.info/${region}/Master/${name}.json`
   const res = await axios.get(url)
   return res.data
 }
@@ -50,6 +50,9 @@ const parseTarget = async (region: string, name: string) => {
       } else {
         const formated = formatText(key2)
         if (formated.endsWith('PrimaryKey')) {
+          if (!setting.fields || !setting.fields[formated.slice(0, -10)]) {
+            continue
+          }
           if (Array.isArray(field[key2])) {
             useCreateMany = false
             newData[formated.slice(0, -10)] = {
@@ -70,22 +73,32 @@ const parseTarget = async (region: string, name: string) => {
   }
 
   if (useCreateMany) {
-    await prisma[lowerFirst(name) as 'characterMaster'].createMany({
-      data: createData,
-    })
-    return
+    try {
+      await prisma[lowerFirst(name) as 'characterMaster'].createMany({
+        data: createData,
+      })
+      return
+    } catch (e) {}
   }
 
   const chunkSize = 13
   for (let i = 0; i < createData.length; i += chunkSize) {
     const chunk = createData.slice(i, i + chunkSize)
-    await Promise.all(
-      chunk.map((data: any) =>
-        prisma[lowerFirst(name) as 'characterMaster'].create({
-          data,
-        })
+    try {
+      await Promise.all(
+        chunk.map((data: any) =>
+          prisma[lowerFirst(name) as 'characterMaster'].create({
+            data,
+          })
+        )
       )
-    )
+    } catch (e) {
+      if (e instanceof Prisma.PrismaClientKnownRequestError) {
+        if (e.code === 'P2003') {
+          console.log(e)
+        }
+      }
+    }
   }
 }
 
@@ -134,7 +147,7 @@ export const parse = async (name?: string) => {
   }
 
   const preParse = ['RewardMaster', 'ConditionMaster']
-  // const preParse = []
+  // const preParse = ['EventPointRewardMaster']
   for (const item of preParse) {
     await parseReculsive(item, false)
   }

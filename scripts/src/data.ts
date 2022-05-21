@@ -1,4 +1,5 @@
-import { ModelSetting } from './types/index.js'
+import { ModelSetting, RelationType } from './types/index.js'
+const { OneToMany, ManyToOne, ManyToMany } = RelationType
 
 export const prismaBase = `
 generator client {
@@ -20,569 +21,536 @@ enum Region {
 
 export const modelSetting: { [key: string]: ModelSetting } = {
   AchievementMaster: {
-    fields: [
-      {
-        key: 'rewards',
+    fields: {
+      rewards: {
         ref: 'RewardMaster',
         refField: 'achievements',
-        type: 'ManyToMany',
+        type: ManyToMany,
       },
-      {
-        key: 'commandMaster',
+      commandMaster: {
         ref: 'CommandMaster',
         refField: 'achievements',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-    ],
+    },
   },
   AuditionGachaReset: {
-    fields: [
-      {
-        key: 'gachaDraw',
+    fields: {
+      gachaDraw: {
         ref: 'GachaDrawMaster',
         refField: 'auditionGachaResets',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-      {
-        key: 'stock',
+      stock: {
         ref: 'StockMaster',
         refField: 'auditionGachaResets',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-    ],
+    },
   },
   BoxGachaMaster: {
-    fields: [
-      {
-        key: 'stock',
+    fields: {
+      stock: {
         ref: 'StockMaster',
         refField: 'boxGachas',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-      {
-        key: 'card',
+      card: {
         ref: 'CardMaster',
         refField: 'boxGachas',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-    ],
+    },
   },
   CardDisplayMaster: {
-    fields: [
-      {
-        key: 'card',
+    fields: {
+      card: {
         ref: 'CardMaster',
         refField: 'cardDisplays',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-    ],
+    },
   },
   CardExpMaster: {
     id: ['level'],
   },
   CardMaster: {
-    fields: [
-      {
-        key: 'rarity',
+    fields: {
+      rarity: {
         ref: 'RarityMaster',
         refField: 'cards',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-      {
-        key: 'attribute',
+      attribute: {
         ref: 'AttributeMaster',
         refField: 'cards',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-      {
-        key: 'character',
+      character: {
         ref: 'CharacterMaster',
         refField: 'cards',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-      {
-        key: 'skillParameter',
+      skillParameter: {
         ref: 'SkillMaster',
         refField: 'cards',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-      {
-        key: 'passiveSkill',
+      passiveSkill: {
         ref: 'PassiveSkillMaster',
         refField: 'cards',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-    ],
+    },
   },
   CardStackItemMaster: {
-    fields: [
-      {
-        key: 'stock',
+    fields: {
+      stock: {
         ref: 'StockMaster',
         refField: 'cardStackItems',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-    ],
+    },
   },
   ChampionshipLeagueMaster: {
-    fields: [
-      {
-        key: 'championship',
+    fields: {
+      championship: {
         ref: 'ChampionshipMaster',
         refField: 'leagues',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-    ],
+    },
   },
   ChampionshipMaster: {
-    fields: [
-      {
-        key: 'conditions',
+    fields: {
+      conditions: {
         ref: 'ConditionMaster',
         refField: 'championships',
-        type: 'ManyToMany',
+        type: ManyToMany,
       },
-    ],
+    },
   },
   ChampionshipSetlistMaster: {
-    fields: [
-      {
-        key: 'league',
+    fields: {
+      league: {
         ref: 'ChampionshipLeagueMaster',
         refField: 'setlists',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-    ],
+    },
   },
   CharacterMaster: {
-    fields: [
-      {
-        key: 'unit',
+    fields: {
+      unit: {
         ref: 'UnitMaster',
         refField: 'characters',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-    ],
+    },
   },
   ChargeLimitMaster: {
     id: ['age'],
   },
   ChartAchieveMaster: {
-    fields: [
-      {
-        key: 'rewardStock',
+    id: ['id', 'type', 'value'],
+    fields: {
+      rewardStock: {
         ref: 'StockMaster',
         refField: 'chartAchieveRewards',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-    ],
-    id: ['id', 'type', 'value'],
+    },
   },
   ChartLessonMaster: {
     id: ['chartId', 'measureIndex'],
   },
   ChartMaster: {
-    fields: [
-      {
-        key: 'music',
+    fields: {
+      music: {
         ref: 'MusicMaster',
         refField: 'charts',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-      {
-        key: 'designer',
+      designer: {
         ref: 'ChartDesignerMaster',
         refField: 'charts',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-    ],
+    },
   },
   ChartNoteCountMaster: {
     id: ['chartId', 'section'],
   },
   ClubItemDetailMaster: {
     id: ['id', 'level'],
-    fields: [
-      {
-        key: 'conditions',
+    fields: {
+      conditions: {
         ref: 'ConditionMaster',
         refField: 'clubItemDetails',
-        type: 'ManyToMany',
+        type: ManyToMany,
       },
-    ],
+    },
   },
   ClubItemMaster: {
-    fields: [
-      {
-        key: 'spot',
+    fields: {
+      spot: {
         ref: 'ClubItemSpotMaster',
         refField: 'items',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-      {
-        key: 'category',
+      category: {
         ref: 'ClubItemCategoryMaster',
         refField: 'items',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-    ],
+    },
   },
   DJSimulatorSetlistMusicMaster: {
-    fields: [
-      {
-        key: 'setlist',
+    id: ['setlistId', 'order'],
+    fields: {
+      setlist: {
         ref: 'DJSimulatorSetlistMaster',
         refField: 'musics',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-      {
-        key: 'music',
+      music: {
         ref: 'MusicMaster',
         refField: 'djSimulatorSetlistMusics',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-    ],
-    id: ['setlistId', 'order'],
+    },
   },
   EpisodeMaster: {
     id: ['category', 'id'],
-    fields: [
-      {
-        key: 'conditions',
+    fields: {
+      conditions: {
         ref: 'ConditionMaster',
         refField: 'episodes',
-        type: 'ManyToMany',
+        type: ManyToMany,
       },
-      {
-        key: 'rewards',
+      rewards: {
         ref: 'RewardMaster',
         refField: 'episodes',
-        type: 'ManyToMany',
+        type: ManyToMany,
       },
-    ],
+    },
   },
   EventAggregationBaseMaster: {
-    fields: [
-      {
-        key: 'event',
+    fields: {
+      event: {
         ref: 'EventMaster',
         refField: 'aggregations',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-    ],
+    },
   },
   EventEpisodeMaster: {
-    fields: [
-      {
-        key: 'event',
+    fields: {
+      event: {
         ref: 'EventMaster',
         refField: 'episodes',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-    ], // TODO: CustomField
+    },
   },
   EventLoginBonusItemMaster: {
-    fields: [
-      {
-        key: 'loginBonus',
+    id: ['loginBonusId', 'eventId', 'sequence'],
+    fields: {
+      loginBonus: {
         ref: 'LoginBonusMaster',
         refField: 'eventLoginBonusItems',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-      {
-        key: 'rewards',
+      rewards: {
         ref: 'RewardMaster',
         refField: 'eventLoginBonusItems',
-        type: 'ManyToMany',
+        type: ManyToMany,
       },
-    ],
-    id: ['loginBonusId', 'eventId', 'sequence'],
+    },
   },
   EventMedleySetlistMaster: {
-    fields: [
-      {
-        key: 'aggregation',
+    fields: {
+      aggregation: {
         ref: 'EventAggregationBaseMaster',
         refField: 'eventMedleySetlists',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-      {
-        key: 'characterMatchParameterBonus',
+      characterMatchParameterBonus: {
         ref: 'ParameterBonusMaster',
         refField: 'eventMedleySetlists',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-    ],
+    },
   },
   EventPointRewardMaster: {
-    fields: [
-      {
-        key: 'aggregation',
+    fields: {
+      aggregation: {
         ref: 'EventAggregationBaseMaster',
         refField: 'eventPointRewards',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-    ],
+    },
   },
   EventRankingRewardMaster: {
-    fields: [
-      {
-        key: 'aggregation',
+    fields: {
+      aggregation: {
         ref: 'EventAggregationBaseMaster',
         refField: 'eventRankingRewards',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-    ],
+    },
   },
   EventSpecificBonusMaster: {
-    fields: [
-      {
-        key: 'event',
+    id: ['eventId'],
+    fields: {
+      event: {
         ref: 'EventMaster',
         refField: 'eventSpecificBonuses',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-      {
-        key: [
-          'characterMatchParameterBonus',
-          'AttributeMatchParameterBonus',
-          'AllMatchParameterBonus',
-        ],
+      characterMatchParameterBonus: {
         ref: 'ParameterBonusMaster',
-        refField: 'eventSpecificBonuses',
-        type: 'OneToMany',
+        refField: 'eventSpecificBonusChara',
+        type: OneToMany,
       },
-    ],
-    id: ['eventId'],
+      attributMmatchParameterBonus: {
+        ref: 'ParameterBonusMaster',
+        refField: 'eventSpecificBonusAttr',
+        type: OneToMany,
+      },
+      allMatchParameterBonus: {
+        ref: 'ParameterBonusMaster',
+        refField: 'eventSpecificBonusAll',
+        type: OneToMany,
+      },
+    },
   },
   ExchangeItemMaster: {
-    fields: [
-      {
-        key: 'exchange',
+    fields: {
+      exchange: {
         ref: 'ExchangeMaster',
         refField: 'items',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-    ],
+    },
   },
   GachaBonusMaster: {
-    fields: [
-      {
-        key: 'tableRate',
+    id: ['gachaId', 'isMain'],
+    fields: {
+      tableRate: {
         ref: 'GachaTableRateMaster',
         refField: 'gachaBonuses',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-    ],
-    id: ['gachaId', 'isMain'],
+    },
   },
   GachaDrawMaster: {
-    fields: [
-      {
-        key: 'gacha',
+    fields: {
+      gacha: {
         ref: 'GachaMaster',
         refField: 'draws',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-      {
-        key: 'stock',
+      stock: {
         ref: 'StockMaster',
         refField: 'gachaDraws',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-      {
-        key: 'rouletteTargets',
+      rouletteTargets: {
         ref: 'GachaRouletteMaster',
         refField: 'gachaDraws',
-        type: 'ManyToMany',
+        type: ManyToMany,
       },
-    ],
+    },
   },
   GachaMaster: {
-    fields: [
-      {
-        key: 'tableRates',
+    fields: {
+      tableRates: {
         ref: 'GachaTableRateMaster',
         refField: 'gacha',
-        type: 'ManyToMany',
+        type: ManyToMany,
       },
-      {
-        key: ['pickUpCards', 'selectBonusCards', 'homeAnimationCards'],
+      pickUpCards: {
         ref: 'CardMaster',
-        refField: 'gacha$',
-        type: 'ManyToMany',
+        refField: 'gachaPickUpCards',
+        type: ManyToMany,
       },
-      {
-        key: 'summary',
+      selectBonusCards: {
+        ref: 'CardMaster',
+        refField: 'gachaSelectBonusCards',
+        type: ManyToMany,
+      },
+      homeAnimationCards: {
+        ref: 'CardMaster',
+        refField: 'gachaHomeAnimationCards',
+        type: ManyToMany,
+      },
+      summary: {
         ref: 'GachaSummaryWordMaster',
         refField: 'gacha',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-      {
-        key: 'detail',
+      detail: {
         ref: 'GachaExplanationWordMaster',
         refField: 'gacha',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-      {
-        key: 'note',
+      note: {
         ref: 'GachaNotesWordMaster',
         refField: 'gacha',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-      {
-        key: 'selectBonusRewards',
+      selectBonusRewards: {
         ref: 'RewardMaster',
         refField: 'gacha',
-        type: 'ManyToMany',
+        type: ManyToMany,
       },
-    ],
+    },
   },
   HelpMaster: {
-    fields: [
-      {
-        key: 'category',
+    fields: {
+      category: {
         ref: 'HelpCategoryMaster',
         refField: 'helps',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-    ],
+    },
   },
   HiddenMusicMixDetailMaster: {
-    fields: [
-      {
-        key: 'mix',
+    id: ['mixId', 'order'],
+    fields: {
+      mix: {
         ref: 'HiddenMusicMixMaster',
         refField: 'details',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-    ],
-    id: ['mixId', 'order'],
+    },
   },
   HiddenMusicMixNoteCountMaster: {
     id: ['id', 'order', 'difficulty'],
   },
   LimitBreakItemMaster: {
-    fields: [
-      {
-        key: 'rarity',
+    fields: {
+      rarity: {
         ref: 'RarityMaster',
         refField: 'limitBreakItems',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-      {
-        key: 'attribute',
+      attribute: {
         ref: 'AttributeMaster',
         refField: 'limitBreakItems',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-      {
-        key: 'stock',
+      stock: {
         ref: 'StockMaster',
         refField: 'limitBreakItems',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-    ],
+    },
   },
   Live2DUIChatMaster: {
-    fields: [
-      {
-        key: 'character',
+    fields: {
+      character: {
         ref: 'CharacterMaster',
         refField: 'live2DUIChats',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-    ],
+    },
   },
   LiveResultEpisodeMaster: {
-    fields: [
-      {
-        key: 'characters',
+    fields: {
+      characters: {
         ref: 'CharacterMaster',
         refField: 'liveResultEpisodes',
-        type: 'ManyToMany',
+        type: ManyToMany,
       },
-    ],
+    },
   },
   LiveSEMaster: {
-    fields: [
-      {
-        key: 'liveSEMaster',
+    fields: {
+      liveSEMaster: {
         ref: 'LiveSEPackMaster',
         refField: 'liveSEs',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-    ],
+    },
   },
   LoginBonusItemMaster: {
-    fields: [
-      {
-        key: 'loginBonus',
+    id: ['loginBonusId', 'sequence'],
+    fields: {
+      loginBonus: {
         ref: 'LoginBonusMaster',
         refField: 'items',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-    ],
-    id: ['loginBonusId', 'sequence'],
+      rewards: {
+        ref: 'RewardMaster',
+        refField: 'loginBonusItems',
+        type: ManyToMany,
+      },
+    },
   },
   LoginBonusPositionTemplateMaster: {
     id: ['id', 'sequence'],
   },
   MapEventMaster: {
-    fields: [
-      {
-        key: 'map',
+    fields: {
+      map: {
         ref: 'MapMaster',
         refField: 'mapEvents',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-      {
-        key: 'characters',
+      characters: {
         ref: 'CharacterMaster',
         refField: 'mapEvents',
-        type: 'ManyToMany',
+        type: ManyToMany,
       },
-    ],
+    },
+  },
+  LiveCutinMaster: {
+    fields: {
+      conditions: {
+        ref: 'ConditionMaster',
+        refField: 'liveCutins',
+        type: ManyToMany,
+      },
+    },
   },
   MapMaster: {
-    fields: [
-      {
-        key: 'conditions',
+    fields: {
+      conditions: {
         ref: 'ConditionMaster',
         refField: 'maps',
-        type: 'ManyToMany',
+        type: ManyToMany,
       },
-    ],
+    },
   },
   MapMobMaster: {
-    fields: [
-      {
-        key: 'map',
+    fields: {
+      map: {
         ref: 'MapMaster',
         refField: 'mapMobs',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-    ],
+    },
   },
   MapObjectMaster: {
-    fields: [
-      {
-        key: 'spot',
+    fields: {
+      spot: {
         ref: 'MapObjectSpotMaster',
         refField: 'mapObjects',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-    ],
+    },
   },
   MapObjectSpotMaster: {
-    fields: [
-      {
-        key: 'map',
+    fields: {
+      map: {
         ref: 'MapMaster',
         refField: 'mapObjectSpots',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-    ],
+    },
   },
   MapSpotMaster: {
     id: ['mapId', 'spotId'],
@@ -591,69 +559,61 @@ export const modelSetting: { [key: string]: ModelSetting } = {
     id: ['rank'],
   },
   MissionDetailMaster: {
-    fields: [
-      {
-        key: 'panel',
+    fields: {
+      panel: {
         ref: 'MissionPanelMaster',
         refField: 'details',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-      {
-        key: 'rewards',
+      rewards: {
         ref: 'RewardMaster',
         refField: 'missionDetails',
-        type: 'ManyToMany',
+        type: ManyToMany,
       },
-      {
-        key: 'commandMaster',
+      commandMaster: {
         ref: 'CommandMaster',
         refField: 'missionDetails',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-    ],
+    },
   },
   MissionPanelMaster: {
-    fields: [
-      {
-        key: 'group',
+    fields: {
+      group: {
         ref: 'MissionGroupMaster',
         refField: 'panels',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-      {
-        key: 'allCompleteRewards',
+      allCompleteRewards: {
         ref: 'RewardMaster',
         refField: 'missionPanels',
-        type: 'ManyToMany',
+        type: ManyToMany,
       },
-    ],
+    },
   },
   MusicMaster: {
-    fields: [
-      {
-        key: 'unit',
+    fields: {
+      unit: {
         ref: 'UnitMaster',
         refField: 'musics',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-      {
-        key: 'purchaseBonuses',
+      purchaseBonuses: {
         ref: 'RewardMaster',
         refField: 'musics',
-        type: 'ManyToMany',
+        type: ManyToMany,
       },
-    ],
+    },
   },
   MusicMixMaster: {
-    fields: [
-      {
-        key: 'music',
+    id: ['musicId', 'secton'],
+    fields: {
+      music: {
         ref: 'MusicMaster',
         refField: 'musicMixes',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-    ],
-    id: ['musicId', 'secton'],
+    },
   },
   ParameterLevelMaster: {
     id: ['level'],
@@ -662,118 +622,121 @@ export const modelSetting: { [key: string]: ModelSetting } = {
     id: ['level', 'rarityId'],
   },
   QuestBlockMaster: {
-    fields: [
-      {
-        key: 'option',
+    fields: {
+      option: {
         ref: 'OptionPresetMaster',
         refField: 'questBlocks',
-        type: 'ManyToOne',
+        type: ManyToOne,
       },
-      {
-        key: 'assistOption',
+      assistOption: {
         ref: 'AssistOptionPresetMaster',
         refField: 'questBlocks',
-        type: 'ManyToOne',
+        type: ManyToOne,
       },
-      {
-        key: ['firstRewards', 'loopRewards'],
+      firstRewards: {
         ref: 'RewardMaster',
-        refField: 'quest$',
-        type: 'ManyToMany',
+        refField: 'questFirst',
+        type: ManyToMany,
       },
-      {
-        key: 'map',
+      loopRewards: {
+        ref: 'RewardMaster',
+        refField: 'questLoop',
+        type: ManyToMany,
+      },
+      map: {
         ref: 'MapMaster',
         refField: 'questBlocks',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-      {
-        key: 'chart',
+      chart: {
         ref: 'ChartMaster',
         refField: 'questBlocks',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-    ],
+    },
   },
   QuestClubDeckMaster: {
-    fields: [
-      {
-        key: 'spot',
+    id: ['id', 'spotId'],
+    fields: {
+      spot: {
         ref: 'ClubItemSpotMaster',
         refField: 'questClubDecks',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-      {
-        key: 'item',
+      item: {
         ref: 'ClubItemMaster',
         refField: 'questClubDecks',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-    ],
-    id: ['id', 'spotId'],
+    },
   },
   QuestDeckMaster: {
-    fields: [
-      {
-        key: 'card',
+    id: ['id', 'order'],
+    fields: {
+      card: {
         ref: 'CardMaster',
         refField: 'questDecks',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-    ],
-    id: ['id', 'order'],
+    },
   },
   SkillExpMaster: {
     id: ['level', 'rarityId'],
   },
   StockMaster: {
-    fields: [
-      {
-        key: 'viewCategory',
+    fields: {
+      viewCategory: {
         ref: 'StockViewCategoryMaster',
         refField: 'stocks',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-    ],
+    },
   },
   TowerMaster: {
-    fields: [],
+    fields: {
+      characterMatchParameterBonus: {
+        ref: 'ParameterBonusMaster',
+        refField: 'towerChara',
+        type: OneToMany,
+      },
+      attributeMatchParameterBonus: {
+        ref: 'ParameterBonusMaster',
+        refField: 'towerAttr',
+        type: OneToMany,
+      },
+    },
   },
   TowerStageMaster: {
-    fields: [
-      {
-        key: 'tower',
+    id: ['towerId', 'order'],
+    fields: {
+      tower: {
         ref: 'TowerMaster',
         refField: 'towerStages',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-      {
-        key: 'musics',
+      musics: {
         ref: 'MusicMaster',
         refField: 'towerStages',
-        type: 'ManyToMany',
+        type: ManyToMany,
       },
-      {
-        key: 'rewards',
+      rewards: {
         ref: 'RewardMaster',
         refField: 'towerStages',
-        type: 'ManyToMany',
+        type: ManyToMany,
       },
-    ],
-    id: ['towerId', 'order'],
+    },
   },
   TrumpMaster: {
     id: ['suit', 'id'],
   },
   UnitEpisodeMaster: {
-    fields: [
-      {
-        key: 'unit',
+    fields: {
+      unit: {
         ref: 'UnitMaster',
         refField: 'episodes',
-        type: 'OneToMany',
+        type: OneToMany,
       },
-    ],
+    },
   },
   UnitExpMaster: {
     id: ['level'],

@@ -19,13 +19,19 @@ export type Extra = {
   }[]
 }
 
-export type relationType = 'OneToOne' | 'OneToMany' | 'ManyToOne' | 'ManyToMany'
+export enum RelationType {
+  OneToOne = 'OneToOne',
+  OneToMany = 'OneToMany',
+  ManyToOne = 'ManyToOne',
+  ManyToMany = 'ManyToMany',
+}
 export type ModelSetting = {
   id?: string[]
   fields?: {
-    key: string | string[]
-    ref: string
-    refField: string
-    type: relationType
-  }[]
+    [key: string]: {
+      ref: string
+      refField: string
+      type: RelationType
+    }
+  }
 }

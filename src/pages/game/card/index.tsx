@@ -9,10 +9,12 @@ import {
   useCardsLazyQuery,
 } from '@/generated/graphql'
 import { Attribute, CardSort, Rarity, Unit } from '@/models/index'
+import { DataListLayout } from 'layouts/datalist'
 import MainLayout from 'layouts/main'
 // import { Attribute } from 'models'
 import useTransition from 'next-translate/useTranslation'
 import { useRouter } from 'next/router'
+import { CardOptions } from 'pages/api/card'
 import { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { HiOutlineFilter } from 'react-icons/hi'
@@ -38,7 +40,22 @@ type FilterData = {
   sortBy: CardSort
 }
 
-export default function CardList() {
+const CardList = () => {
+  const { t } = useTransition('')
+  return (
+    <DataListLayout
+      option={CardOptions}
+      breadCrumbs={[
+        { name: t('nav:game.name'), link: '' },
+        { name: t('nav:game.card'), link: '/game/card' },
+      ]}
+      title={t('nav:game.card')}
+    ></DataListLayout>
+  )
+}
+export default CardList
+
+const CardList2 = () => {
   const { t } = useTransition('')
   const { region } = useSetting()
   const router = useRouter()

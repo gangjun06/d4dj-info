@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import { modelSetting } from '../data.js'
-import { Field, ResultType } from '../types/index.js'
+import { Field, RelationType, ResultType } from '../types/index.js'
 import {
   EnumMemberRegex,
   EnumRegex,
@@ -29,11 +29,7 @@ const nameConverter = (
     if (!setting || !setting.fields) {
       return [name, null]
     }
-    const settingFields = setting.fields.find(
-      (d) =>
-        (typeof d.key === 'object' && d.key.includes(fieldName)) ||
-        d.key === fieldName
-    )
+    const settingFields = setting.fields[fieldName]
     if (!settingFields) {
       return [null, null]
     }
@@ -43,11 +39,9 @@ const nameConverter = (
     }
 
     const { type, ref } = settingFields
-    let { refField } = settingFields
+    const { refField } = settingFields
 
-    refField = refField.replace(/\$/, upperFirst(fieldName))
-
-    if (type === 'ManyToMany') {
+    if (type === RelationType.ManyToMany) {
       extraFields[modelName].push({
         key: fieldName,
         value: `${ref}[]`,
@@ -70,7 +64,7 @@ const nameConverter = (
           },
         ],
       })
-    } else if (type === 'OneToMany') {
+    } else if (type === RelationType.OneToMany) {
       extraFields[modelName].push({
         key: fieldName,
         value: `${ref}`,
@@ -79,6 +73,7 @@ const nameConverter = (
           {
             name: 'relation',
             parameters: [
+              { value: `"${modelName}_${upperFirst(fieldName)}"` },
               { key: 'fields', value: [`${name}`] },
               { key: 'references', value: ['id'] },
             ],
@@ -89,9 +84,15 @@ const nameConverter = (
       extraFields[ref].push({
         key: refField,
         value: `${modelName}[]`,
+        extra: [
+          {
+            name: 'relation',
+            parameters: [{ value: `"${modelName}_${upperFirst(fieldName)}"` }],
+          },
+        ],
       })
       return [name, { type: 'String' }]
-    } else if (type === 'ManyToOne') {
+    } else if (type === RelationType.ManyToOne) {
     } else {
       extraFields[modelName].push({
         key: fieldName,

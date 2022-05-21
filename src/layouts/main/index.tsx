@@ -185,6 +185,9 @@ type props = {
   mainContentStyle?: CSSProperties
   disableLayout?: boolean
 }
+
+export type MainProps = props
+
 export default function MainLayout({
   breadCrumbs,
   children,

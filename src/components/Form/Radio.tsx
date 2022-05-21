@@ -10,7 +10,10 @@ export function Radio({ name, list, register }: props) {
   return (
     <div className="flex flex-row gap-x-4 flex-wrap">
       {list.map(({ label, value }, index) => (
-        <label className="flex items-center gap-x-2 cursor-pointer" key={index}>
+        <label
+          className="flex items-center gap-x-2 cursor-pointer select-none"
+          key={index}
+        >
           <span>{label}</span>
           <input
             {...register!(name)}

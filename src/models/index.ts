@@ -50,3 +50,34 @@ export enum MusicCategory {
   Game = 'Game',
   Collabo = 'Collabo',
 }
+
+export enum HttpMethod {
+  CONNECT = 'CONNECT',
+  DELETE = 'DELETE',
+  GET = 'GET',
+  HEAD = 'HEAD',
+  OPTIONS = 'OPTIONS',
+  PATCH = 'PATCH',
+  POST = 'POST',
+  PUT = 'PUT',
+  TRACE = 'TRACE',
+}
+
+export enum FindListType {
+  Checkbox = 'checkbox',
+  Radio = 'radio',
+  Input = 'input',
+}
+
+export type FindListOption = {
+  type: FindListType
+  label: string
+  name: string
+  options: { label: string; value: string }[]
+  customOptionHandler?: (value: string[], region: string) => any
+}
+
+export type FindListOptionSet = {
+  url: string
+  fields: { [key: string]: FindListOption }
+}
