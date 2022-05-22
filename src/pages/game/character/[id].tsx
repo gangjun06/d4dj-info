@@ -1,14 +1,11 @@
+import { AllCardsItem } from '@/api/card'
 import { Card, Disclosure, Table, TableBody } from '@/components/Basic'
 import { CardItem } from '@/components/Elements'
 import { CharacterIcon, Image } from '@/components/Image'
-import {
-  CharacterDocument,
-  CharacterQuery,
-  CharacterQueryVariables,
-} from '@/generated/graphql'
-import { client } from '@/lib/apollo'
+import prisma from '@/lib/prisma'
+import { CharacterMaster, UnitMaster } from '@prisma/client'
 import MainLayout from 'layouts/main'
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
 import useTransition from 'next-translate/useTranslation'
 import React from 'react'
 import { GetURLType, pad } from 'utils'
@@ -16,7 +13,7 @@ import { createLive2DShare } from 'utils/live2d'
 
 export default function CardDetail({
   character,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   const { t } = useTransition('')
 
   return (
@@ -26,7 +23,7 @@ export default function CardDetail({
         { name: t('nav:game.character.name'), link: '/game/character' },
         {
           name: t('nav:game.character_detail'),
-          link: `/game/character/${character.masterID}`,
+          link: ``,
         },
       ]}
       title={`${character.fullNameEnglish || character?.firstNameEnglish}`}
@@ -38,7 +35,7 @@ export default function CardDetail({
             bodyClassName="flex justify-center flex-col items-center"
           >
             <CharacterIcon
-              id={character.masterID!}
+              id={character.masterId}
               alt={character.fullNameEnglish!}
             />
 
@@ -46,18 +43,16 @@ export default function CardDetail({
               {character.fullNameEnglish || character.firstNameEnglish}
             </div>
 
-            <div className="text-gray-600">
-              {character.unit?.data?.attributes?.name}
-            </div>
+            <div className="text-gray-600">{character.unit.name}</div>
             <Table>
               <TableBody
                 data={[
-                  [t('common:id'), character.masterID!],
-                  [t('character:color_code'), character.colorCode!],
-                  [t('character:firstname'), character.firstName!],
-                  [t('character:firstname_eng'), character.firstNameEnglish!],
-                  [t('character:fullname'), character.fullName!],
-                  [t('character:fullname_eng'), character.fullNameEnglish!],
+                  [t('common:id'), character.masterId],
+                  [t('character:color_code'), character.colorCode],
+                  [t('character:firstname'), character.firstName],
+                  [t('character:firstname_eng'), character.firstNameEnglish],
+                  [t('character:fullname'), character.fullName],
+                  [t('character:fullname_eng'), character.fullNameEnglish],
                   [
                     t('nav:live2d'),
                     {
@@ -68,7 +63,7 @@ export default function CardDetail({
                             character.firstNameEnglish ||
                             '',
                           model: `live2d_chara_${pad(
-                            character.masterID!,
+                            character.masterId,
                             3
                           )}0001`,
                         },
@@ -81,7 +76,7 @@ export default function CardDetail({
             </Table>
           </Card>
         </div>
-        {character.masterID! < 700 && (
+        {character.masterId! < 700 && (
           <div className="col-span-1 md:col-span-2">
             <Card title={t('character:illustrations.name')}>
               <Disclosure
@@ -90,10 +85,7 @@ export default function CardDetail({
               >
                 <Image
                   urlType={GetURLType.CharaLiveStart}
-                  parameter={[
-                    character.unit!.data?.attributes?.masterID || 0,
-                    character.masterID,
-                  ]}
+                  parameter={[character.unit.masterId, character.masterId]}
                   width={3200}
                   height={270}
                 />
@@ -104,7 +96,7 @@ export default function CardDetail({
               >
                 <Image
                   urlType={GetURLType.CharaRankHeader}
-                  parameter={[character.masterID]}
+                  parameter={[character.masterId]}
                   width={429}
                   height={154}
                 />
@@ -115,7 +107,7 @@ export default function CardDetail({
               >
                 <Image
                   urlType={GetURLType.CharaProfile}
-                  parameter={[character.masterID]}
+                  parameter={[character.masterId]}
                   width={2478}
                   height={1440}
                 />
@@ -127,7 +119,7 @@ export default function CardDetail({
                 <Image
                   auto
                   urlType={GetURLType.CharaSilhouette}
-                  parameter={[character.masterID]}
+                  parameter={[character.masterId]}
                 />
               </Disclosure>
               <Disclosure
@@ -136,7 +128,7 @@ export default function CardDetail({
               >
                 <Image
                   urlType={GetURLType.CardStandUp}
-                  parameter={[character.masterID]}
+                  parameter={[character.masterId]}
                   auto
                 />
               </Disclosure>
@@ -162,23 +154,16 @@ export default function CardDetail({
           </div>
         )}
 
-        {character.cards?.data?.length !== 0 && (
+        {character.cards.length !== 0 && (
           <>
             <div className="subtitle">{t('character:card_list')}</div>
             <div className="col-span-1 md:col-span-3">
               <div className="grid-1">
-                {character.cards!.data!.map((item, index) => (
+                {character.cards.map((item) => (
                   <CardItem
-                    key={index}
-                    data={{
-                      id: item.id,
-                      attributes: {
-                        character: {
-                          data: { attributes: { ...character } },
-                        },
-                        ...item.attributes,
-                      },
-                    }}
+                    key={item.id}
+                    data={item as AllCardsItem}
+                    unitId={character.unit.masterId}
                   />
                 ))}
               </div>
@@ -190,36 +175,66 @@ export default function CardDetail({
   )
 }
 
-export const getServerSideProps: GetServerSideProps<{
-  character: NonNullable<
-    NonNullable<NonNullable<CharacterQuery['character']>['data']>['attributes']
-  >
-}> = async (context) => {
-  const id = context.query.id
+export const getStaticPaths: GetStaticPaths<{ id: string }> = async () => {
+  const data = await prisma.characterMaster.findMany({
+    select: {
+      id: true,
+    },
+  })
+  return {
+    paths: data.map(({ id }) => ({ params: { id } })),
+    fallback: true,
+  }
+}
+
+export const getStaticProps: GetStaticProps<
+  {
+    character: CharacterMaster & {
+      unit: UnitMaster
+      cards: {
+        id: string
+        attributeId: string
+        rarityId: string
+      }[]
+    }
+  },
+  { id: string }
+> = async ({ params }) => {
+  if (!params) throw new Error('No path parameters found')
+
+  const id = params.id
   if (typeof id !== 'string') {
     return {
       notFound: true,
     }
   }
 
-  const { data } = await client.query<CharacterQuery, CharacterQueryVariables>({
-    query: CharacterDocument,
-    variables: {
-      cardsPagination: {
-        limit: 100,
-      },
-      characterId: id,
+  const data = await prisma.characterMaster.findUnique({
+    where: {
+      id,
     },
-    fetchPolicy: 'no-cache',
+    include: {
+      unit: true,
+      cards: {
+        select: {
+          id: true,
+          masterId: true,
+          attributeId: true,
+          rarityId: true,
+          cardName: true,
+        },
+      },
+    },
   })
 
-  if (!data?.character?.data) {
+  if (!data) {
     return { notFound: true }
   }
 
   return {
     props: {
-      character: data.character!.data.attributes!,
+      character: data,
     },
+    revalidate: 1800,
   }
 }

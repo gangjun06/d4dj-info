@@ -5,7 +5,13 @@ import { convertIDNum } from 'utils'
 import { Card } from '../Basic'
 import { CardIcon } from '../Image'
 
-const CardItem = ({ data }: { data: AllCardsItem }) => {
+const CardItem = ({
+  data,
+  unitId,
+}: {
+  data: AllCardsItem
+  unitId?: number
+}) => {
   const { t } = useTranslation()
 
   return (
@@ -17,7 +23,7 @@ const CardItem = ({ data }: { data: AllCardsItem }) => {
         id={data.masterId}
         rarity={convertIDNum(data.rarityId)}
         attribute={convertIDNum(data.attributeId)}
-        unit={convertIDNum(data.character.unit.id) || 50}
+        unit={unitId || convertIDNum(data.character.unit.id) || 50}
       />
       {data.cardName}
     </Card>
