@@ -275,7 +275,7 @@ export const getPagination = (
       }
     : {}),
   take: pageSize,
-  skip: 1,
+  skip: cursor ? 1 : 0,
 })
 
 export const convertListReq = (
@@ -304,11 +304,18 @@ export const convertListReq = (
       // Filter query has correct option value
       if (
         queryData.filter(
-          (d) => field.options.findIndex(({ value }) => value === d) < 0
+          (d) => field.options!.findIndex(({ value }) => value === d) < 0
         ).length
       )
         throw new Error('Bad Request')
 
+      where = {
+        ...where,
+        ...(field.customOptionHandler
+          ? field.customOptionHandler(queryData, region)
+          : {}),
+      }
+    } else if (field.type === FindListType.Input) {
       where = {
         ...where,
         ...(field.customOptionHandler

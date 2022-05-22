@@ -1,6 +1,6 @@
 import { SideOver } from '@/components/Basic'
 import { SimpleLoading } from '@/components/Elements'
-import { Checkbox, FormBlock, Radio } from '@/components/Form'
+import { Checkbox, FormBlock, Input, Radio } from '@/components/Form'
 import { FindListOption, FindListOptionSet, FindListType } from '@/models/index'
 import axios from 'axios'
 import MainLayout, { MainProps } from 'layouts/main'
@@ -22,6 +22,7 @@ const FormItemBuilder = ({
   label,
   name,
   options,
+  placeholder,
   register,
 }: FindListOption & { register: UseFormRegister<any> }) => {
   const { t } = useTransition('')
@@ -33,7 +34,7 @@ const FormItemBuilder = ({
           <Checkbox
             name={name}
             register={register}
-            list={options.map(({ label, value, component }) => ({
+            list={options!.map(({ label, value, component }) => ({
               ...(label ? { label: t(label) } : {}),
               ...(component ? { component } : {}),
               value,
@@ -44,7 +45,11 @@ const FormItemBuilder = ({
     case FindListType.Input:
       return (
         <FormBlock label={t(label)}>
-          <></>
+          <Input
+            name={name}
+            placeholder={placeholder ? t(placeholder) : ''}
+            register={register}
+          />
         </FormBlock>
       )
     case FindListType.Radio:
@@ -53,7 +58,7 @@ const FormItemBuilder = ({
           <Radio
             name={name}
             register={register}
-            list={options.map(({ label, value, component }) => ({
+            list={options!.map(({ label, value, component }) => ({
               ...(label ? { label: t(label) } : {}),
               ...(component ? { component } : {}),
               value,
@@ -75,67 +80,60 @@ export const DataListLayout = <T,>({
   const router = useRouter()
   const { t } = useTransition('')
 
-  const { handleSubmit, setValue, register } = useForm<any>({
+  const { handleSubmit, setValue, getValues, register } = useForm<any>({
     defaultValues: { sort: 'asc', sortBy: option.sort.default },
   })
 
   const [data, setData] = useState<T[]>([])
   const [openFilter, setOpenFilter] = useState<boolean>(false)
-  const [filter, setFilter] = useState<any>({})
   const [hasMore, setHasMore] = useState<boolean>(true)
+  const [init, setInit] = useState<boolean>(false)
 
   const openFilterSideOver = useCallback(() => setOpenFilter(true), [])
   const closeFilterSideOver = useCallback(() => setOpenFilter(false), [])
   const setOrderDesc = useCallback(() => setValue('sort', 'desc'), [setValue])
   const setOrderAsc = useCallback(() => setValue('sort', 'asc'), [setValue])
 
-  const fetchData = useCallback(
-    async (init?: boolean) => {
-      setHasMore(true)
-      const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_URL}${option.url}`,
-        {
-          params: {
-            ...(init ? {} : { cursor: (data[data.length - 1] as any).id }),
-            ...filter,
-          },
-        }
-      )
-      if (res.data.data.length < 30) {
-        setHasMore(false)
-      }
-      setData(init ? res.data.data : (d) => d.concat(res.data.data))
-    },
-    [data, filter, option.url]
-  )
+  const fetchData = async (init?: boolean) => {
+    const cleanData = cleanForm(getValues())
+    console.log(cleanData)
+    const res = await axios.get(`${process.env.NEXT_PUBLIC_URL}${option.url}`, {
+      params: {
+        ...(init ? {} : { cursor: (data[data.length - 1] as any).id }),
+        ...cleanData,
+      },
+    })
+    if (res.data.data.length < 30) {
+      setHasMore(false)
+    }
+    setData(init ? res.data.data : (d) => d.concat(res.data.data))
+  }
 
-  const onSubmit = handleSubmit(async (data) => {
-    cleanForm(data)
+  const onSubmit = handleSubmit(async (data: any) => {
+    const cleanData = cleanForm(data)
     router.push(
       //@ts-ignore
-      `${router.pathname}?${new URLSearchParams(data).toString()}`,
+      `${router.pathname}?${new URLSearchParams(cleanData).toString()}`,
       undefined,
       { shallow: true }
     )
-    setFilter(data)
+    fetchData(true)
   })
 
   useEffect(() => {
-    fetchData(true)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filter])
-
-  useEffect(() => {
-    console.log(router)
-    const parsed = parseFilterQuery(router.query)
-    console.log(parsed)
-    if (parsed) {
-      setFilter(parsed)
+    if (init) return
+    if (router.asPath.includes('&') && Object.keys(router.query).length < 1)
       return
+    const parsed = parseFilterQuery(router.query)
+    if (parsed) {
+      Object.keys(parsed).forEach((key) => {
+        setValue(key, parsed[key])
+      })
     }
     fetchData(true)
+    setInit(true)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [init, router.query, setValue])
 
   return (
     <MainLayout

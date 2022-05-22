@@ -63,7 +63,7 @@ const StampModal = ({ id, onClose }: { id: string; onClose: () => void }) => {
 export default function StampPage() {
   const { t } = useTransition('')
   const { region } = useSetting()
-  const { handleSubmit, control, setValue } = useForm<FilterData>({
+  const { handleSubmit, control, register, setValue } = useForm<FilterData>({
     defaultValues: { sort: 'desc' },
   })
   const [reqData, setReqData] = useState<StampsQueryVariables>({
@@ -170,7 +170,7 @@ export default function StampPage() {
         <FormBlock label={t('common:category')}>
           <Checkbox
             name="category"
-            control={control}
+            register={register}
             list={StampCategoryCheckbox(t)}
           />
         </FormBlock>
@@ -178,7 +178,7 @@ export default function StampPage() {
           <Input
             name="search"
             placeholder="Enter the keyword..."
-            control={control}
+            register={register}
           />
         </FormBlock>
       </SideOver>

@@ -81,8 +81,9 @@ export type FindListOption = {
   type: FindListType
   label: string
   name: string
-  options: { label?: string; value: string; component?: ReactElement }[]
-  customOptionHandler?: (value: string[], region: string) => any
+  options?: { label?: string; value: string; component?: ReactElement }[]
+  placeholder?: string
+  customOptionHandler?: (value: string[] | string, region: string) => any
 }
 
 export type FindListOptionSet<T> = {

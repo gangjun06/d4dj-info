@@ -4,12 +4,20 @@ export const cleanArray = (data: any[]) => {
 }
 
 export const cleanForm = (data: any) => {
+  const newData: any = {}
   Object.keys(data).forEach((key) => {
     const d = data[key]
     if (Array.isArray(d)) {
-      data[key] = d.filter((item) => item !== undefined && item !== false)
+      const filtered = d.filter((item) => item !== undefined && item !== false)
+      if (filtered.length) {
+        newData[key] = filtered
+      }
+    } else {
+      newData[key] = d
     }
   })
+
+  return newData
 }
 
 export const cleanArrayWithInt = (data: any[]) => {

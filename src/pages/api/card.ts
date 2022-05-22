@@ -49,9 +49,9 @@ export const CardOptions: FindListOptionSet<AllCardsItem> = {
           value: '7',
         },
       ],
-      customOptionHandler: (value: string[], region: string) => ({
+      customOptionHandler: (value: string | string[], region: string) => ({
         rarityId: {
-          in: value.map((d) => `${d}-${region}`),
+          in: (value as string[]).map((d) => `${d}-${region}`),
         },
       }),
     },
@@ -81,9 +81,9 @@ export const CardOptions: FindListOptionSet<AllCardsItem> = {
           value: '5',
         },
       ],
-      customOptionHandler: (value: string[], region: string) => ({
+      customOptionHandler: (value: string | string[], region: string) => ({
         attributeId: {
-          in: value.map((d) => `${d}-${region}`),
+          in: (value as string[]).map((d) => `${d}-${region}`),
         },
       }),
     },
@@ -121,11 +121,22 @@ export const CardOptions: FindListOptionSet<AllCardsItem> = {
           value: '7',
         },
       ],
-      customOptionHandler: (value: string[], region: string) => ({
+      customOptionHandler: (value: string[] | string, region: string) => ({
         character: {
           unitId: {
-            in: value.map((d) => `${d}-${region}`),
+            in: (value as string[]).map((d) => `${d}-${region}`),
           },
+        },
+      }),
+    },
+    name: {
+      type: FindListType.Input,
+      label: 'name',
+      name: 'name',
+      placeholder: 'name',
+      customOptionHandler: (value: string | string[]) => ({
+        cardName: {
+          contains: value,
         },
       }),
     },
@@ -180,10 +191,12 @@ export async function getCards(
 
     return res.json({ data })
   } catch (e) {
-    if (e === 'Bad Request') {
-      return badRequest(res)
+    if (e instanceof Error) {
+      if (e.message === 'Bad Request') {
+        return badRequest(res)
+      }
     }
-    console.error(e)
+
     return res.status(500).json({ msg: 'server error' })
   }
 }
