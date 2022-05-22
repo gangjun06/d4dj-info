@@ -15,6 +15,7 @@ import { cleanForm, parseFilterQuery } from 'utils'
 interface props<T> extends MainProps {
   option: FindListOptionSet<T>
   children: (props: { data: T }) => ReactElement
+  extra?: ReactElement
 }
 
 const FormItemBuilder = ({
@@ -76,6 +77,7 @@ export const DataListLayout = <T,>({
   breadCrumbs,
   children,
   option,
+  extra,
 }: props<T>) => {
   const router = useRouter()
   const { t } = useTransition('')
@@ -128,6 +130,7 @@ export const DataListLayout = <T,>({
       return
     const parsed = parseFilterQuery(router.query)
     if (parsed) {
+      delete parsed['id']
       Object.keys(parsed).forEach((key) => {
         setValue(key, parsed[key])
       })
@@ -179,6 +182,7 @@ export const DataListLayout = <T,>({
           type={FindListType.Radio}
         />
       </SideOver>
+      {extra}
       <InfiniteScroll
         next={fetchData}
         hasMore={hasMore}

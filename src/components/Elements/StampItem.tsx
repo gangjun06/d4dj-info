@@ -1,23 +1,23 @@
-import { StampEntity } from '@/generated/graphql'
+import { AllStampsItem } from '@/api/stamp'
 import { useRouter } from 'next/router'
 import React from 'react'
+import { convertIDNum } from 'utils'
 import { Card } from '../Basic'
 import { StampIcon } from '../Image'
 
-const StampItem = (props: { data: StampEntity }) => {
-  const data = props.data!.attributes!
+const StampItem = ({ data }: { data: AllStampsItem }) => {
   const router = useRouter()
 
   return (
     <Card
-      className="flex justify-center items-center text-center"
+      className="flex justify-center items-center text-center cursor-pointer"
       onClick={() => {
-        router.replace(`/game/stamp`, `/game/stamp/${props.data.id}`, {
+        router.replace(`/game/stamp`, `/game/stamp/${data.id}`, {
           shallow: true,
         })
       }}
     >
-      <StampIcon id={data.masterID!} />
+      <StampIcon id={convertIDNum(data.id)} />
       <div>{data.name}</div>
     </Card>
   )

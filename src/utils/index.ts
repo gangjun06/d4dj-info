@@ -282,8 +282,24 @@ export const getPagination = (
 export const convertListReq = (
   req: NextApiRequest,
   option: FindListOptionSet<any>
-): { where: any; sortBy: any; region: string; pagination: any } => {
-  const { cursor, sort, sortBy } = req.query
+): {
+  where: any
+  sortBy: any
+  region: string
+  pagination: any
+  detail?: string
+} => {
+  const { cursor, sort, sortBy, detail } = req.query
+  if (detail && typeof detail === 'string') {
+    return {
+      detail,
+      where: null,
+      sortBy: null,
+      pagination: null,
+      region: '',
+    }
+  }
+
   const filterData = {
     ...req.query,
   }
