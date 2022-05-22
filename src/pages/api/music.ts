@@ -54,7 +54,6 @@ export const musicOptions: FindListOptionSet<AllMusicsItem> = {
           value: MusicCategory.Collabo,
         },
       ],
-
       customOptionHandler: (value: string | string[], region: string) => ({
         category: {
           in: (value as string[]).map((d) => `${d}`),

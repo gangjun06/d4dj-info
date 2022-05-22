@@ -1,18 +1,17 @@
-import { GachaEntity } from '@/generated/graphql'
+import { AllGachasItem } from '@/api/gacha'
 import React from 'react'
-import { formatTime } from 'utils'
+import { convertIDNum, formatTime } from 'utils'
 import { Card } from '../Basic'
 import { GachaIcon } from '../Image'
 
-const GachaItem = (props: { data: GachaEntity }) => {
-  const data = props.data!.attributes!
+const GachaItem = ({ data }: { data: AllGachasItem }) => {
   return (
     <Card
       bodyClassName="flex justify-center items-center flex-col"
-      link={`/game/gacha/${props.data.id}`}
+      link={`/game/gacha/${data.id}`}
     >
       <div className="flex-center flex-col">
-        <GachaIcon id={data.masterID!} category={data.category!} />
+        <GachaIcon id={convertIDNum(data.id)} category={data.category} />
         <div className="mt-2">{data.name}</div>
         <div className="text-gray-600 mt-0.5">
           {`${formatTime(data.startDate)} ~ ${formatTime(data.endDate)}`}

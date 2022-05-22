@@ -1,7 +1,7 @@
 import { SideOver } from '@/components/Basic'
 import { SimpleLoading } from '@/components/Elements'
 import { Checkbox, FormBlock, Input, Radio } from '@/components/Form'
-import { FindListOption, FindListOptionSet, FindListType } from '@/models/index'
+import { FindListField, FindListOptionSet, FindListType } from '@/models/index'
 import axios from 'axios'
 import MainLayout, { MainProps } from 'layouts/main'
 import useTransition from 'next-translate/useTranslation'
@@ -24,7 +24,7 @@ const FormItemBuilder = ({
   options,
   placeholder,
   register,
-}: FindListOption & { register: UseFormRegister<any> }) => {
+}: FindListField & { register: UseFormRegister<any> }) => {
   const { t } = useTransition('')
 
   switch (type) {
@@ -81,7 +81,10 @@ export const DataListLayout = <T,>({
   const { t } = useTransition('')
 
   const { handleSubmit, setValue, getValues, register } = useForm<any>({
-    defaultValues: { sort: 'asc', sortBy: option.sort.default },
+    defaultValues: {
+      sort: option.sort.defaultOrder ?? 'asc',
+      sortBy: option.sort.default,
+    },
   })
 
   const [data, setData] = useState<T[]>([])
@@ -96,7 +99,6 @@ export const DataListLayout = <T,>({
 
   const fetchData = async (init?: boolean) => {
     const cleanData = cleanForm(getValues())
-    console.log(cleanData)
     const res = await axios.get(`${process.env.NEXT_PUBLIC_URL}${option.url}`, {
       params: {
         ...(init ? {} : { cursor: (data[data.length - 1] as any).id }),

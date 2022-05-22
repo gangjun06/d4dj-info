@@ -94,3 +94,8 @@ td {
 tr:last-child > td {
   @apply border-b-0;
 }
+
+.hwfull {
+  width: 100% !important;
+  height: 100% !important;
+}

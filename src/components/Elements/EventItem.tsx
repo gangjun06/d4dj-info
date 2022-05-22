@@ -1,14 +1,13 @@
-import { EventEntity } from '@/generated/graphql'
+import { AllEventsItem } from '@/api/event'
 import React from 'react'
-import { formatTime, formatTimeDetail } from 'utils'
+import { convertIDNum, formatTime } from 'utils'
 import { Card } from '../Basic'
 import { EventIcon } from '../Image'
 
-const EventItem = (props: { data: EventEntity }) => {
-  const data = props.data!.attributes!
+const EventItem = ({ data }: { data: AllEventsItem }) => {
   return (
-    <Card link={`/game/event/${props.data.id}`}>
-      <EventIcon id={data.masterID!} />
+    <Card link={`/game/event/${data.id}`}>
+      <EventIcon id={convertIDNum(data.id)} />
       <div className="flex flex-row gap-x-2 my-2 justify-center">
         <div className="badge">
           <div>{data.type}</div>
@@ -16,7 +15,7 @@ const EventItem = (props: { data: EventEntity }) => {
       </div>
       {data.name}
       <div className="text-gray-600 mt-0.5">
-        {`${formatTimeDetail(data.startDate)} ~ ${formatTime(data.endDate)}`}
+        {`${formatTime(data.startDate)} ~ ${formatTime(data.endDate)}`}
       </div>
     </Card>
   )

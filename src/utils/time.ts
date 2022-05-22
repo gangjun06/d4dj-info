@@ -1,15 +1,14 @@
 import { format, parseISO } from 'date-fns'
-import { formatToTimeZone } from 'date-fns-timezone'
 
-export const formatTime = (time: string | number | Date) =>
-  time > 4000000000000
-    ? 'X'
-    : formatToTimeZone(time, 'YY.MM.DD.', {
-        timeZone: 'Etc/GMT+0',
-      })
+export const formatTime = (time: string | Date) => {
+  const parsed = parseISO(time as string)
+  if (parsed.getTime() > 4000000000000) return 'X'
 
-export const formatTimeDetail = (time: string) => {
-  const parsed = parseISO(time)
+  return format(parsed, 'yy.MM.dd.')
+}
+
+export const formatTimeDetail = (time: string | Date) => {
+  const parsed = parseISO(time as string)
   if (parsed.getTime() > 4000000000000) return 'X'
 
   return format(parsed, 'yy.MM.dd. HH:mm:ss')

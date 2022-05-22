@@ -91,6 +91,7 @@ export type FindListOptionSet<T> = {
   fields: { [key: string]: FindListField }
   sort: {
     default: string
+    defaultOrder?: 'asc' | 'desc'
     options: { label?: string; value: string; component?: ReactElement }[]
   }
 }

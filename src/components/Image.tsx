@@ -1,6 +1,6 @@
-import { Enum_Gacha_Category } from '@/generated/graphql'
+import { GachaCategory } from '@prisma/client'
 import NextImage from 'next/image'
-import React, { ComponentProps, useMemo, useState } from 'react'
+import React, { ComponentProps, useState } from 'react'
 import { classNames, getAlt, getURL, GetURLType, myLoader } from 'utils'
 import { useSetting } from './Setting'
 
@@ -29,9 +29,11 @@ export const ImageWithFallback = (
     height,
     urlType,
     parameter = [],
+    onError,
     fallback = { width: 128, height: 128 },
   } = props
   const { region } = useSetting()
+  const [useFallback, setUseFallback] = useState<boolean>(false)
   const [srcData, setSrcData] = useState<string>(
     src ||
       getURL({
@@ -40,23 +42,33 @@ export const ImageWithFallback = (
         parameter,
       })
   )
+
+  if (useFallback) {
+    return (
+      <ImageBase
+        {...props}
+        src={srcData}
+        width={128}
+        alt={'fallback'}
+        layout="fixed"
+        height={128}
+      />
+    )
+  }
+
   return (
-    //@ts-ignore
     <ImageBase
       {...props}
       src={srcData}
-      width={srcData === 'jp/fallback.png' ? fallback.width || width : width}
+      width={width}
       alt={
         props.alt ||
         getAlt({ type: props.urlType!, parameter: props.parameter })
       }
-      height={
-        srcData === 'jp/fallback.png'
-          ? fallback.height || height || width
-          : height || width
-      }
+      height={height || width}
       onError={() => {
         setSrcData('jp/fallback.png')
+        setUseFallback(true)
       }}
     />
   )
@@ -97,16 +109,13 @@ export const ImageBase = ({
 }: ImageProps) => {
   if (auto) {
     return (
-      <div
-        className={classNames('flex-center relative', className)}
-        style={{ width: '100% !important', height: '100% !important' }}
-      >
+      <div className={classNames('flex-center relative hwfull', className)}>
         {/*@ts-ignore*/}
         <NextImage
           loader={myLoader}
           src={src!}
-          width={width}
-          height={height || width}
+          // width={width}
+          // height={height || width}
           alt={alt}
           layout={'fill'}
           objectFit={'contain'}
@@ -130,28 +139,33 @@ export const ImageBase = ({
     />
   )
 }
-const canUseBanner = (category: Enum_Gacha_Category) =>
-  category !== Enum_Gacha_Category.Tutorial &&
-  category !== Enum_Gacha_Category.Birthday &&
-  category !== Enum_Gacha_Category.Revival
+const canUseBanner = (category: GachaCategory) =>
+  category !== GachaCategory.Tutorial &&
+  category !== GachaCategory.Birthday &&
+  category !== GachaCategory.Revival
 
 export const GachaIcon = ({
   category,
   id,
 }: {
-  category: Enum_Gacha_Category
+  category: GachaCategory
   id: number
 }) => {
-  const useBanner = useMemo(() => canUseBanner(category), [category])
-  if (useBanner)
-    return (
-      <ImageWithFallback
-        width={612}
-        height={200}
-        urlType={GetURLType.GachaBanner}
-        parameter={[id]}
-      />
-    )
+  // const useBanner = useMemo(() => canUseBanner(category), [category])
+  // const [noBanner, setNoBanner] = useState<boolean>(false)
+  // if (!noBanner && useBanner)
+  //   return (
+  //     <Image
+  //       width={612}
+  //       height={200}
+  //       urlType={GetURLType.GachaBanner}
+  //       onError={() => {
+  //         setNoBanner(true)
+  //       }}
+  //       parameter={[id]}
+  //     />
+  //   )
+
   return (
     <ImageWithFallback
       width={324}
