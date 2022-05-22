@@ -1,11 +1,10 @@
 import { Listbox, Transition } from '@headlessui/react'
 import classNames from 'classnames'
 import useTranslation from 'next-translate/useTranslation'
-import Image from 'next/image'
 import { Fragment } from 'react'
 import { Control, Controller } from 'react-hook-form'
 import { HiCheck, HiOutlineSelector } from 'react-icons/hi'
-import { myLoader } from 'utils'
+import { ImageWithFallback } from '../Image'
 
 type DataType = {
   id: string | number
@@ -18,6 +17,25 @@ type props = {
   control: Control<any, object>
   name: string
   onChange?: (data: string | number) => void
+}
+
+const Selected = ({ data }: { data?: DataType }) => {
+  const { t } = useTranslation()
+  if (!data) return <></>
+
+  const { img, name } = data
+  return (
+    <>
+      {img && (
+        <div className="flex-shrink-0 h-6 w-6 rounded-full">
+          <ImageWithFallback src={img} auto alt="img" />
+        </div>
+      )}
+      <span className={classNames(img && 'ml-3', 'block truncate')}>
+        {name || t('common:select')}
+      </span>
+    </>
+  )
 }
 
 export function Select({ name, control, data, onChange }: props) {
@@ -39,29 +57,14 @@ export function Select({ name, control, data, onChange }: props) {
               <div className="mt-1 relative">
                 <Listbox.Button className="relative w-full bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                   <span className="flex items-center">
-                    {data.find((item) => item.id === field.value)?.img && (
-                      <div className="flex-shrink-0 h-6 w-6 rounded-full">
-                        <Image
-                          src={
-                            data.find((item) => item.id === field.value)!.img!
-                          }
-                          loader={myLoader}
-                          width="128"
-                          height="128"
-                          alt="img"
-                        />
-                      </div>
-                    )}
-                    <span
-                      className={classNames(
-                        data.find((item) => item.id === field.value)?.img &&
-                          'ml-3',
-                        'block truncate'
-                      )}
-                    >
-                      {data.find((item) => item.id === field.value)?.name ||
-                        t('common:select')}
-                    </span>
+                    <Selected
+                      data={
+                        data.find((item) => item.id === field.value) || {
+                          id: '',
+                          name: t('common:select'),
+                        }
+                      }
+                    />
                   </span>
                   <span
                     className={classNames(
@@ -101,11 +104,9 @@ export function Select({ name, control, data, onChange }: props) {
                             <div className="flex items-center">
                               {data.img && (
                                 <div className="flex-shrink-0 h-6 w-6 rounded-full">
-                                  <Image
+                                  <ImageWithFallback
                                     src={data.img}
-                                    loader={myLoader}
-                                    width="128"
-                                    height="128"
+                                    auto
                                     alt="img"
                                   />
                                 </div>

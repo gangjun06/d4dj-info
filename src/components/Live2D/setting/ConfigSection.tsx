@@ -1,3 +1,4 @@
+import { AllCharactersItem } from '@/api/character'
 import { FormBlock, Input, Select, Switch } from '@/components/Form'
 import { joiResolver } from '@hookform/resolvers/joi'
 import Joi from 'joi'
@@ -5,6 +6,8 @@ import { Live2DModel } from 'pixi-live2d-display'
 import React, { useContext, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
+import useSWR from 'swr'
+import { fetcher, pad } from 'utils'
 import { Live2DContext } from '../context'
 import { dragable } from '../utils'
 
@@ -23,9 +26,23 @@ export function ConfigSection() {
   )
 }
 
+const useCharacters = () => {
+  const { data } = useSWR<{ data: AllCharactersItem[] }>(
+    '/api/character',
+    fetcher
+  )
+
+  return { data: data ? data.data : [] }
+}
+
 export function AddModel() {
   const { app, setModels, dragable: dragableState } = useContext(Live2DContext)
-  const { control, handleSubmit, setValue, getValues } = useForm<FormData>({})
+  const { control, handleSubmit, setValue, getValues } = useForm<FormData>({
+    defaultValues: {
+      model: '011',
+    },
+  })
+  const { data: charactersData } = useCharacters()
 
   useEffect(() => {
     try {
@@ -73,7 +90,16 @@ export function AddModel() {
           <Select
             control={control}
             name="model"
-            data={[{ name: 'rinku', id: '011' }]}
+            data={charactersData.map(
+              ({ masterId, fullNameEnglish, firstNameEnglish }) => ({
+                id: pad(masterId, 3),
+                img: `jp/adv/ondemand/chara_icon/adv_icon_${pad(
+                  masterId,
+                  3
+                )}.png`,
+                name: fullNameEnglish || firstNameEnglish,
+              })
+            )}
           />
         </FormBlock>
         <div className="flex justify-between gap-x-3">

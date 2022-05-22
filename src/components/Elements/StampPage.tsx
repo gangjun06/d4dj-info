@@ -9,10 +9,8 @@ import {
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useState } from 'react'
 import useSWR from 'swr'
-import { convertIDNum } from 'utils'
+import { convertIDNum, fetcher } from 'utils'
 import { StampIcon } from '../Image'
-
-const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
 const StampModal = ({ id, onClose }: { id: string; onClose: () => void }) => {
   const { t } = useTranslation()

@@ -63,7 +63,7 @@ export function ModelSection() {
 
   const deleteSelf = useCallback(() => {
     const modelList = models
-    app?.stage.removeChild(models[index].data)
+    app!.current!.stage.removeChild(models[index].data)
     modelList.splice(index, 1)
     setModels(modelList)
     setIndex(-1)

@@ -27,11 +27,11 @@ export function Setting({ isShown, onClose }: props) {
 
   const share = useCallback(() => {
     const result: Live2DShare[] = models.map((item) => {
-      const index = app!.stage.children.findIndex(
+      const index = app!.current!.stage.children.findIndex(
         ({ internalModel: im }: any) =>
           im.settings && im.settings.name === item.name
       )
-      const model: any = app?.stage.children[index]
+      const model: any = app!.current!.stage.children[index]
 
       return {
         model: (model.tag as string)

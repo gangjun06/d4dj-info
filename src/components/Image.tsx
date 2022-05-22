@@ -1,6 +1,6 @@
 import { GachaCategory } from '@prisma/client'
 import NextImage from 'next/image'
-import React, { ComponentProps, useState } from 'react'
+import React, { ComponentProps, useEffect, useState } from 'react'
 import { classNames, getAlt, getURL, GetURLType, myLoader } from 'utils'
 import { useSetting } from './Setting'
 
@@ -34,14 +34,20 @@ export const ImageWithFallback = (
   } = props
   const { region } = useSetting()
   const [useFallback, setUseFallback] = useState<boolean>(false)
-  const [srcData, setSrcData] = useState<string>(
-    src ||
-      getURL({
-        server: region?.replace('ja-JP', 'jp') || 'jp',
-        type: urlType!,
-        parameter,
-      })
-  )
+  const [srcData, setSrcData] = useState<string>()
+
+  useEffect(() => {
+    setSrcData(
+      src ||
+        getURL({
+          server: region?.replace('ja-JP', 'jp') || 'jp',
+          type: urlType!,
+          parameter,
+        })
+    )
+  }, [src, setSrcData, region, urlType, parameter])
+
+  if (!srcData) return <></>
 
   if (useFallback) {
     return (

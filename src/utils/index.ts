@@ -373,3 +373,5 @@ export const convertListReq = (
 
 export const strToObj = (key: string, value: any) =>
   key.split('.').reduceRight((prev, cur) => ({ [cur]: prev }), value)
+
+export const fetcher = (url: string) => fetch(url).then((r) => r.json())
