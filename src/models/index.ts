@@ -77,7 +77,7 @@ export type SimpleImage = {
   height: string
 }
 
-export type FindListOption = {
+export type FindListField = {
   type: FindListType
   label: string
   name: string
@@ -88,11 +88,10 @@ export type FindListOption = {
 
 export type FindListOptionSet<T> = {
   url: string
-  fields: { [key: string]: FindListOption }
+  fields: { [key: string]: FindListField }
   sort: {
     default: string
     options: { label?: string; value: string; component?: ReactElement }[]
-    customOptionHandler?: (value: string[], region: string) => any
   }
 }
 

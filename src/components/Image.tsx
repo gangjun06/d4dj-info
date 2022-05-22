@@ -175,7 +175,10 @@ export const CardIcon = ({
 }) => {
   return (
     <div className="relative">
-      <div className="absolute w-full h-full top-0 left-0 right-0 bottom-0 z-10">
+      <div
+        className="absolute w-full h-full top-0 left-0 right-0 bottom-0"
+        style={{ zIndex: 2 }}
+      >
         <Image
           width={128}
           alt={'frame'}
@@ -183,10 +186,10 @@ export const CardIcon = ({
           parameter={[rarity, attribute]}
         />
       </div>
-      <div className="absolute top-1 right-1 z-10">
+      <div className="absolute top-1 right-1" style={{ zIndex: 2 }}>
         <CardAttributeIcon attribute={attribute} />
       </div>
-      <div className="absolute top-1 left-1 z-10">
+      <div className="absolute top-1 left-1" style={{ zIndex: 2 }}>
         <Image
           width={28}
           alt={'unit'}
@@ -194,7 +197,10 @@ export const CardIcon = ({
           parameter={[unit]}
         />
       </div>
-      <div className="absolute bottom-2.5 left-1 z-10 flex flex-col">
+      <div
+        className="absolute bottom-2.5 left-1 flex flex-col"
+        style={{ zIndex: 2 }}
+      >
         <CardRarityIcon rarity={rarity} />
       </div>
       <ImageWithFallback
@@ -260,12 +266,7 @@ export const CharacterIcon = ({ id, alt }: { id: number; alt: string }) => {
 
 export const UnitIcon = ({ unit }: { unit: number }) => {
   return (
-    <Image
-      width={28}
-      alt={'unit'}
-      urlType={GetURLType.CardUnitIcon}
-      parameter={[unit]}
-    />
+    <Image width={28} urlType={GetURLType.CardUnitIcon} parameter={[unit]} />
   )
 }
 

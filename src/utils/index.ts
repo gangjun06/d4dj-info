@@ -261,6 +261,7 @@ export const parseFilterQuery = (query: any) => {
 }
 
 export const convertID = (id: string) => id.slice(0, -3)
+export const convertIDNum = (id: string) => parseInt(convertID(id))
 
 export const badRequest = (res: NextApiResponse) =>
   res.status(400).json({ msg: 'Bad Request' })
@@ -353,3 +354,6 @@ export const convertListReq = (
     region,
   }
 }
+
+export const strToObj = (key: string, value: any) =>
+  key.split('.').reduceRight((prev, cur) => ({ [cur]: prev }), value)

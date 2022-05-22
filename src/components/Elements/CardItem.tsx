@@ -1,7 +1,7 @@
 import useTranslation from 'next-translate/useTranslation'
 import { AllCardsItem } from 'pages/api/card'
 import React from 'react'
-import { convertID } from 'utils'
+import { convertIDNum } from 'utils'
 import { Card } from '../Basic'
 import { CardIcon } from '../Image'
 
@@ -15,9 +15,9 @@ const CardItem = ({ data }: { data: AllCardsItem }) => {
     >
       <CardIcon
         id={data.masterId}
-        rarity={parseInt(convertID(data.rarityId))}
-        attribute={parseInt(convertID(data.attributeId))}
-        unit={parseInt(convertID(data.character.unit.id)) || 50}
+        rarity={convertIDNum(data.rarityId)}
+        attribute={convertIDNum(data.attributeId)}
+        unit={convertIDNum(data.character.unit.id) || 50}
       />
       {data.cardName}
     </Card>

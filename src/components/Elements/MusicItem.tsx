@@ -1,29 +1,28 @@
-import { MusicEntity } from '@/generated/graphql'
+import { AllMusicsItem } from '@/api/music'
 import useTranslation from 'next-translate/useTranslation'
 import React from 'react'
+import { convertIDNum } from 'utils'
 import { Card } from '../Basic'
 import { MusicIcon } from '../Image'
 
-const MusicItem = ({ data: { attributes, id } }: { data: MusicEntity }) => {
+const MusicItem = ({ data }: { data: AllMusicsItem }) => {
   const { t } = useTranslation()
-  const data = attributes!
   return (
     <Card
       bodyClassName="flex justify-center items-center flex-col"
-      link={`/game/music/${id}`}
+      link={`/game/music/${data.id}`}
     >
-      <MusicIcon id={data.masterID!} />
+      <MusicIcon id={convertIDNum(data.id)} />
       <div className="mt-2 badge">
-        {data.charts?.data?.map(({ attributes, id }) => (
+        {data.charts.map(({ level, id }) => (
           <div className="" key={id}>
-            {attributes?.level}
+            {level}
           </div>
         ))}
       </div>
       <div className="mt-2">{data.name}</div>
       <div className="text-gray-600">
-        {data.unit?.data?.attributes?.name} -{' '}
-        {t(`music:category.${data.category?.toLowerCase()}`)}
+        {data.unit.name} - {t(`music:category.${data.category?.toLowerCase()}`)}
       </div>
     </Card>
   )

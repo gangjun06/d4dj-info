@@ -1,14 +1,16 @@
-import { CardAttributeIcon, CardRarityIcon, UnitIcon } from '@/components/Image'
+import { CardAttributeIcon, CardRarityIcon } from '@/components/Image'
 import prisma from '@/lib/prisma'
 import {
+  Attribute,
   FindListOptionSet,
   FindListReturn,
   FindListType,
   HttpMethod,
+  Rarity,
 } from '@/types/index'
 import type { CardMaster, CharacterMaster } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { badRequest, convertListReq } from 'utils'
+import { badRequest, convertListReq, unitField } from 'utils'
 
 const card = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
@@ -29,24 +31,24 @@ export const CardOptions: FindListOptionSet<AllCardsItem> = {
       name: 'rarity',
       options: [
         {
-          component: CardRarityIcon({ rarity: 1 }),
-          value: '1',
+          component: CardRarityIcon({ rarity: Rarity.One }),
+          value: Rarity.One.toString(),
         },
         {
-          component: CardRarityIcon({ rarity: 2 }),
-          value: '2',
+          component: CardRarityIcon({ rarity: Rarity.Two }),
+          value: Rarity.Two.toString(),
         },
         {
-          component: CardRarityIcon({ rarity: 3 }),
-          value: '3',
+          component: CardRarityIcon({ rarity: Rarity.Three }),
+          value: Rarity.Three.toString(),
         },
         {
-          component: CardRarityIcon({ rarity: 4 }),
-          value: '4',
+          component: CardRarityIcon({ rarity: Rarity.Four }),
+          value: Rarity.Four.toString(),
         },
         {
-          component: CardRarityIcon({ rarity: 7 }),
-          value: '7',
+          component: CardRarityIcon({ rarity: Rarity.Special }),
+          value: Rarity.Special.toString(),
         },
       ],
       customOptionHandler: (value: string | string[], region: string) => ({
@@ -61,24 +63,24 @@ export const CardOptions: FindListOptionSet<AllCardsItem> = {
       name: 'attribute',
       options: [
         {
-          component: CardAttributeIcon({ attribute: 1 }),
-          value: '1',
+          component: CardAttributeIcon({ attribute: Attribute.Street }),
+          value: Attribute.Street.toString(),
         },
         {
-          component: CardAttributeIcon({ attribute: 2 }),
-          value: '2',
+          component: CardAttributeIcon({ attribute: Attribute.Party }),
+          value: Attribute.Party.toString(),
         },
         {
-          component: CardAttributeIcon({ attribute: 3 }),
-          value: '3',
+          component: CardAttributeIcon({ attribute: Attribute.Cute }),
+          value: Attribute.Cute.toString(),
         },
         {
-          component: CardAttributeIcon({ attribute: 4 }),
-          value: '4',
+          component: CardAttributeIcon({ attribute: Attribute.Cool }),
+          value: Attribute.Cool.toString(),
         },
         {
-          component: CardAttributeIcon({ attribute: 5 }),
-          value: '5',
+          component: CardAttributeIcon({ attribute: Attribute.Elegant }),
+          value: Attribute.Elegant.toString(),
         },
       ],
       customOptionHandler: (value: string | string[], region: string) => ({
@@ -87,48 +89,7 @@ export const CardOptions: FindListOptionSet<AllCardsItem> = {
         },
       }),
     },
-    unit: {
-      type: FindListType.Checkbox,
-      label: 'common:unit.name',
-      name: 'unit',
-      options: [
-        {
-          component: UnitIcon({ unit: 1 }),
-          value: '1',
-        },
-        {
-          component: UnitIcon({ unit: 2 }),
-          value: '2',
-        },
-        {
-          component: UnitIcon({ unit: 3 }),
-          value: '3',
-        },
-        {
-          component: UnitIcon({ unit: 4 }),
-          value: '4',
-        },
-        {
-          component: UnitIcon({ unit: 5 }),
-          value: '5',
-        },
-        {
-          component: UnitIcon({ unit: 6 }),
-          value: '6',
-        },
-        {
-          component: UnitIcon({ unit: 7 }),
-          value: '7',
-        },
-      ],
-      customOptionHandler: (value: string[] | string, region: string) => ({
-        character: {
-          unitId: {
-            in: (value as string[]).map((d) => `${d}-${region}`),
-          },
-        },
-      }),
-    },
+    unit: unitField('character.unitId'),
     name: {
       type: FindListType.Input,
       label: 'name',
@@ -147,13 +108,6 @@ export const CardOptions: FindListOptionSet<AllCardsItem> = {
       { label: 'id', value: 'id' },
       { label: 'name', value: 'cardName' },
     ],
-    customOptionHandler: (value: string[], region: string) => ({
-      character: {
-        unitId: {
-          in: value.map((d) => `${d}-${region}`),
-        },
-      },
-    }),
   },
 }
 

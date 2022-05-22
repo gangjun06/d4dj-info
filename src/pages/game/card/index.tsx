@@ -10,7 +10,7 @@ const CardList = () => {
       option={CardOptions}
       breadCrumbs={[
         { name: t('nav:game.name'), link: '' },
-        { name: t('nav:game.card'), link: '/game/card' },
+        { name: t('nav:game.card'), link: '' },
       ]}
       title={t('nav:game.card')}
     >

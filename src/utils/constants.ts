@@ -1,76 +1,23 @@
+import { UnitIcon } from '@/components/Image'
 import {
   Enum_Event_Type,
   Enum_Gacha_Category,
   Enum_Stamp_Category,
 } from '@/generated/graphql'
-import { Attribute, CardSort, MusicCategory, MusicSort, Unit } from 'models'
+import {
+  CardSort,
+  FindListField,
+  FindListType,
+  MusicCategory,
+  MusicSort,
+} from 'models'
 import { Translate } from 'next-translate'
+import { strToObj } from 'utils'
 
 export type CheckboxListType<T = string> = (t: Translate) => {
   label: string
   value: T
 }[]
-
-export const CardRearityCheckbox: CheckboxListType = (t: Translate) => [
-  {
-    label: t('card:rarity.1'),
-    value: '1',
-  },
-  {
-    label: t('card:rarity.2'),
-    value: '2',
-  },
-  { label: t('card:rarity.3'), value: '3' },
-  { label: t('card:rarity.4'), value: '4' },
-  {
-    label: t('card:rarity.7'),
-    value: '7',
-  },
-]
-
-export const AttributeCheckbox: CheckboxListType<Attribute> = (
-  t: Translate
-) => [
-  {
-    label: t('common:attribute.STREET'),
-    value: Attribute.Street,
-  },
-  {
-    label: t('common:attribute.PARTY'),
-    value: Attribute.Party,
-  },
-  { label: t('common:attribute.CUTE'), value: Attribute.Cute },
-  { label: t('common:attribute.COOL'), value: Attribute.Cool },
-  {
-    label: t('common:attribute.ELEGANT'),
-    value: Attribute.Elegant,
-  },
-]
-
-export const UnitCheckbox: CheckboxListType<Unit> = (t: Translate) => [
-  {
-    label: t('common:unit.ha'),
-    value: Unit.HA,
-  },
-  {
-    label: t('common:unit.pp'),
-    value: Unit.PP,
-  },
-  { label: t('common:unit.pm'), value: Unit.PM },
-  { label: t('common:unit.m4'), value: Unit.MMD },
-  {
-    label: t('common:unit.ro'),
-    value: Unit.LND,
-  },
-  {
-    label: t('common:unit.li'),
-    value: Unit.LL,
-  },
-  {
-    label: t('common:unit.etc'),
-    value: Unit.Common,
-  },
-]
 
 export const MusicCategoryCheckbox: CheckboxListType = (t: Translate) => [
   {
@@ -165,3 +112,43 @@ export const GachaCategoryCheckbox: CheckboxListType = (t: Translate) =>
 
 export const StampCategoryCheckbox: CheckboxListType = (t: Translate) =>
   generateFromEnum(t, 'common:categories.', Enum_Stamp_Category)
+
+export const unitField = (key: string): FindListField => ({
+  type: FindListType.Checkbox,
+  label: 'common:unit.name',
+  name: 'unit',
+  options: [
+    {
+      component: UnitIcon({ unit: 1 }),
+      value: '1',
+    },
+    {
+      component: UnitIcon({ unit: 2 }),
+      value: '2',
+    },
+    {
+      component: UnitIcon({ unit: 3 }),
+      value: '3',
+    },
+    {
+      component: UnitIcon({ unit: 4 }),
+      value: '4',
+    },
+    {
+      component: UnitIcon({ unit: 5 }),
+      value: '5',
+    },
+    {
+      component: UnitIcon({ unit: 6 }),
+      value: '6',
+    },
+    {
+      component: UnitIcon({ unit: 7 }),
+      value: '7',
+    },
+  ],
+  customOptionHandler: (value: string[] | string, region: string) =>
+    strToObj(key, {
+      in: (value as string[]).map((d) => `${d}-${region}`),
+    }),
+})

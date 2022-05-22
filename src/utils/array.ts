@@ -13,7 +13,9 @@ export const cleanForm = (data: any) => {
         newData[key] = filtered
       }
     } else {
-      newData[key] = d
+      if (d !== '') {
+        newData[key] = d
+      }
     }
   })
 
