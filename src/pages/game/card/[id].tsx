@@ -1,10 +1,18 @@
-import { Card, Modal, Table } from '@/components/Basic'
+import { Card, Disclosure, Modal, Table, TableBody } from '@/components/Basic'
+import { CardIcon, Image } from '@/components/Image'
 import prisma from '@/lib/prisma'
-import { CardMaster, CharacterMaster } from '@prisma/client'
+import {
+  CardMaster,
+  CharacterMaster,
+  SkillMaster,
+  UnitMaster,
+} from '@prisma/client'
 import MainLayout from 'layouts/main'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import useTransition from 'next-translate/useTranslation'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
+import { convertIDNum, formatTimeDetail, GetURLType, pad } from 'utils'
+import { createLive2DShare } from 'utils/live2d'
 
 export default function CardDetail({
   card,
@@ -12,10 +20,10 @@ export default function CardDetail({
   const { t } = useTransition('')
   const [showSkill, setShowSkill] = useState<boolean>(false)
 
-  const maxParameters = card.maxParameters!
-  // const character = card.character?.data?.attributes || {}
-  // const unit = character?.unit?.data?.attributes || { name: 'X', masterID: 50 }
-  // const skill = card.skill?.data?.attributes || {}
+  const chara = card.character
+  const skill = card.skillParameter
+
+  const rarity = useMemo(() => convertIDNum(card.rarityId), [card.rarityId])
 
   return (
     <MainLayout
@@ -25,24 +33,24 @@ export default function CardDetail({
         { name: t('nav:game.card_detail'), link: `` },
       ]}
       title={`${card.cardName} (${
-        card.character?.fullNameEnglish || card.character?.firstNameEnglish
+        chara.fullNameEnglish || chara.firstNameEnglish
       })`}
     >
       <Modal show={showSkill} onClose={() => setShowSkill(false)} showCloseBtn>
         <Table>
-          {/* <TableBody
+          <TableBody
             data={[
-              [t('card:skill.id'), skill.masterID],
+              [t('card:skill.id'), skill.masterId],
               [t('card:skill_name'), card.skillName],
               [t('card:skill.minRecovery'), skill.minRecoveryValue],
               [t('card:skill.maxRecovery'), skill.maxRecoveryValue],
               [t('card:skill.minSeconds'), skill.minSeconds],
               [t('card:skill.maxSeconds'), skill.maxSeconds],
               [t('card:skill.scoreUpRate'), `${skill.scoreUpRate}%`],
-              [t('card:skill.comboSupportCount'), skill.comboSupportCount],
+              [t('card:skill.cmboSupportCount'), skill.comboSupportCount],
               [t('card:skill.perfectScoreUpRate'), skill.perfectScoreUpRate],
             ]}
-          /> */}
+          />
         </Table>
       </Modal>
       <div className="grid-2">
@@ -51,38 +59,37 @@ export default function CardDetail({
             title={t('card:info')}
             bodyClassName="flex justify-center flex-col items-center"
           >
-            {/* <CardIcon
-              id={card.masterId}
-              rarity={parseInt(card.rarityId.slice(-1, 3))}
-              attribute={card.attributeId}
-              unit={unit.masterID!}
-            /> */}
+            <CardIcon
+              id={convertIDNum(card.id)}
+              rarity={rarity}
+              attribute={convertIDNum(card.attributeId)}
+              unit={convertIDNum(chara.unit.id)}
+            />
             <div className="mt-2">{card.cardName}</div>
             <div className="text-gray-600">
-              {card.character.fullNameEnglish ||
-                card.character.firstNameEnglish}{' '}
-              - {/* {unit.name} */}
+              {chara.fullNameEnglish || chara.firstNameEnglish} -{' '}
+              {chara.unit.name}
             </div>
             <Table>
-              {/* <TableBody
+              <TableBody
                 data={[
-                  [t('common:id'), card.masterID],
+                  [t('common:id'), card.id],
                   [
                     t('card:skill_name'),
                     { name: card.skillName, onClick: () => setShowSkill(true) },
                   ],
-                  [t('card:parameter.heart'), maxParameters?.heart],
-                  [t('card:parameter.technique'), maxParameters?.technique],
-                  [t('card:parameter.physical'), maxParameters?.physical],
+                  [t('card:parameter.heart'), card.maxParameters[0]],
+                  [t('card:parameter.technique'), card.maxParameters[1]],
+                  [t('card:parameter.physical'), card.maxParameters[2]],
                   [
                     t('card:parameter.total'),
-                    (maxParameters?.physical || 0) +
-                      (maxParameters?.technique || 0) +
-                      (maxParameters?.heart || 0),
+                    card.maxParameters[0] +
+                      card.maxParameters[1] +
+                      card.maxParameters[2],
                   ],
                   [t('card:startdate'), formatTimeDetail(card.startDate)],
                   [t('card:enddate'), formatTimeDetail(card.endDate)],
-                  card.rarity! > 2
+                  convertIDNum(card.rarityId) > 2
                     ? [
                         t('nav:live2d'),
                         {
@@ -90,7 +97,7 @@ export default function CardDetail({
                             {
                               name: card.cardName!,
                               model: `live2d_card_chara_${pad(
-                                card.masterID!,
+                                card.masterId,
                                 9
                               )}`,
                             },
@@ -100,13 +107,13 @@ export default function CardDetail({
                       ]
                     : [],
                 ]}
-              /> */}
+              />
             </Table>
           </Card>
         </div>
         <div className="col-span-1 md:col-span-2">
-          {/* <Card title={t('card:illustrations.name')}>
-            {card.rarity! > 2 && (
+          <Card title={t('card:illustrations.name')}>
+            {rarity! > 2 && (
               <Disclosure
                 title={t('card:illustrations.sd')}
                 className="flex items-center justify-center flex-wrap"
@@ -115,7 +122,7 @@ export default function CardDetail({
                   <div className="h-72 w-48 relative" key={item}>
                     <Image
                       urlType={GetURLType.CardSD}
-                      parameter={[card.masterID, item]}
+                      parameter={[card.masterId, item]}
                       auto
                     />
                   </div>
@@ -128,45 +135,45 @@ export default function CardDetail({
             >
               <Image
                 urlType={GetURLType.CardTransparent}
-                parameter={[card.masterID, 0]}
+                parameter={[card.masterId, 0]}
                 width={920}
                 height={770}
               />
             </Disclosure>
-            {card.rarity! > 2 && (
+            {rarity > 2 && (
               <Disclosure
                 title={t('card:illustrations.transparent1')}
                 className="flex-center"
               >
                 <Image
                   urlType={GetURLType.CardTransparent}
-                  parameter={[card.masterID, 1]}
+                  parameter={[card.masterId, 1]}
                   width={920}
                   height={770}
                 />
               </Disclosure>
             )}
-            {card.rarity !== 7 && (
+            {rarity !== 7 && (
               <Disclosure
                 title={t('card:illustrations.illustration')}
                 className="flex-center"
               >
                 <Image
                   urlType={GetURLType.CardIllust}
-                  parameter={[card.masterID, 0]}
+                  parameter={[card.masterId, 0]}
                   width={764}
                   height={508}
                 />
               </Disclosure>
             )}
-            {card.rarity! > 2 && (
+            {rarity > 2 && (
               <Disclosure
                 title={t('card:illustrations.illustration1')}
                 className="flex-center"
               >
                 <Image
                   urlType={GetURLType.CardIllust}
-                  parameter={[card.masterID, 1]}
+                  parameter={[card.masterId, 1]}
                   width={764}
                   height={508}
                 />
@@ -176,18 +183,18 @@ export default function CardDetail({
               title={t('card:illustrations.icon')}
               className="flex-center gap-x-1"
             >
-              {card.rarity !== 7 && (
+              {rarity !== 7 && (
                 <Image
                   urlType={GetURLType.CardIcon}
-                  parameter={[card.masterID, 0]}
+                  parameter={[card.masterId, 0]}
                   width={258}
                   height={258}
                 />
               )}
-              {card.rarity! > 2 && (
+              {rarity! > 2 && (
                 <Image
                   urlType={GetURLType.CardIcon}
-                  parameter={[card.masterID, 1]}
+                  parameter={[card.masterId, 1]}
                   width={258}
                   height={258}
                 />
@@ -197,24 +204,24 @@ export default function CardDetail({
               title={t('card:illustrations.big_icon')}
               className="flex-center w-full gap-x-1"
             >
-              {card.rarity !== 7 && (
+              {rarity !== 7 && (
                 <Image
                   urlType={GetURLType.CardBigIcon}
-                  parameter={[card.masterID, 0]}
+                  parameter={[card.masterId, 0]}
                   width={344}
                   height={426}
                 />
               )}
-              {card.rarity! > 2 && (
+              {rarity! > 2 && (
                 <Image
                   urlType={GetURLType.CardBigIcon}
-                  parameter={[card.masterID, 1]}
+                  parameter={[card.masterId, 1]}
                   width={344}
                   height={426}
                 />
               )}
             </Disclosure>
-          </Card> */}
+          </Card>
         </div>
       </div>
     </MainLayout>
@@ -222,7 +229,12 @@ export default function CardDetail({
 }
 
 export const getServerSideProps: GetServerSideProps<{
-  card: CardMaster & { character: CharacterMaster }
+  card: CardMaster & {
+    character: CharacterMaster & {
+      unit: UnitMaster
+    }
+    skillParameter: SkillMaster
+  }
 }> = async (context) => {
   const id = context.query.id
   if (typeof id !== 'string') {
@@ -231,12 +243,17 @@ export const getServerSideProps: GetServerSideProps<{
     }
   }
 
-  const data = await prisma?.cardMaster.findUnique({
+  const data = await prisma.cardMaster.findUnique({
     where: {
       id,
     },
-    select: {
-      character: true,
+    include: {
+      character: {
+        include: {
+          unit: true,
+        },
+      },
+      skillParameter: true,
     },
   })
 
@@ -246,7 +263,7 @@ export const getServerSideProps: GetServerSideProps<{
 
   return {
     props: {
-      card: data as any,
+      card: data,
     },
   }
 }

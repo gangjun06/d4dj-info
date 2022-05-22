@@ -14,7 +14,9 @@ const GachaItem = ({ data }: { data: AllGachasItem }) => {
         <GachaIcon id={convertIDNum(data.id)} category={data.category} />
         <div className="mt-2">{data.name}</div>
         <div className="text-gray-600 mt-0.5">
-          {`${formatTime(data.startDate)} ~ ${formatTime(data.endDate)}`}
+          {`${formatTime(data.startDate as unknown as string)} ~ ${formatTime(
+            data.endDate as unknown as string
+          )}`}
         </div>
       </div>
     </Card>

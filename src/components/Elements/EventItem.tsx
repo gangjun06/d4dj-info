@@ -15,7 +15,9 @@ const EventItem = ({ data }: { data: AllEventsItem }) => {
       </div>
       {data.name}
       <div className="text-gray-600 mt-0.5">
-        {`${formatTime(data.startDate)} ~ ${formatTime(data.endDate)}`}
+        {`${formatTime(data.startDate as unknown as string)} ~ ${formatTime(
+          data.endDate as unknown as string
+        )}`}
       </div>
     </Card>
   )

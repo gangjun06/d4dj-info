@@ -1,17 +1,17 @@
 import { format, parseISO } from 'date-fns'
 
 export const formatTime = (time: string | Date) => {
-  const parsed = parseISO(time as string)
-  if (parsed.getTime() > 4000000000000) return 'X'
+  const date: Date = typeof time === 'string' ? parseISO(time) : time
+  if (date.getTime() > 4000000000000) return 'X'
 
-  return format(parsed, 'yy.MM.dd.')
+  return format(date, 'yy.MM.dd.')
 }
 
 export const formatTimeDetail = (time: string | Date) => {
-  const parsed = parseISO(time as string)
-  if (parsed.getTime() > 4000000000000) return 'X'
+  const date: Date = typeof time === 'string' ? parseISO(time) : time
+  if (date.getTime() > 4000000000000) return 'X'
 
-  return format(parsed, 'yy.MM.dd. HH:mm:ss')
+  return format(date, 'yy.MM.dd. HH:mm:ss')
 }
 
 export const delay = (time: number) =>
