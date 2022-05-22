@@ -4,7 +4,6 @@ import * as PIXI from 'pixi.js'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { HiCog } from 'react-icons/hi'
 import { toast } from 'react-toastify'
-import { AdBlockAlert } from '../Util/AdBlockAlert'
 import Live2DProvider, { Live2DContext } from './context'
 import { Setting } from './setting'
 import { dragable } from './utils'
@@ -18,7 +17,6 @@ function Live2DViewContent({ urlData }: props) {
   const {
     app,
     background,
-    setApp,
     dragable: dragableState,
     setModels,
   } = useContext(Live2DContext)
@@ -27,19 +25,18 @@ function Live2DViewContent({ urlData }: props) {
 
   useEffect(() => {
     const canvas = canvasWrapper.current
-    const app = new PIXI.Application({
+    app!.current = new PIXI.Application({
       backgroundAlpha: 0,
       autoStart: true,
       width,
       height,
     })
     Live2DModel.registerTicker(PIXI.Ticker)
-    app.view.setAttribute(
+    app!.current.view.setAttribute(
       'style',
-      `${app.view.getAttribute('style')}position: absolute;`
+      `${app!.current.view.getAttribute('style')}position: absolute;`
     )
-    canvas?.appendChild(app.view)
-    setApp(app)
+    canvas?.appendChild(app!.current.view)
 
     return () => {
       if (canvas?.firstChild) {
@@ -67,18 +64,19 @@ function Live2DViewContent({ urlData }: props) {
 
           const models: any[] = []
           for (const item of data) {
-            const url = `https://asset.d4dj.info/jp/AssetBundles/Live2D/${item.model}/${item.model}.model3.json`
+            const url = `https://cdn.d4dj.info/jp/AssetBundles/Live2D/${item.model}/${item.model}.model3.json`
             const model: any = await Live2DModel.from(url, {})
             models.push(model)
-            model.x = item.x * app.renderer.width
-            model.y = item.y * app.renderer.height
+            const renderer = app.current!.renderer
+            model.x = item.x * renderer.view.width
+            model.y = item.y * renderer.height
             model.scale.set(item.scale, item.scale)
             model.anchor.set(0.5, 0.5)
 
             model.dragable = dragableState
 
             dragable(model)
-            app.stage.addChild(model)
+            app.current!.stage.addChild(model)
           }
 
           setModels(() => {
@@ -99,7 +97,6 @@ function Live2DViewContent({ urlData }: props) {
   return (
     <>
       <Setting isShown={isShown} onClose={() => setIsShown(false)} />
-      <AdBlockAlert />
       <div
         style={{
           position: 'absolute',

@@ -1,4 +1,4 @@
-import { SceValues } from 'models'
+import { SceValues } from '@/types/story'
 
 export const getPosition = (position: any, width: number) => {
   if (typeof position !== 'string') return 0.5 * width
@@ -38,4 +38,4 @@ export const setModelData = (
 }
 
 export const getModelUrl = (model: string) =>
-  `https://asset.d4dj.info/jp/AssetBundles/Live2D/${model}/${model}.model3.json`
+  `https://cdn.d4dj.info/jp/AssetBundles/Live2D/${model}/${model}.model3.json`

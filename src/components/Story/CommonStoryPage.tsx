@@ -1,4 +1,4 @@
-import { StoryNext } from 'models'
+import { StoryNext } from '@/types/story'
 import dynamic from 'next/dynamic'
 import Live2DHeader from '../Live2DHeader'
 

@@ -33,7 +33,6 @@ function StoryViewContent({ data, next }: props) {
     storyData,
     storyMeta,
     app,
-    setApp,
     setBackground,
     playMusic,
     stopMusic,
@@ -92,7 +91,8 @@ function StoryViewContent({ data, next }: props) {
   }
 
   useEffect(() => {
-    if (!storyData || index === -1 || !models) return
+    if (!storyData || index === -1 || !models || !app || !app.current) return
+    const curApp = app.current
     ;(async () => {
       if (title) {
         setTitle(null)
@@ -158,15 +158,15 @@ function StoryViewContent({ data, next }: props) {
           ) {
             const filter = new PIXI.filters.ColorMatrixFilter()
             filter.brightness(0.6, false)
-            app!.stage.filters = [filter]
-          } else app!.stage.filters = []
+            curApp.stage.filters = [filter]
+          } else curApp.stage.filters = []
         } else if (name === SceWords.Live2dCharaVoice) {
           let voiceName = args.get(SceWords.VoiceName)
           if (typeof voiceName === 'string')
             try {
               if (musicRef.current) {
                 if (voiceName.startsWith('vo_')) {
-                  voiceName = `https://asset.d4dj.info/jp/plain/adv/ondemand/voice/sce_${/\d+(?=_)/.exec(
+                  voiceName = `https://cdn.d4dj.info/jp/plain/adv/ondemand/voice/sce_${/\d+(?=_)/.exec(
                     voiceName
                   )}-${voiceName}.mp3`
                 }
@@ -185,20 +185,20 @@ function StoryViewContent({ data, next }: props) {
               model = setModelData(
                 model,
                 position,
-                app!.renderer.width,
-                app!.renderer.height
+                curApp.renderer.width,
+                curApp.renderer.height
               )
-              app?.stage.addChild(model)
+              curApp.stage.addChild(model)
             }
 
             if (chara) {
               if (chara !== value) {
                 const fileName = storyMeta?.live2dList.get(chara)
-                const index = app!.stage.children.findIndex(
+                const index = curApp.stage.children.findIndex(
                   ({ internalModel: im }: any) =>
                     im.settings && im.settings.name === fileName
                 )
-                index >= 0 && app!.stage.removeChildAt(index)
+                index >= 0 && curApp.stage.removeChildAt(index)
                 addModel()
               }
             } else addModel()
@@ -214,7 +214,7 @@ function StoryViewContent({ data, next }: props) {
           const position = args.get(SceWords.Position)
           const model: any = models?.get(value)
           if (model) {
-            model.x = getPosition(position, app!.renderer.width)
+            model.x = getPosition(position, curApp.renderer.width)
           }
         } else if (name === SceWords.Live2dCharaAnimation) {
           const model = models?.get(value)
@@ -223,7 +223,7 @@ function StoryViewContent({ data, next }: props) {
             doAnimation(animation, 0, model)
           }
         } else if (name === SceWords.Live2dCharaHide) {
-          app?.stage.removeChildren()
+          curApp.stage.removeChildren()
           setCharaStack((stack) => {
             stack.clear()
             return stack
@@ -242,7 +242,7 @@ function StoryViewContent({ data, next }: props) {
     if (openFileName)
       (async () => {
         const res = await axios.get(
-          `https://asset.d4dj.info/jp/adv/ondemand/scenario/sce_${openFileName}.sce`
+          `https://cdn.d4dj.info/jp/adv/ondemand/scenario/sce_${openFileName}.sce`
         )
         loadStoryData(res.data)
       })()
@@ -253,20 +253,20 @@ function StoryViewContent({ data, next }: props) {
 
     // Application.registerPlugin(PIXI.TickerPlugin)
     Live2DModel.registerTicker(PIXI.Ticker)
-    const app = new PIXI.Application({
+    const pixi = new PIXI.Application({
       backgroundAlpha: 0,
       autoStart: true,
       width,
       height,
     })
 
-    app.view.setAttribute(
-      'style',
-      `${app.view.getAttribute('style')}position: absolute;`
-    )
-    canvas?.appendChild(app.view)
+    app!.current = pixi
 
-    setApp(app)
+    pixi.view.setAttribute(
+      'style',
+      `${pixi.view.getAttribute('style')}position: absolute;`
+    )
+    canvas?.appendChild(pixi.view)
 
     return () => {
       if (canvas) {
@@ -287,8 +287,8 @@ function StoryViewContent({ data, next }: props) {
     setBackground('default')
     setFade(null)
     stopMusic()
-    app!.stage.filters = []
-    app?.stage.removeChildren()
+    app!.current!.stage.filters = []
+    app?.current?.stage.removeChildren()
   }
 
   useEffect(() => {

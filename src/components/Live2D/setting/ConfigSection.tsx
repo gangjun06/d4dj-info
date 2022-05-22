@@ -1,12 +1,10 @@
 import { FormBlock, Input, Select, Switch } from '@/components/Form'
-import { useCharacterNamesQuery } from '@/generated/graphql'
 import { joiResolver } from '@hookform/resolvers/joi'
 import Joi from 'joi'
 import { Live2DModel } from 'pixi-live2d-display'
 import React, { useContext, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
-import { pad } from 'utils'
 import { Live2DContext } from '../context'
 import { dragable } from '../utils'
 
@@ -41,23 +39,22 @@ export function AddModel() {
     }
   }, [getValues, setValue])
 
-  const { data } = useCharacterNamesQuery()
-
   const onSubmit = async ({ model: modelStr, type, id }: FormData) => {
     if (!app) return
     const url = `https://asset.d4dj.info/jp/AssetBundles/Live2D/${type}${modelStr}${id}/${type}${modelStr}${id}.model3.json`
     try {
       const model: any = await Live2DModel.from(url, {})
 
-      model.x = 0.5 * app.renderer.width
-      model.y = 0.4 * app.renderer.height
+      const { width, height } = app.current!.renderer
+      model.x = 0.5 * width
+      model.y = 0.4 * height
       model.scale.set(0.25, 0.25)
       model.anchor.set(0.5, 0.5)
 
       model.dragable = dragableState
 
       dragable(model)
-      app.stage.addChild(model)
+      app.current!.stage.addChild(model)
 
       setModels((item) =>
         item.concat({ name: `${type}${modelStr}${id}`, data: model })
@@ -76,21 +73,7 @@ export function AddModel() {
           <Select
             control={control}
             name="model"
-            data={
-              data
-                ? data.characters?.data.map(({ attributes }) => ({
-                    id: pad(attributes?.masterID as number, 3),
-                    name:
-                      attributes?.fullNameEnglish ||
-                      attributes?.firstNameEnglish ||
-                      '',
-                    img: `adv/ondemand/chara_icon/adv_icon_${pad(
-                      attributes?.masterID as number,
-                      3
-                    )}.png`,
-                  }))
-                : []
-            }
+            data={[{ name: 'rinku', id: '011' }]}
           />
         </FormBlock>
         <div className="flex justify-between gap-x-3">
@@ -148,7 +131,7 @@ const schemaBackground = Joi.object().keys({
 export function EtcConfig() {
   const { background, setBackground, dragable, setDragable } =
     useContext(Live2DContext)
-  const { handleSubmit, control } = useForm<FormDataBackground>({
+  const { handleSubmit, register } = useForm<FormDataBackground>({
     resolver: joiResolver(schemaBackground),
     defaultValues: {
       background,
@@ -164,7 +147,7 @@ export function EtcConfig() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormBlock label="Background Image">
           <Input
-            control={control}
+            register={register}
             name="background"
             placeholder="https://......"
           />

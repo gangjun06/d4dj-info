@@ -1,11 +1,16 @@
 import * as PIXI from 'pixi.js'
-import React, { createContext, Dispatch, SetStateAction, useState } from 'react'
+import React, {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useRef,
+  useState,
+} from 'react'
 
 type ContextType = {
   background: string
   setBackground: (url: string) => void
-  app?: PIXI.Application
-  setApp: (app: PIXI.Application) => void
+  app?: React.MutableRefObject<PIXI.Application | undefined>
   models: { name: string; data: any }[]
   setModels: Dispatch<SetStateAction<{ name: string; data: any }[]>>
   dragable: boolean
@@ -16,9 +21,8 @@ type ContextType = {
 
 const defaultState: ContextType = {
   background:
-    'https://asset.d4dj.info/jp/adv/ondemand/background/bg_adv_10012.jpg',
+    'https://cdn.d4dj.info/jp/adv/ondemand/background/bg_adv_10012.jpg',
   setBackground: () => {},
-  setApp: () => {},
   models: [],
   setModels: () => {},
   dragable: false,
@@ -33,7 +37,7 @@ function Live2DProvider({ children }: { children: React.ReactElement }) {
   const [background, setBackground] = useState<string>(defaultState.background)
   const [dragable, setDragable] = useState<boolean>(defaultState.dragable)
   const [models, setModels] = useState<any[]>(defaultState.models)
-  const [app, setApp] = useState<PIXI.Application>()
+  const app = useRef<PIXI.Application>()
   const [configIndex, setConfigIndex] = React.useState<number>(0)
 
   return (
@@ -42,7 +46,6 @@ function Live2DProvider({ children }: { children: React.ReactElement }) {
         background,
         setBackground,
         app,
-        setApp,
         models,
         setModels,
         dragable,

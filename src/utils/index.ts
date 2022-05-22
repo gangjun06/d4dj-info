@@ -197,7 +197,7 @@ export const getURL = ({
   }
 
   if (fullURL) {
-    return `https://asset.d4dj.info/${
+    return `https://cdn.d4dj.info/${
       result.startsWith('game') ? '' : `${server}/`
     }${result}`
   }
