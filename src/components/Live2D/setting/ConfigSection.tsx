@@ -118,6 +118,16 @@ export function AddModel() {
                 { id: '0007', name: '7' },
                 { id: '0008', name: '8' },
                 { id: '0009', name: '9' },
+                { id: '0010', name: '10' },
+                { id: '0011', name: '11' },
+                { id: '0012', name: '12' },
+                { id: '0013', name: '13' },
+                { id: '0014', name: '14' },
+                { id: '0015', name: '15' },
+                { id: '0016', name: '16' },
+                { id: '0017', name: '17' },
+                { id: '0018', name: '18' },
+                { id: '0019', name: '19' },
               ]}
             />
           </FormBlock>
