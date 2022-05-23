@@ -1,5 +1,4 @@
 import useTranslation from 'next-translate/useTranslation'
-import { AllCardsItem } from 'pages/api/card'
 import React from 'react'
 import { convertIDNum } from 'utils'
 import { Card } from '../Basic'
@@ -9,7 +8,18 @@ const CardItem = ({
   data,
   unitId,
 }: {
-  data: AllCardsItem
+  data: {
+    id: string
+    masterId: number
+    attributeId: string
+    cardName: string
+    rarityId: string
+    character?: {
+      unit: {
+        id: string
+      }
+    }
+  }
   unitId?: number
 }) => {
   const { t } = useTranslation()
@@ -23,7 +33,7 @@ const CardItem = ({
         id={data.masterId}
         rarity={convertIDNum(data.rarityId)}
         attribute={convertIDNum(data.attributeId)}
-        unit={unitId || convertIDNum(data.character.unit.id) || 50}
+        unit={unitId || convertIDNum(data.character!.unit.id)}
       />
       {data.cardName}
     </Card>

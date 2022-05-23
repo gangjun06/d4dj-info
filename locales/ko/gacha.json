@@ -8,5 +8,6 @@
   "note": "노트",
   "pickup_cards": "픽업 카드",
   "startdate": "시작일",
-  "type": "타입"
+  "type": "타입",
+  "summary": "요약"
 }

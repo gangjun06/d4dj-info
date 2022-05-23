@@ -46,7 +46,6 @@ export const TableBody = ({
   return (
     <tbody>
       {data?.map((item, i) => {
-        // if (item[1] === undefined || item[1] == null) continue;
         return (
           <tr key={i}>
             {item.map((item, j) => (

@@ -17,5 +17,6 @@
   "note": "Note",
   "pickup_cards": "Pickup Cards",
   "startdate": "Start Date",
-  "type": "Type"
+  "type": "Type",
+  "summary": "Summary"
 }

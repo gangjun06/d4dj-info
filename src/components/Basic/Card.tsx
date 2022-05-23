@@ -35,7 +35,7 @@ const Card = ({
           {right && right}
         </div>
       )}
-      <div style={bodyStyle} className={`h-full ${bodyClassName}`}>
+      <div style={bodyStyle} className={classNames(`h-full`, bodyClassName)}>
         {children}
       </div>
     </>

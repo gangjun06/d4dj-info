@@ -1,24 +1,29 @@
-import { Card, Disclosure, Table, TableBody } from '@/components/Basic'
+import {
+  Card,
+  Disclosure,
+  Table,
+  TableBody,
+  TextFormat,
+} from '@/components/Basic'
 import { CardItem } from '@/components/Elements'
 import { GachaIcon } from '@/components/Image'
+import prisma from '@/lib/prisma'
 import {
-  GachaDocument,
-  GachaEntity,
-  GachaQuery,
-  GachaQueryVariables,
-} from '@/generated/graphql'
-import { client } from '@/lib/apollo'
+  GachaExplanationWordMaster,
+  GachaMaster,
+  GachaNotesWordMaster,
+  GachaSummaryWordMaster,
+} from '@prisma/client'
 import MainLayout from 'layouts/main'
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
 import useTransition from 'next-translate/useTranslation'
 import React from 'react'
 import { formatTimeDetail } from 'utils'
 
 export default function CardDetail({
   gacha,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   const { t } = useTransition('')
-  const data = gacha.attributes!
 
   return (
     <MainLayout
@@ -30,7 +35,7 @@ export default function CardDetail({
           link: ``,
         },
       ]}
-      title={`${data?.name}`}
+      title={`${gacha.name}`}
     >
       <div className="grid-2">
         <div className="col-span-1">
@@ -38,18 +43,18 @@ export default function CardDetail({
             title={t('gacha:info')}
             bodyClassName="flex justify-center flex-col items-center"
           >
-            <GachaIcon id={data.masterID!} category={data.category!} />
+            <GachaIcon id={gacha.masterId} category={gacha.category} />
 
-            <div className="mt-2">{data.name}</div>
+            <div className="mt-2">{gacha.name}</div>
 
             <Table>
               <TableBody
                 data={[
-                  [t('common:id'), data.masterID],
-                  [t('common:start_date'), formatTimeDetail(data.startDate)],
-                  [t('common:end_date'), formatTimeDetail(data.endDate)],
-                  [t('common:type'), data.type],
-                  [t('common:category'), data.category],
+                  [t('common:id'), gacha.masterId],
+                  [t('common:start_date'), formatTimeDetail(gacha.startDate)],
+                  [t('common:end_date'), formatTimeDetail(gacha.endDate)],
+                  [t('common:type'), gacha.type],
+                  [t('common:category'), gacha.category],
                 ]}
               />
             </Table>
@@ -57,22 +62,25 @@ export default function CardDetail({
         </div>
         <div className="col-span-1 md:col-span-2">
           <Card title={t('gacha:descriptions')}>
+            <Disclosure title={t('gacha:summary')}>
+              <TextFormat>{gacha.summary.text}</TextFormat>
+            </Disclosure>
             <Disclosure title={t('gacha:note')}>
-              <div>{data.note}</div>
+              <TextFormat>{gacha.note.text}</TextFormat>
             </Disclosure>
             <Disclosure title={t('gacha:detail')}>
-              <div>{data.detail}</div>
+              <TextFormat>{gacha.detail.text}</TextFormat>
             </Disclosure>
           </Card>
         </div>
 
-        {data.pickUpCards?.data?.length !== 0 && (
+        {gacha.pickUpCards.length !== 0 && (
           <>
             <div className="subtitle">{t('gacha:pickup_cards')}</div>
             <div className="col-span-1 md:col-span-3">
               <div className="grid-1">
-                {data.pickUpCards!.data!.map((item, index) => (
-                  <CardItem key={index} data={item} />
+                {gacha.pickUpCards.map((item, index) => (
+                  <CardItem key={item.id} data={item} />
                 ))}
               </div>
             </div>
@@ -83,31 +91,92 @@ export default function CardDetail({
   )
 }
 
-export const getServerSideProps: GetServerSideProps<{
-  gacha: GachaEntity
-}> = async (context) => {
-  const id = context.query.id
-  if (typeof id !== 'string') {
-    return {
-      notFound: true,
-    }
-  }
+type StaticPaths = {
+  id: string
+}
 
-  const { data } = await client.query<GachaQuery, GachaQueryVariables>({
-    query: GachaDocument,
-    variables: {
-      gachaId: id,
+export const getStaticPaths: GetStaticPaths<StaticPaths> = async () => {
+  const data = await prisma.gachaMaster.findMany({
+    select: {
+      id: true,
     },
-    fetchPolicy: 'no-cache',
+  })
+  return {
+    paths: data.map(({ id }) => ({ params: { id } })),
+    fallback: true,
+  }
+}
+
+export const getStaticProps: GetStaticProps<
+  {
+    gacha: GachaMaster & {
+      summary: GachaSummaryWordMaster
+      note: GachaNotesWordMaster
+      pickUpCards: {
+        id: string
+        masterId: number
+        attributeId: string
+        cardName: string
+        rarityId: string
+      }[]
+      detail: GachaExplanationWordMaster
+    }
+  },
+  StaticPaths
+> = async ({ params }) => {
+  if (!params) throw new Error('No path parameters found')
+
+  const { id } = params
+
+  const data = await prisma.gachaMaster.findUnique({
+    where: {
+      id,
+    },
+    // select: {},
+    include: {
+      summary: true,
+      detail: true,
+      note: true,
+      pickUpCards: {
+        select: {
+          id: true,
+          masterId: true,
+          attributeId: true,
+          cardName: true,
+          rarityId: true,
+          character: {
+            include: {
+              unit: {
+                select: {
+                  id: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
   })
 
-  if (!data?.gacha?.data) {
+  if (!data) {
     return { notFound: true }
   }
 
+  data.summary.text = data.summary.text
+    .replaceAll('{GachaName}', data.name)
+    .replaceAll('{GachaType}', data.type)
+  data.note.text = data.note.text
+    .replaceAll('{GachaName}', data.name)
+    .replaceAll('{GachaType}', data.type)
+
+  data.detail.text = data.detail.text
+    .replaceAll('{GachaName}', data.name)
+    .replaceAll('{GachaType}', data.type)
+
   return {
     props: {
-      gacha: data.gacha!.data,
+      gacha: data,
     },
+    revalidate: 1800,
   }
 }

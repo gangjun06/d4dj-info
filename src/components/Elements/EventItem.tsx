@@ -6,7 +6,10 @@ import { EventIcon } from '../Image'
 
 const EventItem = ({ data }: { data: AllEventsItem }) => {
   return (
-    <Card link={`/game/event/${data.id}`}>
+    <Card
+      link={`/game/event/${data.id}`}
+      bodyClassName="flex flex-col justify-center items-center"
+    >
       <EventIcon id={convertIDNum(data.id)} />
       <div className="flex flex-row gap-x-2 my-2 justify-center">
         <div className="badge">
