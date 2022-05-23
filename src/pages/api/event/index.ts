@@ -67,10 +67,12 @@ export const EventOptions: FindListOptionSet<AllEventsItem> = {
     },
   },
   sort: {
-    default: 'id',
+    default: 'startDate',
+    defaultOrder: 'desc',
     options: [
       { label: 'id', value: 'id' },
       { label: 'name', value: 'name' },
+      { label: 'startDate', value: 'startDate' },
     ],
   },
 }

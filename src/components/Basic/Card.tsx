@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import Link from 'next/link'
 import React, { ReactNode } from 'react'
 import { UrlObject } from 'url'
@@ -21,7 +22,10 @@ const Card = ({
   link?: string | UrlObject
   onClick?: () => void
 }) => {
-  const cardClass = `px-8 py-8 shadow-sm ${className} bg-white rounded-lg overflow-hidden border`
+  const cardClass = classNames(
+    `px-8 py-8 shadow-sm bg-white rounded-lg overflow-hidden border`,
+    className
+  )
 
   const InnerContent = () => (
     <>

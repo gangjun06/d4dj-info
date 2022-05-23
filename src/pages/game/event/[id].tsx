@@ -1,23 +1,44 @@
-import { Card, Disclosure, Table, TableBody } from '@/components/Basic'
+import { GetAggregationResult } from '@/api/event/aggregation'
+import { Card, Disclosure, Modal, Table, TableBody } from '@/components/Basic'
 import { EventIcon, Image } from '@/components/Image'
-import {
-  EventDocument,
-  EventEntity,
-  EventQuery,
-  EventQueryVariables,
-} from '@/generated/graphql'
-import { client } from '@/lib/apollo'
+import prisma from '@/lib/prisma'
+import { EventAggregationBaseMaster, EventMaster } from '@prisma/client'
 import MainLayout from 'layouts/main'
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
 import useTransition from 'next-translate/useTranslation'
-import React from 'react'
+import React, { useState } from 'react'
+import useSWR from 'swr'
 import { formatTimeDetail, GetURLType } from 'utils'
+
+const AggregationModal = ({
+  id,
+  onClose,
+}: {
+  id: string
+  onClose: () => void
+}) => {
+  const { data: reqData, error } = useSWR<GetAggregationResult>(
+    `/api/event/aggregation?detail=${id}`
+  )
+
+  if (!reqData) return <></>
+
+  const data = reqData.data
+
+  return (
+    <Modal show showCloseBtn onClose={onClose} center>
+      {data && <div>{data.aggregationType}</div>}
+    </Modal>
+  )
+}
 
 export default function EventDetail({
   event,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+}: InferGetStaticPropsType<typeof getStaticProps>) {
+  console.log(event)
   const { t } = useTransition('')
-  const data = event.attributes!
+
+  const [aggregationId, setAggregationId] = useState<string | null>(null)
 
   return (
     <MainLayout
@@ -29,37 +50,47 @@ export default function EventDetail({
           link: ``,
         },
       ]}
-      title={`${data?.name}`}
+      title={`${event.name}`}
     >
+      {aggregationId && (
+        <>
+          <AggregationModal
+            id={aggregationId}
+            onClose={() => {
+              setAggregationId(null)
+            }}
+          />
+        </>
+      )}
       <div className="grid-2">
         <div className="col-span-1">
           <Card
             title={t('event:info')}
             bodyClassName="flex justify-center flex-col items-center"
           >
-            <EventIcon id={data.masterID!} />
+            <EventIcon id={event.masterId} />
 
-            <div className="mt-2">{data.name}</div>
+            <div className="mt-2">{event.name}</div>
 
             <Table>
               <TableBody
                 data={[
-                  [t('event:id'), event.id],
+                  [t('event:id'), event.masterId],
                   [
                     t('event:reception_close_date'),
-                    formatTimeDetail(data.receptionCloseDate),
+                    formatTimeDetail(event.receptionCloseDate),
                   ],
                   [
                     t('event:result_announcement_date'),
-                    formatTimeDetail(data.resultAnnouncementDate),
+                    formatTimeDetail(event.resultAnnouncementDate),
                   ],
                   [
                     t('event:rank_fix_start_date'),
-                    formatTimeDetail(data.rankFixStartDate),
+                    formatTimeDetail(event.rankFixStartDate),
                   ],
                   [
                     t('event:story_unlock_date'),
-                    formatTimeDetail(data.storyUnlockDate),
+                    formatTimeDetail(event.storyUnlockDate),
                   ],
                 ]}
               />
@@ -71,7 +102,7 @@ export default function EventDetail({
             <Disclosure title={t('event:illustrations.background')}>
               <Image
                 urlType={GetURLType.EventBackground}
-                parameter={[data.masterID]}
+                parameter={[event.masterId]}
                 width={2380}
                 height={1440}
               />
@@ -79,7 +110,7 @@ export default function EventDetail({
             <Disclosure title={t('event:illustrations.banner_event')}>
               <Image
                 urlType={GetURLType.EventBanner}
-                parameter={[data.masterID]}
+                parameter={[event.masterId]}
                 width={612}
                 height={200}
               />
@@ -87,12 +118,29 @@ export default function EventDetail({
             <Disclosure title={t('event:illustrations.banner_event_notice')}>
               <Image
                 urlType={GetURLType.EventBannerNotice}
-                parameter={[data.masterID]}
+                parameter={[event.masterId]}
                 width={612}
                 height={200}
               />
             </Disclosure>
           </Card>
+          {/* <Card
+            title={t('event:datas')}
+            bodyClassName="grid-1"
+            className="mt-4"
+          >
+            {event.aggregations.map((item) => (
+              <Card
+                key={item.id}
+                className="px-3 py-3 cursor-pointer"
+                onClick={() => {
+                  setAggregationId(item.id)
+                }}
+              >
+                {item.aggregationType}
+              </Card>
+            ))}
+          </Card> */}
         </div>
 
         {/* {data.episodeCharacters?.data?.length !== 0 && (
@@ -114,31 +162,52 @@ export default function EventDetail({
   )
 }
 
-export const getServerSideProps: GetServerSideProps<{
-  event: EventEntity
-}> = async (context) => {
-  const id = context.query.id
-  if (typeof id !== 'string') {
-    return {
-      notFound: true,
-    }
-  }
+type StaticPaths = {
+  id: string
+}
 
-  const { data } = await client.query<EventQuery, EventQueryVariables>({
-    query: EventDocument,
-    variables: {
-      eventId: id,
+export const getStaticPaths: GetStaticPaths<StaticPaths> = async () => {
+  const data = await prisma.eventMaster.findMany({
+    select: {
+      id: true,
     },
-    fetchPolicy: 'no-cache',
+  })
+  return {
+    paths: data.map(({ id }) => ({ params: { id } })),
+    fallback: true,
+  }
+}
+
+export const getStaticProps: GetStaticProps<
+  {
+    event: EventMaster & {
+      aggregations: EventAggregationBaseMaster[]
+    }
+  },
+  StaticPaths
+> = async ({ params }) => {
+  if (!params) throw new Error('No path parameters found')
+
+  const { id } = params
+
+  const data = await prisma.eventMaster.findUnique({
+    where: {
+      id,
+    },
+    // select: {},
+    include: {
+      aggregations: true,
+    },
   })
 
-  if (!data?.event?.data) {
+  if (!data) {
     return { notFound: true }
   }
 
   return {
     props: {
-      event: data.event!.data,
+      event: data,
     },
+    revalidate: 1800,
   }
 }

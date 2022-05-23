@@ -202,12 +202,7 @@ export const getStaticProps: GetStaticProps<
 > = async ({ params }) => {
   if (!params) throw new Error('No path parameters found')
 
-  const id = params.id
-  if (typeof id !== 'string') {
-    return {
-      notFound: true,
-    }
-  }
+  const { id } = params
 
   const data = await prisma.characterMaster.findUnique({
     where: {
