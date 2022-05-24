@@ -92,9 +92,9 @@ export const CardOptions: FindListOptionSet<AllCardsItem> = {
     unit: unitField('character.unitId'),
     name: {
       type: FindListType.Input,
-      label: 'name',
+      label: 'common:name',
       name: 'name',
-      placeholder: 'name',
+      placeholder: 'common:enter_name',
       customOptionHandler: (value: string | string[]) => ({
         cardName: {
           contains: value,
@@ -105,8 +105,8 @@ export const CardOptions: FindListOptionSet<AllCardsItem> = {
   sort: {
     default: 'id',
     options: [
-      { label: 'id', value: 'id' },
-      { label: 'name', value: 'cardName' },
+      { label: 'common:id', value: 'id' },
+      { label: 'common:name', value: 'cardName' },
     ],
   },
 }

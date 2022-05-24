@@ -1,5 +1,4 @@
 import { Region } from '@/models/index'
-import Cookies from 'js-cookie'
 import setLanguage from 'next-translate/setLanguage'
 import useTransition from 'next-translate/useTranslation'
 import {
@@ -37,12 +36,13 @@ export const SettingProvider = ({ children }: { children: ReactNode }) => {
 
   const { handleSubmit, control, register } = useForm<FormData>({
     defaultValues: {
-      lang,
+      lang: lang ?? 'en',
       region,
     },
   })
 
   const onSubmit = handleSubmit((data) => {
+    if (!data.lang) return
     setLanguage(data.lang)
     localStorage.setItem('lang', data.lang)
     setRegionStore(data.region as Region)
@@ -59,7 +59,6 @@ export const SettingProvider = ({ children }: { children: ReactNode }) => {
 
   const setRegionStore = useCallback(
     (region: Region) => {
-      Cookies.set('region', region)
       setRegion(region)
     },
     [setRegion]

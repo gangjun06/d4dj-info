@@ -19,7 +19,7 @@ export const CharactersOptions: FindListOptionSet<AllCharactersItem> = {
   fields: {},
   sort: {
     default: 'id',
-    options: [{ label: 'id', value: 'id' }],
+    options: [{ label: 'common:id', value: 'id' }],
   },
 }
 

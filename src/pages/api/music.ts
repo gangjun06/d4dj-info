@@ -62,9 +62,9 @@ export const musicOptions: FindListOptionSet<AllMusicsItem> = {
     },
     name: {
       type: FindListType.Input,
-      label: 'name',
+      label: 'common:name',
       name: 'name',
-      placeholder: 'name',
+      placeholder: 'common:enter_name',
       customOptionHandler: (value: string | string[]) => ({
         name: {
           contains: value,
@@ -75,11 +75,11 @@ export const musicOptions: FindListOptionSet<AllMusicsItem> = {
   sort: {
     default: 'id',
     options: [
-      { label: 'id', value: 'id' },
-      { label: 'name', value: 'name' },
-      { label: 'defaultOrder', value: 'defaultOrder' },
-      { label: 'startDate', value: 'startDate' },
-      { label: 'musicBpm', value: 'musicBpm' },
+      { label: 'common:id', value: 'id' },
+      { label: 'common:name', value: 'name' },
+      { label: 'common:default_order', value: 'defaultOrder' },
+      { label: 'common:start_date', value: 'startDate' },
+      { label: 'music:bpm', value: 'musicBpm' },
     ],
   },
 }

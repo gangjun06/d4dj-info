@@ -28,15 +28,15 @@ export const StampOptions: FindListOptionSet<AllStampsItem> = {
       name: 'category',
       options: [
         {
-          label: 'common:categories.collabo',
+          label: 'common:collabo',
           value: StampCategory.Collabo,
         },
         {
-          label: 'common:categories.common',
+          label: 'common:common',
           value: StampCategory.Common,
         },
         {
-          label: 'common:categories.rare',
+          label: 'common:rare',
           value: StampCategory.Rare,
         },
       ],
@@ -48,9 +48,9 @@ export const StampOptions: FindListOptionSet<AllStampsItem> = {
     },
     name: {
       type: FindListType.Input,
-      label: 'name',
+      label: 'common:name',
       name: 'name',
-      placeholder: 'name',
+      placeholder: 'common:enter_name',
       customOptionHandler: (value: string | string[]) => ({
         name: {
           contains: value,
@@ -60,7 +60,7 @@ export const StampOptions: FindListOptionSet<AllStampsItem> = {
   },
   sort: {
     default: 'id',
-    options: [{ label: 'id', value: 'id' }],
+    options: [{ label: 'common:id', value: 'id' }],
   },
 }
 

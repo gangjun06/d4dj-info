@@ -176,7 +176,7 @@ export const DataListLayout = <T,>({
         ))}
         <FormItemBuilder
           register={register}
-          label="Sort"
+          label={'common:sort'}
           name="sortBy"
           options={option.sort.options}
           type={FindListType.Radio}

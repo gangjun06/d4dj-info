@@ -68,9 +68,9 @@ const StampList = () => {
       option={StampOptions}
       breadCrumbs={[
         { name: t('nav:game.name'), link: '' },
-        { name: t('nav:game.card'), link: '' },
+        { name: t('nav:game.stamp'), link: '' },
       ]}
-      title={t('nav:game.card')}
+      title={t('nav:game.stamp')}
     >
       {({ data }) => <StampItem data={data} key={data.id} />}
     </DataListLayout>

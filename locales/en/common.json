@@ -37,20 +37,19 @@
   "adblock": "Please Turn off the Adblock\nThis website doesn't have ad\nAd blocking plugins interfere with resource loading",
   "rotate": "Please rotate the screen horizontally\nand refresh",
   "data_alert": "Because it brings a lot of data, we recommend using Wi-Fi.",
-  "sort": "Sort",
   "download": "Download",
   "region": "Region",
   "end_date": "End Date",
   "type": "Type",
-  "categories": {
-    "collabo": "Collabo",
-    "common": "Common",
-    "rare": "Rare"
-  },
+  "collabo": "Collabo",
+  "common": "Common",
+  "rare": "Rare",
+  "enter_name": "Please enter the name...",
   "recent_event": "Recent Event",
   "recent_gacha": "Recent Gacha",
   "siteinfo": "Website Info",
   "contribute": "Contribute",
   "donate": "Donate",
-  "related_link": "Related Links"
+  "related_link": "Related Links",
+  "sort": "Sort"
 }

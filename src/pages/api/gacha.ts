@@ -28,27 +28,27 @@ export const GachaOptions: FindListOptionSet<AllGachasItem> = {
       name: 'category',
       options: [
         {
-          label: 'birthday',
+          label: 'gacha:categories.birthday',
           value: GachaCategory.Birthday,
         },
         {
-          label: 'Event',
+          label: 'gacha:categories.event',
           value: GachaCategory.Event,
         },
         {
-          label: 'normal',
+          label: 'gacha:categories.normal',
           value: GachaCategory.Normal,
         },
         {
-          label: 'Revival',
+          label: 'gacha:categories.revival',
           value: GachaCategory.Revival,
         },
         {
-          label: 'Special',
+          label: 'gacha:categories.special',
           value: GachaCategory.Special,
         },
         {
-          label: 'tutorial',
+          label: 'gacha:categories.tutorial',
           value: GachaCategory.Tutorial,
         },
       ],
@@ -64,15 +64,15 @@ export const GachaOptions: FindListOptionSet<AllGachasItem> = {
       name: 'type',
       options: [
         {
-          label: 'Audition',
+          label: 'gacha:types.audition',
           value: GachaType.Audition,
         },
         {
-          label: 'normal',
+          label: 'gacha:types.normal',
           value: GachaType.Normal,
         },
         {
-          label: 'StepUp',
+          label: 'gacha:types.stepUp',
           value: GachaType.StepUp,
         },
       ],
@@ -84,9 +84,9 @@ export const GachaOptions: FindListOptionSet<AllGachasItem> = {
     },
     name: {
       type: FindListType.Input,
-      label: 'name',
+      label: 'common:name',
       name: 'name',
-      placeholder: 'name',
+      placeholder: 'common:enter_name',
       customOptionHandler: (value: string | string[]) => ({
         name: {
           contains: value,
@@ -98,9 +98,9 @@ export const GachaOptions: FindListOptionSet<AllGachasItem> = {
     default: 'startDate',
     defaultOrder: 'desc',
     options: [
-      { label: 'id', value: 'id' },
-      { label: 'name', value: 'name' },
-      { label: 'startDate', value: 'startDate' },
+      { label: 'common:id', value: 'id' },
+      { label: 'common:name', value: 'name' },
+      { label: 'common:startDate', value: 'startDate' },
     ],
   },
 }

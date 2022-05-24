@@ -23,7 +23,7 @@ const Card = ({
   onClick?: () => void
 }) => {
   const cardClass = classNames(
-    `px-8 py-8 shadow-sm bg-white rounded-lg overflow-hidden border`,
+    `px-8 py-8 shadow-sm bg-white rounded-lg border`,
     className
   )
 

@@ -26,7 +26,8 @@
     "unit": {
       "name": "유닛",
       "story": "유닛 스토리"
-    }
+    },
+    "stamp": "스템프"
   },
   "live2d": "라이브2D",
   "live2d_viewer": "라이브2D 뷰어",

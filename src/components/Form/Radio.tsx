@@ -19,7 +19,7 @@ export function Radio({ name, list, register }: props) {
             {label} {component}
           </span>
           <input
-            {...register!(name)}
+            {...register!(name, { required: true })}
             type="radio"
             className="radio"
             value={value}

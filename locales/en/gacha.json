@@ -18,5 +18,10 @@
   "pickup_cards": "Pickup Cards",
   "startdate": "Start Date",
   "type": "Type",
-  "summary": "Summary"
+  "summary": "Summary",
+  "types": {
+    "audition": "Audition",
+    "normal": "Normal",
+    "stepUp": "Step"
+  }
 }
