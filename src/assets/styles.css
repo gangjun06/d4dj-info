@@ -11,6 +11,10 @@ body,
   overflow: hidden;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   /* background-color: rgb(239, 246, 255); */
   background-color: #f8f9fa;
@@ -37,6 +41,10 @@ body {
 
 .grid-3 {
   @apply grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-4;
+}
+
+.grid-5 {
+  @apply grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4;
 }
 
 .disclosure-btn {

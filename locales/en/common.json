@@ -46,5 +46,11 @@
     "collabo": "Collabo",
     "common": "Common",
     "rare": "Rare"
-  }
+  },
+  "recent_event": "Recent Event",
+  "recent_gacha": "Recent Gacha",
+  "siteinfo": "Website Info",
+  "contribute": "Contribute",
+  "donate": "Donate",
+  "related_link": "Related Links"
 }

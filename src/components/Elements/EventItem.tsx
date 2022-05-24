@@ -1,14 +1,22 @@
 import { AllEventsItem } from '@/api/event'
+import classNames from 'classnames'
 import React from 'react'
 import { convertIDNum, formatTime } from 'utils'
 import { Card } from '../Basic'
 import { EventIcon } from '../Image'
 
-const EventItem = ({ data }: { data: AllEventsItem }) => {
+const EventItem = ({
+  data,
+  className,
+}: {
+  data: AllEventsItem
+  className?: string
+}) => {
   return (
     <Card
       link={`/game/event/${data.id}`}
-      bodyClassName="flex flex-col justify-center items-center"
+      bodyClassName={classNames('flex justify-center items-center flex-col')}
+      className={className}
     >
       <EventIcon id={convertIDNum(data.id)} />
       <div className="flex flex-row gap-x-2 my-2 justify-center">

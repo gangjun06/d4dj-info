@@ -67,7 +67,7 @@ const SideNav = ({
           <a
             className={`flex items-center pl-3 py-3 pr-4 text-gray-50 cursor-pointer ${
               isFocus
-                ? 'bg-primary hover:bg-primary-focus'
+                ? 'bg-indigo-500 hover:bg-indigo-600'
                 : 'hover:bg-gray-900'
             } rounded`}
           >
@@ -223,7 +223,7 @@ export default function MainLayout({
                 className="navbar-burger flex items-center rounded focus:outline-none"
                 onClick={() => setDrawer(!drawer)}
               >
-                <HiOutlineMenu className="text-white bg-primary hover:bg-primary-focus block h-8 w-8 p-2 rounded" />
+                <HiOutlineMenu className="text-white bg-indigo-500 hover:bg-violet-focus block h-8 w-8 p-2 rounded" />
               </button>
             </div>
           </nav>
@@ -243,7 +243,7 @@ export default function MainLayout({
             id="mainContent"
             className="mx-auto lg:ml-72 h-full overflow-y-scroll bg-base-200 overflow-x-hidden"
           >
-            <div className="mx-auto w-full px-8 py-5 md:pb-5 pb-24">
+            <div className="mx-auto w-full px-8 py-5  pb-24 lg:pb-5">
               {breadCrumbs && (
                 <div className="mt-4 mb-2">
                   <BreadCrumbs data={breadCrumbs} />
