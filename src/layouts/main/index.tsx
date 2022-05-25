@@ -59,7 +59,10 @@ const SideNav = ({
   }) => {
     let isFocus =
       router.pathname.startsWith(link) ||
-      (link === '/game/etc' && router.pathname.startsWith('/game/stamp'))
+      (link === '/game/etc' &&
+        (router.pathname.startsWith('/game/stamp') ||
+          router.pathname.startsWith('/game/honor') ||
+          router.pathname.startsWith('/game/stock')))
     if (link === '/' && router.pathname != '/') isFocus = false
     return (
       <li>

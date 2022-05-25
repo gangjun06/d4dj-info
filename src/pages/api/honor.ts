@@ -5,30 +5,45 @@ import {
   FindListType,
   HttpMethod,
 } from '@/types/index'
-import { StampCategory, StampMaster } from '@prisma/client'
+import { HonorMaster, HonorType } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { autoOptions, badRequest, convertListReq, nameSearch } from 'utils'
 
-const stamp = async (req: NextApiRequest, res: NextApiResponse) => {
+const honor = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case HttpMethod.GET:
-      return getStamps(req, res)
+      return gethonors(req, res)
     default:
       res.setHeader('Allow', [HttpMethod.GET])
       return res.status(405).json({ msg: `Method ${req.method} Not Allowed` })
   }
 }
 
-export const StampOptions: FindListOptionSet<AllStampsItem> = {
-  url: '/api/stamp',
+export const honorOptions: FindListOptionSet<HonorMaster> = {
+  url: '/api/honor',
   fields: {
     category: {
       type: FindListType.Checkbox,
       label: 'common:type',
-      name: 'category',
-      options: autoOptions('common:', StampCategory),
+      name: 'type',
+      options: autoOptions('common:', HonorType),
     },
-    ...nameSearch,
+    effect: {
+      type: FindListType.Checkbox,
+      label: 'common:effect',
+      name: 'effect',
+      options: [
+        {
+          label: 'common:o',
+          value: '0',
+        },
+        {
+          label: 'common:x',
+          value: '1',
+        },
+      ],
+    },
+    ...nameSearch(),
   },
   sort: {
     default: 'id',
@@ -36,34 +51,38 @@ export const StampOptions: FindListOptionSet<AllStampsItem> = {
   },
 }
 
-export type AllStampsItem = StampMaster
+export type AllHonorsItem = HonorMaster
 
-export async function getStamps(
+export async function gethonors(
   req: NextApiRequest,
   res: NextApiResponse
-): Promise<void | NextApiResponse<FindListReturn<AllStampsItem>>> {
+): Promise<void | NextApiResponse<FindListReturn<AllHonorsItem>>> {
   try {
     const { sortBy, where, pagination, detail } = convertListReq(
       req,
-      StampOptions
+      honorOptions
     )
 
     if (detail) {
-      const data = await prisma.stampMaster.findUnique({
+      const data = await prisma.honorMaster.findUnique({
         where: { id: detail },
       })
       return res.json({ data: [data] })
     }
 
-    const data = await prisma.stampMaster.findMany({
+    const data = await prisma.honorMaster.findMany({
       ...pagination,
       ...where,
       ...sortBy,
-      // include: {},
+      select: {
+        id: true,
+        name: true,
+      },
     })
 
     return res.json({ data })
   } catch (e) {
+    console.log(e)
     if (e instanceof Error) {
       if (e.message === 'Bad Request') {
         return badRequest(res)
@@ -74,4 +93,4 @@ export async function getStamps(
   }
 }
 
-export default stamp
+export default honor

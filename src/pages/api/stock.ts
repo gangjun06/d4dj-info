@@ -5,30 +5,34 @@ import {
   FindListType,
   HttpMethod,
 } from '@/types/index'
-import { StampCategory, StampMaster } from '@prisma/client'
+import {
+  StockCategory,
+  StockMaster,
+  StockViewCategoryMaster,
+} from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { autoOptions, badRequest, convertListReq, nameSearch } from 'utils'
 
-const stamp = async (req: NextApiRequest, res: NextApiResponse) => {
+const stock = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case HttpMethod.GET:
-      return getStamps(req, res)
+      return getStocks(req, res)
     default:
       res.setHeader('Allow', [HttpMethod.GET])
       return res.status(405).json({ msg: `Method ${req.method} Not Allowed` })
   }
 }
 
-export const StampOptions: FindListOptionSet<AllStampsItem> = {
-  url: '/api/stamp',
+export const StockOptions: FindListOptionSet<AllStocksItem> = {
+  url: '/api/stock',
   fields: {
     category: {
       type: FindListType.Checkbox,
-      label: 'common:type',
+      label: 'common:category',
       name: 'category',
-      options: autoOptions('common:', StampCategory),
+      options: autoOptions('common:stock.', StockCategory),
     },
-    ...nameSearch,
+    ...nameSearch(),
   },
   sort: {
     default: 'id',
@@ -36,34 +40,43 @@ export const StampOptions: FindListOptionSet<AllStampsItem> = {
   },
 }
 
-export type AllStampsItem = StampMaster
+export type AllStocksItem = StockMaster & {
+  viewCategory?: StockViewCategoryMaster
+}
 
-export async function getStamps(
+export async function getStocks(
   req: NextApiRequest,
   res: NextApiResponse
-): Promise<void | NextApiResponse<FindListReturn<AllStampsItem>>> {
+): Promise<void | NextApiResponse<FindListReturn<AllStocksItem>>> {
   try {
     const { sortBy, where, pagination, detail } = convertListReq(
       req,
-      StampOptions
+      StockOptions
     )
 
     if (detail) {
-      const data = await prisma.stampMaster.findUnique({
+      const data = await prisma.stockMaster.findUnique({
         where: { id: detail },
+        include: {
+          viewCategory: true,
+        },
       })
       return res.json({ data: [data] })
     }
 
-    const data = await prisma.stampMaster.findMany({
+    const data = await prisma.stockMaster.findMany({
       ...pagination,
       ...where,
       ...sortBy,
-      // include: {},
+      select: {
+        id: true,
+        name: true,
+      },
     })
 
     return res.json({ data })
   } catch (e) {
+    console.log(e)
     if (e instanceof Error) {
       if (e.message === 'Bad Request') {
         return badRequest(res)
@@ -74,4 +87,4 @@ export async function getStamps(
   }
 }
 
-export default stamp
+export default stock

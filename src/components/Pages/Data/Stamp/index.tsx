@@ -1,13 +1,10 @@
 import { AllStampsItem, StampOptions } from '@/api/stamp'
 import { Modal, Table, TableBody } from '@/components/Basic'
+import { SimpleLoading } from '@/components/Elements'
 import StampItem from '@/components/Pages/Data/Stamp/StampItem'
+import { useRouterState } from '@/hooks/useRouterState'
 import { DataListLayout } from 'layouts/datalist'
-import {
-  default as useTransition,
-  default as useTranslation,
-} from 'next-translate/useTranslation'
-import { useRouter } from 'next/router'
-import { useCallback, useEffect, useState } from 'react'
+import useTranslation from 'next-translate/useTranslation'
 import useSWR from 'swr'
 import { convertIDNum, fetcher } from 'utils'
 import { StampIcon } from '../../../Elements/Image'
@@ -18,15 +15,12 @@ const StampModal = ({ id, onClose }: { id: string; onClose: () => void }) => {
     `/api/stamp?detail=${id}`,
     fetcher
   )
-  if (!data) {
-    return <></>
-  }
-  const stamp = data.data[0]
+
+  const stamp = data ? data.data[0] : null
   return (
     <Modal show={true} showCloseBtn onClose={onClose} center>
-      {error ? (
-        <div>Error</div>
-      ) : (
+      {error && <div>Error</div>}
+      {stamp ? (
         <div>
           <StampIcon id={convertIDNum(stamp.id)} />
           <div className="text-md">{stamp.name}</div>
@@ -35,36 +29,29 @@ const StampModal = ({ id, onClose }: { id: string; onClose: () => void }) => {
             <TableBody
               data={[
                 [t('common:id'), stamp.masterId],
-                [t('common:category'), stamp.category],
+                [
+                  t('common:category'),
+                  t(`common:${stamp.category.toLowerCase()}`),
+                ],
               ]}
             />
           </Table>
         </div>
+      ) : (
+        <SimpleLoading />
       )}
     </Modal>
   )
 }
 
 const StampPage = () => {
-  const { t } = useTransition('')
-  const router = useRouter()
-  const [modalID, setModalID] = useState<string | null>(null)
-
-  const onCloseModal = useCallback(() => {
-    setModalID(null)
-    router.replace('/game/stamp', '/game/stamp', { shallow: true })
-  }, [router])
-
-  useEffect(() => {
-    const find = router.asPath.match(/\d+-\w{2}/)
-    if (find && find.length) setModalID(find[0])
-  }, [router.asPath])
+  const { t } = useTranslation()
+  const { routerState, resetRouterState } = useRouterState('/game/stamp')
 
   return (
     <DataListLayout
-      extra={
-        <>{modalID && <StampModal id={modalID} onClose={onCloseModal} />}</>
-      }
+      showExtra={routerState !== null}
+      extra={<StampModal id={routerState!} onClose={resetRouterState} />}
       option={StampOptions}
       breadCrumbs={[
         { name: t('nav:game.name'), link: '' },

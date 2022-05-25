@@ -301,6 +301,34 @@ export const StampIcon = ({ id }: { id: number }) => {
   )
 }
 
+export const HonorIcon = ({ id }: { id: number }) => {
+  return (
+    <ImageWithFallback
+      urlType={GetURLType.Honor}
+      parameter={[id]}
+      width={322}
+      height={70}
+    />
+  )
+}
+
+export const StockIcon = ({
+  id,
+  frameless,
+}: {
+  id: number
+  frameless?: boolean
+}) => {
+  return (
+    <ImageWithFallback
+      urlType={frameless ? GetURLType.StockFrameless : GetURLType.Stock}
+      parameter={[id]}
+      width={128}
+      height={128}
+    />
+  )
+}
+
 const MusicIconContent = ({ id }: { id: number }) => {
   return (
     <ImageWithFallback

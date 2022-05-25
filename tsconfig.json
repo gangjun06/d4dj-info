@@ -22,7 +22,8 @@
       "@/apollo/*": ["apollo/*"],
       "@/models/*": ["models/*"],
       "@/types/*": ["models/*"],
-      "@/lib/*": ["lib/*"]
+      "@/lib/*": ["lib/*"],
+      "@/hooks/*": ["components/Hooks/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "public/f-adblock.js"],

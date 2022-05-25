@@ -4,6 +4,7 @@
   "default_order": "Default Order",
   "debut_order": "Debut Order",
   "start_date": "Start Date",
+  "view_category": "View Category",
   "default": "Default",
   "category": "Category",
   "title": "D4DJ.Info",
@@ -51,5 +52,26 @@
   "contribute": "Contribute",
   "donate": "Donate",
   "related_link": "Related Links",
-  "sort": "Sort"
+  "sort": "Sort",
+  "stock": {
+    "diamond": "Diamond",
+    "fragment": "Fragment",
+    "exp": "EXP",
+    "skill_exp": "Skill Exp",
+    "limit_break": "Limit Break",
+    "voltage_recovery": "Voltage Recovery",
+    "boost": "Boost",
+    "music_shop": "Music Shop",
+    "event": "Event",
+    "gacha_ticket": "Gacha Ticket",
+    "random": "Random",
+    "parameter_level_up": "Parameter Level Up",
+    "card_stack": "Card Stack",
+    "other": "Other"
+  },
+  "max_amount": "Max Amount",
+  "honor": "Honor",
+  "effect": "Effect",
+  "x": "X",
+  "o": "O"
 }

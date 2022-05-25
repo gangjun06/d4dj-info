@@ -28,7 +28,9 @@
     "unit": {
       "name": "Unit",
       "story": "Unit Story"
-    }
+    },
+    "honor": "칭호",
+    "stock": "Stock"
   },
   "live2d": "Live2D",
   "live2d_viewer": "Live2D Viewer",

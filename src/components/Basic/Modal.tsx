@@ -2,6 +2,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import classNames from 'classnames'
 import useTranslation from 'next-translate/useTranslation'
 import { Fragment, ReactNode, useCallback, useEffect, useState } from 'react'
+import { SimpleLoading } from '../Elements'
 import { Button } from '../Form'
 
 type props = {
@@ -14,6 +15,8 @@ type props = {
   actions?: ReactNode
   icon?: ReactNode
   center?: boolean
+  classNameBody?: string
+  showSimpleLoading?: boolean
 }
 
 export const Modal = ({
@@ -25,6 +28,8 @@ export const Modal = ({
   actions,
   icon,
   center = false,
+  classNameBody,
+  showSimpleLoading,
 }: props) => {
   const { t } = useTranslation()
 
@@ -81,10 +86,11 @@ export const Modal = ({
                     <div
                       className={classNames(
                         `mt-2 w-full`,
+                        classNameBody,
                         center && 'flex justify-center items-center text-center'
                       )}
                     >
-                      {children}
+                      {showSimpleLoading ? <SimpleLoading /> : children}
                     </div>
                   </div>
                 </div>

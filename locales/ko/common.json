@@ -47,5 +47,30 @@
   "contribute": "기여",
   "donate": "후원",
   "related_link": "관련 링크",
-  "category": "카테고리"
+  "category": "카테고리",
+  "region": "게임 서버",
+  "stock": {
+    "diamond": "다이아몬드",
+    "fragment": "각성 재화",
+    "exp": "EXP",
+    "skill_exp": "스킬 Exp",
+    "limit_break": "한계돌파",
+    "voltage_recovery": "볼테이지",
+    "boost": "부스트",
+    "music_shop": "음악",
+    "event": "이벤트",
+    "gacha_ticket": "가챠 티켓",
+    "random": "랜덤",
+    "parameter_level_up": "파라미터 레벨업",
+    "card_stack": "카드 스택",
+    "other": "기타"
+  },
+  "start_date": "시작일",
+  "end_date": "종료일",
+  "max_amount": "최대 개수",
+  "view_category": "보기 카테고리",
+  "honor": "칭호",
+  "effect": "이펙트",
+  "x": "X",
+  "o": "O"
 }

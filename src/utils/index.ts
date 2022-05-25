@@ -53,6 +53,9 @@ export enum GetURLType {
   EventBannerNotice,
   GachaBanner,
   GachaTopBanner,
+  Stock,
+  StockFrameless,
+  Honor,
   Stamp,
 }
 
@@ -91,6 +94,21 @@ const urlList: {
   [GetURLType.CardIcon]: (p: any[]) => [
     `ondemand/card_icon/card_icon_${pad(p[0], 9)}_${p[1]}.jpg`,
     `Card Icon ${p[0]}-${p[1]}`,
+  ],
+  // StockID
+  [GetURLType.Stock]: (p: any[]) => [
+    `ondemand/stock_icon/stock_icon_${pad(p[0], 5)}.png`,
+    `Stock Icon ${p[0]}`,
+  ],
+  // StockID
+  [GetURLType.StockFrameless]: (p: any[]) => [
+    `ondemand/stock_icon_frameless/stock_icon_${pad(p[0], 5)}_frameless.png`,
+    `Stock Icon ${p[0]}`,
+  ],
+  // HnonrID
+  [GetURLType.Honor]: (p: any[]) => [
+    `ondemand/honor/honor_${pad(p[0], 5)}.png`,
+    `Honor Icon ${p[0]}`,
   ],
   // CardID, 0/1
   [GetURLType.CardBigIcon]: (p: any[]) => [
@@ -330,7 +348,11 @@ export const convertListReq = (
         ...where,
         ...(field.customOptionHandler
           ? field.customOptionHandler(queryData, region)
-          : {}),
+          : {
+              [field.name]: {
+                in: queryData,
+              },
+            }),
       }
     } else if (field.type === FindListType.Input) {
       where = {
@@ -375,3 +397,17 @@ export const strToObj = (key: string, value: any) =>
   key.split('.').reduceRight((prev, cur) => ({ [cur]: prev }), value)
 
 export const fetcher = (url: string) => fetch(url).then((r) => r.json())
+
+const camelToSnakeCase = (str: string) => {
+  const slice = str.slice(1)
+  return `${str[0].toLowerCase()}${slice.replace(
+    /[A-Z]/g,
+    (letter) => `_${letter.toLowerCase()}`
+  )}`
+}
+
+export const autoOptions = (baseLabel: string, enumField: any) =>
+  Object.keys(enumField).map((key) => ({
+    label: `${baseLabel}${camelToSnakeCase(enumField[key] as string)}`,
+    value: enumField[key],
+  }))

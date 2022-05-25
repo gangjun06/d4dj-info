@@ -15,7 +15,8 @@ import { cleanForm, parseFilterQuery } from 'utils'
 interface props<T> extends MainProps {
   option: FindListOptionSet<T>
   children: (props: { data: T }) => ReactElement
-  extra?: ReactElement
+  extra?: ReactElement | null
+  showExtra?: boolean
 }
 
 const FormItemBuilder = ({
@@ -77,6 +78,7 @@ export const DataListLayout = <T,>({
   breadCrumbs,
   children,
   option,
+  showExtra,
   extra,
 }: props<T>) => {
   const router = useRouter()
@@ -182,7 +184,12 @@ export const DataListLayout = <T,>({
           type={FindListType.Radio}
         />
       </SideOver>
-      {extra}
+      {showExtra === undefined ? (
+        <>{extra}</>
+      ) : (
+        showExtra === true && <>{extra}</>
+      )}
+
       <InfiniteScroll
         next={fetchData}
         hasMore={hasMore}

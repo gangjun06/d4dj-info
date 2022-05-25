@@ -41,3 +41,17 @@ export const unitField = (key: string): FindListField => ({
       in: (value as string[]).map((d) => `${d}-${region}`),
     }),
 })
+
+export const nameSearch = () => ({
+  name: {
+    type: FindListType.Input,
+    label: 'common:name',
+    name: 'name',
+    placeholder: 'common:enter_name',
+    customOptionHandler: (value: string | string[]) => ({
+      name: {
+        contains: value,
+      },
+    }),
+  },
+})
