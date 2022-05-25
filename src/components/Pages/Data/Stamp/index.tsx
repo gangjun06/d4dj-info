@@ -1,6 +1,6 @@
 import { AllStampsItem, StampOptions } from '@/api/stamp'
 import { Modal, Table, TableBody } from '@/components/Basic'
-import StampItem from '@/components/Elements/StampItem'
+import StampItem from '@/components/Pages/Data/Stamp/StampItem'
 import { DataListLayout } from 'layouts/datalist'
 import {
   default as useTransition,
@@ -10,7 +10,7 @@ import { useRouter } from 'next/router'
 import { useCallback, useEffect, useState } from 'react'
 import useSWR from 'swr'
 import { convertIDNum, fetcher } from 'utils'
-import { StampIcon } from '../Image'
+import { StampIcon } from '../../../Elements/Image'
 
 const StampModal = ({ id, onClose }: { id: string; onClose: () => void }) => {
   const { t } = useTranslation()
@@ -45,7 +45,7 @@ const StampModal = ({ id, onClose }: { id: string; onClose: () => void }) => {
   )
 }
 
-const StampList = () => {
+const StampPage = () => {
   const { t } = useTransition('')
   const router = useRouter()
   const [modalID, setModalID] = useState<string | null>(null)
@@ -77,4 +77,4 @@ const StampList = () => {
   )
 }
 
-export default StampList
+export default StampPage

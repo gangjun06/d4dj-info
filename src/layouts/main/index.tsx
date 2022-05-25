@@ -1,4 +1,4 @@
-import { SettingContext } from '@/components/Setting'
+import { SettingContext } from '@/components/Elements/Setting'
 import { BreadCrumbs, BreadCrumbsData } from '@/components/UI'
 import { NextSeo } from 'next-seo'
 import useTransition from 'next-translate/useTranslation'

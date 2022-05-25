@@ -104,7 +104,7 @@ const parseTarget = async (region: string, name: string) => {
 
 export const parse = async (name?: string) => {
   await prisma.$connect()
-  const region = 'jp'
+  const region = 'en'
 
   const json = fs.readFileSync(path.join(__dirname, 'data/result.json'))
   const data = JSON.parse(json.toString()) as ResultType[]

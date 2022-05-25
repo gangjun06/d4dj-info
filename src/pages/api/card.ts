@@ -1,4 +1,4 @@
-import { CardAttributeIcon, CardRarityIcon } from '@/components/Image'
+import { CardAttributeIcon, CardRarityIcon } from '@/components/Elements/Image'
 import prisma from '@/lib/prisma'
 import {
   Attribute,

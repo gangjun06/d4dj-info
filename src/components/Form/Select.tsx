@@ -4,7 +4,7 @@ import useTranslation from 'next-translate/useTranslation'
 import { Fragment } from 'react'
 import { Control, Controller } from 'react-hook-form'
 import { HiCheck, HiOutlineSelector } from 'react-icons/hi'
-import { ImageWithFallback } from '../Image'
+import { ImageWithFallback } from '../Elements/Image'
 
 type DataType = {
   id: string | number

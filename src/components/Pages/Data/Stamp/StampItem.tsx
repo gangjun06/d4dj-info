@@ -2,8 +2,8 @@ import { AllStampsItem } from '@/api/stamp'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { convertIDNum } from 'utils'
-import { Card } from '../Basic'
-import { StampIcon } from '../Image'
+import { Card } from '../../../Basic'
+import { StampIcon } from '../../../Elements/Image'
 
 const StampItem = ({ data }: { data: AllStampsItem }) => {
   const router = useRouter()

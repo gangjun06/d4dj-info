@@ -1,6 +1,6 @@
 import { GetAggregationResult } from '@/api/event/aggregation'
 import { Card, Disclosure, Modal, Table, TableBody } from '@/components/Basic'
-import { CharacterIcon, EventIcon, Image } from '@/components/Image'
+import { CharacterIcon, EventIcon, Image } from '@/components/Elements/Image'
 import prisma from '@/lib/prisma'
 import { EventAggregationBaseMaster, EventMaster } from '@prisma/client'
 import MainLayout from 'layouts/main'

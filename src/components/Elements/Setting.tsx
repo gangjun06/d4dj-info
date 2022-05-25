@@ -1,3 +1,5 @@
+import { Modal } from '@/components/Basic/Modal'
+import { Button, FormBlock, Radio } from '@/components/Form'
 import { Region } from '@/models/index'
 import setLanguage from 'next-translate/setLanguage'
 import useTransition from 'next-translate/useTranslation'
@@ -10,8 +12,6 @@ import {
 } from 'react'
 import { useForm } from 'react-hook-form'
 import { loadRegion } from 'utils'
-import { Modal } from './Basic'
-import { Button, FormBlock, Radio } from './Form'
 
 type ContextType = {
   show: boolean
@@ -34,7 +34,7 @@ export const SettingProvider = ({ children }: { children: ReactNode }) => {
   const [region, setRegion] = useState<Region>(() => loadRegion())
   const { t, lang } = useTransition()
 
-  const { handleSubmit, control, register } = useForm<FormData>({
+  const { handleSubmit, register } = useForm<FormData>({
     defaultValues: {
       lang: lang ?? 'en',
       region,

@@ -1,19 +1,14 @@
 import '@/assets/styles.css'
-import { SettingProvider } from '@/components/Setting'
-import { ApolloProvider } from '@apollo/client'
-import { client } from 'lib/apollo'
+import { SettingProvider } from '@/components/Elements/Setting'
 import setLanguage from 'next-translate/setLanguage'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
-import { useRouter } from 'next/router'
 import NextNProgress from 'nextjs-progressbar'
 import { useEffect } from 'react'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const router = useRouter()
-
   useEffect(() => {
     const lang = localStorage.getItem('lang')
     if (lang) {
@@ -33,13 +28,13 @@ function MyApp({ Component, pageProps }: AppProps) {
           ></script>
         </Head>
       </Head>
-      <ApolloProvider client={client}>
-        <SettingProvider>
-          <NextNProgress color={'#6366f1'} />
-          <ToastContainer position="top-center" />
-          <Component {...pageProps} />
-        </SettingProvider>
-      </ApolloProvider>
+      <SettingProvider>
+        {/*@ts-ignore*/}
+        <NextNProgress color={'#6366f1'} />
+        <ToastContainer position="top-center" />
+        {/*@ts-ignore*/}
+        <Component {...pageProps} />
+      </SettingProvider>
     </>
   )
 }

@@ -1,6 +1,6 @@
 import { Card, Disclosure, Tab, Table, TableBody } from '@/components/Basic'
 import { ChartRadar, ChartViewer } from '@/components/Chart'
-import { MusicIcon } from '@/components/Image'
+import { MusicIcon } from '@/components/Elements/Image'
 import {
   Enum_Componentmusicchartnotecount_Section,
   MusicDocument,

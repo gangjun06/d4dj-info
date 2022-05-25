@@ -1,5 +1,5 @@
 import { Card } from '@/components/Basic'
-import { CharacterIcon } from '@/components/Image'
+import { CharacterIcon } from '@/components/Elements/Image'
 import prisma from '@/lib/prisma'
 import { CharacterMaster, UnitMaster } from '@prisma/client'
 import MainLayout from 'layouts/main'

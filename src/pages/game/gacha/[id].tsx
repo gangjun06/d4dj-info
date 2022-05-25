@@ -6,7 +6,7 @@ import {
   TextFormat,
 } from '@/components/Basic'
 import { CardItem } from '@/components/Elements'
-import { GachaIcon } from '@/components/Image'
+import { GachaIcon } from '@/components/Elements/Image'
 import prisma from '@/lib/prisma'
 import {
   GachaExplanationWordMaster,

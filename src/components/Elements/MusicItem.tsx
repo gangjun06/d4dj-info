@@ -3,7 +3,7 @@ import useTranslation from 'next-translate/useTranslation'
 import React from 'react'
 import { convertIDNum } from 'utils'
 import { Card } from '../Basic'
-import { MusicIcon } from '../Image'
+import { MusicIcon } from './Image'
 
 const MusicItem = ({ data }: { data: AllMusicsItem }) => {
   const { t } = useTranslation()

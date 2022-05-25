@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import React from 'react'
 import { convertIDNum, formatTime } from 'utils'
 import { Card } from '../Basic'
-import { EventIcon } from '../Image'
+import { EventIcon } from './Image'
 
 const EventItem = ({
   data,

@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import React from 'react'
 import { convertIDNum, formatTime } from 'utils'
 import { Card } from '../Basic'
-import { GachaIcon } from '../Image'
+import { GachaIcon } from './Image'
 
 const GachaItem = ({
   data,

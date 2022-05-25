@@ -1,5 +1,5 @@
 import { Card, Disclosure, Modal, Table, TableBody } from '@/components/Basic'
-import { CardIcon, Image } from '@/components/Image'
+import { CardIcon, Image } from '@/components/Elements/Image'
 import prisma from '@/lib/prisma'
 import {
   CardMaster,

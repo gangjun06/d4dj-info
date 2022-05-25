@@ -1,7 +1,7 @@
 import { AllCardsItem } from '@/api/card'
 import { Card, Disclosure, Table, TableBody } from '@/components/Basic'
 import { CardItem } from '@/components/Elements'
-import { CharacterIcon, Image } from '@/components/Image'
+import { CharacterIcon, Image } from '@/components/Elements/Image'
 import prisma from '@/lib/prisma'
 import { CharacterMaster, UnitMaster } from '@prisma/client'
 import MainLayout from 'layouts/main'

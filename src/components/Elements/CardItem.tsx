@@ -2,7 +2,7 @@ import useTranslation from 'next-translate/useTranslation'
 import React from 'react'
 import { convertIDNum } from 'utils'
 import { Card } from '../Basic'
-import { CardIcon } from '../Image'
+import { CardIcon } from './Image'
 
 const CardItem = ({
   data,

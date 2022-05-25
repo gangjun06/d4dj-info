@@ -1,4 +1,4 @@
-import StampPage from '@/components/Elements/StampPage'
+import { StampPage } from '@/components/Pages'
 
 export default function StampList() {
   return <StampPage />
