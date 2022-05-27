@@ -35,3 +35,6 @@ yarn-error.log*
 
 src/template_assets
 .vscode
+.env
+
+temp.md

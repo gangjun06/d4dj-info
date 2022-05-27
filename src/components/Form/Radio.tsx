@@ -1,12 +1,13 @@
+import { ReactElement } from 'react'
 import { Control, Controller } from 'react-hook-form'
 
 type props = {
-  list: { label: string; value: string }[]
-  control: Control<any, object>
+  list: { label?: string; value: any; component?: ReactElement }[]
   name: string
+  control: Control<any, object>
 }
 
-export function Radio({ name, control, list }: props) {
+export function Radio({ name, list, control }: props) {
   return (
     <div className="flex flex-row gap-x-4 flex-wrap">
       <Controller

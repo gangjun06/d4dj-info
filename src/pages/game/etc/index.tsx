@@ -32,6 +32,24 @@ export default function Etc() {
             <HiChevronRight size={22} />
           </div>
         </Card>
+        <Card link="/game/stamp">
+          <div className="flex justify-between items-center">
+            <div>{t('nav:game.stamp')}</div>
+            <HiChevronRight size={22} />
+          </div>
+        </Card>
+        <Card link="/game/stock">
+          <div className="flex justify-between items-center">
+            <div>{t('nav:game.stock')}</div>
+            <HiChevronRight size={22} />
+          </div>
+        </Card>
+        <Card link="/game/honor">
+          <div className="flex justify-between items-center">
+            <div>{t('nav:game.honor')}</div>
+            <HiChevronRight size={22} />
+          </div>
+        </Card>
       </div>
     </MainLayout>
   )

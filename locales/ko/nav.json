@@ -1,24 +1,17 @@
 {
-  "main": {
-    "name": "메인",
-    "dashboard": "대시보드",
-    "calendar": "캘린더"
-  },
+  "about": "사이트 정보",
   "game": {
-    "name": "게임",
-    "unit": {
-      "name": "유닛",
-      "story": "유닛 스토리"
-    },
+    "card": "카드",
+    "card_detail": "카드 정보",
     "character": {
       "name": "캐릭터",
       "story": "캐릭터 스토리"
     },
     "character_detail": "캐릭터 정보",
-    "card": "카드",
-    "card_detail": "카드 정보",
-    "music": "노래",
-    "music_detail": "노래 정보",
+    "etc": {
+      "exp": "경험치 계산기",
+      "name": "기타"
+    },
     "event": {
       "name": "이벤트",
       "story": "이벤트 스토리"
@@ -27,14 +20,24 @@
     "gacha": "가챠",
     "gacha_detail": "가챠 정보",
     "gallery": "갤러리",
-    "etc": {
-      "name": "기타",
-      "exp": "경험치 계산기"
-    }
+    "music": "노래",
+    "music_detail": "노래 정보",
+    "name": "게임",
+    "unit": {
+      "name": "유닛",
+      "story": "유닛 스토리"
+    },
+    "stamp": "스템프",
+    "stock": "재화",
+    "honor": "칭호"
+  },
+  "live2d": "라이브2D",
+  "live2d_viewer": "라이브2D 뷰어",
+  "main": {
+    "calendar": "캘린더",
+    "dashboard": "대시보드",
+    "name": "메인"
   },
   "story": "스토리",
-  "story_viewer": "스토리 뷰어",
-  "about": "사이트 정보",
-  "live2d": "라이브2D",
-  "live2d_viewer": "라이브2D 뷰어"
+  "story_viewer": "스토리 뷰어"
 }

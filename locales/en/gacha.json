@@ -1,12 +1,27 @@
 {
-  "info": "Gacha Info",
-  "id": "Gacha ID",
-  "pickup_cards": "Pickup Cards",
+  "category": "Category",
+  "categories": {
+    "normal": "Normal",
+    "tutorial": "Tutorial",
+    "event": "Event",
+    "birthday": "Birthday",
+    "startdash": "StartDash",
+    "revival": "Revival",
+    "special": "Special"
+  },
   "descriptions": "Descriptions",
-  "note": "Note",
   "detail": "Detail",
-  "startdate": "Start Date",
   "enddate": "End Date",
+  "id": "Gacha ID",
+  "info": "Gacha Info",
+  "note": "Note",
+  "pickup_cards": "Pickup Cards",
+  "startdate": "Start Date",
   "type": "Type",
-  "category": "Category"
+  "summary": "Summary",
+  "types": {
+    "audition": "Audition",
+    "normal": "Normal",
+    "stepUp": "Step"
+  }
 }

@@ -1,41 +1,44 @@
 {
-  "main": {
-    "name": "Main",
-    "dashboard": "Dashboard",
-    "calendar": "Calendar"
-  },
+  "about": "Website Info",
   "game": {
-    "name": "Game",
+    "card": "Card",
+    "card_detail": "Card Detail",
     "character": {
       "name": "Character",
       "story": "Character Story"
     },
     "character_detail": "Characater Detail",
-    "unit": {
-      "name": "Unit",
-      "story": "Unit Story"
+    "etc": {
+      "exp": "Exp Calculator",
+      "name": "Etc"
     },
-    "card": "Card",
-    "card_detail": "Card Detail",
-    "music": "Music",
-    "music_detail": "Music Detail",
     "event": {
       "name": "Event",
       "story": "Event Story"
     },
+    "stamp": "Stamp",
     "event_detail": "Event Detail",
     "gacha": "Gacha",
     "gacha_detail": "Gacha Detail",
     "gallery": "Gallery",
+    "music": "Music",
+    "music_detail": "Music Detail",
+    "name": "Game",
     "story": "Story",
-    "etc": {
-      "name": "Etc",
-      "exp": "Exp Calculator"
-    }
+    "unit": {
+      "name": "Unit",
+      "story": "Unit Story"
+    },
+    "honor": "Honor",
+    "stock": "Stock"
+  },
+  "live2d": "Live2D",
+  "live2d_viewer": "Live2D Viewer",
+  "main": {
+    "calendar": "Calendar",
+    "dashboard": "Dashboard",
+    "name": "Main"
   },
   "story": "Story",
-  "story_viewer": "Story Viewer",
-  "about": "사이트 정보",
-  "live2d": "Live2D",
-  "live2d_viewer": "Live2D Viewer"
+  "story_viewer": "Story Viewer"
 }

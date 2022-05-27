@@ -1,24 +1,44 @@
 import Link from 'next/link'
 import { ReactNode } from 'react'
 
-export const Table = ({ children }: { children: ReactNode }) => (
-  <table className="table w-full mt-3 table-compact overflow-x-scroll relative">
-    {children}
-  </table>
-)
+export const Table = ({
+  children,
+  className,
+}: {
+  children: ReactNode
+  className?: string
+}) => {
+  return (
+    <table
+      className={`table-auto border-collapse w-full overflow-x-scroll relative ${
+        className || ''
+      }`}
+    >
+      {children}
+    </table>
+  )
+}
 
 export type TableBodyInput = {
-  name?: string
+  name?: string | null
   link?: string
   onClick?: () => void
 }
+export type TableBodyDataType = (
+  | TableBodyInput
+  | string
+  | number
+  | undefined
+  | null
+  | boolean
+)[][]
 
 export const TableBody = ({
   children,
   data,
 }: {
   children?: ReactNode
-  data?: (TableBodyInput | string | number | undefined)[][]
+  data?: TableBodyDataType
 }) => {
   if (children) {
     return <tbody>{children}</tbody>
@@ -26,12 +46,11 @@ export const TableBody = ({
   return (
     <tbody>
       {data?.map((item, i) => {
-        // if (item[1] === undefined || item[1] == null) continue;
         return (
           <tr key={i}>
             {item.map((item, j) => (
               <td key={j}>
-                {typeof item === 'object' ? (
+                {item && typeof item === 'object' ? (
                   item.onClick ? (
                     <div className="link link-primary" onClick={item.onClick}>
                       {item.name || 'X'}
@@ -42,7 +61,13 @@ export const TableBody = ({
                     </Link>
                   )
                 ) : (
-                  <>{item || 'X'}</>
+                  <>
+                    {typeof item === 'boolean'
+                      ? item
+                        ? 'O'
+                        : 'X'
+                      : item || 'X'}
+                  </>
                 )}
               </td>
             ))}

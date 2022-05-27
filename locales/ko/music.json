@@ -1,24 +1,38 @@
 {
-  "category": {
-    "name": "카테고리",
-    "instrumental": "반주",
-    "original": "오리지널",
-    "cover": "커버",
-    "game": "게임",
-    "collabo": "콜라보"
-  },
-  "info": "음악 정보",
-  "chart_info": "채보 정보",
-  "chart_preview": "채보 미리보기",
-  "trends": "채보 레이터",
-  "id": "ID",
-  "composer": "작곡가",
-  "lyrist": "작사가",
   "arranger": "편곡자",
   "bpm": "BPM",
-  "startdate": "시작일",
+  "category": {
+    "collabo": "콜라보",
+    "cover": "커버",
+    "game": "게임",
+    "instrumental": "반주",
+    "name": "카테고리",
+    "original": "오리지널"
+  },
+  "chart_designer": "채보 제작자",
+  "chart_info": "채보 정보",
+  "chart_preview": "채보 미리보기",
+  "composer": "작곡가",
+  "section": "파트",
+  "sections": {
+    "begin": "처음",
+    "djsimulator": "DJ 시뮬레이터",
+    "end": "끝",
+    "middle": "중간"
+  },
   "enddate": "끝나는일",
-  "unit": "유닛",
+  "id": "ID",
+  "info": "음악 정보",
+  "lyrist": "작사가",
   "note_count": "노트 갯수",
-  "chart_designer": "채보 제작자"
+  "startdate": "시작일",
+  "start_time": "시작 시간",
+  "start_time_bpm": "시작 시간 BPM",
+  "medly": "메들리",
+  "trends": "채보 레이터",
+  "unit": "유닛",
+  "end_time": "끝나는 시간",
+  "end_time_bpm": "끝나는 시간 BPM",
+  "long_mix_start": "롱 믹스 시작",
+  "long_mix_end": "롱 믹스 끝"
 }

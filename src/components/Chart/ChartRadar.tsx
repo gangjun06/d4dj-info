@@ -39,9 +39,18 @@ const defaultdb = [
   },
 ]
 
-export function ChartRadar(props: {
-  data: { data: number[]; label: string }[]
-  labels: string[]
+export function ChartRadar({
+  data,
+  title,
+}: {
+  data: {
+    notes?: number | null
+    danger?: number | null
+    scratch?: number | null
+    effect?: number | null
+    technique?: number | null
+  }
+  title: string
 }) {
   return (
     <Radar
@@ -55,12 +64,19 @@ export function ChartRadar(props: {
         },
       }}
       data={{
-        labels: props.labels,
-        datasets: props.data.map((item, index) => ({
-          label: item.label,
-          data: item.data,
-          ...defaultdb[index],
-        })),
+        labels: ['Notes', 'Danger', 'Scratch', 'Effect', 'Technique'],
+        datasets: [
+          {
+            label: title,
+            data: [
+              data.notes,
+              data.danger,
+              data.scratch,
+              data.effect,
+              data.technique,
+            ],
+          },
+        ],
       }}
     />
   )

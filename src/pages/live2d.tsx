@@ -1,10 +1,10 @@
-import Live2DHeader from '@/components/Live2DHeader'
+import Live2DHeader from '@/components/Pages/Live2D/Live2DHeader'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
-const Live2DView = dynamic(() => import('@/components/Live2D'), {
+const Live2DView = dynamic(() => import('@/components/Pages/Live2D'), {
   ssr: false,
 
   // eslint-disable-next-line react/display-name

@@ -1,16 +1,18 @@
-import { GetUnitRes, GET_UNIT } from '@/apollo/gql'
 import { Card } from '@/components/Basic'
-import { CharacterIcon } from '@/components/Image'
-import { WaitQuery } from '@/components/Util'
-import { useQuery } from '@apollo/client'
+import { CharacterIcon } from '@/components/Elements/Image'
+import prisma from '@/lib/prisma'
+import { CharacterMaster, UnitMaster } from '@prisma/client'
 import MainLayout from 'layouts/main'
+import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import useTransition from 'next-translate/useTranslation'
 import Link from 'next/link'
-import { HiOutlineBookOpen } from 'react-icons/hi'
+import { Fragment } from 'react'
 
-export default function Character() {
+export const Character = ({
+  units,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { t } = useTransition('')
-  const { loading, error, data } = useQuery<GetUnitRes>(GET_UNIT)
+
   return (
     <MainLayout
       title={t('nav:game.character.name')}
@@ -19,46 +21,57 @@ export default function Character() {
         { name: t('nav:game.character.name'), link: '/game/character' },
       ]}
     >
-      <WaitQuery loading={loading} error={error}>
-        <div>
-          {data?.unit.map((item) => {
-            if (!item.characters.length) return <></>
-            return (
-              <Card
-                className="mb-3"
-                title={item.name}
-                key={item.id}
-                right={
-                  <Link href={`/game/unit/${item.id}/story`} passHref>
-                    <HiOutlineBookOpen
-                      size={22}
-                      className="cursor-pointer text-gray-600"
-                    />
+      {units.map(({ id, characters, name }) => {
+        if (!characters.length) return <Fragment key={id}></Fragment>
+        return (
+          <Card
+            className="mb-3"
+            title={name}
+            key={id}
+            // right={
+            //   <Link href={`/game/unit/${id}/story`} passHref>
+            //     <a>
+            //       <HiOutlineBookOpen size={22} className="text-gray-600" />
+            //     </a>
+            //   </Link>
+            // }
+          >
+            <div className="flex justify-around flex-wrap">
+              {characters.map(
+                ({ id, masterId, fullNameEnglish, firstNameEnglish }) => (
+                  <Link href={`/game/character/${id}`} passHref key={id}>
+                    <a className="flex flex-col justify-center items-center">
+                      <CharacterIcon id={masterId} alt={fullNameEnglish} />
+                      {fullNameEnglish || firstNameEnglish}
+                    </a>
                   </Link>
-                }
-              >
-                <div className="flex justify-around flex-wrap">
-                  {item.characters.map((item) => (
-                    <Link
-                      href={`/game/character/${item.id}`}
-                      passHref
-                      key={item.id}
-                    >
-                      <a className="flex flex-col justify-center items-center">
-                        <CharacterIcon
-                          id={item.id}
-                          alt={item.fullNameEnglish}
-                        />
-                        {item.fullNameEnglish || item.firstNameEnglish}
-                      </a>
-                    </Link>
-                  ))}
-                </div>
-              </Card>
-            )
-          })}
-        </div>
-      </WaitQuery>
+                )
+              )}
+            </div>
+          </Card>
+        )
+      })}
     </MainLayout>
   )
 }
+
+export const getStaticProps: GetStaticProps<{
+  units: (UnitMaster & {
+    characters: CharacterMaster[]
+  })[]
+}> = async () => {
+  const data = await prisma.unitMaster.findMany({
+    include: {
+      characters: true,
+    },
+  })
+
+  return {
+    props: {
+      units: data,
+    },
+    revalidate: 3600,
+  }
+}
+
+export default Character

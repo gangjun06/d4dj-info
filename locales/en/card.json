@@ -1,40 +1,39 @@
 {
-  "info": "Card Info",
-  "id": "Card ID",
-  "skill_name": "Skill Name",
-  "skill": {
-    "id": "Skill ID",
-    "minRecovery": "Min Recovery",
-    "maxRecovery": "Max Recovery",
-    "minSeconds": "Min Seconds",
-    "maxSeconds": "Max Seconds",
-    "scoreUpRate": "Score Up Rate",
-    "perfectScoreUpRate": "Perfect Score Up Rate"
+  "enddate": "End Date",
+  "illustrations": {
+    "big_icon": "Big Icon",
+    "icon": "Icon",
+    "illustration": "Illustration",
+    "illustration1": "Illustration - 1",
+    "name": "Illustrations",
+    "sd": "SD",
+    "transparent": "Transparent",
+    "transparent1": "Transparent - 1"
   },
+  "info": "Card Info",
   "parameter": {
     "heart": "Heart",
-    "technique": "Technique",
     "physical": "Physical",
+    "technique": "Technique",
     "total": "Total Strength"
   },
-  "startdate": "Start Date",
-  "enddate": "End Date",
   "rarity": {
-    "name": "Rarity",
     "1": "⭐",
     "2": "⭐⭐",
     "3": "⭐⭐⭐",
     "4": "⭐⭐⭐⭐",
-    "7": "🌟🌟🌟🌟"
+    "7": "🌟🌟🌟🌟",
+    "name": "Rarity"
   },
-  "illustrations": {
-    "name": "Illustrations",
-    "illustration": "Illustration",
-    "illustration1": "Illustration - 1",
-    "icon": "Icon",
-    "big_icon": "Big Icon",
-    "sd": "SD",
-    "transparent": "Transparent",
-    "transparent1": "Transparent - 1"
-  }
+  "skill": {
+    "id": "Skill ID",
+    "maxRecovery": "Max Recovery",
+    "maxSeconds": "Max Seconds",
+    "minRecovery": "Min Recovery",
+    "minSeconds": "Min Seconds",
+    "perfectScoreUpRate": "Perfect Score Up Rate",
+    "scoreUpRate": "Score Up Rate"
+  },
+  "skill_name": "Skill Name",
+  "startdate": "Start Date"
 }

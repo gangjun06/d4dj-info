@@ -1,18 +1,18 @@
-import { formatToTimeZone } from 'date-fns-timezone'
+import { format, parseISO } from 'date-fns'
 
-export const formatTime = (time: number | Date) =>
-  time > 4000000000000
-    ? 'X'
-    : formatToTimeZone(time, 'YY.MM.DD. hh:mm', {
-        timeZone: 'Etc/GMT+0',
-      })
+export const formatTime = (time: string | Date) => {
+  const date: Date = typeof time === 'string' ? parseISO(time) : time
+  if (date.getTime() > 4000000000000) return 'X'
 
-export const formatTimeDetail = (time: number | Date) =>
-  time > 4000000000000
-    ? 'X'
-    : formatToTimeZone(time, 'YY.MM.DD. hh:mm', {
-        timeZone: 'Etc/GMT+0',
-      })
+  return format(date, 'yy.MM.dd.')
+}
+
+export const formatTimeDetail = (time: string | Date) => {
+  const date: Date = typeof time === 'string' ? parseISO(time) : time
+  if (date.getTime() > 4000000000000) return 'X'
+
+  return format(date, 'yy.MM.dd. HH:mm:ss')
+}
 
 export const delay = (time: number) =>
   new Promise((resolve) => {

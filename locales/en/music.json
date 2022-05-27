@@ -1,24 +1,34 @@
 {
-  "category": {
-    "name": "Category",
-    "instrumental": "Instrumental",
-    "original": "Original",
-    "cover": "Cover",
-    "game": "Game",
-    "collabo": "Collabo"
-  },
-  "info": "Music Info",
-  "chart_info": "Chart Info",
-  "chart_preview": "Chart Preview",
-  "trends": "Chart Radar",
-  "id": "ID",
-  "composer": "Composer",
-  "lyrist": "Lyrist",
   "arranger": "Arranger",
   "bpm": "BPM",
-  "startdate": "Start Date",
-  "enddate": "End Date",
-  "unit": "Unit",
+  "category": {
+    "collabo": "Collabo",
+    "cover": "Cover",
+    "game": "Game",
+    "instrumental": "Instrumental",
+    "name": "Category",
+    "original": "Original"
+  },
+  "chart_designer": "Chart Designer",
+  "chart_info": "Chart Info",
+  "chart_preview": "Chart Preview",
+  "composer": "Composer",
+  "end_time": "End Time",
+  "end_time_bpm": "End Time BPM",
+  "info": "Music Info",
+  "long_mix_end": "Long Mix End",
+  "long_mix_start": "Long Mix Start",
+  "lyrist": "Lyrist",
+  "medly": "Medly",
   "note_count": "Note Count",
-  "chart_designer": "Chart Designer"
+  "section": "Section",
+  "sections": {
+    "begin": "Begin",
+    "djsimulator": "DJ Simulator",
+    "end": "End",
+    "middle": "Middle"
+  },
+  "start_time": "Start Time",
+  "start_time_bpm": "Start Time BPM",
+  "trends": "Chart Radar"
 }

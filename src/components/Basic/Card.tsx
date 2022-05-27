@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import Link from 'next/link'
 import React, { ReactNode } from 'react'
 import { UrlObject } from 'url'
@@ -10,6 +11,7 @@ const Card = ({
   bodyClassName = '',
   bodyStyle,
   link,
+  onClick = () => {},
 }: {
   children: ReactNode
   right?: ReactNode
@@ -18,32 +20,38 @@ const Card = ({
   bodyClassName?: string
   bodyStyle?: React.CSSProperties
   link?: string | UrlObject
+  onClick?: () => void
 }) => {
+  const cardClass = classNames(
+    `px-8 py-8 shadow-sm bg-white rounded-lg border`,
+    className
+  )
+
   const InnerContent = () => (
-    <div className="card-body bg-base-100">
+    <>
       {title && (
         <div className="flex items-center justify-between">
-          <h2 className="card-title">{title}</h2>
+          <h2 className="font-semibold mb-3 text-xl">{title}</h2>
           {right && right}
         </div>
       )}
-      <div style={bodyStyle} className={`h-full ${bodyClassName}`}>
+      <div style={bodyStyle} className={classNames(`h-full`, bodyClassName)}>
         {children}
       </div>
-    </div>
+    </>
   )
 
   if (link) {
     return (
       <Link href={link} passHref>
-        <a className={`card shadow ${className}`}>
+        <a className={cardClass}>
           <InnerContent />
         </a>
       </Link>
     )
   }
   return (
-    <div className={`card shadow ${className}`}>
+    <div className={cardClass} onClick={onClick}>
       <InnerContent />
     </div>
   )

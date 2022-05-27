@@ -1,12 +1,27 @@
 {
-  "info": "가챠 정보",
-  "id": "가챠 ID",
-  "pickup_cards": "픽업 카드",
+  "category": "카테고리",
   "descriptions": "설명들",
-  "note": "노트",
   "detail": "내용",
-  "startdate": "시작일",
   "enddate": "종료일",
+  "id": "가챠 ID",
+  "info": "가챠 정보",
+  "note": "노트",
+  "pickup_cards": "픽업 카드",
+  "startdate": "시작일",
   "type": "타입",
-  "category": "카테고리"
+  "summary": "요약",
+  "categories": {
+    "normal": "일반",
+    "tutorial": "튜토리얼",
+    "event": "이벤트",
+    "birthday": "생일",
+    "startdash": "스타트대시",
+    "revival": "복각",
+    "special": "스페셜"
+  },
+  "types": {
+    "audition": "오디션",
+    "normal": "일반",
+    "stepUp": "스텝"
+  }
 }

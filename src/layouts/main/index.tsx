@@ -1,4 +1,5 @@
-import { SettingContext, SettingProvider } from '@/components/Setting'
+import { SettingContext } from '@/components/Elements/Setting'
+import { BreadCrumbs, BreadCrumbsData } from '@/components/UI'
 import { NextSeo } from 'next-seo'
 import useTransition from 'next-translate/useTranslation'
 import Link from 'next/link'
@@ -34,11 +35,6 @@ const NavbarGroup = ({
   )
 }
 
-type breadCrumbs = {
-  name: string
-  link: string
-}
-
 const SideNav = ({
   isOpen,
   showTitle,
@@ -50,7 +46,7 @@ const SideNav = ({
 }) => {
   const router = useRouter()
   const { t } = useTransition('')
-  const [, setShow] = useContext(SettingContext)!
+  const { openSetting } = useContext(SettingContext)!
 
   const NavItem = ({
     label,
@@ -61,7 +57,12 @@ const SideNav = ({
     link: string
     Icon: IconType
   }) => {
-    let isFocus = router.pathname.startsWith(link)
+    let isFocus =
+      router.pathname.startsWith(link) ||
+      (link === '/game/etc' &&
+        (router.pathname.startsWith('/game/stamp') ||
+          router.pathname.startsWith('/game/honor') ||
+          router.pathname.startsWith('/game/stock')))
     if (link === '/' && router.pathname != '/') isFocus = false
     return (
       <li>
@@ -69,7 +70,7 @@ const SideNav = ({
           <a
             className={`flex items-center pl-3 py-3 pr-4 text-gray-50 cursor-pointer ${
               isFocus
-                ? 'bg-primary hover:bg-primary-focus'
+                ? 'bg-indigo-500 hover:bg-indigo-600'
                 : 'hover:bg-gray-900'
             } rounded`}
           >
@@ -91,12 +92,12 @@ const SideNav = ({
     <div className="navbar-menu relative">
       {isOpen && (
         <div
-          className="fixed top-0 left-0 bottom-0 flex flex-col bg-black bg-opacity-30 w-full h-full z-40 cursor-pointer lg:hidden"
+          className="fixed top-0 left-0 bottom-0 flex flex-col bg-black bg-opacity-30 w-full h-full z-10 cursor-pointer lg:hidden"
           onClick={() => onClose()}
         />
       )}
       <nav
-        className={`fixed top-0 left-0 bottom-0 flex flex-col w-3/4 lg:w-72 sm:max-w-xs pt-6 pb-4 bg-gray-800 overflow-y-auto z-40 transition-transform lg:transition-none transform ${
+        className={`fixed top-0 left-0 bottom-0 flex flex-col w-3/4 lg:w-72 sm:max-w-xs pt-6 pb-4 bg-gray-800 overflow-y-auto z-10 transition-transform lg:transition-none transform ${
           !isOpen ? '-translate-x-full lg:translate-x-0z' : ''
         }`}
       >
@@ -168,7 +169,7 @@ const SideNav = ({
           </div>
           <div
             className="text-gray-200 flex items-center gap-x-2 cursor-pointer modal-button"
-            onClick={() => setShow(true)}
+            onClick={openSetting}
           >
             <HiOutlineCog className="w-5 h-5" />
             {t('common:setting')}
@@ -180,13 +181,16 @@ const SideNav = ({
 }
 
 type props = {
-  children: ReactNode
-  breadCrumbs?: breadCrumbs[]
+  children?: ReactNode
+  breadCrumbs?: BreadCrumbsData[]
   title: string
   titleSide?: ReactNode
   mainContentStyle?: CSSProperties
   disableLayout?: boolean
 }
+
+export type MainProps = props
+
 export default function MainLayout({
   breadCrumbs,
   children,
@@ -210,7 +214,7 @@ export default function MainLayout({
       {disableLayout ? (
         <>{children}</>
       ) : (
-        <SettingProvider>
+        <>
           <nav className="lg:hidden py-6 px-6 bg-gray-800">
             <div className="flex items-center justify-between">
               <Link href="/" passHref>
@@ -222,7 +226,7 @@ export default function MainLayout({
                 className="navbar-burger flex items-center rounded focus:outline-none"
                 onClick={() => setDrawer(!drawer)}
               >
-                <HiOutlineMenu className="text-white bg-primary hover:bg-primary-focus block h-8 w-8 p-2 rounded" />
+                <HiOutlineMenu className="text-white bg-indigo-500 hover:bg-violet-focus block h-8 w-8 p-2 rounded" />
               </button>
             </div>
           </nav>
@@ -242,20 +246,10 @@ export default function MainLayout({
             id="mainContent"
             className="mx-auto lg:ml-72 h-full overflow-y-scroll bg-base-200 overflow-x-hidden"
           >
-            <div className="mx-auto w-full px-8 py-5 md:pb-5 pb-24">
+            <div className="mx-auto w-full px-8 py-5  pb-24 lg:pb-5">
               {breadCrumbs && (
-                <div className="text-sm breadcrumbs mt-2">
-                  <ul>
-                    {breadCrumbs.map((item, index) => (
-                      <li key={index}>
-                        {item.link === '' ? (
-                          <p>{item.name}</p>
-                        ) : (
-                          <Link href={item.link}>{item.name}</Link>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
+                <div className="mt-4 mb-2">
+                  <BreadCrumbs data={breadCrumbs} />
                 </div>
               )}
               <div className="flex items-center justify-between mb-5 ">
@@ -265,7 +259,7 @@ export default function MainLayout({
               {children}
             </div>
           </div>
-        </SettingProvider>
+        </>
       )}
     </>
   )

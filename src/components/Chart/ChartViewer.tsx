@@ -16,9 +16,7 @@ export function ChartViewer({
   useEffect(() => {
     if (ref.current) {
       axios
-        .get(
-          `https://asset.d4dj.info/jp/ondemand/chart/chart_${pad(chartID, 8)}`
-        )
+        .get(`https://cdn.d4dj.info/jp/ondemand/chart/chart_${pad(chartID, 8)}`)
         .then((res) => {
           //@ts-ignore
           new D4DJChartRenderer(ref.current).renderChart(res.data)
@@ -39,7 +37,7 @@ export function ChartViewer({
 
   return (
     <>
-      <div className="overflow-x-scroll">
+      <div className="overflow-x-scroll" style={{ width: 'inherit' }}>
         <canvas ref={ref} height="750px"></canvas>
       </div>
       <div className="flex flex-wrap gap-y-3 mt-2 items-center justify-between">

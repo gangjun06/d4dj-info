@@ -5,6 +5,6 @@ module.exports = nextTranslate({
     return config
   },
   images: {
-    domains: ['asset.d4dj.info'],
+    domains: ['cdn.d4dj.info'],
   },
 })
