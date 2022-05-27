@@ -4,7 +4,7 @@ import { CharacterIcon, EventIcon, Image } from '@/components/Elements/Image'
 import prisma from '@/lib/prisma'
 import { EventAggregationBaseMaster, EventMaster } from '@prisma/client'
 import MainLayout from 'layouts/main'
-import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import useTransition from 'next-translate/useTranslation'
 import React, { Fragment, useState } from 'react'
 import useSWR from 'swr'
@@ -35,7 +35,7 @@ const AggregationModal = ({
 export default function EventDetail({
   event,
   episodeCharacters,
-}: InferGetStaticPropsType<typeof getStaticProps>) {
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   console.log(event)
   const { t } = useTransition('')
 
@@ -177,39 +177,23 @@ export default function EventDetail({
   )
 }
 
-type StaticPaths = {
-  id: string
-}
-
-export const getStaticPaths: GetStaticPaths<StaticPaths> = async () => {
-  const data = await prisma.eventMaster.findMany({
-    select: {
-      id: true,
-    },
-  })
-  return {
-    paths: data.map(({ id }) => ({ params: { id } })),
-    fallback: true,
+export const getServerSideProps: GetServerSideProps<{
+  event: EventMaster & {
+    aggregations: EventAggregationBaseMaster[]
   }
-}
-
-export const getStaticProps: GetStaticProps<
-  {
-    event: EventMaster & {
-      aggregations: EventAggregationBaseMaster[]
+  episodeCharacters: ({
+    id: string
+    masterId: number
+    firstNameEnglish: string
+    fullNameEnglish: string
+  } | null)[]
+}> = async ({ query, res }) => {
+  const { id } = query
+  if (typeof id !== 'string') {
+    return {
+      notFound: true,
     }
-    episodeCharacters: ({
-      id: string
-      masterId: number
-      firstNameEnglish: string
-      fullNameEnglish: string
-    } | null)[]
-  },
-  StaticPaths
-> = async ({ params }) => {
-  if (!params) throw new Error('No path parameters found')
-
-  const { id } = params
+  }
 
   const data = await prisma.eventMaster.findUnique({
     where: {
@@ -239,11 +223,12 @@ export const getStaticProps: GetStaticProps<
     )
   )
 
+  res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate')
+
   return {
     props: {
       event: data,
       episodeCharacters: episodeCharacters,
     },
-    revalidate: 1800,
   }
 }

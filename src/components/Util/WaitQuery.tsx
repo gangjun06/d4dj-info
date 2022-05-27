@@ -1,9 +1,8 @@
-import { ApolloError } from '@apollo/client'
 import { ReactNode } from 'react'
 
 type props = {
   loading: boolean
-  error: ApolloError | undefined
+  error: any | undefined
   children: ReactNode
   loadingComponent?: ReactNode
 }

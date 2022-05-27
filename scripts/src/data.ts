@@ -536,7 +536,7 @@ export const modelSetting: { [key: string]: ModelSetting } = {
   LiveSEMaster: {
     fields: {
       liveSEPackMaster: {
-        ref: 'LiveSEPckMaster',
+        ref: 'LiveSEPackMaster',
         refField: 'liveSEs',
         type: OneToMany,
       },

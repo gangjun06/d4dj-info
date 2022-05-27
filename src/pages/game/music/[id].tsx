@@ -4,15 +4,14 @@ import { MusicIcon } from '@/components/Elements/Image'
 import prisma from '@/lib/prisma'
 import { ChartDifficulty, MusicMaster, MusicMixMaster } from '@prisma/client'
 import MainLayout from 'layouts/main'
-import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import useTransition from 'next-translate/useTranslation'
 import React from 'react'
 import { convertIDNum, formatTimeDetail } from 'utils'
 
 const MusicDetailCard = ({
   music,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
-  console.log(music)
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { t } = useTransition('')
   return (
     <Card
@@ -51,7 +50,7 @@ const MusicDetailCardMemo = React.memo(MusicDetailCard)
 
 export default function CardDetail({
   music,
-}: InferGetStaticPropsType<typeof getStaticProps>) {
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { t } = useTransition('')
 
   return (
@@ -162,42 +161,26 @@ export default function CardDetail({
   )
 }
 
-type StaticPaths = {
-  id: string
-}
-
-export const getStaticPaths: GetStaticPaths<StaticPaths> = async () => {
-  const data = await prisma.musicMaster.findMany({
-    select: {
-      id: true,
-    },
-  })
-  return {
-    paths: data.map(({ id }) => ({ params: { id } })),
-    fallback: true,
+export const getServerSideProps: GetServerSideProps<{
+  music: MusicMaster & {
+    charts: {
+      id: string
+      level: number
+      trends: number[]
+      difficulty: ChartDifficulty
+      designer: {
+        name: string
+      }
+    }[]
+    musicMixes: MusicMixMaster[]
   }
-}
-
-export const getStaticProps: GetStaticProps<
-  {
-    music: MusicMaster & {
-      charts: {
-        id: string
-        level: number
-        trends: number[]
-        difficulty: ChartDifficulty
-        designer: {
-          name: string
-        }
-      }[]
-      musicMixes: MusicMixMaster[]
+}> = async ({ query, res }) => {
+  const { id } = query
+  if (typeof id !== 'string') {
+    return {
+      notFound: true,
     }
-  },
-  StaticPaths
-> = async ({ params }) => {
-  if (!params) throw new Error('No path parameters found')
-
-  const { id } = params
+  }
 
   const data = await prisma.musicMaster.findUnique({
     where: {
@@ -227,10 +210,10 @@ export const getStaticProps: GetStaticProps<
     }
   }
 
+  res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate')
   return {
     props: {
       music: data,
     },
-    revalidate: 1000,
   }
 }

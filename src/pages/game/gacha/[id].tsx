@@ -15,14 +15,14 @@ import {
   GachaSummaryWordMaster,
 } from '@prisma/client'
 import MainLayout from 'layouts/main'
-import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import useTransition from 'next-translate/useTranslation'
 import React from 'react'
 import { formatTimeDetail } from 'utils'
 
 export default function CardDetail({
   gacha,
-}: InferGetStaticPropsType<typeof getStaticProps>) {
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { t } = useTransition('')
 
   return (
@@ -91,42 +91,26 @@ export default function CardDetail({
   )
 }
 
-type StaticPaths = {
-  id: string
-}
-
-export const getStaticPaths: GetStaticPaths<StaticPaths> = async () => {
-  const data = await prisma.gachaMaster.findMany({
-    select: {
-      id: true,
-    },
-  })
-  return {
-    paths: data.map(({ id }) => ({ params: { id } })),
-    fallback: true,
+export const getServerSideProps: GetServerSideProps<{
+  gacha: GachaMaster & {
+    summary: GachaSummaryWordMaster
+    note: GachaNotesWordMaster
+    pickUpCards: {
+      id: string
+      masterId: number
+      attributeId: string
+      cardName: string
+      rarityId: string
+    }[]
+    detail: GachaExplanationWordMaster
   }
-}
-
-export const getStaticProps: GetStaticProps<
-  {
-    gacha: GachaMaster & {
-      summary: GachaSummaryWordMaster
-      note: GachaNotesWordMaster
-      pickUpCards: {
-        id: string
-        masterId: number
-        attributeId: string
-        cardName: string
-        rarityId: string
-      }[]
-      detail: GachaExplanationWordMaster
+}> = async ({ query, res }) => {
+  const { id } = query
+  if (typeof id !== 'string') {
+    return {
+      notFound: true,
     }
-  },
-  StaticPaths
-> = async ({ params }) => {
-  if (!params) throw new Error('No path parameters found')
-
-  const { id } = params
+  }
 
   const data = await prisma.gachaMaster.findUnique({
     where: {
@@ -173,10 +157,11 @@ export const getStaticProps: GetStaticProps<
     .replaceAll('{GachaName}', data.name)
     .replaceAll('{GachaType}', data.type)
 
+  res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate')
+
   return {
     props: {
       gacha: data,
     },
-    revalidate: 1800,
   }
 }

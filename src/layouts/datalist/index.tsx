@@ -12,7 +12,7 @@ import { HiOutlineFilter } from 'react-icons/hi'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { cleanForm, parseFilterQuery } from 'utils'
 
-interface props<T> extends MainProps {
+type props<T> = MainProps & {
   option: FindListOptionSet<T>
   children: (props: { data: T }) => ReactElement
   extra?: ReactElement | null

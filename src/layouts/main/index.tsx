@@ -180,8 +180,7 @@ const SideNav = ({
   )
 }
 
-type props = {
-  children?: ReactNode
+export type MainProps = {
   breadCrumbs?: BreadCrumbsData[]
   title: string
   titleSide?: ReactNode
@@ -189,7 +188,9 @@ type props = {
   disableLayout?: boolean
 }
 
-export type MainProps = props
+type props = MainProps & {
+  children?: ReactNode
+}
 
 export default function MainLayout({
   breadCrumbs,

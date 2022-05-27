@@ -23,4 +23,4 @@ const HonorItem = ({ data }: { data: AllHonorsItem }) => {
   )
 }
 
-export default React.memo(HonorItem)
+export default HonorItem

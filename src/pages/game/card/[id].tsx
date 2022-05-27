@@ -261,6 +261,8 @@ export const getServerSideProps: GetServerSideProps<{
     return { notFound: true }
   }
 
+  context.res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate')
+
   return {
     props: {
       card: data,
