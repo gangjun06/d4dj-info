@@ -5,6 +5,7 @@ import StampItem from '@/components/Pages/Data/Stamp/StampItem'
 import { useRouterState } from '@/hooks/useRouterState'
 import { DataListLayout } from 'layouts/datalist'
 import useTranslation from 'next-translate/useTranslation'
+import { useRef } from 'react'
 import useSWR from 'swr'
 import { convertIDNum, fetcher } from 'utils'
 import { StampIcon } from '../../../Elements/Image'
@@ -15,6 +16,7 @@ const StampModal = ({ id, onClose }: { id: string; onClose: () => void }) => {
     `/api/stamp?detail=${id}`,
     fetcher
   )
+  const ref = useRef<HTMLAudioElement>(null)
 
   const stamp = data ? data.data[0] : null
   return (
@@ -25,6 +27,16 @@ const StampModal = ({ id, onClose }: { id: string; onClose: () => void }) => {
           <StampIcon id={convertIDNum(stamp.id)} />
           <div className="text-md">{stamp.name}</div>
           <div className="text-sm text-gray-500">{stamp.description}</div>
+          <button className="text-sm my-1" onClick={() => ref.current?.play()}>
+            {t('common:play_audio')}
+          </button>
+          <audio
+            ref={ref}
+            src={`https://cdn.d4dj.info/${stamp.id.replace(
+              /\w+-/,
+              ''
+            )}/plain/voice/stamp/stamp_${stamp.masterId}.mp3`}
+          />
           <Table>
             <TableBody
               data={[

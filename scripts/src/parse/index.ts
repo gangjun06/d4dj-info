@@ -4,7 +4,7 @@ import fs from 'fs'
 import path from 'path'
 import { modelSetting } from '../data.js'
 import { ResultType } from '../types/index.js'
-import { formatText, lowerFirst, upperFirst } from '../utils.js'
+import { formatText, lowerFirst } from '../utils.js'
 
 const __dirname = path.resolve()
 
@@ -27,16 +27,19 @@ const parseTarget = async (region: string, name: string) => {
 
   for (const key in masterJSON) {
     const newData: any = {}
-    const field: any = masterJSON[key]
+    const field: { [key: string]: any } = Object.keys(masterJSON[key]).reduce(
+      (prev, cur) => ({ ...prev, [formatText(cur)]: masterJSON[key][cur] }),
+      {}
+    )
 
     // Set Model ID (not setting -> MasterID-Region)
     if (setting && setting.id) {
       newData['id'] = setting.id
-        .map((name) => field[upperFirst(name)])
+        .map((name) => field[name])
         .concat(region)
         .join('-')
     } else {
-      newData['id'] = `${field['Id']}-${region}`
+      newData['id'] = `${field['id']}-${region}`
     }
 
     newData['region'] = region
@@ -45,26 +48,25 @@ const parseTarget = async (region: string, name: string) => {
       continue
     }
     for (const key2 in field) {
-      if (key2 === 'Id') {
+      if (key2 === 'id') {
         newData['masterId'] = field[key2]
       } else {
-        const formated = formatText(key2)
-        if (formated.endsWith('PrimaryKey')) {
-          if (!setting.fields || !setting.fields[formated.slice(0, -10)]) {
+        if (key2.endsWith('PrimaryKey')) {
+          if (!setting.fields || !setting.fields[key2.slice(0, -10)]) {
             continue
           }
           if (Array.isArray(field[key2])) {
             useCreateMany = false
-            newData[formated.slice(0, -10)] = {
+            newData[key2.slice(0, -10)] = {
               connect: field[key2].map((d: number) => ({
                 id: `${d}-${region}`,
               })),
             }
           } else {
-            newData[`${formated.slice(0, -10)}Id`] = `${field[key2]}-${region}`
+            newData[`${key2.slice(0, -10)}Id`] = `${field[key2]}-${region}`
           }
         } else {
-          newData[formated] = field[key2]
+          newData[key2] = field[key2]
         }
       }
     }
@@ -104,7 +106,7 @@ const parseTarget = async (region: string, name: string) => {
 
 export const parse = async (name?: string) => {
   await prisma.$connect()
-  const region = 'en'
+  const region = 'jp'
 
   const json = fs.readFileSync(path.join(__dirname, 'data/result.json'))
   const data = JSON.parse(json.toString()) as ResultType[]
@@ -116,6 +118,7 @@ export const parse = async (name?: string) => {
 
   if (name) {
     const d = data.find((d) => d.name === name)
+    console.log(d)
     if (d) {
       await parseTarget(region, d.name)
     }

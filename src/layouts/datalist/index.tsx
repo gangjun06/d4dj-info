@@ -7,7 +7,7 @@ import MainLayout, { MainProps } from 'layouts/main'
 import useTransition from 'next-translate/useTranslation'
 import { useRouter } from 'next/router'
 import { ReactElement, useCallback, useEffect, useState } from 'react'
-import { useForm, UseFormRegister } from 'react-hook-form'
+import { Control, useForm, UseFormRegister } from 'react-hook-form'
 import { HiOutlineFilter } from 'react-icons/hi'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { cleanForm, parseFilterQuery } from 'utils'
@@ -25,8 +25,12 @@ const FormItemBuilder = ({
   name,
   options,
   placeholder,
+  control,
   register,
-}: FindListField & { register: UseFormRegister<any> }) => {
+}: FindListField & {
+  register: UseFormRegister<any>
+  control: Control<object, any>
+}) => {
   const { t } = useTransition('')
 
   switch (type) {
@@ -59,7 +63,7 @@ const FormItemBuilder = ({
         <FormBlock label={t(label)}>
           <Radio
             name={name}
-            register={register}
+            control={control}
             list={options!.map(({ label, value, component }) => ({
               ...(label ? { label: t(label) } : {}),
               ...(component ? { component } : {}),
@@ -84,12 +88,14 @@ export const DataListLayout = <T,>({
   const router = useRouter()
   const { t } = useTransition('')
 
-  const { handleSubmit, setValue, getValues, register } = useForm<any>({
-    defaultValues: {
-      sort: option.sort.defaultOrder ?? 'asc',
-      sortBy: option.sort.default,
-    },
-  })
+  const { handleSubmit, setValue, getValues, register, control } = useForm<any>(
+    {
+      defaultValues: {
+        sort: option.sort.defaultOrder ?? 'asc',
+        sortBy: option.sort.default,
+      },
+    }
+  )
 
   const [data, setData] = useState<T[]>([])
   const [openFilter, setOpenFilter] = useState<boolean>(false)
@@ -172,12 +178,14 @@ export const DataListLayout = <T,>({
         {Object.keys(option.fields).map((key) => (
           <FormItemBuilder
             key={key}
+            control={control}
             register={register}
             {...option.fields[key]}
           />
         ))}
         <FormItemBuilder
           register={register}
+          control={control}
           label={'common:sort'}
           name="sortBy"
           options={option.sort.options}

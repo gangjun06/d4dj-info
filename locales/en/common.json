@@ -73,5 +73,6 @@
   "honor": "Honor",
   "effect": "Effect",
   "x": "X",
-  "o": "O"
+  "o": "O",
+  "play_audio": "Play Audio"
 }

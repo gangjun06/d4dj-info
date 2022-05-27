@@ -65,7 +65,7 @@ const HonorPage = () => {
         { name: t('nav:game.name'), link: '' },
         { name: t('nav:game.honor'), link: '' },
       ]}
-      title={t('nav:game.stock')}
+      title={t('nav:game.honor')}
     >
       {({ data }) => <HonorItem data={data} key={data.id} />}
     </DataListLayout>

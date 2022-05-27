@@ -72,5 +72,7 @@
   "honor": "칭호",
   "effect": "이펙트",
   "x": "X",
-  "o": "O"
+  "o": "O",
+  "play_audio": "소리 재생",
+  "default_order": "기본 순서"
 }

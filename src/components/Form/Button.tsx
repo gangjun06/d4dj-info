@@ -6,10 +6,12 @@ type props = {
   onClick?: () => void
   type?: 'Default' | 'Primary'
   className?: string
+  submit?: boolean
 }
 
 export function Button({
   className,
+  submit = false,
   children,
   onClick = () => {},
   type = 'Default',
@@ -21,7 +23,7 @@ export function Button({
 
   return (
     <button
-      type="button"
+      type={submit ? 'submit' : 'button'}
       className={classNames(btnClass, className)}
       onClick={onClick}
     >

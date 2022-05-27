@@ -535,8 +535,8 @@ export const modelSetting: { [key: string]: ModelSetting } = {
   },
   LiveSEMaster: {
     fields: {
-      liveSEMaster: {
-        ref: 'LiveSEPackMaster',
+      liveSEPackMaster: {
+        ref: 'LiveSEPckMaster',
         refField: 'liveSEs',
         type: OneToMany,
       },
@@ -673,7 +673,7 @@ export const modelSetting: { [key: string]: ModelSetting } = {
     },
   },
   MusicMixMaster: {
-    id: ['musicId', 'secton'],
+    id: ['musicPrimaryKey', 'section'],
     fields: {
       music: {
         ref: 'MusicMaster',

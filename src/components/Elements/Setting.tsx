@@ -34,9 +34,9 @@ export const SettingProvider = ({ children }: { children: ReactNode }) => {
   const [region, setRegion] = useState<Region>(() => loadRegion())
   const { t, lang } = useTransition()
 
-  const { handleSubmit, register } = useForm<FormData>({
+  const { handleSubmit, control } = useForm<FormData>({
     defaultValues: {
-      lang: lang ?? 'en',
+      lang: lang ?? 'jp',
       region,
     },
   })
@@ -70,18 +70,19 @@ export const SettingProvider = ({ children }: { children: ReactNode }) => {
     >
       <Modal
         show={show}
+        wrapper={(children) => <form onSubmit={onSubmit}>{children}</form>}
         onClose={onClose}
         title={'Settings'}
         showCloseBtn
         actions={
-          <Button type="Primary" onClick={onSubmit}>
+          <Button type="Primary" submit>
             {t('common:save')}
           </Button>
         }
       >
         <FormBlock label={t('common:language')}>
           <Radio
-            register={register}
+            control={control}
             name="lang"
             list={[
               { label: 'Korean', value: 'ko' },
@@ -91,11 +92,15 @@ export const SettingProvider = ({ children }: { children: ReactNode }) => {
         </FormBlock>
         <FormBlock label={t('common:region')}>
           <Radio
-            register={register}
+            control={control}
             name="region"
-            list={(Object.keys(Region) as Array<keyof typeof Region>).map(
-              (key) => ({ label: key, value: Region[key] })
-            )}
+            list={[
+              { label: 'Global (Comming Soon)', value: 'jp' },
+              { label: 'Japan', value: 'jp' },
+            ]}
+            // list={(Object.keys(Region) as Array<keyof typeof Region>).map(
+            //   (key) => ({ label: key, value: Region[key] })
+            // )}
           />
         </FormBlock>
       </Modal>

@@ -1,31 +1,40 @@
 import { ReactElement } from 'react'
-import { UseFormRegister } from 'react-hook-form'
+import { Control, Controller } from 'react-hook-form'
 
 type props = {
   list: { label?: string; value: any; component?: ReactElement }[]
   name: string
-  register?: UseFormRegister<any>
+  control: Control<any, object>
 }
 
-export function Radio({ name, list, register }: props) {
+export function Radio({ name, list, control }: props) {
   return (
     <div className="flex flex-row gap-x-4 flex-wrap">
-      {list.map(({ label, value, component }, index) => (
-        <label
-          className="flex items-center gap-x-2 gap-y-1.5 cursor-pointer select-none"
-          key={index}
-        >
-          <span>
-            {label} {component}
-          </span>
-          <input
-            {...register!(name, { required: true })}
-            type="radio"
-            className="radio"
-            value={value}
-          />
-        </label>
-      ))}
+      <Controller
+        control={control}
+        name={`${name}`}
+        render={({ field }) => (
+          <>
+            {list.map((item, index) => (
+              <label className="cursor-pointer label" key={index}>
+                <span className="label-text mr-2">{item.label}</span>
+                <input
+                  {...field}
+                  type="radio"
+                  className="radio"
+                  // value={}
+                  checked={field.value === item.value}
+                  onChange={(event) => {
+                    field.onChange(
+                      event.target.checked ? item.value : undefined
+                    )
+                  }}
+                />
+              </label>
+            ))}
+          </>
+        )}
+      />
     </div>
   )
 }
