@@ -69,7 +69,6 @@ export async function getLiveSE(
 
     return res.json({ data })
   } catch (e) {
-    console.log(e)
     if (e instanceof Error) {
       if (e.message === 'Bad Request') {
         return badRequest(res)

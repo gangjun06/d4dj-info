@@ -85,6 +85,17 @@ export default function Home({
         >
           <MDXRemote {...mdxDonate} components={{ Link }} />
         </Card>
+        <Card className="col-span-1" title={t('common:support_discord')}>
+          <div>
+            <iframe
+              src="https://discord.com/widget?id=978292881406185473&theme=dark"
+              // alloTtransparency={true}
+              className="h-96"
+              frameBorder="0"
+              sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
+            ></iframe>
+          </div>
+        </Card>
       </div>
     </MainLayout>
   )

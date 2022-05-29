@@ -5,7 +5,7 @@ import { CharacterIcon, Image } from '@/components/Elements/Image'
 import prisma from '@/lib/prisma'
 import { CharacterMaster, UnitMaster } from '@prisma/client'
 import MainLayout from 'layouts/main'
-import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import useTransition from 'next-translate/useTranslation'
 import React from 'react'
 import { GetURLType, pad } from 'utils'
@@ -13,7 +13,7 @@ import { createLive2DShare } from 'utils/live2d'
 
 export default function CardDetail({
   character,
-}: InferGetStaticPropsType<typeof getStaticProps>) {
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { t } = useTransition('')
 
   return (
@@ -175,19 +175,7 @@ export default function CardDetail({
   )
 }
 
-export const getStaticPaths: GetStaticPaths<{ id: string }> = async () => {
-  const data = await prisma.characterMaster.findMany({
-    select: {
-      id: true,
-    },
-  })
-  return {
-    paths: data.map(({ id }) => ({ params: { id } })),
-    fallback: false,
-  }
-}
-
-export const getStaticProps: GetStaticProps<
+export const getServerSideProps: GetServerSideProps<
   {
     character: CharacterMaster & {
       unit: UnitMaster
@@ -199,10 +187,14 @@ export const getStaticProps: GetStaticProps<
     }
   },
   { id: string }
-> = async ({ params }) => {
-  if (!params) throw new Error('No path parameters found')
+> = async ({ query }) => {
+  const { id } = query
 
-  const { id } = params
+  if (typeof id !== 'string') {
+    return {
+      notFound: true,
+    }
+  }
 
   const data = await prisma.characterMaster.findUnique({
     where: {
@@ -230,6 +222,5 @@ export const getStaticProps: GetStaticProps<
     props: {
       character: data,
     },
-    revalidate: 1800,
   }
 }

@@ -36,7 +36,6 @@ export default function EventDetail({
   event,
   episodeCharacters,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  console.log(event)
   const { t } = useTransition('')
 
   const [aggregationId, setAggregationId] = useState<string | null>(null)

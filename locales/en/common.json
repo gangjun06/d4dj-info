@@ -74,5 +74,6 @@
   "effect": "Effect",
   "x": "X",
   "o": "O",
-  "play_audio": "Play Audio"
+  "play_audio": "Play Audio",
+  "support_discord": "D4DJ.Info Discord"
 }
