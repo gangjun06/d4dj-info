@@ -1,3 +1,4 @@
+import { Button } from '@/components/Form'
 import { useWindowSize } from '@react-hook/window-size'
 import { Live2DModel } from 'pixi-live2d-display'
 import * as PIXI from 'pixi.js'
@@ -117,16 +118,19 @@ function Live2DViewContent({ urlData }: props) {
         }}
       ></div>
       <div className="absolute right-0 top-0">
-        <button className="my-3 mr-4 btn" onClick={() => setIsShown(true)}>
+        <Button
+          className="my-3 mr-4"
+          onClick={() => setIsShown(true)}
+          type="New"
+        >
           <HiCog size={22} />
-        </button>
+        </Button>
       </div>
     </>
   )
 }
 
 export default function Live2DView(props: props) {
-  console.log('A')
   return (
     <Live2DProvider>
       <Live2DViewContent {...props} />

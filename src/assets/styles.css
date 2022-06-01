@@ -85,6 +85,13 @@ body {
   @apply transition ease-in-out duration-150;
 }
 
+.btn-new {
+  @apply inline-flex justify-center rounded-md border border-gray-300 shadow-sm;
+  @apply px-4 py-2 bg-white/40 backdrop-sepia text-base font-medium text-gray-700 hover:bg-gray-100/80 focus:outline-none;
+  @apply sm:w-auto sm:text-sm;
+  @apply transition ease-in-out duration-150;
+}
+
 input[type='checkbox'] {
   @apply rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50;
 }

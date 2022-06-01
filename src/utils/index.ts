@@ -417,3 +417,12 @@ export const autoOptions = (baseLabel: string, enumField: any) =>
     label: `${baseLabel}${camelToSnakeCase(enumField[key] as string)}`,
     value: enumField[key],
   }))
+
+export const formatFileSize = (size: number) => {
+  const i = Math.floor(Math.log(size) / Math.log(1024))
+  return (
+    ((size / Math.pow(1024, i)) as any).toFixed(2) * 1 +
+    ' ' +
+    ['B', 'kB', 'MB', 'GB', 'TB'][i]
+  )
+}

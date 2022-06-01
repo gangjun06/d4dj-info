@@ -13,6 +13,8 @@ import {
   HiOutlineChartPie,
   HiOutlineCog,
   HiOutlineCollection,
+  HiOutlineCube,
+  HiOutlineFolder,
   HiOutlineMenu,
   HiOutlineMusicNote,
   HiOutlineViewGrid,
@@ -164,6 +166,19 @@ const SideNav = ({
                 label={t('nav:game.etc.name')}
                 Icon={HiDotsCircleHorizontal}
                 link="/game/etc"
+              />
+            </NavbarGroup>
+            <NavbarGroup label={t('nav:tool.name')}>
+              <NavItem
+                label={t('nav:live2d')}
+                Icon={HiOutlineCube}
+                link="/live2d"
+              />
+              {/* <NavItem label={t('nav:live2d')} Icon={HiOutlineCollection} link='/live2d' /> */}
+              <NavItem
+                label={t('nav:tool.explorer')}
+                Icon={HiOutlineFolder}
+                link="/tool/explorer"
               />
             </NavbarGroup>
           </div>

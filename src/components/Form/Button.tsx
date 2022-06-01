@@ -4,7 +4,7 @@ import { classNames } from 'utils'
 type props = {
   children: React.ReactNode
   onClick?: () => void
-  type?: 'Default' | 'Primary'
+  type?: 'Default' | 'Primary' | 'New'
   className?: string
   submit?: boolean
 }
@@ -19,6 +19,7 @@ export function Button({
   const btnClass = useMemo(() => {
     if (type === 'Primary') return 'btn-primary'
     if (type === 'Default') return 'btn'
+    if (type === 'New') return 'btn-new'
   }, [type])
 
   return (
