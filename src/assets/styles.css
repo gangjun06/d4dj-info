@@ -51,6 +51,12 @@ body {
   @apply mb-2 flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-indigo-900 bg-indigo-100 rounded-lg hover:bg-indigo-200 focus:outline-none focus-visible:ring focus-visible:ring-indigo-500 focus-visible:ring-opacity-75;
 }
 
+.disclosure-btn-new {
+  @apply mb-2 flex justify-between w-full px-4 py-2 text-sm font-medium text-left;
+  @apply text-indigo-900 backdrop-sepia bg-indigo-100/30 rounded-lg hover:bg-indigo-200/30 focus:outline-none focus-visible:ring;
+  @apply focus-visible:ring-indigo-500 focus-visible:ring-opacity-75;
+}
+
 .flex-center {
   @apply flex justify-center items-center h-full;
 }
@@ -106,4 +112,12 @@ tr:last-child > td {
 .hwfull {
   width: 100% !important;
   height: 100% !important;
+}
+
+.link {
+  @apply underline inline;
+}
+
+.link-primary {
+  @apply text-indigo-600;
 }

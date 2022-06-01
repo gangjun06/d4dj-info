@@ -7,15 +7,17 @@ export const Disclosure = ({
   title,
   children,
   className,
+  newDesign,
 }: {
   title: string
   children: ReactNode
   className?: string
+  newDesign?: boolean
 }) => (
   <HeadlessDisclosure>
     {({ open }) => (
       <>
-        <Button className="disclosure-btn">
+        <Button className={newDesign ? 'disclosure-btn-new' : 'disclosure-btn'}>
           {title}
           <HiOutlineChevronUp
             className={`${

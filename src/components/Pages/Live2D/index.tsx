@@ -126,6 +126,7 @@ function Live2DViewContent({ urlData }: props) {
 }
 
 export default function Live2DView(props: props) {
+  console.log('A')
   return (
     <Live2DProvider>
       <Live2DViewContent {...props} />

@@ -6,7 +6,7 @@ import {
   TextFormat,
 } from '@/components/Basic'
 import { CardItem } from '@/components/Elements'
-import { GachaIcon } from '@/components/Elements/Image'
+import { GachaIcon, Image } from '@/components/Elements/Image'
 import prisma from '@/lib/prisma'
 import {
   GachaExplanationWordMaster,
@@ -18,7 +18,7 @@ import MainLayout from 'layouts/main'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import useTransition from 'next-translate/useTranslation'
 import React from 'react'
-import { formatTimeDetail } from 'utils'
+import { formatTimeDetail, GetURLType, pad } from 'utils'
 
 export default function CardDetail({
   gacha,
@@ -36,16 +36,31 @@ export default function CardDetail({
         },
       ]}
       title={`${gacha.name}`}
+      rootExtra={
+        <div className="absolute w-screen h-screen -z-10">
+          <Image
+            urlType={GetURLType.GachaLive2DBG}
+            parameter={[pad(gacha.pickUpCards[0].masterId, 9)]}
+            region={gacha.region}
+            layout="fill"
+          />
+        </div>
+      }
     >
       <div className="grid-2">
         <div className="col-span-1">
           <Card
             title={t('gacha:info')}
             bodyClassName="flex justify-center flex-col items-center"
+            newDesign
           >
-            <GachaIcon id={gacha.masterId} category={gacha.category} />
+            <GachaIcon
+              id={gacha.masterId}
+              category={gacha.category}
+              region={gacha.region}
+            />
 
-            <div className="mt-2">{gacha.name}</div>
+            <div className="m-2">{gacha.name}</div>
 
             <Table>
               <TableBody
@@ -61,14 +76,14 @@ export default function CardDetail({
           </Card>
         </div>
         <div className="col-span-1 md:col-span-2">
-          <Card title={t('gacha:descriptions')}>
-            <Disclosure title={t('gacha:summary')}>
+          <Card title={t('gacha:descriptions')} newDesign>
+            <Disclosure title={t('gacha:summary')} newDesign>
               <TextFormat>{gacha.summary.text}</TextFormat>
             </Disclosure>
-            <Disclosure title={t('gacha:note')}>
+            <Disclosure title={t('gacha:note')} newDesign>
               <TextFormat>{gacha.note.text}</TextFormat>
             </Disclosure>
-            <Disclosure title={t('gacha:detail')}>
+            <Disclosure title={t('gacha:detail')} newDesign>
               <TextFormat>{gacha.detail.text}</TextFormat>
             </Disclosure>
           </Card>
@@ -80,7 +95,7 @@ export default function CardDetail({
             <div className="col-span-1 md:col-span-3">
               <div className="grid-1">
                 {gacha.pickUpCards.map((item, index) => (
-                  <CardItem key={item.id} data={item} />
+                  <CardItem newDesign key={item.id} data={item} />
                 ))}
               </div>
             </div>

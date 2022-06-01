@@ -52,11 +52,12 @@ export enum GetURLType {
   EventBanner,
   EventBannerNotice,
   GachaBanner,
+  GachaLive2DBG,
   GachaTopBanner,
-  Stock,
-  StockFrameless,
   Honor,
   Stamp,
+  Stock,
+  StockFrameless,
 }
 
 const urlList: {
@@ -187,6 +188,11 @@ const urlList: {
   [GetURLType.GachaTopBanner]: (p: any[]) => [
     `ondemand/gacha/top/banner/${p[0]}.png`,
     `gacha banner ${p[0]}`,
+  ],
+  // gachaID
+  [GetURLType.GachaLive2DBG]: (p: any[]) => [
+    `ondemand/gacha/top/live2d_bg/card_background_${pad(p[0], 9)}_1.jpg`,
+    `gacha live2d background ${p[0]}`,
   ],
   // stampID
   [GetURLType.Stamp]: (p: any[]) => [

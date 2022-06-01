@@ -7,6 +7,7 @@ import { CardIcon } from './Image'
 const CardItem = ({
   data,
   unitId,
+  newDesign,
 }: {
   data: {
     id: string
@@ -21,6 +22,7 @@ const CardItem = ({
     }
   }
   unitId?: number
+  newDesign?: boolean
 }) => {
   const { t } = useTranslation()
 
@@ -28,6 +30,7 @@ const CardItem = ({
     <Card
       bodyClassName="flex justify-center items-center flex-col"
       link={`/game/card/${data.id}`}
+      newDesign={newDesign}
     >
       <CardIcon
         id={data.masterId}

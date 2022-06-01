@@ -51,6 +51,16 @@ export default function EventDetail({
         },
       ]}
       title={`${event.name}`}
+      rootExtra={
+        <div className="absolute w-screen h-screen -z-10">
+          <Image
+            urlType={GetURLType.EventBackground}
+            parameter={[event.masterId]}
+            region={event.region}
+            layout="fill"
+          />
+        </div>
+      }
     >
       {aggregationId && (
         <>
@@ -67,10 +77,11 @@ export default function EventDetail({
           <Card
             title={t('event:info')}
             bodyClassName="flex justify-center flex-col items-center"
+            newDesign
           >
-            <EventIcon id={event.masterId} />
+            <EventIcon id={event.masterId} region={event.region} />
 
-            <div className="mt-2">{event.name}</div>
+            <div className="mb-2">{event.name}</div>
 
             <Table>
               <TableBody
@@ -100,27 +111,33 @@ export default function EventDetail({
           </Card>
         </div>
         <div className="col-span-1 md:col-span-2">
-          <Card title={t('event:illustrations.name')}>
-            <Disclosure title={t('event:illustrations.background')}>
+          <Card title={t('event:illustrations.name')} newDesign>
+            <Disclosure title={t('event:illustrations.background')} newDesign>
               <Image
                 urlType={GetURLType.EventBackground}
                 parameter={[event.masterId]}
+                region={event.region}
                 width={2380}
                 height={1440}
               />
             </Disclosure>
-            <Disclosure title={t('event:illustrations.banner_event')}>
+            <Disclosure title={t('event:illustrations.banner_event')} newDesign>
               <Image
                 urlType={GetURLType.EventBanner}
                 parameter={[event.masterId]}
+                region={event.region}
                 width={612}
                 height={200}
               />
             </Disclosure>
-            <Disclosure title={t('event:illustrations.banner_event_notice')}>
+            <Disclosure
+              title={t('event:illustrations.banner_event_notice')}
+              newDesign
+            >
               <Image
                 urlType={GetURLType.EventBannerNotice}
                 parameter={[event.masterId]}
+                region={event.region}
                 width={612}
                 height={200}
               />
@@ -157,6 +174,7 @@ export default function EventDetail({
                         link={`/game/character/${item.id}`}
                         key={item.id}
                         bodyClassName="flex flex-col justify-center items-center"
+                        newDesign
                       >
                         <CharacterIcon
                           alt={`character ${item.masterId}`}

@@ -186,6 +186,7 @@ export type MainProps = {
   titleSide?: ReactNode
   mainContentStyle?: CSSProperties
   disableLayout?: boolean
+  rootExtra?: ReactNode
 }
 
 type props = MainProps & {
@@ -199,6 +200,7 @@ export default function MainLayout({
   titleSide,
   mainContentStyle,
   disableLayout = false,
+  rootExtra,
 }: props) {
   const [drawer, setDrawer] = useState<boolean>(false)
   const { t } = useTransition('')
@@ -213,6 +215,7 @@ export default function MainLayout({
           description: 'D4DJ Information Website',
         }}
       />
+      {rootExtra}
       {disableLayout ? (
         <>{children}</>
       ) : (
@@ -254,7 +257,7 @@ export default function MainLayout({
                   <BreadCrumbs data={breadCrumbs} />
                 </div>
               )}
-              <div className="flex items-center justify-between mb-5 ">
+              <div className="flex items-center justify-between mb-5">
                 <div className="font-bold text-3xl">{title}</div>
                 {titleSide}
               </div>

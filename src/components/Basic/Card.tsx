@@ -11,6 +11,7 @@ const Card = ({
   bodyClassName = '',
   bodyStyle,
   link,
+  newDesign,
   onClick = () => {},
 }: {
   children: ReactNode
@@ -21,11 +22,12 @@ const Card = ({
   bodyStyle?: React.CSSProperties
   link?: string | UrlObject
   onClick?: () => void
+  newDesign?: boolean
 }) => {
-  const cardClass = classNames(
-    `px-8 py-8 shadow-sm bg-white rounded-lg border`,
-    className
-  )
+  const cardClass = classNames(`px-8 py-8 rounded-lg `, className, {
+    'shadow-sm bg-white border': !newDesign,
+    'backdrop-blur-sm bg-white/30': newDesign,
+  })
 
   const InnerContent = () => (
     <>

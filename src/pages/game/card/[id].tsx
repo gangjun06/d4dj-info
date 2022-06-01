@@ -65,8 +65,8 @@ export default function CardDetail({
               attribute={convertIDNum(card.attributeId)}
               unit={convertIDNum(chara.unit.id)}
             />
-            <div className="mt-2">{card.cardName}</div>
-            <div className="text-gray-600">
+            <div className="mt-1">{card.cardName}</div>
+            <div className="text-gray-600 mb-1">
               {chara.fullNameEnglish || chara.firstNameEnglish} -{' '}
               {chara.unit.name}
             </div>
