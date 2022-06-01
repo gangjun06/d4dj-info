@@ -1,4 +1,4 @@
-import { Card } from '@/components/Basic'
+import { Card, TempModal } from '@/components/Basic'
 import { Link } from '@/components/Basic/Link'
 import { EventItem, GachaItem } from '@/components/Elements'
 import prisma from '@/lib/prisma'
@@ -29,6 +29,9 @@ export default function Home({
         { name: t('nav:main.dashboard'), link: '/' },
       ]}
     >
+      <TempModal id="alert-1" title="Global server resource added">
+        You can change the game server in left bottom setting.
+      </TempModal>
       <div className="grid-5">
         <Card
           title={t('common:recent_event')}

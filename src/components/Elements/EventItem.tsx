@@ -18,7 +18,7 @@ const EventItem = ({
       bodyClassName={classNames('flex justify-center items-center flex-col')}
       className={className}
     >
-      <EventIcon id={convertIDNum(data.id)} />
+      <EventIcon id={convertIDNum(data.id)} region={data.region} />
       <div className="flex flex-row gap-x-2 my-2 justify-center">
         <div className="badge">
           <div>{data.type}</div>

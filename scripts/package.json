@@ -4,12 +4,14 @@
   "type": "module",
   "scripts": {
     "schema-generate": "npx tsc --outDir dist && node dist/main.js --generate",
-    "parse": "npx tsc --outDir dist && node dist/main.js",
+    "parse:en": "npx tsc --outDir dist && node dist/main.js en",
+    "parse:jp": "npx tsc --outDir dist && node dist/main.js jp",
     "generate": "prisma generate --schema ./data/schema.prisma"
   },
   "dependencies": {
     "@prisma/client": "3.14.0",
     "axios": "^0.27.2",
+    "date-fns": "^2.28.0",
     "prisma": "^3.14.0",
     "typescript": "^4.6.3"
   }

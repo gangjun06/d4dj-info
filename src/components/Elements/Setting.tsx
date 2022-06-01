@@ -1,5 +1,6 @@
 import { Modal } from '@/components/Basic/Modal'
 import { Button, FormBlock, Radio } from '@/components/Form'
+import { getRegionCookie, setRegionCookie } from '@/lib/cookies'
 import { Region } from '@/models/index'
 import setLanguage from 'next-translate/setLanguage'
 import useTransition from 'next-translate/useTranslation'
@@ -11,7 +12,6 @@ import {
   useState,
 } from 'react'
 import { useForm } from 'react-hook-form'
-import { loadRegion } from 'utils'
 
 type ContextType = {
   show: boolean
@@ -31,7 +31,7 @@ type FormData = {
 
 export const SettingProvider = ({ children }: { children: ReactNode }) => {
   const [show, setShow] = useState<boolean>(false)
-  const [region, setRegion] = useState<Region>(() => loadRegion())
+  const [region, setRegion] = useState<Region>(() => getRegionCookie())
   const { t, lang } = useTransition()
 
   const { handleSubmit, control } = useForm<FormData>({
@@ -60,6 +60,7 @@ export const SettingProvider = ({ children }: { children: ReactNode }) => {
   const setRegionStore = useCallback(
     (region: Region) => {
       setRegion(region)
+      setRegionCookie(region)
     },
     [setRegion]
   )
@@ -95,7 +96,7 @@ export const SettingProvider = ({ children }: { children: ReactNode }) => {
             control={control}
             name="region"
             list={[
-              { label: 'Global (Comming Soon)', value: 'jp' },
+              { label: 'Global', value: 'en' },
               { label: 'Japan', value: 'jp' },
             ]}
             // list={(Object.keys(Region) as Array<keyof typeof Region>).map(

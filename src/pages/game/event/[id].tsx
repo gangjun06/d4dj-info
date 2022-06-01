@@ -76,6 +76,7 @@ export default function EventDetail({
               <TableBody
                 data={[
                   [t('event:id'), event.masterId],
+                  [t('common:start_date'), formatTimeDetail(event.startDate)],
                   [
                     t('event:reception_close_date'),
                     formatTimeDetail(event.receptionCloseDate),
@@ -92,6 +93,7 @@ export default function EventDetail({
                     t('event:story_unlock_date'),
                     formatTimeDetail(event.storyUnlockDate),
                   ],
+                  [t('common:end_date'), formatTimeDetail(event.endDate)],
                 ]}
               />
             </Table>

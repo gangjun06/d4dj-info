@@ -208,7 +208,8 @@ export default function MainLayout({
       <NextSeo
         title={`${title} | D4DJ.Info`}
         openGraph={{
-          title: `${title} | D4DJ.Info`,
+          title: `${title}`,
+          site_name: 'D4DJ Info',
           description: 'D4DJ Information Website',
         }}
       />

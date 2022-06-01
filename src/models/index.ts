@@ -21,6 +21,7 @@ export enum Unit {
   MMD = 4,
   LND = 5,
   LL = 6,
+  COA = 7,
   Common = 50,
 }
 

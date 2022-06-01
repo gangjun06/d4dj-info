@@ -9,7 +9,7 @@
   },
   "info": "이벤트 정보",
   "rank_fix_start_date": "순위 고정 시작 날짜",
-  "reception_close_date": "이벤트 종료 날짜",
+  "reception_close_date": "이벤트 참여 종료",
   "result_announcement_date": "결과 공지 날짜",
   "story_unlock_date": "스토리 해금 날짜"
 }

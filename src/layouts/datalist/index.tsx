@@ -1,5 +1,5 @@
 import { SideOver } from '@/components/Basic'
-import { SimpleLoading } from '@/components/Elements'
+import { SimpleLoading, useSetting } from '@/components/Elements'
 import { Checkbox, FormBlock, Input, Radio } from '@/components/Form'
 import { FindListField, FindListOptionSet, FindListType } from '@/models/index'
 import axios from 'axios'
@@ -96,6 +96,7 @@ export const DataListLayout = <T,>({
       },
     }
   )
+  const { region } = useSetting()
 
   const [data, setData] = useState<T[]>([])
   const [openFilter, setOpenFilter] = useState<boolean>(false)
@@ -112,6 +113,7 @@ export const DataListLayout = <T,>({
     const res = await axios.get(`${process.env.NEXT_PUBLIC_URL}${option.url}`, {
       params: {
         ...(init ? {} : { cursor: (data[data.length - 1] as any).id }),
+        region,
         ...cleanData,
       },
     })
@@ -146,7 +148,7 @@ export const DataListLayout = <T,>({
     fetchData(true)
     setInit(true)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [init, router.query, setValue])
+  }, [init, router.query, setValue, region])
 
   return (
     <MainLayout

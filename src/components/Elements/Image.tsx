@@ -12,6 +12,7 @@ type ImageProps = {
   alt?: string
   urlType?: GetURLType
   parameter?: any[]
+  region?: string
   layout?: 'fixed' | 'fill' | 'intrinsic' | 'responsive'
   objectFit?: ComponentProps<typeof NextImage>['objectFit']
   auto?: boolean
@@ -30,9 +31,10 @@ export const ImageWithFallback = (
     urlType,
     parameter = [],
     onError,
+    region,
     fallback = { width: 128, height: 128 },
   } = props
-  const { region } = useSetting()
+  const { region: regionSetting } = useSetting()
   const [useFallback, setUseFallback] = useState<boolean>(false)
   const [srcData, setSrcData] = useState<string>()
 
@@ -40,7 +42,7 @@ export const ImageWithFallback = (
     setSrcData(
       src ||
         getURL({
-          server: region?.replace('ja-JP', 'jp') || 'jp',
+          server: region || regionSetting || 'en',
           type: urlType!,
           parameter,
         })
@@ -81,7 +83,7 @@ export const ImageWithFallback = (
 }
 
 export const Image = (props: ImageProps) => {
-  const { region } = useSetting()
+  const { region: regionSetting } = useSetting()
   return (
     //@ts-ignore
     <ImageBase
@@ -89,7 +91,7 @@ export const Image = (props: ImageProps) => {
       src={
         props.src ||
         getURL({
-          server: region?.replace('ja-JP', 'jp') || 'jp',
+          server: props.region || regionSetting || 'en',
           type: props.urlType!,
           parameter: props.parameter,
         })
@@ -153,9 +155,11 @@ const canUseBanner = (category: GachaCategory) =>
 export const GachaIcon = ({
   category,
   id,
+  region,
 }: {
   category: GachaCategory
   id: number
+  region?: string
 }) => {
   // const useBanner = useMemo(() => canUseBanner(category), [category])
   // const [noBanner, setNoBanner] = useState<boolean>(false)
@@ -177,6 +181,7 @@ export const GachaIcon = ({
       width={324}
       height={172}
       urlType={GetURLType.GachaTopBanner}
+      region={region}
       parameter={[id]}
     />
   )
@@ -261,10 +266,11 @@ export const CardRarityIcon = ({ rarity }: { rarity: number }) => {
   )
 }
 
-export const EventIcon = ({ id }: { id: number }) => {
+export const EventIcon = ({ id, region }: { id: number; region?: string }) => {
   return (
     <ImageWithFallback
       width={350}
+      region={region}
       height={200}
       urlType={GetURLType.EventTitleLogo}
       parameter={[id]}

@@ -26,6 +26,11 @@
       "@/hooks/*": ["components/Hooks/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "public/f-adblock.js"],
+  "include": [
+    "next-env.d.ts",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "public/f-adblock.js"
+  ],
   "exclude": ["node_modules"]
 }

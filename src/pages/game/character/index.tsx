@@ -1,16 +1,17 @@
 import { Card } from '@/components/Basic'
 import { CharacterIcon } from '@/components/Elements/Image'
+import { getRegionCookie } from '@/lib/cookies'
 import prisma from '@/lib/prisma'
 import { CharacterMaster, UnitMaster } from '@prisma/client'
 import MainLayout from 'layouts/main'
-import { GetStaticProps, InferGetStaticPropsType } from 'next'
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import useTransition from 'next-translate/useTranslation'
 import Link from 'next/link'
 import { Fragment } from 'react'
 
 export const Character = ({
   units,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { t } = useTransition('')
 
   return (
@@ -55,22 +56,27 @@ export const Character = ({
   )
 }
 
-export const getStaticProps: GetStaticProps<{
+export const getServerSideProps: GetServerSideProps<{
   units: (UnitMaster & {
     characters: CharacterMaster[]
   })[]
-}> = async () => {
+}> = async ({ res, req }) => {
+  const region = getRegionCookie()
   const data = await prisma.unitMaster.findMany({
+    where: {
+      region,
+    },
     include: {
       characters: true,
     },
   })
 
+  res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate')
+
   return {
     props: {
       units: data,
     },
-    revalidate: 3600,
   }
 }
 

@@ -26,7 +26,11 @@ const GachaItem = ({
       className={className}
     >
       {!noImage && (
-        <GachaIcon id={convertIDNum(data.id)} category={data.category} />
+        <GachaIcon
+          id={convertIDNum(data.id)}
+          category={data.category}
+          region={data.region}
+        />
       )}
       <div className="mt-2">{data.name}</div>
       <div className="text-gray-600 mt-0.5">

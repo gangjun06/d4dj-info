@@ -1,9 +1,10 @@
 import { Prisma, PrismaClient } from '@prisma/client'
 import axios from 'axios'
+import * as datefns from 'date-fns'
 import fs from 'fs'
 import path from 'path'
 import { modelSetting } from '../data.js'
-import { ResultType } from '../types/index.js'
+import { Field, ResultType } from '../types/index.js'
 import { formatText, lowerFirst } from '../utils.js'
 
 const __dirname = path.resolve()
@@ -16,14 +17,28 @@ const fetchMaster = async (region: string, name: string) => {
   return res.data
 }
 
-const parseTarget = async (region: string, name: string) => {
-  const masterJSON = await fetchMaster(region, name)
+const parseTarget = async (
+  region: string,
+  name: string,
+  resultType: ResultType
+) => {
+  let masterJSON = {}
+  try {
+    masterJSON = await fetchMaster(region, name)
+  } catch (e) {
+    console.log(`[ERROR] File ${name} Not Found`)
+    return
+  }
   const data = await prisma[lowerFirst(name) as 'characterMaster'].findMany()
   const createData: any = []
 
   const setting = modelSetting[name]
-
   let useCreateMany = true
+  const resultTypeFieldsObj: { [key: string]: Field } =
+    resultType.fields.reduce(
+      (obj, item) => Object.assign(obj, { [item.key]: { ...item } }),
+      {}
+    )
 
   for (const key in masterJSON) {
     const newData: any = {}
@@ -66,7 +81,12 @@ const parseTarget = async (region: string, name: string) => {
             newData[`${key2.slice(0, -10)}Id`] = `${field[key2]}-${region}`
           }
         } else {
-          newData[key2] = field[key2]
+          if (resultTypeFieldsObj[key2].value === 'DateTime') {
+            const parsed = datefns.parseISO(field[key2])
+            newData[key2] = datefns.sub(parsed, { hours: 9 })
+          } else {
+            newData[key2] = field[key2]
+          }
         }
       }
     }
@@ -104,9 +124,8 @@ const parseTarget = async (region: string, name: string) => {
   }
 }
 
-export const parse = async (name?: string) => {
+export const parse = async (region: string, name?: string) => {
   await prisma.$connect()
-  const region = 'jp'
 
   const json = fs.readFileSync(path.join(__dirname, 'data/result.json'))
   const data = JSON.parse(json.toString()) as ResultType[]
@@ -120,7 +139,7 @@ export const parse = async (name?: string) => {
     const d = data.find((d) => d.name === name)
     console.log(d)
     if (d) {
-      await parseTarget(region, d.name)
+      await parseTarget(region, d.name, dataObj[d.name])
     }
     return
   }
@@ -135,7 +154,6 @@ export const parse = async (name?: string) => {
       const fields = dataObj[name].fields
       for (const item of fields) {
         if (!item.extra || item.note !== 'origin') continue
-
         for (const item2 of item.extra) {
           if (item2.name === 'relation') {
             await parseReculsive(item.value.replace(/\[\]/, ''), true)
@@ -145,7 +163,7 @@ export const parse = async (name?: string) => {
       }
     }
 
-    await parseTarget(region, name)
+    await parseTarget(region, name, dataObj[name])
     console.info(`[DONE] ${name}`)
   }
 

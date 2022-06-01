@@ -8,7 +8,7 @@ const main = async () => {
   if (argv === '--generate') {
     generate()
   } else {
-    await parse()
+    await parse(argv)
   }
 }
 

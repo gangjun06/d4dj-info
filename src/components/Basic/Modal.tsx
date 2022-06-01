@@ -119,8 +119,10 @@ export const Modal = ({
 export const TempModal = ({
   id,
   children,
+  title,
 }: {
   id: string
+  title?: string
   children: React.ReactNode
 }) => {
   const [show, setShow] = useState<boolean>(false)
@@ -144,7 +146,7 @@ export const TempModal = ({
   }, [id])
 
   return (
-    <Modal show={show} onClose={close} showCloseBtn>
+    <Modal show={show} onClose={close} showCloseBtn title={title}>
       {children}
     </Modal>
   )
