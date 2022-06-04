@@ -151,6 +151,18 @@ export const modelSetting: { [key: string]: ModelSetting } = {
       },
     },
   },
+  RaidBossLocalPointBonusDetailMaster: {
+    fields: {
+      bonus: {
+        ref: 'ParameterBonusMaster',
+        refField: 'raidBossLocalPointBonusDetails',
+        type: OneToMany,
+      },
+    },
+  },
+  RaidBossLocalPointBonusMaster: {
+    fields: {},
+  },
   RaidBossMaster: {
     fields: {
       aggregation: {
