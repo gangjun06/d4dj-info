@@ -1,5 +1,7 @@
+import axios from 'axios'
 import Cookies from 'js-cookie'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { toast } from 'react-toastify'
 import {
   Attribute,
   FindListOptionSet,
@@ -425,4 +427,19 @@ export const formatFileSize = (size: number) => {
     ' ' +
     ['B', 'kB', 'MB', 'GB', 'TB'][i]
   )
+}
+
+export const downloadURI = async (uri: string, name: string) => {
+  try {
+    const res = await axios.get(uri, { responseType: 'blob' })
+    const blobUrl = URL.createObjectURL(res.data)
+    const link = document.createElement('a')
+    link.download = name
+    link.href = blobUrl
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  } catch (e) {
+    toast.error('Error')
+  }
 }

@@ -75,5 +75,6 @@
   "x": "X",
   "o": "O",
   "play_audio": "Play Audio",
-  "support_discord": "D4DJ.Info Discord"
+  "support_discord": "D4DJ.Info Discord",
+  "has_voice": "Has Voice"
 }

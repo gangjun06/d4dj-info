@@ -75,5 +75,6 @@
   "o": "O",
   "play_audio": "소리 재생",
   "default_order": "기본 순서",
-  "support_discord": "D4DJ.Info 디스코드"
+  "support_discord": "D4DJ.Info 디스코드",
+  "has_voice": "음성파일 여부"
 }
