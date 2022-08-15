@@ -38,3 +38,5 @@ vscode
 .env
 
 temp.md
+.yarn/cache
+.yarn/install-state.gz

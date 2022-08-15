@@ -4,13 +4,25 @@ D4DJ Project's Information Website
 
 ## Usage
 
-```
-set [.env.local]:
-NEXT_PUBLIC_BACKEND_URL=(Backend URL)
-//NEXT_PUBLIC_UMAMI_WEB_ID=(Umami Analytics id)
-//NEXT_PUBLIC_UMAMI_SRC=(Umami Analytics src)
+Install Dependency:
 
-start development server:
+```
 yarn install
-yarn dev
+```
+
+### web
+
+Set env file
+
+```
+workspaces/web/.env.local:
+
+NEXT_PUBLIC_BACKEND_URL=(Backend URL)
+NEXT_PUBLIC_GOOGLE_ANALYTICS=(Google Analytics)
+```
+
+Run Development server:
+
+```
+yarn workspace web dev
 ```
