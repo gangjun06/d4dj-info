@@ -1,0 +1,60 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "baseUrl": "src",
+    "paths": {
+      "@/api/*": [
+        "pages/api/*"
+      ],
+      "@/assets/*": [
+        "assets/*"
+      ],
+      "@/components/*": [
+        "components/*"
+      ],
+      "@/generated/*": [
+        "generated/*"
+      ],
+      "@/apollo/*": [
+        "apollo/*"
+      ],
+      "@/models/*": [
+        "models/*"
+      ],
+      "@/types/*": [
+        "models/*"
+      ],
+      "@/lib/*": [
+        "lib/*"
+      ],
+      "@/hooks/*": [
+        "components/Hooks/*"
+      ]
+    }
+  },
+  "include": [
+    "workspaces/web/next-env.d.ts",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "public/f-adblock.js"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
