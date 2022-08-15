@@ -58,7 +58,7 @@ export function AddModel() {
 
   const onSubmit = async ({ model: modelStr, type, id }: FormData) => {
     if (!app) return
-    const url = `https://asset.d4dj.info/jp/AssetBundles/Live2D/${type}${modelStr}${id}/${type}${modelStr}${id}.model3.json`
+    const url = `https://cdn.d4dj.info/jp/AssetBundles/Live2D/${type}${modelStr}${id}/${type}${modelStr}${id}.model3.json`
     try {
       const model: any = await Live2DModel.from(url, {})
 
