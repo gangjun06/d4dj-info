@@ -165,7 +165,7 @@ export const parseDump = (): Map<string, ResultType> => {
   fileStr.forEach((line) => {
     if (curData) {
       const match = line.match(TypeRegex)
-      if (prevLine.includes('[KeyAttribute]') && match) {
+      if (prevLine.includes('[Key') && match) {
         const [, type, name] = match
         const [typeConverted, noType] = typeConverter(type)
         const [nameConverted, extra] = nameConverter(name, {

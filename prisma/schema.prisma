@@ -542,6 +542,7 @@ model LiveSEPackMaster {
   startDate DateTime
   endDate   DateTime
   region    Region
+  liveSEs   LiveSEMaster[]     @relation("LiveSEMaster_LiveSEPackMaster")
 }
 
 model LoginBonusItemMaster {
@@ -780,14 +781,12 @@ model QuestMapMaster {
   region                   Region
 }
 
-model RaidBossHpBonusDetailMaster {
-  id           String         @id
-  masterId     Int
-  bonusId      Int
-  category     RewardCategory
-  rewardId     Int
-  rewardAmount Int
-  region       Region
+model RaidBossLocalPointGroupMaster {
+  id      String @id
+  groupId Int
+  name    String
+  bossIds Int[]
+  region  Region
 }
 
 model RaidBossMaster {
@@ -920,6 +919,15 @@ model MusicMixMaster {
   music              MusicMaster      @relation("MusicMixMaster_Music", fields: musicId, references: id)
 }
 
+model BeginnersMissionMaster {
+  id            String  @id
+  detailId      Int
+  hint          String
+  isRecommend   Boolean
+  isTutorialEnd Boolean
+  region        Region
+}
+
 model BoxGachaMaster {
   id             String      @id
   masterId       Int
@@ -942,7 +950,7 @@ model BoxGachaTableMaster {
   tableId         Int
   category        RewardCategory
   rewardId        Int
-  rewardAmount    Int
+  amount          Int
   maxCount        Int
   ascendingSortId Int
   region          Region
@@ -1069,8 +1077,7 @@ model ClothMaster {
   debutOrder       Int
   startDate        DateTime
   endDate          DateTime
-  requiredStockId  Int
-  requiredAmount   Int
+  sourceCardId     Int
   region           Region
 }
 
@@ -1104,6 +1111,24 @@ model OverrideCommonTextMaster {
   masterId Int
   text     String
   region   Region
+}
+
+model DJSimulatorHostCharacterMaster {
+  id        String   @id
+  masterId  Int
+  clothIds  Int[]
+  startDate DateTime
+  endDate   DateTime
+  region    Region
+}
+
+model DJSimulatorHostClubSetlistMaster {
+  id         String @id
+  masterId   Int
+  unitId     Int
+  groupIndex Int
+  clubItemId Int
+  region     Region
 }
 
 model DJSimulatorSetlistMaster {
@@ -1144,6 +1169,109 @@ model BingoRewardMaster {
   rewardId       Int
   rewardAmount   Int
   region         Region
+}
+
+model GrowthActionCardParameterCountMaster {
+  id       String @id
+  rarityId Int
+  value    Int
+  region   Region
+}
+
+model GrowthActionCardValueMaster {
+  id       String @id
+  masterId Int
+  value    Int
+  region   Region
+}
+
+model GrowthBattleEnemyMaster {
+  id                String @id
+  masterId          Int
+  conditionValue    Int
+  enemyCharacterIds Int[]
+  sequence          Int
+  region            Region
+}
+
+model GrowthBlockEffectDetailMaster {
+  id                 String                @id
+  masterId           Int
+  effectType         GrowthBlockEffectType
+  effectTargetType   EffectTargetType
+  effectTargetValue  Int
+  effectTypeValue    Int
+  effectTypeOperator EffectTypeOperator
+  effectChance       Int
+  region             Region
+}
+
+model GrowthBlockEffectSetMaster {
+  id              String @id
+  masterId        Int
+  effectDetailsId Int[]
+  blockChance     Int
+  region          Region
+}
+
+model GrowthBlockMaster {
+  id          String              @id
+  masterId    Int
+  blockType   GrowthBlockCategory
+  effectSetId Int[]
+  region      Region
+}
+
+model GrowthBlockTemplateMaster {
+  id       String @id
+  masterId Int
+  len      Int
+  point1   Int
+  point2   Int
+  point3   Int
+  point4   Int
+  point5   Int
+  point6   Int
+  point7   Int
+  point8   Int
+  point9   Int
+  point10  Int
+  region   Region
+}
+
+model GrowthCharacterBlockMaster {
+  id                  String                  @id
+  masterId            Int
+  characterIdId       Int
+  characterEffectType GrowthBlockEffectType[]
+  effectValues        Int[]
+  effectTypeOperator  EffectTypeOperator[]
+  image               Int
+  region              Region
+}
+
+model GrowthMapMaster {
+  id          String @id
+  masterId    Int
+  templatesId Int[]
+  region      Region
+}
+
+model GrowthSpecificBonusMaster {
+  id        String @id
+  eventId   Int
+  cardIdsId Int[]
+  bonusRate Int
+  region    Region
+}
+
+model GrowthUnlockMaster {
+  id           String @id
+  eventId      Int
+  lockMemberId Int
+  stockId      Int
+  amount       Int
+  region       Region
 }
 
 model EventAggregationTermMaster {
@@ -1193,18 +1321,19 @@ model EventRankingRewardTemplateMaster {
 }
 
 model ParameterBonusMaster {
-  id                      String                     @id
-  masterId                Int
-  targetId                Int
-  value                   Int
-  region                  Region
-  eventSpecificBonusChara EventSpecificBonusMaster[] @relation("EventSpecificBonusMaster_CharacterMatchParameterBonus")
-  eventSpecificBonusAll   EventSpecificBonusMaster[] @relation("EventSpecificBonusMaster_AllMatchParameterBonus")
-  raidBossChara           RaidBossMaster[]           @relation("RaidBossMaster_CharacterMatchParameterBonus")
-  raidBossCard            RaidBossMaster[]           @relation("RaidBossMaster_CardMatchParameterBonuses")
-  eventMedleySetlists     EventMedleySetlistMaster[] @relation("EventMedleySetlistMaster_CharacterMatchParameterBonus")
-  towerChara              TowerMaster[]              @relation("TowerMaster_CharacterMatchParameterBonus")
-  towerAttr               TowerMaster[]              @relation("TowerMaster_AttributeMatchParameterBonus")
+  id                             String                                @id
+  masterId                       Int
+  targetId                       Int
+  value                          Int
+  region                         Region
+  eventSpecificBonusChara        EventSpecificBonusMaster[]            @relation("EventSpecificBonusMaster_CharacterMatchParameterBonus")
+  eventSpecificBonusAll          EventSpecificBonusMaster[]            @relation("EventSpecificBonusMaster_AllMatchParameterBonus")
+  raidBossChara                  RaidBossMaster[]                      @relation("RaidBossMaster_CharacterMatchParameterBonus")
+  raidBossCard                   RaidBossMaster[]                      @relation("RaidBossMaster_CardMatchParameterBonuses")
+  eventMedleySetlists            EventMedleySetlistMaster[]            @relation("EventMedleySetlistMaster_CharacterMatchParameterBonus")
+  raidBossLocalPointBonusDetails RaidBossLocalPointBonusDetailMaster[] @relation("RaidBossLocalPointBonusDetailMaster_Bonus")
+  towerChara                     TowerMaster[]                         @relation("TowerMaster_CharacterMatchParameterBonus")
+  towerAttr                      TowerMaster[]                         @relation("TowerMaster_AttributeMatchParameterBonus")
 }
 
 model EventMedleySetlistMaster {
@@ -1218,6 +1347,7 @@ model EventMedleySetlistMaster {
   order                          Int
   specificBonusCharacterIds      Int[]
   characterMatchParameterBonusId String
+  bonusCardIds                   Int[]
   region                         Region
   aggregation                    EventAggregationBaseMaster @relation("EventMedleySetlistMaster_Aggregation", fields: aggregationId, references: id)
   characterMatchParameterBonus   ParameterBonusMaster       @relation("EventMedleySetlistMaster_CharacterMatchParameterBonus", fields: characterMatchParameterBonusId, references: id)
@@ -1239,6 +1369,16 @@ model PokerCoinMultiplierMaster {
   region     Region
 }
 
+model RaidBossHpBonusDetailMaster {
+  id       String         @id
+  masterId Int
+  bonusId  Int
+  category RewardCategory
+  rewardId Int
+  amount   Int
+  region   Region
+}
+
 model RaidBossHpBonusMaster {
   id            String @id
   masterId      Int
@@ -1249,29 +1389,22 @@ model RaidBossHpBonusMaster {
 }
 
 model RaidBossLocalPointBonusDetailMaster {
-  id           String         @id
-  masterId     Int
-  bonusId      Int
-  category     RewardCategory
-  rewardId     Int
-  rewardAmount Int
-  region       Region
+  id       String               @id
+  masterId Int
+  bonusId  String
+  category RewardCategory
+  rewardId Int
+  amount   Int
+  region   Region
+  bonus    ParameterBonusMaster @relation("RaidBossLocalPointBonusDetailMaster_Bonus", fields: bonusId, references: id)
 }
 
 model RaidBossLocalPointBonusMaster {
   id         String @id
   masterId   Int
-  groupId    Int
-  localPoint Float
+  localPoint Int
   name       String
   region     Region
-}
-
-model RaidBossLocalPointGroupMaster {
-  id      String @id
-  groupId Int
-  bossIds Int[]
-  region  Region
 }
 
 model SlotEffectMaster {
@@ -1330,22 +1463,24 @@ model GachaBonusMaster {
 }
 
 model GachaDrawMaster {
-  id                   String                     @id
-  masterId             Int
-  gachaId              String
-  drawAmounts          Int[]
-  stockId              String
-  stockAmount          Int
-  drawLimit            Int
-  isResetLimitEveryday Boolean
-  rouletteRates        Int[]
-  bonusStockIds        Int[]
-  bonusStockAmounts    Int[]
-  region               Region
-  auditionGachaReset   AuditionGachaResetMaster[] @relation("AuditionGachaResetMaster_GachaDraw")
-  gacha                GachaMaster                @relation("GachaDrawMaster_Gacha", fields: gachaId, references: id)
-  stock                StockMaster                @relation("GachaDrawMaster_Stock", fields: stockId, references: id)
-  rouletteTargets      GachaRouletteMaster[]      @relation("GachaDrawMaster_RouletteTargets")
+  id                         String                     @id
+  masterId                   Int
+  gachaId                    String
+  drawAmounts                Int[]
+  stockId                    String
+  stockAmount                Int
+  drawLimit                  Int
+  isResetLimitEveryday       Boolean
+  rouletteRates              Int[]
+  bonusStockIds              Int[]
+  bonusStockAmounts          Int[]
+  shareCashBackStockId       Int
+  shareCashBackPerStockCount Int
+  region                     Region
+  auditionGachaReset         AuditionGachaResetMaster[] @relation("AuditionGachaResetMaster_GachaDraw")
+  gacha                      GachaMaster                @relation("GachaDrawMaster_Gacha", fields: gachaId, references: id)
+  stock                      StockMaster                @relation("GachaDrawMaster_Stock", fields: stockId, references: id)
+  rouletteTargets            GachaRouletteMaster[]      @relation("GachaDrawMaster_RouletteTargets")
 }
 
 model GachaExplanationWordMaster {
@@ -1393,6 +1528,29 @@ model GachaTableRateMaster {
   gachaBonuses GachaBonusMaster[] @relation("GachaBonusMaster_TableRate")
 }
 
+model GradeMusicListMaster {
+  id             String @id
+  masterId       Int
+  seasonId       Int
+  grade          Int
+  name           String
+  maxHP          Int
+  evaluationRate Int[]
+  charts         Int[]
+  isHidden       Int[]
+  missionId      Int
+  region         Region
+}
+
+model GradeSeasonMaster {
+  id        String   @id
+  masterId  Int
+  name      String
+  startDate DateTime
+  endDate   DateTime
+  region    Region
+}
+
 model HelpCategoryMaster {
   id       String       @id
   masterId Int
@@ -1413,12 +1571,14 @@ model ChartAchieveMaster {
 }
 
 model LiveSEMaster {
-  id       String         @id
-  masterId Int
-  category LiveSECategory
-  name     String
-  isPreset Boolean
-  region   Region
+  id                 String           @id
+  masterId           Int
+  liveSEPackMasterId String
+  category           LiveSECategory
+  name               String
+  isPreset           Boolean
+  region             Region
+  liveSEPackMaster   LiveSEPackMaster @relation("LiveSEMaster_LiveSEPackMaster", fields: liveSEPackMasterId, references: id)
 }
 
 model LiveSEPackPurchaseMaster {
@@ -1604,24 +1764,18 @@ model OptionPresetMaster {
   region          Region
 }
 
-model TowerMaster {
-  id                             String               @id
-  masterId                       Int
-  name                           String
-  category                       String
-  availableCharacterIds          Int[]
-  availableAttributeIds          Int[]
-  bonusCharacterIds              Int[]
-  characterMatchParameterBonusId String
-  bonusAttributeIds              Int[]
-  attributeMatchParameterBonusId String
-  bonusCardIds                   Int[]
-  startDate                      DateTime
-  endDate                        DateTime
-  region                         Region
-  characterMatchParameterBonus   ParameterBonusMaster @relation("TowerMaster_CharacterMatchParameterBonus", fields: characterMatchParameterBonusId, references: id)
-  attributeMatchParameterBonus   ParameterBonusMaster @relation("TowerMaster_AttributeMatchParameterBonus", fields: attributeMatchParameterBonusId, references: id)
-  towerStages                    TowerStageMaster[]   @relation("TowerStageMaster_Tower")
+model CardAffectionRewardMaster {
+  id              String         @id
+  masterId        Int
+  attributeId     Int
+  characterId     Int
+  rarityId        Int
+  affection       Int
+  isNoEpisodeOnly Boolean
+  category        RewardCategory
+  rewardId        Int
+  amount          Int
+  region          Region
 }
 
 model RewardMaster {
@@ -1642,6 +1796,26 @@ model RewardMaster {
   eventLoginBonusItems EventLoginBonusItemMaster[] @relation("EventLoginBonusItemMaster_Rewards")
   missionPanels        MissionPanelMaster[]        @relation("MissionPanelMaster_AllCompleteRewards")
   towerStages          TowerStageMaster[]          @relation("TowerStageMaster_Rewards")
+}
+
+model TowerMaster {
+  id                             String               @id
+  masterId                       Int
+  name                           String
+  category                       String
+  availableCharacterIds          Int[]
+  availableAttributeIds          Int[]
+  bonusCharacterIds              Int[]
+  characterMatchParameterBonusId String
+  bonusAttributeIds              Int[]
+  attributeMatchParameterBonusId String
+  bonusCardIds                   Int[]
+  startDate                      DateTime
+  endDate                        DateTime
+  region                         Region
+  characterMatchParameterBonus   ParameterBonusMaster @relation("TowerMaster_CharacterMatchParameterBonus", fields: characterMatchParameterBonusId, references: id)
+  attributeMatchParameterBonus   ParameterBonusMaster @relation("TowerMaster_AttributeMatchParameterBonus", fields: attributeMatchParameterBonusId, references: id)
+  towerStages                    TowerStageMaster[]   @relation("TowerStageMaster_Tower")
 }
 
 model TowerStageMaster {
@@ -1677,20 +1851,6 @@ model QuestDeckMaster {
   card       CardMaster     @relation("QuestDeckMaster_Card", fields: cardId, references: id)
 }
 
-model CardAffectionRewardMaster {
-  id              String         @id
-  masterId        Int
-  attributeId     Int
-  characterId     Int
-  rarityId        Int
-  affection       Int
-  isNoEpisodeOnly Boolean
-  category        RewardCategory
-  rewardId        Int
-  amount          Int
-  region          Region
-}
-
 model LimitBreakItemMaster {
   id              String          @id
   masterId        Int
@@ -1703,6 +1863,13 @@ model LimitBreakItemMaster {
   rarity          RarityMaster    @relation("LimitBreakItemMaster_Rarity", fields: rarityId, references: id)
   attribute       AttributeMaster @relation("LimitBreakItemMaster_Attribute", fields: attributeId, references: id)
   stock           StockMaster     @relation("LimitBreakItemMaster_Stock", fields: stockId, references: id)
+}
+
+model NextConsumeStockMaster {
+  id           String @id
+  stockId      Int
+  nextStocksId Int[]
+  region       Region
 }
 
 model RandomStockMaster {
@@ -1862,6 +2029,45 @@ enum BingoRewardCategory {
   Complete
 }
 
+enum EffectTargetType {
+  None
+  Pick
+  All
+  Random
+}
+
+enum EffectTypeOperator {
+  None
+  Rate
+  Step
+}
+
+enum GrowthBlockCategory {
+  None
+  Red
+  Green
+  White
+  Condition
+  Character
+  Reward
+  VS
+}
+
+enum GrowthBlockEffectType {
+  None
+  TrainingExp
+  HeartExp
+  TechniqueExp
+  PhysicalExp
+  AllExp
+  DoubleEffect
+  LevelChange
+  TileChange
+  CharacterEffect
+  SendStock
+  LiveBattle
+}
+
 enum EventAggregationType {
   MainAddPoint
   Highscore
@@ -1884,6 +2090,7 @@ enum EventType {
   Poker
   Raid
   Slot
+  Growth
 }
 
 enum PokerHandCategory {
@@ -2044,6 +2251,9 @@ enum MissionCategory {
   Tutorial
   Chart
   TimeLimited
+  Daily
+  Weekly
+  Event
 }
 
 enum ChartDifficulty {
@@ -2107,6 +2317,7 @@ enum RewardCategory {
   DuplicateCard
   EventPoint
   LiveSEPack
+  Cloth
 }
 
 enum StockCategory {
