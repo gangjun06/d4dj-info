@@ -76,5 +76,12 @@
   "o": "O",
   "play_audio": "Play Audio",
   "support_discord": "D4DJ.Info Discord",
-  "has_voice": "Has Voice"
+  "has_voice": "Has Voice",
+  "event": {
+    "raid": "Raid",
+    "slot": "Slot",
+    "poker": "Poker",
+    "medley": "Medley",
+    "bingo": "Bingo"
+  }
 }

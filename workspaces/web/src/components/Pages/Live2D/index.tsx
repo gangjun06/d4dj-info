@@ -22,6 +22,7 @@ function Live2DViewContent({ urlData }: props) {
     setModels,
   } = useContext(Live2DContext)
   const [width, height] = useWindowSize()
+  console.log(width, height)
   const [isShown, setIsShown] = useState<boolean>(false)
 
   useEffect(() => {

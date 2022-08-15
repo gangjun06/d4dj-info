@@ -24,27 +24,27 @@ export const EventOptions: FindListOptionSet<AllEventsItem> = {
   fields: {
     type: {
       type: FindListType.Checkbox,
-      label: 'common:event.name',
+      label: 'common:type',
       name: 'type',
       options: [
         {
-          label: 'raid',
+          label: 'common:event.raid',
           value: EventType.Raid,
         },
         {
-          label: 'Slot',
+          label: 'common:event.slot',
           value: EventType.Slot,
         },
         {
-          label: 'poker',
+          label: 'common:event.poker',
           value: EventType.Poker,
         },
         {
-          label: 'bingo',
+          label: 'common:event.medley',
           value: EventType.Medley,
         },
         {
-          label: 'bingo',
+          label: 'common:event.bingo',
           value: EventType.Bingo,
         },
       ],
@@ -56,7 +56,7 @@ export const EventOptions: FindListOptionSet<AllEventsItem> = {
     },
     name: {
       type: FindListType.Input,
-      label: 'name',
+      label: 'common:name',
       name: 'name',
       placeholder: 'name',
       customOptionHandler: (value: string | string[]) => ({
@@ -70,9 +70,9 @@ export const EventOptions: FindListOptionSet<AllEventsItem> = {
     default: 'startDate',
     defaultOrder: 'desc',
     options: [
-      { label: 'id', value: 'id' },
-      { label: 'name', value: 'name' },
-      { label: 'startDate', value: 'startDate' },
+      { label: 'common:id', value: 'id' },
+      { label: 'common:name', value: 'name' },
+      { label: 'common:start_date', value: 'startDate' },
     ],
   },
 }
