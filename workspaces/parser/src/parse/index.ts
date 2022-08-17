@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient } from '@prisma/client'
+import { PrismaClient, Prisma } from '@prisma/client'
 import axios from 'axios'
 import * as datefns from 'date-fns'
 import fs from 'fs'

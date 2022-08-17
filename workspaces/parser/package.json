@@ -1,5 +1,5 @@
 {
-  "name": "scripts",
+  "name": "parser",
   "version": "1.0.0",
   "type": "module",
   "scripts": {
@@ -14,5 +14,6 @@
     "date-fns": "^2.28.0",
     "prisma": "^3.14.0",
     "typescript": "^4.6.3"
-  }
+  },
+  "packageManager": "yarn@3.2.2"
 }
