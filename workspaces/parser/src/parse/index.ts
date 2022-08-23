@@ -67,7 +67,11 @@ const parseTarget = async (
         newData['masterId'] = field[key2]
       } else {
         if (key2.endsWith('PrimaryKey')) {
-          if (!setting.fields || !setting.fields[key2.slice(0, -10)]) {
+          if (
+            !setting ||
+            !setting.fields ||
+            !setting.fields[key2.slice(0, -10)]
+          ) {
             continue
           }
           if (Array.isArray(field[key2])) {
