@@ -37,11 +37,6 @@ export const modelSetting: { [key: string]: ModelSetting } = {
   },
   AchievementMaster: {
     fields: {
-      rewards: {
-        ref: 'RewardMaster',
-        refField: 'achievements',
-        type: ManyToMany,
-      },
       commandMaster: {
         ref: 'CommandMaster',
         refField: 'achievements',
@@ -170,16 +165,6 @@ export const modelSetting: { [key: string]: ModelSetting } = {
         refField: 'raidBoss',
         type: OneToMany,
       },
-      characterMatchParameterBonus: {
-        ref: 'ParameterBonusMaster',
-        refField: 'raidBossChara',
-        type: ManyToMany,
-      },
-      cardMatchParameterBonuses: {
-        ref: 'ParameterBonusMaster',
-        refField: 'raidBossCard',
-        type: ManyToMany,
-      },
     },
   },
   CardStackItemMaster: {
@@ -201,13 +186,7 @@ export const modelSetting: { [key: string]: ModelSetting } = {
     },
   },
   ChampionshipMaster: {
-    fields: {
-      conditions: {
-        ref: 'ConditionMaster',
-        refField: 'championships',
-        type: ManyToMany,
-      },
-    },
+    fields: {},
   },
   ChampionshipSetlistMaster: {
     fields: {
@@ -262,13 +241,7 @@ export const modelSetting: { [key: string]: ModelSetting } = {
   },
   ClubItemDetailMaster: {
     id: ['id', 'level'],
-    fields: {
-      conditions: {
-        ref: 'ConditionMaster',
-        refField: 'clubItemDetails',
-        type: ManyToMany,
-      },
-    },
+    fields: {},
   },
   ClubItemMaster: {
     fields: {
@@ -301,18 +274,7 @@ export const modelSetting: { [key: string]: ModelSetting } = {
   },
   EpisodeMaster: {
     id: ['category', 'id'],
-    fields: {
-      conditions: {
-        ref: 'ConditionMaster',
-        refField: 'episodes',
-        type: ManyToMany,
-      },
-      rewards: {
-        ref: 'RewardMaster',
-        refField: 'episodes',
-        type: ManyToMany,
-      },
-    },
+    fields: {},
   },
   EventAggregationBaseMaster: {
     fields: {
@@ -339,11 +301,6 @@ export const modelSetting: { [key: string]: ModelSetting } = {
         ref: 'LoginBonusMaster',
         refField: 'eventLoginBonusItems',
         type: OneToMany,
-      },
-      rewards: {
-        ref: 'RewardMaster',
-        refField: 'eventLoginBonusItems',
-        type: ManyToMany,
       },
     },
   },
@@ -435,11 +392,6 @@ export const modelSetting: { [key: string]: ModelSetting } = {
         refField: 'gachaDraws',
         type: OneToMany,
       },
-      rouletteTargets: {
-        ref: 'GachaRouletteMaster',
-        refField: 'gachaDraws',
-        type: ManyToMany,
-      },
     },
   },
   GachaMaster: {
@@ -478,11 +430,6 @@ export const modelSetting: { [key: string]: ModelSetting } = {
         ref: 'GachaNotesWordMaster',
         refField: 'gacha',
         type: OneToMany,
-      },
-      selectBonusRewards: {
-        ref: 'RewardMaster',
-        refField: 'gacha',
-        type: ManyToMany,
       },
     },
   },
@@ -562,11 +509,6 @@ export const modelSetting: { [key: string]: ModelSetting } = {
         refField: 'items',
         type: OneToMany,
       },
-      rewards: {
-        ref: 'RewardMaster',
-        refField: 'loginBonusItems',
-        type: ManyToMany,
-      },
     },
   },
   LoginBonusPositionTemplateMaster: {
@@ -587,22 +529,10 @@ export const modelSetting: { [key: string]: ModelSetting } = {
     },
   },
   LiveCutinMaster: {
-    fields: {
-      conditions: {
-        ref: 'ConditionMaster',
-        refField: 'liveCutins',
-        type: ManyToMany,
-      },
-    },
+    fields: {},
   },
   MapMaster: {
-    fields: {
-      conditions: {
-        ref: 'ConditionMaster',
-        refField: 'maps',
-        type: ManyToMany,
-      },
-    },
+    fields: {},
   },
   MapMobMaster: {
     fields: {
@@ -644,11 +574,6 @@ export const modelSetting: { [key: string]: ModelSetting } = {
         refField: 'details',
         type: OneToMany,
       },
-      rewards: {
-        ref: 'RewardMaster',
-        refField: 'missionDetails',
-        type: ManyToMany,
-      },
       commandMaster: {
         ref: 'CommandMaster',
         refField: 'missionDetails',
@@ -663,11 +588,6 @@ export const modelSetting: { [key: string]: ModelSetting } = {
         refField: 'panels',
         type: OneToMany,
       },
-      allCompleteRewards: {
-        ref: 'RewardMaster',
-        refField: 'missionPanels',
-        type: ManyToMany,
-      },
     },
   },
   MusicMaster: {
@@ -676,11 +596,6 @@ export const modelSetting: { [key: string]: ModelSetting } = {
         ref: 'UnitMaster',
         refField: 'musics',
         type: OneToMany,
-      },
-      purchaseBonuses: {
-        ref: 'RewardMaster',
-        refField: 'musics',
-        type: ManyToMany,
       },
     },
   },
@@ -711,16 +626,6 @@ export const modelSetting: { [key: string]: ModelSetting } = {
         ref: 'AssistOptionPresetMaster',
         refField: 'questBlocks',
         type: ManyToOne,
-      },
-      firstRewards: {
-        ref: 'RewardMaster',
-        refField: 'questFirst',
-        type: ManyToMany,
-      },
-      loopRewards: {
-        ref: 'RewardMaster',
-        refField: 'questLoop',
-        type: ManyToMany,
       },
       map: {
         ref: 'MapMaster',
@@ -795,11 +700,6 @@ export const modelSetting: { [key: string]: ModelSetting } = {
       },
       musics: {
         ref: 'MusicMaster',
-        refField: 'towerStages',
-        type: ManyToMany,
-      },
-      rewards: {
-        ref: 'RewardMaster',
         refField: 'towerStages',
         type: ManyToMany,
       },
