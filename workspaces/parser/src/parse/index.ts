@@ -85,7 +85,7 @@ const parseTarget = async (
             newData[`${key2.slice(0, -10)}Id`] = `${field[key2]}-${region}`
           }
         } else {
-          if (resultTypeFieldsObj[key2].value === 'DateTime') {
+          if (resultTypeFieldsObj[key2]?.value === 'DateTime') {
             const parsed = datefns.parseISO(field[key2])
             newData[key2] = datefns.sub(parsed, { hours: 9 })
           } else {

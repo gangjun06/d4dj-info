@@ -29,9 +29,9 @@ export default function Home({
         { name: t('nav:main.dashboard'), link: '/' },
       ]}
     >
-      <TempModal id="alert-1" title="Global server resource added">
+      {/* <TempModal id="alert-1" title="Global server resource added">
         You can change the game server in left bottom setting.
-      </TempModal>
+      </TempModal> */}
       <div className="grid-5">
         <Card
           title={t('common:recent_event')}
