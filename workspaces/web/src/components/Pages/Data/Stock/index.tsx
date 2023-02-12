@@ -29,8 +29,8 @@ const StockModal = ({ id, onClose }: { id: string; onClose: () => void }) => {
       ) : stock ? (
         <div>
           <div className="flex gap-x-3 justify-center items-center w-full mb-2">
-            <StockIcon id={convertIDNum(stock.id)} />
-            <StockIcon id={convertIDNum(stock.id)} frameless />
+            <StockIcon id={stock.masterId} />
+            <StockIcon id={stock.masterId} frameless />
           </div>
           <div className="text-md">{stock.name}</div>
           <div className="text-sm text-gray-500">{stock.summary}</div>

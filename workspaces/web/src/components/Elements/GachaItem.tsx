@@ -27,7 +27,7 @@ const GachaItem = ({
     >
       {!noImage && (
         <GachaIcon
-          id={convertIDNum(data.id)}
+          id={data.masterId}
           category={data.category}
           region={data.region}
         />

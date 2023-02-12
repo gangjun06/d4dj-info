@@ -181,8 +181,8 @@ export const getServerSideProps: GetServerSideProps<
       unit: UnitMaster
       cards: {
         id: string
-        attributeId: string
-        rarityId: string
+        attribute: number
+        rarity: number
       }[]
     }
   },
@@ -206,8 +206,8 @@ export const getServerSideProps: GetServerSideProps<
         select: {
           id: true,
           masterId: true,
-          attributeId: true,
-          rarityId: true,
+          attribute: true,
+          rarity: true,
           cardName: true,
         },
       },

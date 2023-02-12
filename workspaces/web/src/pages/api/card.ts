@@ -107,6 +107,7 @@ export const CardOptions: FindListOptionSet<AllCardsItem> = {
     options: [
       { label: 'common:id', value: 'id' },
       { label: 'common:name', value: 'cardName' },
+      { label: 'common:start_date', value: 'startDate' },
     ],
   },
 }
@@ -115,6 +116,7 @@ export type AllCardsItem = CardMaster & {
   character: CharacterMaster & {
     unit: {
       id: string
+      masterId: number
     }
   }
 }
@@ -136,6 +138,7 @@ export async function getCards(
             unit: {
               select: {
                 id: true,
+                masterId: true,
               },
             },
           },

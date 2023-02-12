@@ -17,7 +17,7 @@ const StockItem = ({ data }: { data: AllStocksItem }) => {
         })
       }}
     >
-      <StockIcon id={convertIDNum(data.id)} />
+      <StockIcon id={data.masterId} />
       <div>{data.name}</div>
     </Card>
   )

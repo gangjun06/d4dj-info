@@ -62,7 +62,7 @@ const StampModal = ({ id, onClose }: { id: string; onClose: () => void }) => {
       {error && <div>Error</div>}
       {stamp ? (
         <div>
-          <StampIcon id={convertIDNum(stamp.id)} />
+          <StampIcon id={stamp.masterId} />
           <div className="text-md">{stamp.name}</div>
           <div className="text-sm text-gray-500">{stamp.description}</div>
 

@@ -22,8 +22,7 @@ export default function CardDetail({
 
   const chara = card.character
   const skill = card.skillParameter
-
-  const rarity = useMemo(() => convertIDNum(card.rarityId), [card.rarityId])
+  const rarity = card.rarity
 
   return (
     <MainLayout
@@ -60,10 +59,10 @@ export default function CardDetail({
             bodyClassName="flex justify-center flex-col items-center"
           >
             <CardIcon
-              id={convertIDNum(card.id)}
+              id={card.masterId}
               rarity={rarity}
-              attribute={convertIDNum(card.attributeId)}
-              unit={convertIDNum(chara.unit.id)}
+              attribute={card.attribute}
+              unit={chara.unit.masterId}
             />
             <div className="mt-1">{card.cardName}</div>
             <div className="text-gray-600 mb-1">
@@ -89,7 +88,7 @@ export default function CardDetail({
                   ],
                   [t('card:startdate'), formatTimeDetail(card.startDate)],
                   [t('card:enddate'), formatTimeDetail(card.endDate)],
-                  convertIDNum(card.rarityId) > 2
+                  convertIDNum(card.rarity) > 2
                     ? [
                         t('nav:live2d'),
                         {
