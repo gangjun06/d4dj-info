@@ -17,7 +17,7 @@ const HonorItem = ({ data }: { data: AllHonorsItem }) => {
         })
       }}
     >
-      <HonorIcon id={convertIDNum(data.id)} />
+      <HonorIcon id={data.masterId} />
       <div>{data.name}</div>
     </Card>
   )

@@ -12,7 +12,7 @@ const MusicItem = ({ data }: { data: AllMusicsItem }) => {
       bodyClassName="flex justify-center items-center flex-col"
       link={`/game/music/${data.id}`}
     >
-      <MusicIcon id={convertIDNum(data.id)} />
+      <MusicIcon id={data.masterId} />
       <div className="mt-2 badge">
         {data.charts.map(({ level, id }) => (
           <div className="" key={id}>

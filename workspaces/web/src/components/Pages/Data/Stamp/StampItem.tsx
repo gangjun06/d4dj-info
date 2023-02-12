@@ -17,7 +17,7 @@ const StampItem = ({ data }: { data: AllStampsItem }) => {
         })
       }}
     >
-      <StampIcon id={convertIDNum(data.id)} />
+      <StampIcon id={data.masterId} />
       <div>{data.name}</div>
     </Card>
   )

@@ -33,9 +33,9 @@ export async function getAggregation(
         id: detail as string,
       },
       include: {
-        eventPointRewards: true,
-        eventMedleySetlists: true,
-        eventRankingRewards: true,
+        // eventPointRewards: true,
+        // eventMedleySetlists: true,
+        // eventRankingRewards: true,
       },
     })
 

@@ -28,7 +28,7 @@ const HonorModal = ({ id, onClose }: { id: string; onClose: () => void }) => {
       ) : honor ? (
         <div>
           <div className="flex gap-x-3 justify-center items-center w-full mb-2">
-            <HonorIcon id={convertIDNum(honor.id)} />
+            <HonorIcon id={honor.masterId} />
           </div>
           <div className="text-md">{honor.name}</div>
           <div className="text-sm text-gray-500">{honor.description}</div>
