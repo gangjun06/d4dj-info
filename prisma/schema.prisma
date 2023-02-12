@@ -41,34 +41,85 @@ enum EventType {
 //         region          Region
 // }
 
+model CharacterMaster {
+        id               String       @id
+        masterId         Int
+        fullName         String
+        firstName        String
+        firstNameEnglish String
+        unitId           String
+        profileAnswers   String[]
+        fullNameEnglish  String
+        colorCode        String
+        idHistories      Int[]
+        region           Region
+        cards            CardMaster[] @relation("CardMaster_Character")
+        unit             UnitMaster   @relation("CharacterMaster_Unit", fields: unitId, references: id)
+        //   live2DUIChats Live2DUIChatMaster[] @relation("Live2DUIChatMaster_Character")
+        //   liveResultEpisodes LiveResultEpisodeMaster[] @relation("LiveResultEpisodeMaster_Characters")
+        //   mapEvents MapEventMaster[] @relation("MapEventMaster_Characters")
+}
+
+model SkillMaster {
+        id                     String       @id
+        masterId               Int
+        minRecoveryValue       Int
+        maxRecoveryValue       Int
+        comboSupportCount      Int
+        scoreUpRate            Int
+        minSeconds             Float
+        maxSeconds             Float
+        perfectScoreUpRate     Int
+        groupBonusCharacterIds Int[]
+        groupBonusRates        Int[]
+        region                 Region
+        cards                  CardMaster[] @relation("CardMaster_SkillParameter")
+}
+
+// enum PassiveSkillType {
+//   None
+//   FeverBonus
+//   FeverSupport
+//   ScoreUpWithDamage
+//   AutoScoreUp
+//   SupportableScoreUp
+//   SupportableSkillLonger
+// }
+
+// model PassiveSkillDescriptionMaster {
+//   id String @id
+//   type PassiveSkillType 
+//   description String 
+//   region Region 
+// }
+
 model CardMaster {
-        id                         String   @id
-        masterId                   Int
-        rarityId                   String
-        cardName                   String
-        attributeId                String
-        characterId                String
-        skillParameterId           String
-        skillName                  String
-        passiveSkillId             String
-        maxParameters              Int[]
-        gachaMessage               String
-        clothCardId                Int
-        debutOrder                 Int
-        cardIllustHeadDistanceY    Float[]
-        cardIllustCenterDistanceX  Float[]
-        startDate                  DateTime
-        endDate                    DateTime
-        gachaCardAttribute         Int
-        canUseCommonCardStackStock Boolean
-        region                     Region
+        id                        String          @id
+        masterId                  Int
+        rarity                    Int
+        cardName                  String
+        attribute                 Int
+        characterId               String
+        skillParameterId          String
+        skillName                 String
+        // passiveSkillId             String
+        maxParameters             Int[]
+        gachaMessage              String
+        clothCardId               Int
+        debutOrder                Int
+        cardIllustHeadDistanceY   Float[]
+        cardIllustCenterDistanceX Float[]
+        startDate                 DateTime
+        endDate                   DateTime
+        gachaCardAttribute        Int
+        region                    Region
         //   cardDisplays CardDisplayMaster[] @relation("CardDisplayMaster_Card")
         //   rarity RarityMaster @relation("CardMaster_Rarity" , fields: rarityId , references: id)
         //   attribute AttributeMaster @relation("CardMaster_Attribute" , fields: attributeId , references: id)
-        //   character CharacterMaster @relation("CardMaster_Character" , fields: characterId , references: id)
-        //   skillParameter SkillMaster @relation("CardMaster_SkillParameter" , fields: skillParameterId , references: id)
+        character                 CharacterMaster @relation("CardMaster_Character", fields: characterId, references: id)
+        skillParameter            SkillMaster     @relation("CardMaster_SkillParameter", fields: skillParameterId, references: id)
         //   passiveSkill PassiveSkillMaster @relation("CardMaster_PassiveSkill" , fields: passiveSkillId , references: id)
-        //   gachaPickUpCards GachaMaster[] @relation("GachaMaster_PickUpCards")
+        // gachaPickUpCards          GachaMaster[]   @relation("GachaMaster_PickUpCards")
         //   gachaSelectBonusCards GachaMaster[] @relation("GachaMaster_SelectBonusCards")
         //   gachaHomeAnimationCards GachaMaster[] @relation("GachaMaster_HomeAnimationCards")
         //   boxGachas BoxGachaMaster[] @relation("BoxGachaMaster_Card")
@@ -76,7 +127,7 @@ model CardMaster {
 }
 
 model UnitMaster {
-        id                   String        @id
+        id                   String            @id
         masterId             Int
         name                 String
         canTraining          Boolean
@@ -86,9 +137,9 @@ model UnitMaster {
         shortName            String
         initDeckCharacterIds Int[]
         region               Region
-        //   characters CharacterMaster[] @relation("CharacterMaster_Unit")
+        characters           CharacterMaster[] @relation("CharacterMaster_Unit")
         //   episodes UnitEpisodeMaster[] @relation("UnitEpisodeMaster_Unit")
-        musics               MusicMaster[] @relation("MusicMaster_Unit")
+        musics               MusicMaster[]     @relation("MusicMaster_Unit")
 }
 
 model UnitExpMaster {
@@ -191,6 +242,7 @@ model ChartDesignerMaster {
 }
 
 enum EventEpisodeType {
+        Unknown
         Normal
         D4Fes1
         D4Fes2
@@ -255,4 +307,184 @@ model EventMaster {
         // episodes               EventEpisodeMaster[]         @relation("EventEpisodeMaster_Event")
         // slotBonusTimes         SlotBonusTimeMaster[]        @relation("SlotBonusTimeMaster_Event")
         // slotSpecificBonus      SlotSpecificBonusMaster[]    @relation("SlotSpecificBonusMaster_Event")
+}
+
+enum GachaCategory {
+        Unknown
+        Normal
+        Tutorial
+        Event
+        Birthday
+        StartDash
+        Revival
+        Special
+}
+
+enum GachaType {
+        Unknown
+        Normal
+        StepUp
+        Audition
+        Guaranteed
+}
+
+model GachaSummaryWordMaster {
+        id       String        @id
+        masterId Int
+        text     String
+        region   Region
+        gacha    GachaMaster[] @relation("GachaMaster_Summary")
+}
+
+model GachaExplanationWordMaster {
+        id       String        @id
+        masterId Int
+        text     String
+        region   Region
+        gacha    GachaMaster[] @relation("GachaMaster_Detail")
+}
+
+model GachaNotesWordMaster {
+        id       String        @id
+        masterId Int
+        text     String
+        region   Region
+        gacha    GachaMaster[] @relation("GachaMaster_Note")
+}
+
+model GachaMaster {
+        id                               String                     @id
+        masterId                         Int
+        name                             String
+        tableIds                         Int[]
+        gachaTypeName                    String
+        summaryId                        String
+        hasSpecificBg                    Boolean
+        startDate                        DateTime
+        endDate                          DateTime
+        detailId                         String
+        noteId                           String
+        loginTriggerMinutes              Int
+        showHomeAnimation                Boolean
+        hasPickUpDuplicateBonus          Boolean
+        gachaCardAttribute               Int
+        ascendingSortId                  Int
+        category                         GachaCategory
+        selectBonusMaxValue              Int
+        pickUpDuplicateBonusStockIds     Int[]
+        pickUpDuplicateBonusStockAmounts Int[]
+        type                             GachaType
+        stepLoopCount                    Int
+        otherCardDate                    DateTime
+        pickUpLevelMax                   Boolean
+        shareCashBackRate                Int
+        randomBonusMaxValue              Int
+        randomBonusStockId               Int
+        region                           Region
+        pickUpCardsPrimaryKey            Int[]
+        //   tableRates GachaTableRateMaster[] @relation("GachaMaster_TableRates")
+        // pickUpCards                      CardMaster[]               @relation("GachaMaster_PickUpCards")
+        summary                          GachaSummaryWordMaster     @relation("GachaMaster_Summary", fields: summaryId, references: id)
+        detail                           GachaExplanationWordMaster @relation("GachaMaster_Detail", fields: detailId, references: id)
+        note                             GachaNotesWordMaster       @relation("GachaMaster_Note", fields: noteId, references: id)
+        // selectBonusCards                 CardMaster[]  @relation("GachaMaster_SelectBonusCards")
+        // homeAnimationCards               CardMaster[]  @relation("GachaMaster_HomeAnimationCards")
+        //   draws GachaDrawMaster[] @relation("GachaDrawMaster_Gacha")
+}
+
+enum StampCategory {
+        Common
+        Rare
+        Collabo
+}
+
+model StampMaster {
+        id           String        @id
+        masterId     Int
+        category     StampCategory
+        name         String
+        description  String
+        hasVoice     Boolean
+        duplicateId  Int
+        characterIds Int[]
+        region       Region
+}
+
+enum HonorType {
+        Unknown
+        Common
+        Mission
+        DigRank
+        Event
+        D4Pass
+        Character
+}
+
+model HonorMaster {
+        id              String    @id
+        masterId        Int
+        type            HonorType
+        name            String
+        description     String
+        effectType      Int
+        conditionCardId Int
+        duplicateId     Int
+        region          Region
+}
+
+enum StockCategory {
+        Unknown
+        Diamond
+        Fragment
+        Exp
+        SkillExp
+        LimitBreak
+        VoltageRecovery
+        Boost
+        MusicShop
+        Event
+        GachaTicket
+        Random
+        ParameterLevelUp
+        CardStack
+        RavePointRecovery
+        RaveBoost
+        Other
+}
+
+model StockMaster {
+        id                 String                  @id
+        masterId           Int
+        name               String
+        category           StockCategory
+        viewCategoryId     String
+        summary            String
+        attributeId        Int
+        rarity             Int
+        exp                Int
+        buffCharacterId    Int
+        recoveryAmount     Int
+        consumeAmount      Int
+        maxAmount          Int
+        startDate          DateTime
+        endDate            DateTime
+        isAppropriateSales Boolean
+        region             Region
+        //   slotBonusTimes SlotBonusTimeMaster[] @relation("SlotBonusTimeMaster_Stock")
+        viewCategory       StockViewCategoryMaster @relation("StockMaster_ViewCategory", fields: viewCategoryId, references: id)
+        //   boxGachas BoxGachaMaster[] @relation("BoxGachaMaster_Stock")
+        //   cardStackItems CardStackItemMaster[] @relation("CardStackItemMaster_Stock")
+        //   slotRewards SlotRewardMaster[] @relation("SlotRewardMaster_Stock")
+        //   auditionGachaReset AuditionGachaResetMaster[] @relation("AuditionGachaResetMaster_Stock")
+        //   gachaDraws GachaDrawMaster[] @relation("GachaDrawMaster_Stock")
+        //   chartAchieveRewards ChartAchieveMaster[] @relation("ChartAchieveMaster_RewardStock")
+        //   limitBreakItems LimitBreakItemMaster[] @relation("LimitBreakItemMaster_Stock")
+}
+
+model StockViewCategoryMaster {
+        id       String        @id
+        masterId Int
+        name     String
+        region   Region
+        stocks   StockMaster[] @relation("StockMaster_ViewCategory")
 }
