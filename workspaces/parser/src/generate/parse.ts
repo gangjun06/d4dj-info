@@ -15,136 +15,30 @@ const __dirname = path.resolve()
 
 const extraFields: { [key: string]: Field[] } = {}
 
-const nameConverter = (
-  name: string,
-  { modelName }: { modelName: string; type: string }
-): [converted: string | null, extra: { type: string } | null] => {
-  const setting = modelSetting[modelName]
-  name = formatText(name)
-  if (name === 'id') {
-    return ['masterId', null]
-  } else if (name.endsWith('PrimaryKey')) {
-    const fieldName = name.slice(0, -10)
-    name = fieldName + 'Id'
-    if (!setting || !setting.fields) {
-      return [name, null]
-    }
-    const settingFields = setting.fields[fieldName]
-    if (!settingFields) {
-      return [null, null]
-    }
-
-    if (!extraFields[modelName]) {
-      extraFields[modelName] = []
-    }
-
-    const { type, ref } = settingFields
-    const { refField } = settingFields
-
-    if (type === RelationType.ManyToMany) {
-      extraFields[modelName].push({
-        key: fieldName,
-        value: `${ref}[]`,
-        note: 'origin',
-        extra: [
-          {
-            name: 'relation',
-            parameters: [{ value: `"${modelName}_${upperFirst(fieldName)}"` }],
-          },
-        ],
-      })
-      if (!extraFields[ref]) extraFields[ref] = []
-      extraFields[ref].push({
-        key: refField,
-        value: `${modelName}[]`,
-        extra: [
-          {
-            name: 'relation',
-            parameters: [{ value: `"${modelName}_${upperFirst(fieldName)}"` }],
-          },
-        ],
-      })
-    } else if (type === RelationType.OneToMany) {
-      extraFields[modelName].push({
-        key: fieldName,
-        value: `${ref}`,
-        note: 'origin',
-        extra: [
-          {
-            name: 'relation',
-            parameters: [
-              { value: `"${modelName}_${upperFirst(fieldName)}"` },
-              { key: 'fields', value: [`${name}`] },
-              { key: 'references', value: ['id'] },
-            ],
-          },
-        ],
-      })
-      if (!extraFields[ref]) extraFields[ref] = []
-      extraFields[ref].push({
-        key: refField,
-        value: `${modelName}[]`,
-        extra: [
-          {
-            name: 'relation',
-            parameters: [{ value: `"${modelName}_${upperFirst(fieldName)}"` }],
-          },
-        ],
-      })
-      return [name, { type: 'String' }]
-    } else if (type === RelationType.ManyToOne) {
-    } else {
-      extraFields[modelName].push({
-        key: fieldName,
-        value: `${ref}`,
-        note: 'origin',
-        extra: [
-          {
-            name: 'relation',
-            parameters: [
-              { key: 'fields', value: [`${name}`] },
-              { key: 'references', value: ['id'] },
-            ],
-          },
-        ],
-      })
-      if (!extraFields[ref]) extraFields[ref] = []
-      extraFields[ref].push({
-        key: refField,
-        value: `${modelName}[]`,
-      })
-      return [name, { type: 'String' }]
-    }
-
-    return [null, null]
-  }
-  return [name, null]
-}
-
 const typeConverter = (type: string): [converted: string, noType: boolean] => {
   switch (type) {
     case 'bool':
-      return ['Boolean', false]
+      return ['boolean', false]
     case 'bool[]':
-      return ['Boolean[]', false]
+      return ['boolean[]', false]
     case 'int':
-      return ['Int', false]
+      return ['number', false]
     case 'int[]':
-      return ['Int[]', false]
+      return ['number[]', false]
     case 'float':
     case 'long':
-      return ['Float', false]
+      return ['number', false]
     case 'float[]':
     case 'long[]':
-      return ['Float[]', false]
+      return ['number[]', false]
     case 'string':
-      return ['String', false]
+      return ['string', false]
     case 'string[]':
-      return ['String[]', false]
+      return ['string[]', false]
     case 'DateTime':
-      return ['DateTime', false]
+      return ['Date', false]
     case 'DateTime[]':
-      return ['DateTime', false]
+      return ['Date', false]
     default:
       return [type, true]
   }
@@ -168,29 +62,14 @@ export const parseDump = (): Map<string, ResultType> => {
       if (prevLine.includes('[Key') && match) {
         const [, type, name] = match
         const [typeConverted, noType] = typeConverter(type)
-        const [nameConverted, extra] = nameConverter(name, {
-          modelName: curData.name,
-          type: typeConverted,
-        })
 
         if (noType) enumTarget.push(typeConverted.replace(/\[\]/, ''))
 
-        if (nameConverted) {
-          curData.fields.push({
-            key: nameConverted,
-            value: extra?.type ?? typeConverted,
-          })
-        }
-      } else if (line === '}') {
-        curData.fields.unshift({
-          key: 'id',
-          value: 'String',
-          extra: [{ name: 'id' }],
-        })
         curData.fields.push({
-          key: 'region',
-          value: 'Region',
+          key: formatText(name),
+          value: typeConverted,
         })
+      } else if (line === '}') {
         result.set(curData.name, curData!)
         curData = null
       }
