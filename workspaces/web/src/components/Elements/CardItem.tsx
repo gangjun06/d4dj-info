@@ -12,12 +12,13 @@ const CardItem = ({
   data: {
     id: string
     masterId: number
-    attributeId: string
+    attribute: number
     cardName: string
-    rarityId: string
+    rarity: number
     character?: {
       unit: {
         id: string
+        masterId: number
       }
     }
   }
@@ -34,9 +35,9 @@ const CardItem = ({
     >
       <CardIcon
         id={data.masterId}
-        rarity={convertIDNum(data.rarityId)}
-        attribute={convertIDNum(data.attributeId)}
-        unit={unitId || convertIDNum(data.character!.unit.id)}
+        rarity={data.rarity}
+        attribute={data.attribute}
+        unit={unitId || data.character!.unit.masterId}
       />
       {data.cardName}
     </Card>

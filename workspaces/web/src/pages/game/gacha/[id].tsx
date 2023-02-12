@@ -94,7 +94,7 @@ export default function CardDetail({
             <div className="subtitle">{t('gacha:pickup_cards')}</div>
             <div className="col-span-1 md:col-span-3">
               <div className="grid-1">
-                {gacha.pickUpCards.map((item, index) => (
+                {gacha.pickUpCards.map((item) => (
                   <CardItem newDesign key={item.id} data={item} />
                 ))}
               </div>
@@ -113,9 +113,9 @@ export const getServerSideProps: GetServerSideProps<{
     pickUpCards: {
       id: string
       masterId: number
-      attributeId: string
+      attribute: number
       cardName: string
-      rarityId: string
+      rarity: number
     }[]
     detail: GachaExplanationWordMaster
   }
@@ -136,30 +136,36 @@ export const getServerSideProps: GetServerSideProps<{
       summary: true,
       detail: true,
       note: true,
-      pickUpCards: {
-        select: {
-          id: true,
-          masterId: true,
-          attributeId: true,
-          cardName: true,
-          rarityId: true,
-          character: {
-            include: {
-              unit: {
-                select: {
-                  id: true,
-                },
-              },
-            },
-          },
-        },
-      },
     },
   })
 
   if (!data) {
     return { notFound: true }
   }
+
+  const pickUpCards = await prisma.cardMaster.findMany({
+    where: {
+      id: {
+        in: data.pickUpCardsPrimaryKey.map((item) => `${item}-${data.region}`),
+      },
+    },
+    select: {
+      id: true,
+      masterId: true,
+      attribute: true,
+      cardName: true,
+      rarity: true,
+      character: {
+        include: {
+          unit: {
+            select: {
+              id: true,
+            },
+          },
+        },
+      },
+    },
+  })
 
   data.summary.text = data.summary.text
     .replaceAll('{GachaName}', data.name)
@@ -176,7 +182,7 @@ export const getServerSideProps: GetServerSideProps<{
 
   return {
     props: {
-      gacha: data,
+      gacha: { ...data, pickUpCards },
     },
   }
 }

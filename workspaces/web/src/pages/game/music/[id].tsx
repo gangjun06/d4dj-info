@@ -113,45 +113,44 @@ export default function CardDetail({
                 ))}
               </Tab.List>
               <Tab.Panels>
-                {music.charts?.map(({ trends, difficulty, id, designer }) => (
-                  <Tab.Panel key={id}>
-                    <Table className="mb-2">
-                      <TableBody
-                        data={[
-                          // [
-                          //   t('music:note_count'),
-                          //   chart?.chartNoteCount?.find(
-                          //     (item) =>
-                          //       item?.section ===
-                          //       Enum_Componentmusicchartnotecount_Section.Full
-                          //   )?.count,
-                          // ],
-                          [t('music:chart_designer'), designer],
-                        ]}
-                      />
-                    </Table>
-                    <Disclosure title={t('music:trends')}>
-                      <div className="max-w-sm">
-                        <ChartRadar
-                          title={difficulty}
-                          data={{
-                            notes: trends[0],
-                            danger: trends[1],
-                            scratch: trends[2],
-                            effect: trends[3],
-                            technique: trends[4],
-                          }}
+                {music.charts?.map(
+                  ({ trends, difficulty, id, masterId, designer }) => (
+                    <Tab.Panel key={id}>
+                      <Table className="mb-2">
+                        <TableBody
+                          data={[
+                            // [
+                            //   t('music:note_count'),
+                            //   chart?.chartNoteCount?.find(
+                            //     (item) =>
+                            //       item?.section ===
+                            //       Enum_Componentmusicchartnotecount_Section.Full
+                            //   )?.count,
+                            // ],
+                            [t('music:chart_designer'), designer],
+                          ]}
                         />
-                      </div>
-                    </Disclosure>
-                    <Disclosure title={t('music:chart_preview')}>
-                      <ChartViewer
-                        name={music.name}
-                        chartID={convertIDNum(id)}
-                      />
-                    </Disclosure>
-                  </Tab.Panel>
-                ))}
+                      </Table>
+                      <Disclosure title={t('music:trends')}>
+                        <div className="max-w-sm">
+                          <ChartRadar
+                            title={difficulty}
+                            data={{
+                              notes: trends[0],
+                              danger: trends[1],
+                              scratch: trends[2],
+                              effect: trends[3],
+                              technique: trends[4],
+                            }}
+                          />
+                        </div>
+                      </Disclosure>
+                      <Disclosure title={t('music:chart_preview')}>
+                        <ChartViewer name={music.name} chartID={masterId} />
+                      </Disclosure>
+                    </Tab.Panel>
+                  )
+                )}
               </Tab.Panels>
             </Tab.Group>
           </Card>
@@ -167,6 +166,7 @@ export const getServerSideProps: GetServerSideProps<{
       id: string
       level: number
       trends: number[]
+      masterId: number
       difficulty: ChartDifficulty
       designer: {
         name: string
@@ -190,6 +190,7 @@ export const getServerSideProps: GetServerSideProps<{
       charts: {
         select: {
           id: true,
+          masterId: true,
           level: true,
           trends: true,
           difficulty: true,

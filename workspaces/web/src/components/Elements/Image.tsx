@@ -253,7 +253,7 @@ export const CardAttributeIcon = ({ attribute }: { attribute: number }) => {
 export const CardRarityIcon = ({ rarity }: { rarity: number }) => {
   return (
     <>
-      {Array.from(Array(rarity > 4 ? 4 : rarity).keys()).map((_, index) => (
+      {new Array(rarity > 4 ? 4 : rarity).fill({}).map((_, index) => (
         <Image
           key={index}
           width={20}

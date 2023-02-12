@@ -7,9 +7,12 @@ import {
   EventEpisodeType,
   EventType,
   GachaCategory,
+  HonorType,
   MusicCategory,
   PrismaClient,
   Region,
+  StampCategory,
+  StockCategory,
 } from '@prisma/client'
 import axios from 'axios'
 
@@ -25,9 +28,13 @@ import {
   GachaMaster,
   GachaNotesWordMaster,
   GachaSummaryWordMaster,
+  HonorMaster,
   MusicMaster,
   MusicMixMaster,
   SkillMaster,
+  StampMaster,
+  StockMaster,
+  StockViewCategoryMaster,
   UnitMaster,
 } from './generated.js'
 import { formatText } from './utils.js'
@@ -44,7 +51,7 @@ type ParseContentType<T, U extends boolean> = U extends true
   ? Omit<T, 'id'> & { id: string; masterId: number } & { region: Region }
   : T & { region: Region }
 
-const allowList = ['Gacha']
+const allowList = []
 
 async function parse<T, U extends boolean = false>(
   {
@@ -322,6 +329,58 @@ const main = async () => {
             type: GachaCategory[type] ?? 'Unknown',
           })
         ),
+        skipDuplicates: true,
+      })
+    }
+  )
+
+  await parse<StampMaster, true>(
+    { region, name: 'Stamp', masterId: true },
+    async (content) => {
+      await prisma.stampMaster.createMany({
+        data: content.map(({ category, ...other }) => ({
+          ...other,
+          category: StampCategory[category],
+        })),
+        skipDuplicates: true,
+      })
+    }
+  )
+
+  await parse<HonorMaster, true>(
+    { region, name: 'Honor', masterId: true },
+    async (content) => {
+      await prisma.honorMaster.createMany({
+        data: content.map(({ type, ...other }) => ({
+          ...other,
+          type: HonorType[type] ?? 'Unknown',
+        })),
+        skipDuplicates: true,
+      })
+    }
+  )
+
+  await parse<StockViewCategoryMaster, true>(
+    { region, name: 'StockViewCategory', masterId: true },
+    async (content) => {
+      await prisma.stockViewCategoryMaster.createMany({
+        data: content.map(({ ...other }) => ({
+          ...other,
+        })),
+        skipDuplicates: true,
+      })
+    }
+  )
+
+  await parse<StockMaster, true>(
+    { region, name: 'Stock', masterId: true },
+    async (content) => {
+      await prisma.stockMaster.createMany({
+        data: content.map(({ viewCategoryPrimaryKey, category, ...other }) => ({
+          ...other,
+          viewCategoryId: `${viewCategoryPrimaryKey}-${region}`,
+          category: StockCategory[category] ?? 'Unknown',
+        })),
         skipDuplicates: true,
       })
     }
