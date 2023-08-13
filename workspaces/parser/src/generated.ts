@@ -54,6 +54,10 @@ export type ADVLiveMaster = {
   optionPrimaryKey: number
   isAuto: boolean
   isMVOn: boolean
+  autoMiss: boolean
+  conditionType: QuestConditionType
+  conditionValue: number
+  deckPower: number
 }
 
 export type AssistOptionPresetMaster = {
@@ -98,6 +102,7 @@ export type CardMaster = {
   endDate: Date
   gachaCardAttribute: number
   canUseCommonCardStackStock: boolean
+  isPermanent: boolean
 }
 
 export type ChampionshipLeagueMaster = {
@@ -105,6 +110,8 @@ export type ChampionshipLeagueMaster = {
   championshipPrimaryKey: number
   name: string
   colorCode: string
+  logoId: number
+  textColorCode: string
 }
 
 export type ChampionshipMaster = {
@@ -123,6 +130,7 @@ export type ChampionshipMaster = {
   canEntry: boolean
   maxRankingNumber: number
   displayStartDate: Date
+  bgmpath: string
 }
 
 export type CharacterMaster = {
@@ -253,6 +261,8 @@ export type EventMaster = {
   bgmpath: string
   episodeType: EventEpisodeType
   boxGachaId: number
+  bonusTipsImageNames: string[]
+  redirectEpisodeEventId: number
 }
 
 export type EventAggregationBaseMaster = {
@@ -274,13 +284,15 @@ export type EventPointRewardMaster = {
   amount: number
 }
 
-export type EventRaveClubTierMaster = {
+export type EventRaveClubMaster = {
   id: number
-  clubId: number
-  type: RAVEClubTierType
-  audienceCount: number
-  topUserBorder: number
-  matchingTypeId: number
+  name: string
+  rankingRewardGroupId: number
+  partyCount: number
+  tierType: RAVEClubTierType
+  npcRate: number
+  rewardRate: number
+  hiddenMusicTrendGroups: number[]
 }
 
 export type EventRaveMemberTrendMaster = {
@@ -352,6 +364,15 @@ export type ExchangeMaster = {
   gaugeColorCodes: string[]
 }
 
+export type FesGachaBuffTriggerMaster = {
+  id: number
+  targetGachaPrimaryKey: number
+  name: string
+  lotteriesPrimaryKey: number[]
+  triggerAmount: number
+  isSpecialTrigger: boolean
+}
+
 export type GachaMaster = {
   id: number
   name: string
@@ -407,7 +428,7 @@ export type GrowthBattleEnemyMaster = {
   aggregationPrimaryKey: number
   imagePositionY: number
   enemyType: GrowthEnemyType
-  eventPrimaryKey: number
+  mapSDScale: number
 }
 
 export type GrowthMapLayoutConfigMaster = {
@@ -723,6 +744,8 @@ export type RaidBossMaster = {
   cardMatchParameterBonusesPrimaryKey: number[]
   dailyRewardMultipliers: number[]
   overrideImageNumber: number
+  clubFormationId: number
+  clubDeckId: number
 }
 
 export type RaidSpecialBossMaster = {
@@ -730,6 +753,7 @@ export type RaidSpecialBossMaster = {
   bossIds: number[]
   eventId: number
   bossLoopType: BossLoopType
+  raidType: RaidType
 }
 
 export type RarityMaster = {
@@ -807,6 +831,7 @@ export type StockMaster = {
   startDate: Date
   endDate: Date
   isAppropriateSales: boolean
+  resetEventType: EventType
 }
 
 export type UnitMaster = {
@@ -890,6 +915,12 @@ export type CampaignMaster = {
   rate: number
   startDate: Date
   endDate: Date
+}
+
+export type CardHomeDisplayOverwriteMaster = {
+  cardPrimaryKey: number
+  cardIllustHeadDistanceY: number[]
+  cardIllustCenterDistanceX: number[]
 }
 
 export type TitleDisplayMaster = {
@@ -982,6 +1013,9 @@ export type ComicMaster = {
 export type CommonValueMaster = {
   id: CommonValueType
   value: number
+  intValues: number[]
+  stringValue: string
+  dateTimeValue: Date
 }
 
 export type OverrideDefinedGameTextMaster = {
@@ -996,7 +1030,12 @@ export type DJSimulatorHostCharacterMaster = {
   endDate: Date
 }
 
-export type DJSimulatorHostClubSetlistMaster = {
+export type DJSimulatorHostClubSetListGroupMaster = {
+  unitPrimaryKey: number
+  groupIndexes: number[]
+}
+
+export type DJSimulatorHostClubSetListMaster = {
   id: number
   unitPrimaryKey: number
   groupIndex: number
@@ -1097,10 +1136,11 @@ export type GrowthSpecificBonusMaster = {
 }
 
 export type GrowthUnlockMaster = {
-  eventPrimaryKey: number
+  id: number
   lockMemberPrimaryKey: number
   stockId: number
   amount: number
+  eventsPrimaryKey: number[]
 }
 
 export type EventAggregationTermMaster = {
@@ -1109,6 +1149,47 @@ export type EventAggregationTermMaster = {
   receptionCloseDate: Date
   rankFixStartDate: Date
   resultAnnouncementDate: Date
+}
+
+export type EventBreakTimeMaster = {
+  id: number
+  eventPrimaryKey: number
+  startDate: Date
+  endDate: Date
+}
+
+export type EventCardStackBonusMaster = {
+  id: number
+  eventType: EventType
+  rarityPrimaryKey: number
+  stackCount: number
+  characterMatchBonusValue: number
+  attributeMatchBonusValue: number
+  cardMatchBonusValue: number
+}
+
+export type EventFreeRewardMaster = {
+  id: number
+  eventPrimaryKey: number
+  category: RewardCategory
+  rewardId: number
+  amount: number
+}
+
+export type EventGroupMaster = {
+  eventId: number
+  groupId: number
+  displayType: EventGroupDisplayType
+  argument: string
+}
+
+export type EventOverwriteMaster = {
+  id: number
+  eventPrimaryKey: number
+  overwriteType: EventOverwriteType
+  startDate: Date
+  endDate: Date
+  overwriteData: string
 }
 
 export type EventPointRewardTemplateMaster = {
@@ -1172,6 +1253,13 @@ export type PokerCoinMultiplierMaster = {
   multiplier: number
 }
 
+export type EventRaidResourceOverwriteMaster = {
+  id: number
+  eventId: number
+  resourceType: RaidResourceType
+  overwriteFileName: string
+}
+
 export type RaidBossHpBonusDetailMaster = {
   id: number
   bonusId: number
@@ -1202,10 +1290,11 @@ export type RaidBossLocalPointBonusMaster = {
   name: string
 }
 
-export type EventRaveClubMaster = {
+export type RaidClubDeckMaster = {
   id: number
-  name: string
-  rankingRewardGroupId: number
+  spotPrimaryKey: number
+  itemPrimaryKey: number
+  effectIndex: number
 }
 
 export type EventRaveClubRankingRewardMaster = {
@@ -1217,6 +1306,15 @@ export type EventRaveClubRankingRewardMaster = {
   category: RewardCategory
   rewardId: number
   amount: number
+}
+
+export type EventRaveClubTierMaster = {
+  id: number
+  clubId: number
+  type: RAVEClubTierType
+  audienceCount: number
+  topUserBorder: number
+  matchingTypeId: number
 }
 
 export type EventRaveMemberTrendGroupMaster = {
@@ -1279,6 +1377,7 @@ export type EventRaveSeasonMaster = {
 
 export type EventRaveShiftMaster = {
   id: number
+  eventPrimaryKey: number
   name: string
   startDate: Date
   endDate: Date
@@ -1299,7 +1398,6 @@ export type EventRaveShiftRankingRewardMaster = {
 
 export type EventRaveSplitRankingRewardMaster = {
   id: number
-  aggregationPrimaryKey: number
   seasonId: number
   lowestRanking: number
   highestRanking: number
@@ -1337,6 +1435,27 @@ export type AuditionGachaResetMaster = {
   gachaDrawPrimaryKey: number
   stockPrimaryKey: number
   stockAmount: number
+}
+
+export type FesGachaBuffEffectMaster = {
+  id: number
+  effectType: FesGachaBuffEffectType
+  targets: number[]
+  effectAmounts: number[]
+}
+
+export type FesGachaBuffLotteryMaster = {
+  id: number
+  rate: number
+  effectsPrimaryKey: number[]
+  name: string
+  hasPrizeEffect: boolean
+}
+
+export type FesGachaPointGainMaster = {
+  id: number
+  targetDrawsPrimaryKey: number
+  gainAmount: number
 }
 
 export type GachaBonusMaster = {
@@ -1392,6 +1511,20 @@ export type GachaTableRateMaster = {
   rarityIds: number[]
   tabName: string
   description: string
+}
+
+export type RemasterGachaMemberMaster = {
+  gachaPrimaryKey: number
+  cardPrimaryKey: number
+  selectable: boolean
+}
+
+export type RemasterGachaPickupMaster = {
+  idPrimaryKey: number
+  confirmedExplanationWordPrimaryKey: number
+  amount: number
+  selectedCardsRate: number
+  otherCardsRate: number
 }
 
 export type GradeMusicListMaster = {
@@ -1465,6 +1598,7 @@ export type LoginBonusMaster = {
   datePositions: number[]
   limitDays: number
   comebackDays: number
+  stepUpShiftDays: number[]
 }
 
 export type LoginBonusPositionTemplateMaster = {
@@ -1760,6 +1894,7 @@ export enum PassiveSkillType {
   FeverSupport,
   ScoreUpWithDamage,
   AutoScoreUp,
+  ManualScoreUp,
   SupportableScoreUp,
   SupportableSkillLonger,
 }
@@ -1846,6 +1981,16 @@ export enum CommonValueType {
   EpisodeCommentPenaltyCount,
   EventRaveFlyerBonusRate,
   EventRaveFlyerBonusRecoveryMaxCount,
+  EventRaveRewardRateMin,
+  EventRaveRewardRateMax,
+  EventRaveMusicTrendGaugeMax,
+  EventRaveMemberTrendGaugeMax,
+  EventRavePerformanceGaugeMax,
+  EventRavePerformanceGaugeLogarithmExponentiation,
+  EventRaveMemberTrendGaugeLogarithmExponentiation,
+  GachaTopRandomPickupMemberMaxCount,
+  GachaTopRemasterGachaRandomPickupMemberMaxCount,
+  LiveResultObtainableDiamondMusicReleaseDate,
 }
 
 export enum PushNotificationType {
@@ -1943,6 +2088,7 @@ export enum EventAggregationType {
   DailyAddPoint,
   CommonAddPoint,
   RaveShiftPoint,
+  RaveSeasonPoint,
   None,
 }
 
@@ -1954,6 +2100,17 @@ export enum EventEpisodeType {
   D4Fes3Nova,
   D4Fes3Origin,
   D4Fes3Finale,
+}
+
+export enum EventGroupDisplayType {
+  StringType,
+  UnitLogoType,
+}
+
+export enum EventOverwriteType {
+  EventLogo,
+  CharacterImage,
+  EventName,
 }
 
 export enum EventType {
@@ -1983,6 +2140,22 @@ export enum PokerHandCategory {
 export enum BossLoopType {
   Loop,
   FinalLoop,
+}
+
+export enum RaidResourceType {
+  SoloRaidButton,
+  MultiRaidButton,
+  SpecialRaidButton,
+  LocalPointRaidButton,
+  RaidLiveLog,
+  FirstTimeDrop,
+  SecondTimeDrop,
+  OutOfTermSPRaidButton,
+}
+
+export enum RaidType {
+  SpecialRaid,
+  AllStarRaid,
 }
 
 export enum RAVEClubTierType {
@@ -2023,6 +2196,14 @@ export enum DateSelectCategory {
   Monthly,
 }
 
+export enum FesGachaBuffEffectType {
+  RarityUp,
+  ReplaceTable,
+  StockPresent,
+  AddRoulettePoint,
+  ReplaceTableWithUniquePick,
+}
+
 export enum GachaCategory {
   Normal,
   Tutorial,
@@ -2044,6 +2225,9 @@ export enum GachaType {
   StepUp,
   Audition,
   Guaranteed,
+  FesRoulette,
+  PickUpSelect,
+  Rerollable,
 }
 
 export enum HonorType {

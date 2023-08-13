@@ -258,7 +258,9 @@ const main = async () => {
       await prisma.eventAggregationBaseMaster.createMany({
         data: content.map(({ aggregationType, eventPrimaryKey, ...other }) => ({
           ...other,
-          aggregationType: EventAggregationType[aggregationType],
+          aggregationType:
+            EventAggregationType[aggregationType] ??
+            EventAggregationType['None'],
           eventId: `${eventPrimaryKey}-${region}`,
         })),
         skipDuplicates: true,

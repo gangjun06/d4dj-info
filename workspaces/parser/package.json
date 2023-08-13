@@ -6,7 +6,8 @@
     "schema-generate": "npx tsc --outDir dist && node dist/main.js --generate",
     "parse:en": "npx tsc --outDir dist && node dist/main.js en",
     "parse:jp": "npx tsc --outDir dist && node dist/main.js jp",
-    "generate": "prisma generate --schema ./data/schema.prisma"
+    "generate": "prisma generate --schema ./data/schema.prisma",
+    "prisma": "prisma"
   },
   "dependencies": {
     "@prisma/client": "3.14.0",

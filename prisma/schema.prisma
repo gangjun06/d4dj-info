@@ -259,6 +259,7 @@ enum EventAggregationType {
         DailyAddPoint
         CommonAddPoint
         RaveShiftPoint
+        RaveSeasonPoint
         None
 }
 
