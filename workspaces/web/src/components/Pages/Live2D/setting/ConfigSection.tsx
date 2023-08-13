@@ -50,7 +50,7 @@ export function AddModel() {
       setValue('model', item.model as string)
       setValue('type', item.type as string)
       setValue('id', item.id as string)
-    } catch (e) {}
+    } catch (e) { }
     return () => {
       localStorage.setItem('live2d-setting', JSON.stringify(getValues()))
     }
@@ -134,6 +134,12 @@ export function AddModel() {
                 { id: '0012', name: '12' },
                 { id: '0013', name: '13' },
                 { id: '0014', name: '14' },
+                { id: '0015', name: '15' },
+                { id: '0016', name: '16' },
+                { id: '0017', name: '17' },
+                { id: '0018', name: '18' },
+                { id: '0019', name: '19' },
+                { id: '0020', name: '20' },
               ]}
             />
           </FormBlock>
